@@ -1,0 +1,204 @@
+<?php
+
+namespace App\Http\Controllers\API\Website\V1;
+
+
+use App\Enums\genderType;
+use App\Http\Controllers\Controller;
+use App\Models\Number;
+use App\Models\User;
+use App\Services\CodeService;
+use App\Services\PointService;
+use App\Services\SMS;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\Response;
+use Validator;
+
+class AuthController extends Controller
+{
+    private $code;
+    public function __construct()
+    {
+        $this->code = new CodeService;
+    }
+
+    public function register(Request $request)
+     {
+
+//      $validator = $request->validate([
+//                     'firstname'=>'required|max:255',
+//                     'lastname'=>'required|max:255',
+//                     'mobile'=>'required|min:11|max:11|regex:/^[0-9]+$/|unique:users',
+//                     'nationcode'=>'required|min:10|max:10|regex:/^[0-9]+$/|unique:users',
+//                     'gender'=>'required',
+//                     'introduced'=>'nullable|exists:users,code',
+//                     "password"=>['required','max:255','min:6','confirmed','required_with:password_confirmation|same:password_confirmation'],
+//                 ] ,[
+//                     'firstname.required'=>'نام و نام خانوادگی الزامی است.',
+//                     'firstname.max' => ' حداکثر طول نام و نام خانوادگی 255 کارکتر',
+//                     'lastname.required'=>'نام و نام خانوادگی الزامی است.',
+//                     'lastname.max' => ' حداکثر طول نام و نام خانوادگی 255 کارکتر',
+//                     'mobile.required'=>'* شماره موبایل الزامی است.',
+//                     'mobile.min'=>' فرمت صحیح موبایل  ********091 ',
+//                     'mobile.max'=>' فرمت صحیح موبایل  ********091 ',
+//                     'mobile.regex'=>' فرمت صحیح موبایل  ********091 ',
+//                     'mobile.unique'=>' شماره موبایل قبلا ثبت شده است',
+//                     'nationcode.required'=> "* کد ملی 10 رقمی را وارد کنید.",
+//                     'nationcode.min'=>  "* کد ملی 10 رقمی را وارد کنید.",
+//                     'nationcode.max'=> "* کد ملی 10 رقمی را وارد کنید.",
+//                     'nationcode.regex'=> "* کد ملی 10 رقمی را وارد کنید.",
+//                     'nationcode.unique'=> "* این کدملی قبلا ثبت شده است .",
+//                     'gender.required'=>' تعیین جنسیت الزامی است.',
+//                     'introduced.exists'=>'* کد معرف صحیح نمی باشد.',
+//                     'password.required' => ' رمز عبور الزامی است.',
+//                     'password.max' => ' حداکثر طول رمزعبور 255 کارکتر',
+//                     'password.min' => ' حداقل طول رمزعبور 6 کارکتر',
+//                     'password.confirmed' => ' تکرار رمز عبور منطبق نمی باشد ',
+//                 ]);
+
+        $validator = Validator::make(request()->all(),
+             [
+                 'firstname'=>'required|max:255',
+                 'lastname'=>'required|max:255',
+                 'mobile'=>'required|min:11|max:11|regex:/^[0-9]+$/|unique:users',
+                 'nationcode'=>'required|min:10|max:10|regex:/^[0-9]+$/|unique:users',
+                 'gender'=>'required',
+                 'introduced'=>'nullable|exists:users,code',
+                 "password"=>['required','max:255','min:6','confirmed','required_with:password_confirmation|same:password_confirmation'],
+             ] ,[
+                 'firstname.required'=>'نام و نام خانوادگی الزامی است.',
+                 'firstname.max' => 'حداکثر طول نام و نام خانوادگی 255 کارکتر',
+                 'lastname.required'=>'نام و نام خانوادگی الزامی است.',
+                 'lastname.max' => 'حداکثر طول نام و نام خانوادگی 255 کارکتر',
+                 'mobile.required'=>'شماره موبایل الزامی است.',
+                 'mobile.min'=>'فرمت صحیح موبایل  ********091 ',
+                 'mobile.max'=>'فرمت صحیح موبایل  ********091 ',
+                 'mobile.regex'=>'فرمت صحیح موبایل  ********091 ',
+                 'mobile.unique'=>' شماره موبایل قبلا ثبت شده است',
+                 'nationcode.required'=> "کد ملی 10 رقمی را وارد کنید.",
+                 'nationcode.min'=>  "کد ملی 10 رقمی را وارد کنید.",
+                 'nationcode.max'=> "کد ملی 10 رقمی را وارد کنید.",
+                 'nationcode.regex'=> "کد ملی 10 رقمی را وارد کنید.",
+                 'nationcode.unique'=> "این کدملی قبلا ثبت شده است .",
+                 'gender.required'=>'تعیین جنسیت الزامی است.',
+                 'introduced.exists'=>'کد معرف صحیح نمی باشد.',
+                 'password.required' => ' رمز عبور الزامی است.',
+                 'password.max' => 'حداکثر طول رمزعبور 255 کارکتر',
+                 'password.min' => 'حداقل طول رمزعبور 6 کارکتر',
+                 'password.confirmed' => 'تکرار رمز عبور منطبق نمی باشد.',
+             ]
+         );
+
+         if ($validator->fails()) {
+             return response()->json([
+                 'errors' => $validator->errors(),
+                 'status' => Response::HTTP_BAD_REQUEST,
+             ], Response::HTTP_BAD_REQUEST);
+         }
+
+         if($request->gender==genderType::female || $request->gender==genderType::male|| $request->gender==genderType::LGBTQ)
+         {
+             $verify_code = rand(1000,9999);
+             $verify_expire = Carbon::now()->addMinute(2)->format('Y-m-d H:i:s');
+
+             $user = new User;
+             $user->firstname = $request->firstname;
+             $user->lastname = $request->lastname;
+             $user->mobile = $request->mobile;
+             $user->verify_code = $verify_code;
+             $user->verify_expire = $verify_expire;
+             $user->gender = $request->gender;
+             $user->nationcode = $request->nationcode;
+             $user->code  = $this->code->create($user,10);
+             $user->introduced = $request->introduced;
+             $user->password =Hash::make($request->password);
+
+             $presenter = Number::with('user')->where("mobile",$user->mobile)->first();
+
+             if($presenter != null) {
+                 //افزودن 3 امتیاز به معرف
+                 $pointService = new PointService();
+
+                 DB::transaction(function() use ($user,$pointService,$presenter) {
+                     $user->save();
+                     $pointService->update($presenter->user,3);
+                 });
+
+                 //ارسال sms
+                 $msg = " شماره تماس".$user->mobile." که توسط شما به سامانه لاوین معرفی گردید در این سامانه عضو شد و 3 امتیاز به شما اضافه گردید.\nکلینیک لاوین رشت";
+                 $sms = new SMS;
+                 $sms->send(array($presenter->user->mobile),$msg);
+             } else{
+                 $number = new Number();
+                 $number->firstname = $request->firstname;
+                 $number->lastname = $request->lastname;
+                 $number->mobile = $request->mobile;
+
+                 DB::transaction(function() use ($user,$number) {
+                     $user->save();
+                     $number->save();
+                 });
+             }
+
+
+             $token = $user->createToken($request->mobile)->plainTextToken;
+
+             return  response()->json(['message'=>'ثبت نام با موفقیت انجام شد.',
+                                        'token'=> $token],200);
+         }
+
+     }
+
+     public function login(Request $request)
+     {
+
+         $validator = Validator::make(request()->all(),
+             [
+                 'mobile'=>'required|min:11|max:11|regex:/^[0-9]+$/',
+                 'password'=>'required|min:6'
+             ] ,[
+
+                 'mobile.required'=>'شماره موبایل الزامی است.',
+                 'mobile.min'=>'فرمت صحیح موبایل  ********091 ',
+                 'mobile.max'=>'فرمت صحیح موبایل  ********091 ',
+                 'mobile.regex'=>'فرمت صحیح موبایل  ********091 ',
+                 'password.required' => ' رمز عبور الزامی است.',
+                 'password.min' => 'حداقل طول رمزعبور 6 کارکتر',
+             ]
+         );
+
+         if ($validator->fails()) {
+             return response()->json([
+                 'errors' => $validator->errors(),
+                 'status' => Response::HTTP_BAD_REQUEST,
+             ], Response::HTTP_BAD_REQUEST);
+         }
+
+         $user = User::where('mobile', $request->mobile)->first();
+         if(!$user || !Hash::check($request->password,$user->password)){
+             return response()->json([
+                 'message' => 'شماره موبایل یا رمز عبور صحیح نمی باشد.'
+             ],401);
+         }
+         $token = $user->createToken($user->mobile.'-AuthToken')->plainTextToken;
+         return response()->json([
+             'token' => $token,
+         ]);
+     }
+
+    public function logout(Request $request)
+    {
+        if ($request->user()) {
+            $request->user()->tokens()->delete();
+        }
+
+        return response()->json([
+            'message' => 'خروج موفقیت آمیز'
+        ],200);
+
+    }
+
+}
