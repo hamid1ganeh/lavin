@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\EmploumentJobController;
 use App\Http\Controllers\Admin\EmploymentController;
 use App\Http\Controllers\Admin\GoodsMainController;
 use App\Http\Controllers\Admin\GoodsSubController;
+use App\Http\Controllers\Admin\GoodsController;
 
 
 Route::get('/login', 'AuthController@loginPage')->name('loginPage');
@@ -748,9 +749,6 @@ Route::group(['middleware' => 'auth.admin'], function () {
 
     Route::prefix('warehousing')->name('warehousing.')->group(function () {
 
-        Route::get('/', [EmploymentController::class,'index'])->name('index');
-        Route::patch('{employment}/response', [EmploymentController::class,'response'])->name('response');
-        Route::patch('{employment}/refer', [EmploymentController::class,'refer'])->name('refer');
 
         Route::prefix('categories')->name('categories.')->group(function () {
             Route::get('/', [GoodsMainController::class,'index'])->name('main.index');
@@ -771,6 +769,16 @@ Route::group(['middleware' => 'auth.admin'], function () {
                 Route::delete('/destroy/{sub}', [GoodsSubController::class,'destroy'])->name('destroy');
                 Route::patch('/recycle/{sub}', [GoodsSubController::class,'recycle'])->name('recycle');
             });
+        });
+
+        Route::prefix('goods')->name('goods.')->group(function () {
+            Route::get('/', [GoodsController::class,'index'])->name('index');
+            Route::get('/create', [GoodsController::class,'create'])->name('create');
+            Route::post('/store', [GoodsController::class,'store'])->name('store');
+            Route::get('{goods}/edit', [GoodsController::class,'edit'])->name('edit');
+            Route::patch('{goods}/update', [GoodsController::class,'update'])->name('update');
+            Route::delete('/destroy/{goods}', [GoodsController::class,'destroy'])->name('destroy');
+            Route::patch('/recycle/{goods}', [GoodsController::class,'recycle'])->name('recycle');
         });
 
 

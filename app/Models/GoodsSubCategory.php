@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class GoodSubCategory extends Model
+class GoodsSubCategory extends Model
 {
     use SoftDeletes;
     protected $fillable= ['main_id','title','status'];

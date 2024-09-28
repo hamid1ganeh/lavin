@@ -5,7 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use App\Enums\Status;
 
-class CreateGoodSubCategoriesTable extends Migration
+class CreateGoodsSubCategoriesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class CreateGoodSubCategoriesTable extends Migration
      */
     public function up()
     {
-        Schema::create('good_sub_categories', function (Blueprint $table) {
+        Schema::create('goods_sub_categories', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('main_id');
             $table->string('title');
@@ -38,6 +38,6 @@ class CreateGoodSubCategoriesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('good_sub_categories');
+        Schema::dropIfExists('goods_sub_categories');
     }
 }

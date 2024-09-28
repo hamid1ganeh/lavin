@@ -447,15 +447,25 @@
                                 <span class="menu-arrow"></span>
                             </a>
                             @if(Auth::guard('admin')->user()->can('warehousing.categories.main.index'))
-                                <ul class="nav-second-level" aria-expanded="false">
-                                    <li class="IRANYekanRegular">
-                                        <a href="{{ route('admin.warehousing.categories.main.index') }}">
-                                            <i class="fas fa-layer-group"></i>
-                                            <span>دسته بندی ها</span>
-                                        </a>
-                                    </li>
-                                </ul>
+                             <ul class="nav-second-level" aria-expanded="false">
+                                <li class="IRANYekanRegular">
+                                    <a href="{{ route('admin.warehousing.categories.main.index') }}">
+                                        <i class="fas fa-layer-group"></i>
+                                        <span>دسته بندی ها</span>
+                                    </a>
+                                </li>
+                             </ul>
                             @endif
+
+                            <ul class="nav-second-level" aria-expanded="false">
+                                <li class="IRANYekanRegular">
+                                    <a href="{{ route('admin.warehousing.goods.index') }}">
+                                        <i class="fas fa-shopping-cart"></i>
+                                        <span>کالا ها</span>
+                                    </a>
+                                </li>
+                            </ul>
+
 
                         </li>
 
