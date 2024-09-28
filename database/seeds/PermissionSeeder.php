@@ -1748,5 +1748,67 @@ class PermissionSeeder extends Seeder
             'description' => 'پاسخ دادن به استخدام',
             'status'=> Status::Active
         ]);
+
+
+        DB::table('permissions')->insert([
+            'name' => 'warehousing.categories.main.index',
+            'description' => 'لیست دسته بندی های اصلی کالاها',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'warehousing.categories.main.create',
+            'description' => 'ایجاد دسته بندی های اصلی کالاها',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'warehousing.categories.main.edit',
+            'description' => 'ویرایش دسته بندی های اصلی کالاها',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'warehousing.categories.main.destroy',
+            'description' => 'حذف دسته بندی های اصلی کالاها',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'warehousing.categories.main.recycle',
+            'description' => 'بازیابی دسته بندی های اصلی کالاها',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'warehousing.categories.sub.index',
+            'description' => 'لیست زیردسته های کالاها',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'warehousing.categories.sub.create',
+            'description' => 'ایجاد زیردسته های کالاها',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'warehousing.categories.sub.edit',
+            'description' => 'ویرایش زیردسته های کالاها',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'warehousing.categories.sub.destroy',
+            'description' => 'حذف زیردسته های کالاها',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'warehousing.categories.sub.recycle',
+            'description' => 'بازیابی زیردسته های کالاها',
+            'status'=> Status::Active
+        ]);
+
     }
 }

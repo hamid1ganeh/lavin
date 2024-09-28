@@ -5,6 +5,8 @@ use App\Http\Controllers\Admin\EmploymentMainCateoryController;
 use App\Http\Controllers\Admin\EmploymentSubCateoryController;
 use App\Http\Controllers\Admin\EmploumentJobController;
 use App\Http\Controllers\Admin\EmploymentController;
+use App\Http\Controllers\Admin\GoodsMainController;
+use App\Http\Controllers\Admin\GoodsSubController;
 
 
 Route::get('/login', 'AuthController@loginPage')->name('loginPage');
@@ -740,6 +742,37 @@ Route::group(['middleware' => 'auth.admin'], function () {
             Route::delete('/destroy/{job}', [EmploumentJobController::class,'destroy'])->name('destroy');
             Route::patch('/recycle/{job}', [EmploumentJobController::class,'recycle'])->name('recycle');
         });
+
+    });
+
+
+    Route::prefix('warehousing')->name('warehousing.')->group(function () {
+
+        Route::get('/', [EmploymentController::class,'index'])->name('index');
+        Route::patch('{employment}/response', [EmploymentController::class,'response'])->name('response');
+        Route::patch('{employment}/refer', [EmploymentController::class,'refer'])->name('refer');
+
+        Route::prefix('categories')->name('categories.')->group(function () {
+            Route::get('/', [GoodsMainController::class,'index'])->name('main.index');
+            Route::get('/create', [GoodsMainController::class,'create'])->name('main.create');
+            Route::post('/store', [GoodsMainController::class,'store'])->name('main.store');
+            Route::get('{main}/edit', [GoodsMainController::class,'edit'])->name('main.edit');
+            Route::patch('{main}/update', [GoodsMainController::class,'update'])->name('main.update');
+            Route::delete('/destroy/{main}', [GoodsMainController::class,'destroy'])->name('main.destroy');
+            Route::patch('/recycle/{main}', [GoodsMainController::class,'recycle'])->name('main.recycle');
+            Route::get('/fetch_sub', [GoodsMainController::class,'fetch_sub'])->name('fetch_sub');
+
+            Route::prefix('{main}/sub')->name('sub.')->group(function () {
+                Route::get('/', [GoodsSubController::class,'index'])->name('index');
+                Route::get('/create', [GoodsSubController::class,'create'])->name('create');
+                Route::post('/store', [GoodsSubController::class,'store'])->name('store');
+                Route::get('{sub}/edit', [GoodsSubController::class,'edit'])->name('edit');
+                Route::patch('{sub}/update', [GoodsSubController::class,'update'])->name('update');
+                Route::delete('/destroy/{sub}', [GoodsSubController::class,'destroy'])->name('destroy');
+                Route::patch('/recycle/{sub}', [GoodsSubController::class,'recycle'])->name('recycle');
+            });
+        });
+
 
     });
 

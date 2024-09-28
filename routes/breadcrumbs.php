@@ -1059,3 +1059,45 @@ Breadcrumbs::for('employments.jobs.edit', function ($trail,$job) {
     $trail->parent('employments.jobs.index', $trail);
     $trail->push('ویرایش شغل استخدام', route('admin.employments.jobs.edit',$job));
 });
+
+
+// داشبورد >  دسته بندی ها اصلی کالاها
+Breadcrumbs::for('warehousing.categories.main.index', function ($trail) {
+    $trail->parent('home', $trail);
+    $trail->push('دسته بندی ها اصلی کالاها', route('admin.warehousing.categories.main.index'));
+});
+
+// داشبورد >  دسته بندی ها اصلی کالاها> ایجاد دسته جدید
+Breadcrumbs::for('warehousing.categories.main.crate', function ($trail) {
+    $trail->parent('home', $trail);
+    $trail->push('دسته بندی ها اصلی کالاها', route('admin.warehousing.categories.main.create'));
+});
+
+// داشبورد >  دسته بندی ها اصلی کالاها > ویرایش دسته بندی بندی
+Breadcrumbs::for('warehousing.categories.main.edit', function ($trail,$cat) {
+    $trail->parent('warehousing.categories.main.index', $trail);
+    $trail->push('ویرایش دسته بندی', route('admin.warehousing.categories.main.edit',$cat));
+});
+
+
+// داشبورد >  دسته بندی ها اصلی کالاها >  زیردسته ها
+Breadcrumbs::for('warehousing.categories.sub.index', function ($trail,$main) {
+    $trail->parent('warehousing.categories.main.index', $trail);
+    $trail->push('زیردسته ها', route('admin.warehousing.categories.sub.index',$main));
+});
+
+// داشبورد >  دسته بندی ها اصلی کالاها > ایجاد زیردسته جدید
+Breadcrumbs::for('warehousing.categories.sub.create', function ($trail,$main) {
+    $trail->parent('warehousing.categories.sub.index', $main);
+    $trail->push('ایجاد زیردسته جدید', route('admin.warehousing.categories.sub.create',$main));
+});
+
+// داشبورد >  دسته بندی ها اصلی کالاها >  زیردسته ها > ویرایش زیردسته
+Breadcrumbs::for('warehousing.categories.sub.edit', function ($trail,$main,$sub) {
+    $trail->parent('warehousing.categories.sub.index',$main);
+    $trail->push('ویرایش زیردسته', route('admin.warehousing.categories.sub.edit',[$main,$sub]));
+});
+
+
+
+

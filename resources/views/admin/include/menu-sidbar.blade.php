@@ -437,6 +437,29 @@
                         @endif
                      </li>
                    @endif
+                   @if(Auth::guard('admin')->user()->can('warehousing.categories.main.index')||
+                       Auth::guard('admin')->user()->can('warehousing.categories.sub.index'))
+
+                        <li>
+                            <a href="javascript: void(0);" class="waves-effect">
+                                <i class="mdi mdi-city"></i>
+                                <span class="IRANYekanRegular">انبارداری</span>
+                                <span class="menu-arrow"></span>
+                            </a>
+                            @if(Auth::guard('admin')->user()->can('warehousing.categories.main.index'))
+                                <ul class="nav-second-level" aria-expanded="false">
+                                    <li class="IRANYekanRegular">
+                                        <a href="{{ route('admin.warehousing.categories.main.index') }}">
+                                            <i class="fas fa-layer-group"></i>
+                                            <span>دسته بندی ها</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            @endif
+
+                        </li>
+
+                        @endif
 
                     @if(Auth::guard('admin')->user()->can('complications.index'))
                     <li>
