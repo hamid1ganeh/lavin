@@ -24,7 +24,12 @@ class Goods extends Model
 
     public function expireDate()
     {
+        if(is_null($this->expire_date)){
+            return '';
+        }
         return CalendarUtils::convertNumbers(CalendarUtils::strftime('Y/m/d',strtotime($this->expire_date)));
     }
+
+
 
 }

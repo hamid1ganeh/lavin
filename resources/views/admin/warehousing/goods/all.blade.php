@@ -32,7 +32,7 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-12 text-right">
-                                    @if(Auth::guard('admin')->user()->can('employments.jobs.create'))
+                                    @if(Auth::guard('admin')->user()->can('warehousing.goods.create'))
                                     <div class="btn-group" >
                                             <a href="{{ route('admin.warehousing.goods.create') }}" class="btn btn-sm btn-primary">
                                             <i class="fa fa-plus plusiconfont"></i>
@@ -87,7 +87,7 @@
 
                                                @if($good->trashed())
 
-{{--                                                    @if(Auth::guard('admin')->user()->can('employments.jobs.recycle'))--}}
+                                                    @if(Auth::guard('admin')->user()->can('warehousing.goods.recycle'))
                                                     <a class="font18" href="#recycle{{ $good->id }}" data-toggle="modal" title="بازیابی">
                                                         <i class="fa fa-recycle text-danger"></i>
                                                     </a>
@@ -115,17 +115,16 @@
                                                             </div>
                                                         </div>
                                                     </div>
-{{--                                                    @endif--}}
+                                                @endif
 
                                                 @else
-
-{{--                                                    @if(Auth::guard('admin')->user()->can('employments.jobs.edit'))--}}
-                                                        <a class="btn  btn-icon" href="{{ route('admin.warehousing.jobs.edit', $good) }}" title="ویرایش">
+                                                    @if(Auth::guard('admin')->user()->can('warehousing.goods.edit'))
+                                                        <a class="btn  btn-icon" href="{{ route('admin.warehousing.goods.edit', $good) }}" title="ویرایش">
                                                             <i class="fa fa-edit text-success font-20"></i>
                                                         </a>
-{{--                                                    @endif--}}
+                                                    @endif
 
-{{--                                                    @if(Auth::guard('admin')->user()->can('employments.jobs.destroy'))--}}
+                                                    @if(Auth::guard('admin')->user()->can('warehousing.goods.destroy'))
                                                     <a href="#remove{{ $good->id }}" data-toggle="modal" class="btn btn-icon" title="حذف">
                                                         <i class="fa fa-trash text-danger font-20"></i>
                                                     </a>
@@ -154,7 +153,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-{{--                                                   @endif--}}
+                                                   @endif
                                                 @endif
                                             </td>
                                         </tr>

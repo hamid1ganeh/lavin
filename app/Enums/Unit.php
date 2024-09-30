@@ -18,5 +18,6 @@ class Unit
     const   ma  = 'میلی آمپر';
     const   a  = 'آمپر';
     const   v  = 'ولت';
+    const   Shut  = 'شات';
 
 }

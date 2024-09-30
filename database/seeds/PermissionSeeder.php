@@ -1810,5 +1810,35 @@ class PermissionSeeder extends Seeder
             'status'=> Status::Active
         ]);
 
+        DB::table('permissions')->insert([
+            'name' => 'warehousing.goods.index',
+            'description' => 'لیست کالاها',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'warehousing.goods.create',
+            'description' => 'ایجاد کالا جدید',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'warehousing.goods.edit',
+            'description' => 'ویرایش کالا',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'warehousing.goods.destroy',
+            'description' => 'حذف کالا',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'warehousing.goods.recycle',
+            'description' => 'بازیابی کالا',
+            'status'=> Status::Active
+        ]);
+
     }
 }

@@ -17,15 +17,15 @@ class CreateGoodsTable extends Migration
     {
         Schema::create('goods', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
+            $table->string('title')->unique();
             $table->unsignedBigInteger('main_cat_id');
             $table->unsignedBigInteger('sub_cat_id')->nullable();
             $table->string('code')->nullable();
-            $table->unsignedSmallInteger('unit')->default(Unit::count);
+            $table->string('unit')->default(Unit::count);
             $table->date('expire_date')->nullable();
             $table->unsignedDouble('stock')->default(0);
             $table->unsignedBigInteger('price')->default(0);
-            $table->string('description');
+            $table->string('description')->nullable();
             $table->unsignedSmallInteger('status')->default(Status::Active);
             $table->softDeletes();
             $table->timestamps();

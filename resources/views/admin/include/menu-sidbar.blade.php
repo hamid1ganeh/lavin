@@ -438,8 +438,8 @@
                      </li>
                    @endif
                    @if(Auth::guard('admin')->user()->can('warehousing.categories.main.index')||
-                       Auth::guard('admin')->user()->can('warehousing.categories.sub.index'))
-
+                       Auth::guard('admin')->user()->can('warehousing.categories.sub.index') ||
+                       Auth::guard('admin')->user()->can('warehousing.goods.index'))
                         <li>
                             <a href="javascript: void(0);" class="waves-effect">
                                 <i class="mdi mdi-city"></i>
@@ -457,6 +457,7 @@
                              </ul>
                             @endif
 
+                            @if(Auth::guard('admin')->user()->can('warehousing.goods.index'))
                             <ul class="nav-second-level" aria-expanded="false">
                                 <li class="IRANYekanRegular">
                                     <a href="{{ route('admin.warehousing.goods.index') }}">
@@ -465,7 +466,7 @@
                                     </a>
                                 </li>
                             </ul>
-
+                            @endif
 
                         </li>
 

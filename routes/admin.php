@@ -775,10 +775,10 @@ Route::group(['middleware' => 'auth.admin'], function () {
             Route::get('/', [GoodsController::class,'index'])->name('index');
             Route::get('/create', [GoodsController::class,'create'])->name('create');
             Route::post('/store', [GoodsController::class,'store'])->name('store');
-            Route::get('{goods}/edit', [GoodsController::class,'edit'])->name('edit');
-            Route::patch('{goods}/update', [GoodsController::class,'update'])->name('update');
-            Route::delete('/destroy/{goods}', [GoodsController::class,'destroy'])->name('destroy');
-            Route::patch('/recycle/{goods}', [GoodsController::class,'recycle'])->name('recycle');
+            Route::get('{good}/edit', [GoodsController::class,'edit'])->name('edit');
+            Route::patch('{good}/update', [GoodsController::class,'update'])->name('update');
+            Route::delete('/destroy/{good}', [GoodsController::class,'destroy'])->name('destroy');
+            Route::patch('/recycle/{good}', [GoodsController::class,'recycle'])->name('recycle');
         });
 
 

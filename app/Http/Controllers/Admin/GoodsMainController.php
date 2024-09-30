@@ -6,6 +6,7 @@ use App\Enums\Status;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\GoodsMainCategory;
+use App\Models\GoodsSubCategory;
 
 class GoodsMainController extends Controller
 {
@@ -118,4 +119,10 @@ class GoodsMainController extends Controller
         return back();
     }
 
+    public function fetch_sub()
+    {
+        $main = request('main');
+        $sub = GoodsSubCategory::where('status',Status::Active)->where('main_id',$main)->get();
+        return response()->json(['sub'=>$sub]);
+    }
 }

@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\EmploymentSubCategory;
 use Illuminate\Http\Request;
-use App\Models\GoodSubCategory;
+use App\Models\GoodsSubCategory;
 use App\Models\GoodsMainCategory;
 use App\Enums\status;
 
@@ -18,7 +18,7 @@ class GoodsSubController extends Controller
         config(['auth.defaults.guard' => 'admin']);
         $this->authorize('warehousing.categories.sub.index');
 
-        $categories = GoodSubCategory::withTrashed()
+        $categories = GoodsSubCategory::withTrashed()
             ->where('main_id',$main->id)
             ->orderBy('title','asc')->get();
 
@@ -51,7 +51,7 @@ class GoodsSubController extends Controller
                 'title.max' => 'حداکثر  طول مجاز عنوان دسته بندی 255 کارکتر می باشد.',
             ]);
 
-        if(GoodSubCategory::where('main_id',$main->id)->where('title',$request->title)->exists()){
+        if(GoodsSubCategory::where('main_id',$main->id)->where('title',$request->title)->exists()){
             $msg = " زیردسته ".$request->title.' قبلا برای دسته اصلی '.$main->title.' ثبت شده است.';
             alert()->error($msg);
             return back()->withInput();
@@ -59,7 +59,7 @@ class GoodsSubController extends Controller
 
         if(in_array($request->status ,status::getStatusList))
         {
-            GoodSubCategory::create([
+            GoodsSubCategory::create([
                 'main_id'=> $main->id,
                 'title'=> $request->title,
                 'status'=> $request->status,
@@ -72,7 +72,7 @@ class GoodsSubController extends Controller
     }
 
 
-    public function edit(GoodsMainCategory $main,GoodSubCategory $sub)
+    public function edit(GoodsMainCategory $main,GoodsSubCategory $sub)
     {
         //اجازه دسترسی
         config(['auth.defaults.guard' => 'admin']);
@@ -82,7 +82,7 @@ class GoodsSubController extends Controller
     }
 
 
-    public function update(GoodsMainCategory $main,GoodSubCategory $sub,Request $request)
+    public function update(GoodsMainCategory $main,GoodsSubCategory $sub,Request $request)
     {
         //اجازه دسترسی
         config(['auth.defaults.guard' => 'admin']);
@@ -97,7 +97,7 @@ class GoodsSubController extends Controller
                 'title.max' => 'حداکثر  طول مجاز عنوان دسته بندی 255 کارکتر می باشد.',
             ]);
 
-        if(GoodSubCategory::where('main_id',$main->id)->where('title',$request->title)->where('id','<>',$sub->id)->exists()){
+        if(GoodsSubCategory::where('main_id',$main->id)->where('title',$request->title)->where('id','<>',$sub->id)->exists()){
             $msg = " زیردسته ".$request->title.' قبلا برای دسته اصلی '.$main->title.' ثبت شده است.';
             alert()->error($msg);
             return back()->withInput();
@@ -114,7 +114,7 @@ class GoodsSubController extends Controller
         return redirect(route('admin.warehousing.categories.sub.index',$main));
     }
 
-    public function destroy(GoodsMainCategory $main, GoodSubCategory $sub)
+    public function destroy(GoodsMainCategory $main, GoodsSubCategory $sub)
     {
         //اجازه دسترسی
         config(['auth.defaults.guard' => 'admin']);
@@ -132,7 +132,7 @@ class GoodsSubController extends Controller
         config(['auth.defaults.guard' => 'admin']);
         $this->authorize('warehousing.categories.sub.recycle');
 
-        $sub = GoodSubCategory::withTrashed()->find($id);
+        $sub = GoodsSubCategory::withTrashed()->find($id);
         $sub->restore();
         toast(' زیردسته مورد نظر بازیابی شد.','error')->position('bottom-end');
         return back();
