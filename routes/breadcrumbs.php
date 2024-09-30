@@ -1099,5 +1099,41 @@ Breadcrumbs::for('warehousing.categories.sub.edit', function ($trail,$main,$sub)
 });
 
 
+// داشبورد > لیست کالاهای انبار اصلی
+Breadcrumbs::for('warehousing.goods.index', function ($trail) {
+    $trail->parent('home', $trail);
+    $trail->push('لیست کالاهای انبار اصلی', route('admin.warehousing.goods.index'));
+});
+
+// داشبورد >  لیست کالاهای انبار اصلی >ایجاد کالا جدید
+Breadcrumbs::for('warehousing.goods.create', function ($trail) {
+    $trail->parent('warehousing.goods.index', $trail);
+    $trail->push('ایجاد کالا جدید', route('admin.warehousing.goods.create'));
+});
+
+// داشبورد >  لیست کالاهای انبار اصلی >ویرایش کالا
+Breadcrumbs::for('warehousing.goods.edit', function ($trail,$good) {
+    $trail->parent('warehousing.goods.index', $trail);
+    $trail->push('ویرایش کالا', route('admin.warehousing.goods.edit',$good));
+});
+
+// داشبورد > لیست انبارها
+Breadcrumbs::for('warehousing.warehouses.index', function ($trail) {
+    $trail->parent('home', $trail);
+    $trail->push('لیست انبارها', route('admin.warehousing.warehouses.index'));
+});
+
+// داشبورد > لیست انبارها > ایجاد انبار جدید
+Breadcrumbs::for('warehousing.warehouses.create', function ($trail) {
+    $trail->parent('warehousing.warehouses.index', $trail);
+    $trail->push('ایجاد انبار جدید', route('admin.warehousing.warehouses.create'));
+});
+
+// داشبورد > لیست انبارها > ویرایش انبار
+Breadcrumbs::for('warehousing.warehouses.edit', function ($trail,$warehouse) {
+    $trail->parent('warehousing.warehouses.index', $trail);
+    $trail->push('ویرایش انبار', route('admin.warehousing.warehouses.edit',$warehouse));
+});
+
 
 

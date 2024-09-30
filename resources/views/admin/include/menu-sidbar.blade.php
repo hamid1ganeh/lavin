@@ -439,7 +439,8 @@
                    @endif
                    @if(Auth::guard('admin')->user()->can('warehousing.categories.main.index')||
                        Auth::guard('admin')->user()->can('warehousing.categories.sub.index') ||
-                       Auth::guard('admin')->user()->can('warehousing.goods.index'))
+                       Auth::guard('admin')->user()->can('warehousing.goods.index') ||
+                       Auth::guard('admin')->user()->can('warehousing.warehouses.index'))
                         <li>
                             <a href="javascript: void(0);" class="waves-effect">
                                 <i class="mdi mdi-city"></i>
@@ -463,6 +464,17 @@
                                     <a href="{{ route('admin.warehousing.goods.index') }}">
                                         <i class="fas fa-shopping-cart"></i>
                                         <span>کالا ها</span>
+                                    </a>
+                                </li>
+                            </ul>
+                            @endif
+
+                            @if(Auth::guard('admin')->user()->can('warehousing.warehouses.index'))
+                            <ul class="nav-second-level" aria-expanded="false">
+                                <li class="IRANYekanRegular">
+                                    <a href="{{ route('admin.warehousing.warehouses.index') }}">
+                                        <i class="mdi mdi-city"></i>
+                                        <span>انبارها</span>
                                     </a>
                                 </li>
                             </ul>

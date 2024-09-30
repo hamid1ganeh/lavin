@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\EmploymentController;
 use App\Http\Controllers\Admin\GoodsMainController;
 use App\Http\Controllers\Admin\GoodsSubController;
 use App\Http\Controllers\Admin\GoodsController;
+use App\Http\Controllers\Admin\WarehouseController;
 
 
 Route::get('/login', 'AuthController@loginPage')->name('loginPage');
@@ -779,6 +780,16 @@ Route::group(['middleware' => 'auth.admin'], function () {
             Route::patch('{good}/update', [GoodsController::class,'update'])->name('update');
             Route::delete('/destroy/{good}', [GoodsController::class,'destroy'])->name('destroy');
             Route::patch('/recycle/{good}', [GoodsController::class,'recycle'])->name('recycle');
+        });
+
+        Route::prefix('warehouses')->name('warehouses.')->group(function () {
+            Route::get('/', [WarehouseController::class,'index'])->name('index');
+            Route::get('/create', [WarehouseController::class,'create'])->name('create');
+            Route::post('/store', [WarehouseController::class,'store'])->name('store');
+            Route::get('{warehouse}/edit', [WarehouseController::class,'edit'])->name('edit');
+            Route::patch('{warehouse}/update', [WarehouseController::class,'update'])->name('update');
+            Route::delete('/destroy/{warehouse}', [WarehouseController::class,'destroy'])->name('destroy');
+            Route::patch('/recycle/{warehouse}', [WarehouseController::class,'recycle'])->name('recycle');
         });
 
 

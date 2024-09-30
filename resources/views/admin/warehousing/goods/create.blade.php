@@ -15,7 +15,7 @@
                     <div class="page-title-box">
                         <div class="page-title-right">
                             <ol class="breadcrumb m-0 IR">
-{{--                                {{ Breadcrumbs::render('employments.jobs.create') }}--}}
+                                {{ Breadcrumbs::render('warehousing.goods.create') }}
                             </ol>
                         </div>
                         <h4 class="page-title">
