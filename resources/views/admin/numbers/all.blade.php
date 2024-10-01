@@ -344,8 +344,8 @@
                                             <td><a class="IRANYekanRegular" href="{{ route('admin.receptions.index',['mobile'=>$number->mobile]) }}" target="_blank">{{ $number->mobile }}</a></td>
                                             <td>
                                                 @if($number->club())
-                                                    <a  href="{{ route('admin.numbers.info.show',$number)  }}" class="dropdown-item IR cusrsor"  title="اطلاعات تکمیلی کاربر">
-                                                        <i class="fa fa-info cursor-pointer"></i>
+                                                    <a  href="{{ route('admin.numbers.info.show',$number)  }}" class="dropdown-item IR cusrsor"  title="اطلاعات تکمیلی کاربر" target="_blank">
+                                                        <i class="fa fa-info  cursor-pointer @if($number->completeInfo())  text-primary @endif"></i>
                                                     </a>
                                                 @elseif(Auth::guard('admin')->user()->can('numbers.add2club'))
                                                     <a  href="#register{{ $number->id }}" class="dropdown-item IR cusrsor" data-toggle="modal" title="افزودن به باشگاه مشتریان">

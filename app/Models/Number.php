@@ -84,6 +84,18 @@ class Number extends Model
         return User::where('mobile',$this->mobile)->withTrashed()->first();
     }
 
+    public function completeInfo ()
+    {
+        $user = $this->getUserByMobile();
+        if(!is_null($user) &&
+          UserInfo::where('user_id',$user->id)->exists() &&
+          UserAddress::where('user_id',$user->id)->exists()){
+            return  true;
+        }
+
+        return false;
+    }
+
     public function getStatus()
     {
         switch ($this->status) {
