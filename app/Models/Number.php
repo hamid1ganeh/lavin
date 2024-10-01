@@ -169,6 +169,9 @@ class Number extends Model
             case NumberType::call:
                 $res = "تماس های ورودی";
                 break;
+            case NumberType::festival:
+                $res = "آینه منوع";
+                break;
         }
         return  $res;
     }

@@ -233,7 +233,6 @@
                                                     <option value="{{ App\Enums\NumberType::lahijan }}" @if(request('type')!=null) {{ in_array(App\Enums\NumberType::lahijan,request('type'))?'selected':'' }} @endif>شعبه لاهیجان</option>
                                                     <option value="{{ App\Enums\NumberType::tehran }}" @if(request('type')!=null) {{ in_array(App\Enums\NumberType::tehran,request('type'))?'selected':'' }} @endif>شعبه تهران</option>
                                                     <option value="{{ App\Enums\NumberType::hozoori }}" @if(request('type')!=null) {{ in_array(App\Enums\NumberType::hozoori,request('type'))?'selected':'' }} @endif>حضوری</option>
-
                                                 </select>
                                             </div>
                                         </div>

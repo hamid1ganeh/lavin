@@ -53,7 +53,9 @@
  @endif
 
  <!-- admin.notifications.create -->
- @if(Route::currentRouteName()=='admin.reserves.create')
+ @if(Route::currentRouteName()=='admin.reserves.create'||
+     Route::currentRouteName()=='admin.numbers.create'||
+     Route::currentRouteName()=='admin.numbers.edit')
  <script src="{{ url('/') }}/panel/assets/js/ajax-jquery.min.js"></script>
  <script src="{{ url('/') }}/panel/assets/js/ajax-select2.min.js"></script>
  @endif
