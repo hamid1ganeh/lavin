@@ -104,6 +104,10 @@
 
                                                 @else
 
+                                                    <a class="btn  btn-icon" href="{{ route('admin.warehousing.warehouses.stock.index', $warehouse) }}" title="موجودی">
+                                                        <i class="fa fa-cube text-warning font-20"></i>
+                                                    </a>
+
                                                     @if(Auth::guard('admin')->user()->can('warehousing.warehouses.edit'))
                                                         <a class="btn  btn-icon" href="{{ route('admin.warehousing.warehouses.edit', $warehouse) }}" title="ویرایش">
                                                             <i class="fa fa-edit text-success font-20"></i>

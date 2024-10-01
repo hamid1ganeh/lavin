@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Enums\Status;
 use App\Http\Controllers\Controller;
+use App\Models\Goods;
+use App\Models\WarehouseStock;
 use Illuminate\Http\Request;
 use App\Models\Warehouse;
 
@@ -122,5 +124,17 @@ class WarehouseController extends Controller
         $warehouse->restore();
         toast('انبار مورد نظر بازیابی شد.','error')->position('bottom-end');
         return back();
+    }
+
+    public function stock(Warehouse $warehouse)
+    {
+        $stocks = WarehouseStock::where('warehouse_id',$warehouse->id)
+                                ->orderBy('stock','asc')
+                                ->paginate(10)
+                                ->withQueryString();
+
+        $goods = Goods::where('status',Status::Active)->orderBy('title','asc')->get();
+
+        return view('admin.warehousing.warehouses.stock',compact('stocks','warehouse','goods'));
     }
 }

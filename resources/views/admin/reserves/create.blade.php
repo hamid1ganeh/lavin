@@ -47,7 +47,7 @@
                                     <div class="form-group row mt-1">
                                         <div class="col-12">
                                             <label for="service" class="control-label IRANYekanRegular">سرویس</label>
-                                            <select class="widht-100 form-control select2" name="service" id="service" onchange="details(this.value)">
+                                            <select class="width-100 form-control select2" name="service" id="service" onchange="details(this.value)">
                                                 <option value="">سرویس مورد نظر را انتخاب کنید...</option>
                                                 @foreach($services as $service)
                                                 <option value="{{ $service->id }}">{{ $service->name }}</option>
@@ -73,7 +73,7 @@
                                         <div class="col-12">
                                             <label for="branch" class="control-label IRANYekanRegular">شعبه</label>
                                             <div id="branch_div">
-                                                <select class="widht-100 form-control select2" name="branch" id="branch">
+                                                <select class="width-100 form-control select2" name="branch" id="branch">
                                                     <option value=""> شعبه مورد نظر را انتخاب کنید...</option>
                                                 </select>
                                                 <span class="form-text text-danger erroralarm"> {{ $errors->first('branch') }} </span>
@@ -85,7 +85,7 @@
                                         <div class="col-12">
                                             <label for="doctor" class="control-label IRANYekanRegular">پزشک</label>
                                             <div id="doctor_div">
-                                                <select class="widht-100 form-control select2" name="doctor" id="doctor">
+                                                <select class="width-100 form-control select2" name="doctor" id="doctor">
                                                     <option value=""> پزشک مورد نظر را انتخاب کنید...</option>
                                                 </select>
                                                 <span class="form-text text-danger erroralarm"> {{ $errors->first('doctor') }} </span>
@@ -97,7 +97,7 @@
                                         <div class="col-12">
                                             <label for="adviser" class="control-label IRANYekanRegular">مشاور</label>
                                             <div id="adviser_div">
-                                                <select class="widht-100 form-control select2" name="adviser" id="adviser">
+                                                <select class="width-100 form-control select2" name="adviser" id="adviser">
                                                     <option value="">عدم نیاز به مشاور</option>
                                                 </select>
                                                 <span class="form-text text-danger erroralarm"> {{ $errors->first('adviser') }} </span>
