@@ -22,10 +22,13 @@ class CreateGoodsTable extends Migration
             $table->unsignedBigInteger('sub_cat_id')->nullable();
             $table->string('code')->nullable();
             $table->string('unit')->default(Unit::count);
-            $table->date('expire_date')->nullable();
             $table->unsignedDouble('stock')->default(0);
             $table->unsignedBigInteger('price')->default(0);
+            $table->string('consumption_unit')->default(Unit::count);
+            $table->unsignedDouble('consumption_stock')->default(0);
+            $table->unsignedBigInteger('consumption_price')->default(0);
             $table->string('description')->nullable();
+            $table->date('expire_date')->nullable();
             $table->unsignedSmallInteger('status')->default(Status::Active);
             $table->softDeletes();
             $table->timestamps();

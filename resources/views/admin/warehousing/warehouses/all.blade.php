@@ -104,7 +104,7 @@
 
                                                 @else
 
-                                                    <a class="btn  btn-icon" href="{{ route('admin.warehousing.warehouses.stock.index', $warehouse) }}" title="موجودی">
+                                                    <a class="btn  btn-icon" href="{{ route('admin.warehousing.warehouses.orders.index', $warehouse) }}" title="حوالات">
                                                         <i class="fa fa-cube text-warning font-20"></i>
                                                     </a>
 

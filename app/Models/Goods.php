@@ -10,7 +10,7 @@ class Goods extends Model
 {
     use SoftDeletes;
     protected $table= 'goods';
-    protected $fillable=['title','main_cat_id','sub_cat_id','code','unit','expire_date','stock','price','description'];
+    protected $fillable=['title','main_cat_id','sub_cat_id','code','unit','expire_date','stock','price','description','consumption_unit','consumption_stock','consumption_price'];
 
     public function main_category()
     {

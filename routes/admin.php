@@ -791,8 +791,8 @@ Route::group(['middleware' => 'auth.admin'], function () {
             Route::delete('/destroy/{warehouse}', [WarehouseController::class,'destroy'])->name('destroy');
             Route::patch('/recycle/{warehouse}', [WarehouseController::class,'recycle'])->name('recycle');
 
-            Route::prefix('stock')->name('stock.')->group(function () {
-                Route::get('/', [WarehouseController::class,'stock'])->name('index');
+            Route::prefix('{warehouse}/orders')->name('orders.')->group(function () {
+                Route::get('/', [WarehouseController::class,'orders'])->name('index');
 //                Route::get('/create', [WarehouseController::class,'create'])->name('create');
 //                Route::post('/store', [WarehouseController::class,'store'])->name('store');
 //                Route::get('{warehouse}/edit', [WarehouseController::class,'edit'])->name('edit');

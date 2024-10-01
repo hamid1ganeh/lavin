@@ -126,15 +126,16 @@ class WarehouseController extends Controller
         return back();
     }
 
-    public function stock(Warehouse $warehouse)
+    public function orders(Warehouse $warehouse)
     {
-        $stocks = WarehouseStock::where('warehouse_id',$warehouse->id)
+        $orders = WarehouseStock::where('warehouse_id',$warehouse->id)
                                 ->orderBy('stock','asc')
                                 ->paginate(10)
                                 ->withQueryString();
 
         $goods = Goods::where('status',Status::Active)->orderBy('title','asc')->get();
 
-        return view('admin.warehousing.warehouses.stock',compact('stocks','warehouse','goods'));
+
+        return view('admin.warehousing.warehouses.order',compact('goods','warehouse','orders'));
     }
 }

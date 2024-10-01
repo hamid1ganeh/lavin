@@ -55,6 +55,9 @@
                                         <th><b class="IRANYekanRegular">واحد</b></th>
                                         <th><b class="IRANYekanRegular">موجودی</b></th>
                                         <th><b class="IRANYekanRegular">قیمت</b></th>
+                                        <th><b class="IRANYekanRegular">واحد مصرفی</b></th>
+                                        <th><b class="IRANYekanRegular">موجود مصرفی</b></th>
+                                        <th><b class="IRANYekanRegular">قیمت مصرفی</b></th>
                                         <th><b class="IRANYekanRegular">تاریخ انقضاء</b></th>
                                         <th><b class="IRANYekanRegular">توضیحات</b></th>
                                         <th><b class="IRANYekanRegular">وضعیت</b></th>
@@ -72,6 +75,9 @@
                                             <td><strong class="IRANYekanRegular">{{ $good->unit }}</strong></td>
                                             <td><strong class="IRANYekanRegular">{{ $good->stock }}</strong></td>
                                             <td><strong class="IRANYekanRegular">{{ $good->price }}</strong></td>
+                                            <td><strong class="IRANYekanRegular">{{ $good->consumption_unit }}</strong></td>
+                                            <td><strong class="IRANYekanRegular">{{ $good->consumption_stock }}</strong></td>
+                                            <td><strong class="IRANYekanRegular">{{ $good->consumption_price }}</strong></td>
                                             <td><strong class="IRANYekanRegular">{{ $good->expireDate() }}</strong></td>
                                             <td><strong class="IRANYekanRegular">{{ $good->description }}</strong></td>
                                             <td>

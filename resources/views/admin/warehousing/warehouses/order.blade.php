@@ -19,7 +19,7 @@
                         </div>
                         <h4 class="page-title">
                           <i class="fa fa-cube page-icon"></i>
-                          موجودی انبار   {{ $warehouse->name }}
+                          موجودی حوالات انبار    {{ $warehouse->name }}
                         </h4>
                     </div>
                 </div>
@@ -34,9 +34,9 @@
                                 <div class="col-12 text-right">
 {{--                                    @if(Auth::guard('admin')->user()->can('warehousing.warehouses.create'))--}}
                                     <div class="btn-group" >
-                                        <a href="#change{{ $warehouse->id }}" data-toggle="modal" class="btn btn-primary" title="ایجاد تغییرات جدید">
+                                        <a href="#change{{ $warehouse->id }}" data-toggle="modal" class="btn btn-primary" title="ایجاد حواله جدید">
                                             <i class="fa fa-plus plusiconfont"></i>
-                                            <b class="IRANYekanRegular">ایجاد تغییرات جدید</b>
+                                            <b class="IRANYekanRegular">ایجاد حواله جدید</b>
                                         </a>
 
                                         <!-- Change Modal -->
@@ -44,7 +44,7 @@
                                             <div class="modal-dialog modal-xs">
                                                 <div class="modal-content">
                                                     <div class="modal-header py-3">
-                                                        <h5 class="modal-title IRANYekanRegular" id="newReviewLabel">ایجاد تغییرات انبار</h5>
+                                                        <h5 class="modal-title IRANYekanRegular" id="newReviewLabel">ایجاد حواله جدید</h5>
                                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                             <span aria-hidden="true">&times;</span>
                                                         </button>
@@ -96,19 +96,19 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    @foreach($stocks as $index=>$stock)
+                                    @foreach($orders as $index=>$order)
                                         <tr>
                                             <td><strong class="IRANYekanRegular">{{ ++$index }}</strong></td>
-                                            <td><strong class="IRANYekanRegular">{{ $stock->good->title }}</strong></td>
-                                            <td><strong class="IRANYekanRegular">{{ $stock->good->main_category->title }}</strong></td>
-                                            <td><strong class="IRANYekanRegular">{{ $stock->good->sub_category->title }}</strong></td>
-                                            <td><strong class="IRANYekanRegular">{{ $stock->unit }}</strong></td>
-                                            <td><strong class="IRANYekanRegular">{{ $warehouse->stock }}</strong></td>
+                                            <td><strong class="IRANYekanRegular">{{ $order->good->title }}</strong></td>
+                                            <td><strong class="IRANYekanRegular">{{ $order->good->main_category->title }}</strong></td>
+                                            <td><strong class="IRANYekanRegular">{{ $order->good->sub_category->title }}</strong></td>
+                                            <td><strong class="IRANYekanRegular">{{ $order->unit }}</strong></td>
+                                            <td><strong class="IRANYekanRegular">{{ $order->stock }}</strong></td>
                                         </tr>
                                     @endforeach
                                     </tbody>
                                 </table>
-                                {{ $stocks->render() }}
+                                {{ $orders->render() }}
                             </div>
                         </div>
                     </div>
