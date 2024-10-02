@@ -660,9 +660,9 @@ class NumberController extends Controller
 
         $areas = [];
         if(!is_null(old('area_id'))){
-            $areas =  Area::where('part_id',old('area_id'))->where('status',Status::Active)->orderBy('name','asc')->get();
+            $areas =  Area::where('part_id',old('part_id'))->where('status',Status::Active)->orderBy('name','asc')->get();
         }elseIf(!is_null($address)){
-            $areas =  Area::where('part_id',$address->area_id)->where('status',Status::Active)->orderBy('name','asc')->get();
+            $areas =  Area::where('part_id',$address->part_id)->where('status',Status::Active)->orderBy('name','asc')->get();
         }
 
 
