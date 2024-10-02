@@ -4,7 +4,7 @@ use App\Enums\Status;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class PermissionSeeder extends Seeder
+class   PermissionSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -1121,12 +1121,6 @@ class PermissionSeeder extends Seeder
         ]);
 
         DB::table('permissions')->insert([
-            'name' => 'provinces.edit',
-            'description' => 'ویرایش استان',
-            'status'=> Status::Active
-        ]);
-
-        DB::table('permissions')->insert([
             'name' => 'provinces.cities.index',
             'description' => 'لیست شهرهای استان',
             'status'=> Status::Active
@@ -1145,20 +1139,74 @@ class PermissionSeeder extends Seeder
         ]);
 
         DB::table('permissions')->insert([
+            'name' => 'provinces.cities.delete',
+            'description' => 'حذف شهر',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'provinces.cities.recycle',
+            'description' => 'بازیابی شهر',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
             'name' => 'provinces.cities.parts.index',
-            'description' => 'لیست بخشهای شهر',
+            'description' => 'لیست مناطق شهر',
             'status'=> Status::Active
         ]);
 
         DB::table('permissions')->insert([
             'name' => 'provinces.cities.parts.create',
-            'description' => 'ایجاد بخش جدید',
+            'description' => 'ایجاد منطقه جدید',
             'status'=> Status::Active
         ]);
 
         DB::table('permissions')->insert([
             'name' => 'provinces.cities.parts.edit',
-            'description' => 'ویرایش بخش',
+            'description' => 'ویرایش منطقه',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'provinces.cities.parts.delete',
+            'description' => 'حذف منطقه',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'provinces.cities.parts.recycle',
+            'description' => 'بازیابی منطقه',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'provinces.cities.parts.areas.index',
+            'description' => 'لیست محلات مناطق',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'provinces.cities.parts.areas.create',
+            'description' => 'ایجاد محله جدید',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'provinces.cities.parts.areas.edit',
+            'description' => 'ویرایش محله',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'provinces.cities.parts.areas.delete',
+            'description' => 'حذف محله',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'provinces.cities.parts.areas.recycle',
+            'description' => 'بازیابی محله',
             'status'=> Status::Active
         ]);
 

@@ -1,21 +1,23 @@
 <?php
 
 namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Cviebrock\EloquentSluggable\Sluggable;
-use Illuminate\Database\Eloquent\Model;
 
-class CityPart extends Model
+class Area extends Model
 {
-    protected $table="city_parts";
-    use Sluggable,SoftDeletes;
+    use SoftDeletes,Sluggable;
     public $timestamps = false;
-    protected $fillable = ['city_id','name','slug','status'];
 
-    public function address()
+    protected $fillable = ['part_id','name','slug','status'];
+
+    public function part()
     {
-        return $this->hasMany(Address::class);
+        return $this->belongsTo(CityPart::class);
     }
+
 
     public function sluggable(): array
     {

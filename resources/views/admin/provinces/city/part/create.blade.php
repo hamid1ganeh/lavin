@@ -13,13 +13,13 @@
                 <div class="col-12">
                     <div class="page-title-box">
                         <div class="page-title-right">
-                            <ol class="breadcrumb m-0">
+                            <ol class="breadcrumb m-0 IR">
                                {{ Breadcrumbs::render('provinces.cities.parts.create',$province,$city) }}
                             </ol>
                         </div>
                         <h4 class="page-title">
                             <i class="fas fa-map-marker  page-icon"></i>
-                             ایجاد ناحیه جدید
+                             ایجاد منطقه جدید برای شهر {{ $city->name }}
                         </h4>
                     </div>
                 </div>
@@ -38,8 +38,8 @@
 
                                     <div class="form-group">
                                         <div class="col-sm-12">
-                                            <label for="name" class="control-label IRANYekanRegular">عنوان ناحیه</label>
-                                            <input type="text" class="form-control input" name="name" id="name" placeholder="عنوان ناحیه را وارد کنید" value="{{ old('name')   }}">
+                                            <label for="name" class="control-label IRANYekanRegular">نام منطقه</label>
+                                            <input type="text" class="form-control input" name="name" id="name" placeholder="نام  منطقه را وارد کنید" value="{{ old('name')   }}">
                                             <span class="form-text text-danger erroralarm"> {{ $errors->first('name') }} </span>
                                         </div>
                                     </div>
@@ -48,11 +48,11 @@
                                         <div class="col-12" style="display:inherit;">
                                             <input type="radio" id="active" name="status" value="{{ App\Enums\Status::Active }}" @if(old('status')!=App\Enums\Status::Deactive) checked @endif>
                                             &nbsp;
-                                            <label for="active">فعال</label><br>
+                                            <label for="active" class="IR">فعال</label><br>
                                             &nbsp;&nbsp; &nbsp;
                                             <input type="radio" id="deactive" name="status" value="{{ App\Enums\Status::Deactive }}" @if(old('status')==App\Enums\Status::Deactive) checked @endif>
                                             &nbsp;
-                                            <label for="deactive">غیرفعال</label><br>
+                                            <label for="deactive" class="IR">غیرفعال</label><br>
                                         </div>
                                     </div>
 

@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 use Kyslik\LaravelFilterable\Filterable;
 use Cviebrock\EloquentSluggable\Sluggable;
 use App\Enums\Status;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
 
 /**
  * App\Models\Province
@@ -26,11 +28,11 @@ use App\Enums\Status;
  */
 class Province extends Model
 {
-    use Sluggable;
+    use Sluggable,SoftDeletes   ;
     public $timestamps = false;
 
     protected $fillable = ['name','slug','status'];
- 
+
 
     public function superlatives(){
         return $this->morphMany(Superlative::class, 'superlative');

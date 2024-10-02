@@ -13,7 +13,7 @@
                 <div class="col-12">
                     <div class="page-title-box">
                         <div class="page-title-right">
-                            <ol class="breadcrumb m-0">
+                            <ol class="breadcrumb m-0 IR">
                             {{ Breadcrumbs::render('provinces.cities.index',$province) }}
                             </ol>
                         </div>
@@ -43,7 +43,7 @@
                                     @endif
                                 </div>
                             </div>
- 
+
                             <div class="table-responsive">
                                 <table id="tech-companies-1" class="table table-striped">
                                     <thead>
@@ -72,24 +72,89 @@
                                             </td>
                                             <td>
 
-                                            @if(Auth::guard('admin')->user()->can('provinces.cities.parts.index'))
-                                            <a class="btn  btn-icon" href="{{ route('admin.provinces.cities.parts.index', [$province,$city]) }}" title="نواحی">
-                                                <i class="fas fa-map-marker text-success font-20"></i>
-                                            </a>
-                                            @endif
+                                                @if($city->trashed())
+                                                    @if(Auth::guard('admin')->user()->can('provinces.cities.recycle'))
+                                                    <a class="font18" href="#recycle{{ $city->id }}" data-toggle="modal" title="بازیابی">
+                                                        <i class="fa fa-recycle text-danger"></i>
+                                                    </a>
 
-                                            @if(Auth::guard('admin')->user()->can('provinces.cities.edit'))
-                                              <a class="btn  btn-icon" href="{{ route('admin.provinces.cities.edit',[$province,$city]) }}" title="ویرایش">
-                                                <i class="fa fa-edit text-primary font-20"></i>
-                                              </a>
-                                            @endif
-                                              
+                                                    <!-- Recycle Modal -->
+                                                    <div class="modal fade" id="recycle{{ $city->id }}" tabindex="-1" aria-labelledby="reviewLabel" aria-hidden="true">
+                                                        <div class="modal-dialog modal-xs">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header py-3">
+                                                                    <h5 class="modal-title IRANYekanRegular" id="newReviewLabel">بازیابی شهر</h5>
+                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                        <span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <h5 class="IRANYekanRegular">آیا مطمئن هستید که میخواهید این شهر را بازیابی نمایید؟</h5>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <form action="{{ route('admin.provinces.cities.recycle',[$province,$city]) }}" method="POST" class="d-inline">
+                                                                        @csrf
+                                                                        <button type="submit" title="بازیابی" class="btn btn-info px-8">بازیابی</button>
+                                                                    </form>
+                                                                    <button type="button" class="btn btn-secondary" title="انصراف" data-dismiss="modal">انصراف</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    @endif
+                                                @else
+                                                    @if(Auth::guard('admin')->user()->can('provinces.cities.parts.index'))
+                                                    <a class="btn  btn-icon" href="{{ route('admin.provinces.cities.parts.index', [$province,$city]) }}" title="مناطق">
+                                                        <i class="fas fa-map-marker text-warning font-20"></i>
+                                                    </a>
+                                                    @endif
+
+                                                    @if(Auth::guard('admin')->user()->can('provinces.cities.edit'))
+                                                      <a class="btn  btn-icon" href="{{ route('admin.provinces.cities.edit',[$province,$city]) }}" title="ویرایش">
+                                                        <i class="fa fa-edit text-success font-20"></i>
+                                                      </a>
+                                                    @endif
+
+                                                   @if(Auth::guard('admin')->user()->can('provinces.cities.delete'))
+
+                                                    <a class="font18" href="#remove{{ $city->id }}" data-toggle="modal" title="حذف">
+                                                        <i class="fa fa-trash text-danger font-20"></i>
+                                                    </a>
+
+                                                    <!-- Remove Modal -->
+                                                    <div class="modal fade" id="remove{{ $city->id }}" tabindex="-1" aria-labelledby="reviewLabel" aria-hidden="true">
+                                                        <div class="modal-dialog modal-xs">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header py-3">
+                                                                    <h5 class="modal-title IRANYekanRegular" id="newReviewLabel">حذف شهر</h5>
+                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                        <span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <h5 class="IRANYekanRegular">آیا مطمئن هستید که میخواهید شهر {{ $city->name }} را حذف نمایید؟</h5>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <form action="{{ route('admin.provinces.cities.delete',[$province,$city]) }}" method="POST" class="d-inline">
+                                                                        @csrf
+                                                                        @method('delete')
+                                                                        <button type="submit" title="حذف" class="btn btn-danger px-8">حذف</button>
+                                                                    </form>
+                                                                    <button type="button" class="btn btn-secondary" title="انصراف" data-dismiss="modal">انصراف</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    @endif
+
+                                                @endif
+
                                             </td>
                                          </tr>
                                         @endforeach
                                     </tbody>
                                 </table>
- 
+
                             </div>
                         </div>
                     </div>

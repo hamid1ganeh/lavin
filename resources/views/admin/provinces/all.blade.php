@@ -14,7 +14,7 @@
                     <div class="page-title-box">
                         <div class="page-title-right">
                             <ol class="breadcrumb m-0 IR">
-                               {{ Breadcrumbs::render('provinces') }} 
+                               {{ Breadcrumbs::render('provinces') }}
                             </ol>
                         </div>
                         <h4 class="page-title">
@@ -30,7 +30,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">
- 
+
                             <div class="table-responsive">
                                 <table id="tech-companies-1" class="table table-striped">
                                     <thead>
@@ -59,25 +59,25 @@
                                             </td>
                                             <td>
 
-                                            
+
                                             @if(Auth::guard('admin')->user()->can('provinces.cities.index'))
                                               <a class="btn  btn-icon" href="{{ route('admin.provinces.cities.index', $provance) }}" title="شهرها">
-                                                 <i class="fas fa-map-marker text-success font-20"></i>
+                                                 <i class="fas fa-map-marker text-danger font-20"></i>
                                               </a>
                                               @endif
 
-                                              @if(Auth::guard('admin')->user()->can('provinces.edit'))
-                                              <a class="btn  btn-icon" href="{{ route('admin.provinces.edit', $provance) }}" title="ویرایش">
-                                                <i class="fa fa-edit text-primary font-20"></i>
-                                              </a>
-                                              @endif
-                                              
+{{--                                              @if(Auth::guard('admin')->user()->can('provinces.edit'))--}}
+{{--                                              <a class="btn  btn-icon" href="{{ route('admin.provinces.edit', $provance) }}" title="ویرایش">--}}
+{{--                                                <i class="fa fa-edit text-success font-20"></i>--}}
+{{--                                              </a>--}}
+{{--                                              @endif--}}
+
                                             </td>
                                          </tr>
                                         @endforeach
                                     </tbody>
                                 </table>
- 
+
                             </div>
                         </div>
                     </div>

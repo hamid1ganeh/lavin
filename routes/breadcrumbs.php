@@ -595,27 +595,44 @@ Breadcrumbs::for('provinces.cities.edit', function ($trail,$province,$city) {
 });
 
 
- // داشبورد > استان ها> شهرها >  نواحی
+ // داشبورد > استان ها> شهرها >  مناطق
 Breadcrumbs::for('provinces.cities.parts.index', function ($trail,$province,$city) {
-    $trail->parent('provinces.cities.index', $city);
-    $trail->push('نواحی', route('admin.provinces.cities.parts.index',[$province,$city]));
+    $trail->parent('provinces.cities.index', $province,$city);
+    $trail->push('مناطق', route('admin.provinces.cities.parts.index',[$province,$city]));
 });
 
 
- // داشبورد > استان ها> شهرها >   ایجاد ناحیه جدید
+ // داشبورد > استان ها> شهرها >   ایجاد منطقه جدید
 Breadcrumbs::for('provinces.cities.parts.create', function ($trail,$province,$city) {
-    $trail->parent('provinces.cities.index', $city);
-    $trail->push('ایجاد ناحیه جدید', route('admin.provinces.cities.parts.create',[$province,$city]));
+    $trail->parent('provinces.cities.parts.index', $province,$city);
+    $trail->push('ایجاد منطقه جدید', route('admin.provinces.cities.parts.create',[$province,$city]));
 });
 
 
- // داشبورد > استان ها> شهرها > ویرایش ناحیه
+ // داشبورد > استان ها> شهرها > ویرایش منطقه
 Breadcrumbs::for('provinces.cities.parts.edit', function ($trail,$province,$city,$part) {
-    $trail->parent('provinces.cities.index', $city);
-    $trail->push('ویرایش ناحیه', route('admin.provinces.cities.parts.edit',[$province,$city,$part]));
+    $trail->parent('provinces.cities.parts.index',  $province,$city);
+    $trail->push('ویرایش منطقه', route('admin.provinces.cities.parts.edit',[$province,$city,$part]));
 });
 
 
+// داشبورد > استان ها> شهرها >  مناطق > محلات
+Breadcrumbs::for('provinces.cities.parts.areas.index', function ($trail,$province,$city,$part) {
+    $trail->parent('provinces.cities.parts.index', $province,$city);
+    $trail->push('محلات', route('admin.provinces.cities.parts.areas.index',[$province,$city,$part]));
+});
+
+// داشبورد > استان ها> شهرها >  مناطق > محلات > ایجاد محله جدید
+Breadcrumbs::for('provinces.cities.parts.areas.create', function ($trail,$province,$city,$part) {
+    $trail->parent('provinces.cities.parts.areas.index', $province,$city,$part);
+    $trail->push('ایجاد محله جدید', route('admin.provinces.cities.parts.areas.create',[$province,$city,$part]));
+});
+
+// داشبورد > استان ها> شهرها >  مناطق > محلات > ویرایش محله
+Breadcrumbs::for('provinces.cities.parts.areas.edit', function ($trail,$province,$city,$part,$area) {
+    $trail->parent('provinces.cities.parts.areas.index', $province,$city,$part);
+    $trail->push('ویرایش محله', route('admin.provinces.cities.parts.areas.edit',[$province,$city,$part,$area]));
+});
 
 
 

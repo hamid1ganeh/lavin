@@ -12,14 +12,14 @@
             <div class="row">
                 <div class="col-12">
                     <div class="page-title-box">
-                        <div class="page-title-right">
+                        <div class="page-title-right IR">
                             <ol class="breadcrumb m-0">
                                 {{ Breadcrumbs::render('provinces.cities.parts.edit',$province,$city,$part) }}
                             </ol>
                         </div>
                         <h4 class="page-title">
                             <i class="fas fa-map-marker  page-icon"></i>
-                            ویرایش ناحیه
+                             ویرایش منطقه {{ $part->name  }}  شهر {{ $city->name }}
                         </h4>
                     </div>
                 </div>
@@ -39,8 +39,8 @@
 
                                     <div class="form-group">
                                         <div class="col-sm-12">
-                                            <label for="name" class="control-label IRANYekanRegular">نام استان</label>
-                                            <input type="text" class="form-control input" name="name" id="name" placeholder="عنوان را وارد کنید" value="{{ old('name') ?? $part->name }}">
+                                            <label for="name" class="control-label IRANYekanRegular">نام محله</label>
+                                            <input type="text" class="form-control input" name="name" id="name" placeholder="نام محله را وارد کنید" value="{{ old('name') ?? $part->name }}">
                                             <span class="form-text text-danger erroralarm"> {{ $errors->first('name') }} </span>
                                         </div>
                                     </div>
@@ -49,11 +49,11 @@
                                         <div class="col-md-12" style="display:inherit;">
                                             <input type="radio" id="active" name="status" value="{{ App\Enums\Status::Active }}" @if(old('status')==App\Enums\Status::Active || $part->status==App\Enums\Status::Active) checked @endif>
                                             &nbsp;
-                                            <label for="active">فعال</label><br>
+                                            <label for="active" class="IRANYekanRegular">فعال</label><br>
                                             &nbsp;&nbsp; &nbsp;
                                             <input type="radio" id="deactive" name="status" value="{{ App\Enums\Status::Deactive }}" @if(old('status')==App\Enums\Status::Deactive || $part->status==App\Enums\Status::Deactive) checked @endif>
                                             &nbsp;
-                                            <label for="deactive">غیرفعال</label><br>
+                                            <label for="deactive" class="IRANYekanRegular">غیرفعال</label><br>
                                         </div>
                                     </div>
 

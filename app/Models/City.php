@@ -27,7 +27,7 @@ use Cviebrock\EloquentSluggable\Sluggable;
 class City extends Model
 {
 
-    use Sluggable;
+    use Sluggable,SoftDeletes;
     public $timestamps = false;
 
     protected $fillable = ['province_id','name','slug','status'];

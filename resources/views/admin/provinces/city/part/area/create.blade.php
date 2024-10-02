@@ -14,12 +14,12 @@
                     <div class="page-title-box">
                         <div class="page-title-right">
                             <ol class="breadcrumb m-0 IR">
-                                {{ Breadcrumbs::render('provinces.cities.create',$province) }}
+                                {{ Breadcrumbs::render('provinces.cities.parts.areas.create',$province,$city,$part) }}
                             </ol>
                         </div>
                         <h4 class="page-title">
-                             <i class="fas fa-layer-group page-icon"></i>
-                             ایجاد شهر جدید
+                            <i class="fas fa-map-marker  page-icon"></i>
+                            ایجاد محله جدید برای  {{ $part->name }}  شهر  {{ $city->name }}
                         </h4>
                     </div>
                 </div>
@@ -33,13 +33,13 @@
 
                             <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" style="margin:auto">
 
-                                <form class="form-horizontal" action="{{ route('admin.provinces.cities.store',$province) }}" method="post">
+                                <form class="form-horizontal" action="{{ route('admin.provinces.cities.parts.areas.store',[$province,$city,$part]) }}" method="post">
                                     {{ csrf_field() }}
 
                                     <div class="form-group">
                                         <div class="col-sm-12">
-                                            <label for="name" class="control-label IRANYekanRegular">نام شهر</label>
-                                            <input type="text" class="form-control input" name="name" id="name" placeholder="نام شهر را وارد کنید" value="{{ old('name')   }}">
+                                            <label for="name" class="control-label IRANYekanRegular">نام محله</label>
+                                            <input type="text" class="form-control input" name="name" id="name" placeholder="نام محله را وارد کنید" value="{{ old('name')   }}">
                                             <span class="form-text text-danger erroralarm"> {{ $errors->first('name') }} </span>
                                         </div>
                                     </div>
@@ -48,14 +48,13 @@
                                         <div class="col-12" style="display:inherit;">
                                             <input type="radio" id="active" name="status" value="{{ App\Enums\Status::Active }}" @if(old('status')!=App\Enums\Status::Deactive) checked @endif>
                                             &nbsp;
-                                            <label for="active" class="IRANYekanRegular">فعال</label><br>
+                                            <label for="active" class="IR">فعال</label><br>
                                             &nbsp;&nbsp; &nbsp;
                                             <input type="radio" id="deactive" name="status" value="{{ App\Enums\Status::Deactive }}" @if(old('status')==App\Enums\Status::Deactive) checked @endif>
                                             &nbsp;
-                                            <label for="deactive" class="IRANYekanRegular">غیرفعال</label><br>
+                                            <label for="deactive" class="IR">غیرفعال</label><br>
                                         </div>
                                     </div>
-
 
                                     <div class="form-group mt-2">
                                         <div class="col-sm-12">

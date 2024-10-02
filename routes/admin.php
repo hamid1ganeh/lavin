@@ -545,9 +545,9 @@ Route::group(['middleware' => 'auth.admin'], function () {
   });
 
   Route::prefix('provinces')->name('provinces.')->group(function () {
-    Route::get('/', 'ProvanceController@index')->name('index');
-    Route::get('{provance}/edit', 'ProvanceController@edit')->name('edit');
-    Route::patch('{provance}/update', 'ProvanceController@update')->name('update');
+    Route::get('/', 'ProvinceController@index')->name('index');
+//    Route::get('{provance}/edit', 'ProvanceController@edit')->name('edit');
+//    Route::patch('{provance}/update', 'ProvanceController@update')->name('update');
 
     Route::prefix('{province}/cities')->name('cities.')->group(function () {
       Route::get('/', 'CityController@index')->name('index');
@@ -555,8 +555,8 @@ Route::group(['middleware' => 'auth.admin'], function () {
       Route::post('/store', 'CityController@store')->name('store');
       Route::get('{city}/edit', 'CityController@edit')->name('edit');
       Route::patch('{city}/update', 'CityController@update')->name('update');
-      // Route::delete('{city}/remove', 'CityController@remove')->name('remove');
-      // Route::post('/destroy/{city}', 'CityController@destroy')->name('destroy');
+      Route::delete('{city}/delete', 'CityController@delete')->name('delete');
+      Route::post('/recycle/{city}', 'CityController@recycle')->name('recycle');
 
       Route::prefix('{city}/parts')->name('parts.')->group(function () {
         Route::get('/', 'PartController@index')->name('index');
@@ -564,6 +564,19 @@ Route::group(['middleware' => 'auth.admin'], function () {
         Route::post('/store', 'PartController@store')->name('store');
         Route::get('{part}/edit', 'PartController@edit')->name('edit');
         Route::patch('{part}/update', 'PartController@update')->name('update');
+          Route::delete('{part}/delete', 'PartController@delete')->name('delete');
+          Route::post('/recycle/{part}', 'PartController@recycle')->name('recycle');
+
+          Route::prefix('{part}/areas')->name('areas.')->group(function () {
+              Route::get('/', 'AreaController@index')->name('index');
+              Route::get('/create', 'AreaController@create')->name('create');
+              Route::post('/store', 'AreaController@store')->name('store');
+              Route::get('{area}/edit', 'AreaController@edit')->name('edit');
+              Route::patch('{area}/update', 'AreaController@update')->name('update');
+              Route::delete('delete/{area}', 'AreaController@destroy')->name('delete');
+              Route::patch('{area}/recycle', 'AreaController@recycle')->name('recycle');
+
+          });
 
     });
 

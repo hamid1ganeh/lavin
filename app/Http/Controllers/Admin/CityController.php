@@ -11,18 +11,18 @@ use Cviebrock\EloquentSluggable\Services\SlugService;
 use Validator;
 class CityController extends Controller
 {
-     
+
     public function index(Province $province)
     {
         //اجازه دسترسی
         config(['auth.defaults.guard' => 'admin']);
         $this->authorize('provinces.cities.index');
 
-         $cities = City::where('province_id',$province->id)->orderBy('name','asc')->get();
+         $cities = City::where('province_id',$province->id)->withTrashed()->orderBy('name','asc')->get();
          return view('admin.provinces.city.all',compact('cities','province'));
     }
 
-    
+
     public function create(Province $province)
     {
         //اجازه دسترسی
@@ -32,7 +32,7 @@ class CityController extends Controller
         return view('admin.provinces.city.create',compact('province'));
     }
 
-   
+
     public function store(Province $province,Request $request)
     {
         //اجازه دسترسی
@@ -48,7 +48,7 @@ class CityController extends Controller
         {
             Validator::extend('unique_validator',function(){return false;});
         }
-        
+
         $request->validate(
         [
             'name' => ['required','max:255','unique_validator'],
@@ -68,19 +68,12 @@ class CityController extends Controller
                 'status'=>$request->status,
             ]);
 
-            toast('شهر جدید ثبت شد.','success')->position('bottom-end');        
+            toast('شهر جدید ثبت شد.','success')->position('bottom-end');
         }
 
         return redirect(route('admin.provinces.cities.index',$province));
     }
 
-   
-    public function show($id)
-    {
-        //
-    }
-
-   
     public function edit(Province $province,City $city)
     {
         //اجازه دسترسی
@@ -90,7 +83,7 @@ class CityController extends Controller
         return view('admin.provinces.city.edit',compact('province','city'));
     }
 
-    
+
     public function update(Province $province,City $city,Request $request)
     {
         //اجازه دسترسی
@@ -106,7 +99,7 @@ class CityController extends Controller
         {
             Validator::extend('unique_validator',function(){return false;});
         }
-        
+
         $request->validate(
         [
             'name' => ['required','max:255','unique_validator'],
@@ -125,14 +118,28 @@ class CityController extends Controller
                 'status'=>$request->status,
             ]);
 
-            toast('بروزرسانی انجام شد.','success')->position('bottom-end');        
+            toast('بروزرسانی انجام شد.','success')->position('bottom-end');
         }
 
         return redirect(route('admin.provinces.cities.index',$province));
     }
- 
-    public function destroy($id)
+
+    public function delete(Province $province,City $city)
     {
-        //
+        $city->delete();
+        toast('شهر مورد نظر حذف شد.','error')->position('bottom-end');
+        return back();
+    }
+
+    public function recycle(Province $province,$id)
+    {
+        //اجازه دسترسی
+//        config(['auth.defaults.guard' => 'admin']);
+//        $this->authorize('admins.destroy');
+
+        $area = City::withTrashed()->find($id);
+        $area->restore();
+        toast('شهر مورد نظر بازیابی شد.','error')->position('bottom-end');
+        return back();
     }
 }

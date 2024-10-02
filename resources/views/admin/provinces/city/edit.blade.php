@@ -13,7 +13,7 @@
                 <div class="col-12">
                     <div class="page-title-box">
                         <div class="page-title-right">
-                            <ol class="breadcrumb m-0">
+                            <ol class="breadcrumb m-0 IR">
                             {{ Breadcrumbs::render('provinces.cities.edit',$province,$city) }}
                             </ol>
                         </div>

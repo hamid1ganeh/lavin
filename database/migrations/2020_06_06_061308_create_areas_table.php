@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCitiesTable extends Migration
+class CreateAreasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,17 +13,17 @@ class CreateCitiesTable extends Migration
      */
     public function up()
     {
-        Schema::create('cities', function (Blueprint $table) {
+        Schema::create('areas', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('province_id')->nullable();
+            $table->unsignedBigInteger('part_id')->nullable();
             $table->string('name',255);
             $table->string('slug',255);
             $table->tinyInteger('status')->default(1);
             $table->softDeletes();
 
-            $table->foreign('province_id')
+            $table->foreign('part_id')
                 ->references('id')
-                ->on('provinces')
+                ->on('city_parts')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
         });
@@ -36,12 +36,6 @@ class CreateCitiesTable extends Migration
      */
     public function down()
     {
-        Schema::table('cities', function (Blueprint $table) {
-            if(Schema::hasColumn('cities', 'deleted_at')) {
-                $table->dropSoftDeletes();
-            }
-        });
-
-        Schema::dropIfExists('cities');
+        Schema::dropIfExists('areas');
     }
 }

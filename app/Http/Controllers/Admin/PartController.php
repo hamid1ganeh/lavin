@@ -12,18 +12,18 @@ use Validator;
 use Cviebrock\EloquentSluggable\Services\SlugService;
 
 class PartController extends Controller
-{ 
+{
     public function index(Province $province,City $city)
     {
         //اجازه دسترسی
         config(['auth.defaults.guard' => 'admin']);
         $this->authorize('provinces.cities.parts.index');
 
-         $parts = CityPart::where('city_id',$city->id)->orderBy('name','asc')->get();
+         $parts = CityPart::where('city_id',$city->id)->withTrashed()->orderBy('name','asc')->get();
          return view('admin.provinces.city.part.all',compact('parts','province','city'));
     }
 
- 
+
     public function create(Province $province,City $city)
     {
         //اجازه دسترسی
@@ -32,7 +32,7 @@ class PartController extends Controller
 
         return view('admin.provinces.city.part.create',compact('province','city'));
     }
-   
+
     public function store(Province $province,City $city,Request $request)
     {
         //اجازه دسترسی
@@ -48,7 +48,7 @@ class PartController extends Controller
         {
             Validator::extend('unique_validator',function(){return false;});
         }
-        
+
         $request->validate(
         [
             'name' => ['required','max:255','unique_validator'],
@@ -68,19 +68,14 @@ class PartController extends Controller
                 'status'=>$request->status,
             ]);
 
-            toast('ناحیه جدید ثبت شد.','success')->position('bottom-end');        
+            toast('ناحیه جدید ثبت شد.','success')->position('bottom-end');
         }
 
         return redirect(route('admin.provinces.cities.parts.index',[$province,$city]));
     }
 
-   
-    public function show($id)
-    {
-        //
-    }
 
-  
+
     public function edit(Province $province,City $city,CityPart $part)
     {
         //اجازه دسترسی
@@ -90,7 +85,7 @@ class PartController extends Controller
         return view('admin.provinces.city.part.edit',compact('province','city','part'));
     }
 
-  
+
     public function update(Province $province,City $city,CityPart $part,Request $request)
     {
         //اجازه دسترسی
@@ -106,7 +101,7 @@ class PartController extends Controller
         {
             Validator::extend('unique_validator',function(){return false;});
         }
-        
+
         $request->validate(
         [
             'name' => ['required','max:255','unique_validator'],
@@ -126,15 +121,32 @@ class PartController extends Controller
                 'status'=>$request->status,
             ]);
 
-            toast('ناحیه جدید ثبت شد.','success')->position('bottom-end');        
+            toast('ناحیه جدید ثبت شد.','success')->position('bottom-end');
         }
 
         return redirect(route('admin.provinces.cities.parts.index',[$province,$city]));
     }
 
-    
-    public function destroy($id)
+    public function delete(Province $province,City $city,CityPart $part)
     {
-        //
+        //اجازه دسترسی
+        config(['auth.defaults.guard' => 'admin']);
+        $this->authorize('provinces.cities.parts.delete');
+
+        $part->delete();
+        toast('منطقه مورد نظر حذف شد.','error')->position('bottom-end');
+        return back();
+    }
+
+    public function recycle(Province $province,City $city,$id)
+    {
+        //اجازه دسترسی
+        config(['auth.defaults.guard' => 'admin']);
+        $this->authorize('provinces.cities.parts.recycle');
+
+        $part = CityPart::withTrashed()->find($id);
+        $part->restore();
+        toast('منطقه مورد نظر بازیابی شد.','error')->position('bottom-end');
+        return back();
     }
 }
