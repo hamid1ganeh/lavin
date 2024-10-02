@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Enums\ReviewGroupType;
 use App\Http\Controllers\Controller;
+use App\Models\Area;
 use App\Models\Festival;
 use App\Models\Job;
 use App\Models\Province;
@@ -36,6 +37,7 @@ use Auth;
 use Morilog\Jalali\Jalalian;
 use Validator;
 use Illuminate\Support\Facades\DB;
+use App\Models\CityPart;
 
 class NumberController extends Controller
 {
@@ -649,8 +651,22 @@ class NumberController extends Controller
         $jobs = Job::where('status',Status::Active)->orderBy('title','asc')->get();
         $address = UserAddress::where('user_id',$user->id)->first();
         $info = UserInfo::where('user_id',$user->id)->first();
+        $parts = [];
+        if(!is_null(old('part_id'))){
+            $parts =  CityPart::where('city_id',old('city_id'))->where('status',Status::Active)->orderBy('name','asc')->get();
+        }elseIf(!is_null($address)){
+            $parts =  CityPart::where('city_id',$address->city_id)->where('status',Status::Active)->orderBy('name','asc')->get();
+        }
 
-      return view('admin.numbers.info',compact('number','user','provinces','address','jobs','info'));
+        $areas = [];
+        if(!is_null(old('area_id'))){
+            $areas =  Area::where('part_id',old('area_id'))->where('status',Status::Active)->orderBy('name','asc')->get();
+        }elseIf(!is_null($address)){
+            $areas =  Area::where('part_id',$address->area_id)->where('status',Status::Active)->orderBy('name','asc')->get();
+        }
+
+
+      return view('admin.numbers.info',compact('number','user','provinces','address','jobs','info','parts','areas'));
     }
 
     public function updateInfo(Number $number,Request $request)
@@ -674,19 +690,24 @@ class NumberController extends Controller
                 'province_id'=>'nullable|exists:provinces,id',
                 'city_id'=>'nullable|exists:cities,id',
                 'part_id'=>'nullable|exists:city_parts,id',
+                'area_id'=>'nullable|exists:areas,id',
                 'address'=>'nullable|max:255',
                 'postalcode'=>'nullable|max:10|min:10|regex:/^[0-9]+$/',
             ]
             ,
             [
-                'email.required'=>'* آدرس ایمیل است.',
-                'email.max'=>'* حداکثر طول آدرس ایمیل 255 کارکتر',
-                'email.email'=>'* آدرس ایمیل معتبر نیست.',
-                'nationcode.required'=> "* کد ملی  را وارد کنید.",
-                'address.max'=>'* حداکثر طول آدرس 255 کارکتر',
-                'postalcode.max'=>'* کدپستی 10 رقمی است.',
-                'postalcode.min'=>'* کدپستی 10 رقمی است.',
-                'postalcode.regex'=>'* کدپستی معتبر نیست.'
+                'firstname.required'=>' نام الزامی است.',
+                'firstname.max'=>'حداکثر طول  نام 255 کارکتر',
+                'lastname.required'=>' نام خانوادگی الزامی است.',
+                'lastname.max'=>'حداکثر طول نام خانوادکی 255 کارکتر',
+                'email.required'=>' آدرس ایمیل الزامی است.',
+                'email.max'=>'حداکثر طول آدرس ایمیل 255 کارکتر',
+                'email.email'=>'آدرس ایمیل معتبر نیست.',
+                'nationcode.required'=> " کد ملی  را وارد کنید.",
+                'address.max'=>' حداکثر طول آدرس 255 کارکتر',
+                'postalcode.max'=>'کدپستی 10 رقمی است.',
+                'postalcode.min'=>' کدپستی 10 رقمی است.',
+                'postalcode.regex'=>' کدپستی معتبر نیست.'
             ]);
 
 
@@ -751,6 +772,7 @@ class NumberController extends Controller
             $address->province_id = $request->province_id;
             $address->city_id = $request->city_id;
             $address->part_id = $request->part_id;
+            $address->area_id = $request->area_id;
             $address->postalcode = $request->postalcode;
             $address->address = $request->address;
             $address->save();
@@ -760,6 +782,7 @@ class NumberController extends Controller
             $address->province_id = $request->province_id;
             $address->city_id = $request->city_id;
             $address->part_id = $request->part_id;
+            $address->area_id = $request->area_id;
             $address->postalcode = $request->postalcode;
             $address->address = $request->address;
             $address->save();

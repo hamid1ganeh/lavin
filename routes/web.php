@@ -84,6 +84,7 @@ Route::get('{doctor}/doctor','HomeController@doctor')->name('doctor');
 Route::get('/faq','HomeController@faq')->name('faq');
 Route::get('/fetchcities', 'FetchController@fetchcities')->name('fetchcities');
 Route::get('/fetchparts', 'FetchController@fetchparts')->name('fetchparts');
+Route::get('/fetchareas', 'FetchController@fetchareas')->name('fetchareas');
 Route::get('/gallery','PageController@gallery')->name('gallery');
 Route::post('/subcat','ProductController@subcat')->name('subcat');
 

@@ -19,6 +19,7 @@ class CreateUserAddressesTable extends Migration
             $table->unsignedBigInteger('province_id')->nullable();
             $table->unsignedBigInteger('city_id')->nullable();
             $table->unsignedBigInteger('part_id')->nullable();
+            $table->unsignedBigInteger('area_id')->nullable();
             $table->string('address')->nullable();
             $table->string('postalcode',10)->nullable();
 
@@ -35,6 +36,9 @@ class CreateUserAddressesTable extends Migration
 
             $table->foreign('part_id')->references('id')->on('city_parts')
             ->onDelete('cascade')->onUpdate('cascade');
+
+            $table->foreign('area_id')->references('id')->on('areas')
+                ->onDelete('cascade')->onUpdate('cascade');
 
         });
     }
