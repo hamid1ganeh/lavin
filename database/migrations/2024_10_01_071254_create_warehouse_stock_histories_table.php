@@ -21,7 +21,7 @@ class CreateWarehouseStockHistoriesTable extends Migration
             $table->char('event',1);
             $table->string('unit')->default(Unit::count);
             $table->unsignedDouble('value')->default(0);
-            $table->unsignedDouble('stock')->default(0);
+            $table->unsignedDouble('count')->default(0);
             $table->timestamps();
 
             //references

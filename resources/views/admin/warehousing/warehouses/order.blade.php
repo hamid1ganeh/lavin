@@ -78,6 +78,20 @@
                                                                 </div>
                                                             </div>
 
+                                                            <div class="form-group row">
+                                                                <div class="col-12 col-md-6">
+                                                                    <label for="count" class="control-label IRANYekanRegular">تعداد</label>
+                                                                    <input type="text" class="form-control input text-right" name="count" id="count" placeholder="تعداد مورد نظر را وارد کنید" value="{{ old('count')  }}">
+                                                                    <span class="form-text text-danger erroralarm"> {{ $errors->first('count') }} </span>
+                                                                </div>
+
+                                                                <div class="col-12 col-md-6">
+                                                                    <label for="value" class="control-label IRANYekanRegular">واحد</label>
+                                                                    <input type="text" class="form-control input text-right" name="value" id="value" placeholder=" حجم واحد مورد نظر را وارد کنید" value="{{ old('value')  }}">
+                                                                    <span class="form-text text-danger erroralarm"> {{ $errors->first('value') }} </span>
+                                                                </div>
+                                                            </div>
+
 
 
                                                         </form>

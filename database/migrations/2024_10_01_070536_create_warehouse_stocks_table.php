@@ -17,7 +17,9 @@ class CreateWarehouseStocksTable extends Migration
             $table->id();
             $table->unsignedBigInteger('warehouse_id');
             $table->unsignedBigInteger('goods_id');
-            $table->unsignedBigInteger('stock');
+            $table->unsignedBigInteger('count');
+            $table->unsignedBigInteger('value');
+            $table->string('unit');
             $table->timestamps();
 
             //references
