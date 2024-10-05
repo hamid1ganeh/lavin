@@ -52,6 +52,19 @@
                                                     <div class="modal-body text-left">
                                                         <form action=""  method="POST" class="d-inline">
                                                             @csrf
+
+                                                            <div class="row">
+                                                                <div class="col-12" style="display:inherit;">
+                                                                    <input type="radio" id="increase" name="type" value="increase" @if(old('type')!= 'increase') checked @endif>
+                                                                    &nbsp;
+                                                                    <label for="active" class="IRANYekanRegular">افزودن</label><br>
+                                                                    &nbsp;&nbsp; &nbsp;
+                                                                    <input type="radio" id="decrease" name="type" value="decrease" @if(old('type')== 'decrease') checked @endif>
+                                                                    &nbsp;
+                                                                    <label for="deactive" class="IRANYekanRegular">مرجوعی</label><br>
+                                                                </div>
+                                                            </div>
+
                                                             <div class="form-group row">
                                                                 <div class="col-12">
                                                                     <label for="good" class="col-form-label IRANYekanRegular">کالا</label>
@@ -64,6 +77,8 @@
                                                                     <span class="form-text text-danger erroralarm"> {{ $errors->first('good') }} </span>
                                                                 </div>
                                                             </div>
+
+
 
                                                         </form>
                                                      </div>

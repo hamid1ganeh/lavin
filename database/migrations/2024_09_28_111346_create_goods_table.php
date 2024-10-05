@@ -18,15 +18,17 @@ class CreateGoodsTable extends Migration
         Schema::create('goods', function (Blueprint $table) {
             $table->id();
             $table->string('title')->unique();
+            $table->string('brand');
+            $table->string('code')->nullable();
             $table->unsignedBigInteger('main_cat_id');
             $table->unsignedBigInteger('sub_cat_id')->nullable();
-            $table->string('code')->nullable();
-            $table->string('unit')->default(Unit::count);
-            $table->unsignedDouble('stock')->default(0);
+            $table->string('unit')->default(Unit::cc);
+            $table->unsignedDouble('value_per_count')->default(0);
+            $table->unsignedDouble('count_per_box')->default(0);
+            $table->unsignedDouble('box_stock')->default(0);
+            $table->unsignedDouble('count_stock')->default(0);
+            $table->unsignedDouble('unit_stock')->default(0);
             $table->unsignedBigInteger('price')->default(0);
-            $table->string('consumption_unit')->default(Unit::count);
-            $table->unsignedDouble('consumption_stock')->default(0);
-            $table->unsignedBigInteger('consumption_price')->default(0);
             $table->string('description')->nullable();
             $table->date('expire_date')->nullable();
             $table->unsignedSmallInteger('status')->default(Status::Active);

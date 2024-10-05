@@ -49,15 +49,17 @@
                                     <tr>
                                         <th><b class="IRANYekanRegular">ردیف</b></th>
                                         <th><b class="IRANYekanRegular">عنوان</b></th>
+                                        <th><b class="IRANYekanRegular">برند</b></th>
+                                        <th><b class="IRANYekanRegular">کد</b></th>
                                         <th><b class="IRANYekanRegular">دسته اصلی</b></th>
                                         <th><b class="IRANYekanRegular">دسته فرعی</b></th>
-                                        <th><b class="IRANYekanRegular">کد</b></th>
-                                        <th><b class="IRANYekanRegular">واحد</b></th>
-                                        <th><b class="IRANYekanRegular">موجودی</b></th>
-                                        <th><b class="IRANYekanRegular">قیمت</b></th>
                                         <th><b class="IRANYekanRegular">واحد مصرفی</b></th>
-                                        <th><b class="IRANYekanRegular">موجود مصرفی</b></th>
-                                        <th><b class="IRANYekanRegular">قیمت مصرفی</b></th>
+                                        <th><b class="IRANYekanRegular">حجم واحد در هر عدد</b></th>
+                                        <th><b class="IRANYekanRegular">تعداد در هر جبعه</b></th>
+                                        <th><b class="IRANYekanRegular">موجودی جعبه</b></th>
+                                        <th><b class="IRANYekanRegular">موجودی تعداد</b></th>
+                                        <th><b class="IRANYekanRegular">موجودی واحد</b></th>
+                                        <th><b class="IRANYekanRegular">قیمت واحد مصرفی</b></th>
                                         <th><b class="IRANYekanRegular">تاریخ انقضاء</b></th>
                                         <th><b class="IRANYekanRegular">توضیحات</b></th>
                                         <th><b class="IRANYekanRegular">وضعیت</b></th>
@@ -69,15 +71,17 @@
                                         <tr>
                                             <td><strong class="IRANYekanRegular">{{ ++$index }}</strong></td>
                                             <td><strong class="IRANYekanRegular">{{ $good->title }}</strong></td>
+                                            <td><strong class="IRANYekanRegular">{{ $good->brand }}</strong></td>
+                                            <td><strong class="IRANYekanRegular">{{ $good->code }}</strong></td>
                                             <td><strong class="IRANYekanRegular">{{ $good->main_category->title ?? '' }}</strong></td>
                                             <td><strong class="IRANYekanRegular">{{ $good->sub_category->title ?? '' }}</strong></td>
-                                            <td><strong class="IRANYekanRegular">{{ $good->code  }}</strong></td>
                                             <td><strong class="IRANYekanRegular">{{ $good->unit }}</strong></td>
-                                            <td><strong class="IRANYekanRegular">{{ $good->stock }}</strong></td>
+                                            <td><strong class="IRANYekanRegular">{{ $good->value_per_count }}</strong></td>
+                                            <td><strong class="IRANYekanRegular">{{ $good->count_per_box }}</strong></td>
+                                            <td><strong class="IRANYekanRegular">{{ $good->box_stock }}</strong></td>
+                                            <td><strong class="IRANYekanRegular">{{ $good->count_stock }}</strong></td>
+                                            <td><strong class="IRANYekanRegular">{{ $good->unit_stock }}</strong></td>
                                             <td><strong class="IRANYekanRegular">{{ $good->price }}</strong></td>
-                                            <td><strong class="IRANYekanRegular">{{ $good->consumption_unit }}</strong></td>
-                                            <td><strong class="IRANYekanRegular">{{ $good->consumption_stock }}</strong></td>
-                                            <td><strong class="IRANYekanRegular">{{ $good->consumption_price }}</strong></td>
                                             <td><strong class="IRANYekanRegular">{{ $good->expireDate() }}</strong></td>
                                             <td><strong class="IRANYekanRegular">{{ $good->description }}</strong></td>
                                             <td>

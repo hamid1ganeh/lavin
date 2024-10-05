@@ -48,12 +48,17 @@
                                      @csrf
 
                                     <div class="form-group row">
-                                        <div class="col-12 col-md-6">
+                                        <div class="col-12 col-md-4">
                                             <label for="title" class="control-label IRANYekanRegular">عنوان</label>
                                             <input type="text" class="form-control input" name="title" id="title" placeholder="عنوان کالا را وارد کنید" value="{{ old('title')  }}">
                                             <span class="form-text text-danger erroralarm"> {{ $errors->first('title') }} </span>
                                         </div>
-                                        <div class="col-12 col-md-6">
+                                        <div class="col-12 col-md-4">
+                                            <label for="brand" class="control-label IRANYekanRegular">برند</label>
+                                            <input type="text" class="form-control input" name="brand" id="brand" placeholder="برند کالا را وارد کنید" value="{{ old('brand')  }}">
+                                            <span class="form-text text-danger erroralarm"> {{ $errors->first('brand') }} </span>
+                                        </div>
+                                        <div class="col-12 col-md-4">
                                             <label for="code" class="control-label IRANYekanRegular">کد کالا</label>
                                             <input type="text" class="form-control input text-right" name="code" id="code" placeholder="کد کالا را وارد کنید" value="{{ old('code')  }}">
                                             <span class="form-text text-danger erroralarm"> {{ $errors->first('code') }} </span>
@@ -86,49 +91,17 @@
                                         </div>
                                     </div>
 
-                                    <div class="form-group row">
-                                        <div class="col-12 col-md-4">
-                                            <label for="unit" class="control-label IRANYekanRegular">واحد</label>
-                                            <select name="unit" id="unit"  class="form-control  IRANYekanRegular" >
-                                                <option value="{{ App\Enums\Unit::mg }}" {{ App\Enums\Unit::mg== old('unit')?'selected':'' }}>{{ App\Enums\Unit::mg }}</option>
-                                                <option value="{{ App\Enums\Unit::gr }}" {{ App\Enums\Unit::gr== old('unit')?'selected':'' }}>{{ App\Enums\Unit::gr }}</option>
-                                                <option value="{{ App\Enums\Unit::kg }}" {{ App\Enums\Unit::kg== old('unit')?'selected':'' }}>{{ App\Enums\Unit::kg }}</option>
-                                                <option value="{{ App\Enums\Unit::t }}" {{ App\Enums\Unit::t== old('unit')?'selected':'' }}>{{ App\Enums\Unit::t }}</option>
-                                                <option value="{{ App\Enums\Unit::mm }}" {{ App\Enums\Unit::mm== old('unit')?'selected':'' }}>{{ App\Enums\Unit::mm }}</option>
-                                                <option value="{{ App\Enums\Unit::cc }}" {{ App\Enums\Unit::cc== old('unit')?'selected':'' }}>{{ App\Enums\Unit::cc }}</option>
-                                                <option value="{{ App\Enums\Unit::cm }}" {{ App\Enums\Unit::cm== old('unit')?'selected':'' }}>{{ App\Enums\Unit::cm }}</option>
-                                                <option value="{{ App\Enums\Unit::m }}" {{ App\Enums\Unit::m== old('unit')?'selected':'' }}>{{ App\Enums\Unit::m }}</option>
-                                                <option value="{{ App\Enums\Unit::box }}" {{ App\Enums\Unit::box== old('unit')?'selected':'' }}>{{ App\Enums\Unit::box }}</option>
-                                                <option value="{{ App\Enums\Unit::per }}" {{ App\Enums\Unit::per== old('unit')?'selected':'' }}>{{ App\Enums\Unit::per }}</option>
-                                                <option value="{{ App\Enums\Unit::ma }}" {{ App\Enums\Unit::ma== old('unit')?'selected':'' }}>{{ App\Enums\Unit::ma }}</option>
-                                                <option value="{{ App\Enums\Unit::a }}" {{ App\Enums\Unit::a== old('unit')?'selected':'' }}>{{ App\Enums\Unit::a }}</option>
-                                                <option value="{{ App\Enums\Unit::v }}" {{ App\Enums\Unit::v== old('unit')?'selected':'' }}>{{ App\Enums\Unit::v }}</option>
-                                                <option value="{{ App\Enums\Unit::Shut }}" {{ App\Enums\Unit::Shut== old('unit')?'selected':'' }}>{{ App\Enums\Unit::Shut }}</option>
-                                            </select>
-                                            <span class="form-text text-danger erroralarm"> {{ $errors->first('unit') }} </span>
-                                        </div>
-                                        <div class="col-12 col-md-4">
-                                            <label for="stock" class="control-label IRANYekanRegular">موجودی</label>
-                                            <input type="text" class="form-control input text-right" name="stock" id=stock" placeholder="موجودی کل کالا را وارد کنید" value="{{ old('stock')  }}">
-                                            <span class="form-text text-danger erroralarm"> {{ $errors->first('stock') }} </span>
-                                        </div>
-                                        <div class="col-12 col-md-4">
-                                            <label for="price" class="control-label IRANYekanRegular">قیمت (تومان)</label>
-                                            <input type="text" class="form-control input text-right" name="price" id="price" placeholder="قیمت کالا را وارد کنید" value="{{ old('price')  }}">
-                                            <span class="form-text text-danger erroralarm"> {{ $errors->first('price') }} </span>
-                                        </div>
-                                    </div>
 
                                     <div class="form-group row">
-                                        <div class="col-12 col-md-4">
-                                            <label for="consumption_unit" class="control-label IRANYekanRegular">واحد مصرفی</label>
-                                            <select name="consumption_unit" id="consumption_unit"  class="form-control  IRANYekanRegular" >
+                                        <div class="col-12 col-md-2">
+                                            <label for="unit" class="control-label IRANYekanRegular">واحد مصرفی</label>
+                                            <select name="unit" id="unit"  class="form-control  IRANYekanRegular" >
+                                                <option value="{{ App\Enums\Unit::cc }}" {{ App\Enums\Unit::cc== old('unit')?'selected':'' }}>{{ App\Enums\Unit::cc }}</option>
                                                 <option value="{{ App\Enums\Unit::mg }}" {{ App\Enums\Unit::mg== old('unit')?'selected':'' }}>{{ App\Enums\Unit::mg }}</option>
                                                 <option value="{{ App\Enums\Unit::gr }}" {{ App\Enums\Unit::gr== old('unit')?'selected':'' }}>{{ App\Enums\Unit::gr }}</option>
                                                 <option value="{{ App\Enums\Unit::kg }}" {{ App\Enums\Unit::kg== old('unit')?'selected':'' }}>{{ App\Enums\Unit::kg }}</option>
                                                 <option value="{{ App\Enums\Unit::t }}" {{ App\Enums\Unit::t== old('unit')?'selected':'' }}>{{ App\Enums\Unit::t }}</option>
                                                 <option value="{{ App\Enums\Unit::mm }}" {{ App\Enums\Unit::mm== old('unit')?'selected':'' }}>{{ App\Enums\Unit::mm }}</option>
-                                                <option value="{{ App\Enums\Unit::cc }}" {{ App\Enums\Unit::cc== old('unit')?'selected':'' }}>{{ App\Enums\Unit::cc }}</option>
                                                 <option value="{{ App\Enums\Unit::cm }}" {{ App\Enums\Unit::cm== old('unit')?'selected':'' }}>{{ App\Enums\Unit::cm }}</option>
                                                 <option value="{{ App\Enums\Unit::m }}" {{ App\Enums\Unit::m== old('unit')?'selected':'' }}>{{ App\Enums\Unit::m }}</option>
                                                 <option value="{{ App\Enums\Unit::box }}" {{ App\Enums\Unit::box== old('unit')?'selected':'' }}>{{ App\Enums\Unit::box }}</option>
@@ -140,27 +113,49 @@
                                             </select>
                                             <span class="form-text text-danger erroralarm"> {{ $errors->first('consumption_unit') }} </span>
                                         </div>
-                                        <div class="col-12 col-md-4">
-                                            <label for="consumption_stock" class="control-label IRANYekanRegular">موجودی مصرفی</label>
-                                            <input type="text" class="form-control input text-right" name="consumption_stock" id=consumption_stock" placeholder="موجودی مصرفی کالا را وارد کنید" value="{{ old('stock')  }}">
-                                            <span class="form-text text-danger erroralarm"> {{ $errors->first('consumption_stock') }} </span>
+                                        <div class="col-12 col-md-2">
+                                            <label for="value_per_count" class="control-label IRANYekanRegular">حجم واحد در هر عدد</label>
+                                            <input type="text" class="form-control input text-right" name="value_per_count" id=value_per_count" placeholder="حجم واحد هر حدد را وارد کنید" value="{{ old('value_per_count')  }}">
+                                            <span class="form-text text-danger erroralarm"> {{ $errors->first('value_per_count') }} </span>
                                         </div>
-                                        <div class="col-12 col-md-4">
-                                            <label for="consumption_price" class="control-label IRANYekanRegular">قیمت مصرفی(تومان)</label>
-                                            <input type="text" class="form-control input text-right" name="consumption_price" id="consumption_price" placeholder="قیمت مصرفی کالا را وارد کنید" value="{{ old('price')  }}">
-                                            <span class="form-text text-danger erroralarm"> {{ $errors->first('price') }} </span>
+                                        <div class="col-12 col-md-2">
+                                            <label for="count_per_box" class="control-label IRANYekanRegular">تعداد در هر جبعه</label>
+                                            <input type="text" class="form-control input text-right" name="count_per_box" id="count_per_box" placeholder="تعداد در هر جعبه را وارد کنید" value="{{ old('count_per_box')  }}">
+                                            <span class="form-text text-danger erroralarm"> {{ $errors->first('count_per_box') }} </span>
                                         </div>
+                                        <div class="col-12 col-md-2">
+                                            <label for="box_stock" class="control-label IRANYekanRegular">موجودی جعبه در انبار</label>
+                                            <input type="text" class="form-control input text-right" name="box_stock" id="box_stock" placeholder="موجودی جبعه در انبار را وارد کنید" value="{{ old('box_stock')  }}">
+                                            <span class="form-text text-danger erroralarm"> {{ $errors->first('box_stock') }} </span>
+                                        </div>
+                                        <div class="col-12 col-md-2">
+                                            <label for="count_stock" class="control-label IRANYekanRegular">موجودی تعداد در انبار</label>
+                                            <input type="text" class="form-control input text-right" name="count_stock" id="count_stock" placeholder="موجودی جبعه در انبار را وارد کنید" value="{{ old('count_stock')  }}">
+                                            <span class="form-text text-danger erroralarm"> {{ $errors->first('count_stock') }} </span>
+                                        </div>
+
+                                        <div class="col-12 col-md-2">
+                                            <label for="unit_stock" class="control-label IRANYekanRegular">موجودی واحد در انبار</label>
+                                            <input type="text" class="form-control input text-right" name="unit_stock" id="unit_stock" placeholder="موجودی واحد در انبار را وارد کنید" value="{{ old('unit_stock')  }}">
+                                            <span class="form-text text-danger erroralarm"> {{ $errors->first('unit_stock') }} </span>
+                                        </div>
+
                                     </div>
 
 
                                     <div class="form-group row">
+                                        <div class="col-12 col-md-2">
+                                            <label for="price" class="control-label IRANYekanRegular">قیمت واحد مصرفی</label>
+                                            <input type="text" class="form-control input text-left" name="price" id=price" placeholder="قیمت واحد مصرفی کالا را وارد کنید" value="{{ old('price')  }}">
+                                            <span class="form-text text-danger erroralarm"> {{ $errors->first('price') }} </span>
+                                        </div>
                                         <div class="col-12 col-md-2">
                                             <label for="expireDate" class="control-label IRANYekanRegular">تاریخ انقضاء</label>
                                             <input type="text"   class="form-control text-center" id="expireDate" name="expireDate" readonly value="{{ old('expireDate')  }}">
                                             <span class="form-text text-danger erroralarm"> {{ $errors->first('expireDate') }} </span>
                                             <i class="mdi mdi-replay text-danger font-20 cursor-pointer" title="پاک کردن" onclick="reset('expireDate')"></i>
                                         </div>
-                                        <div class="col-12 col-md-10">
+                                        <div class="col-12 col-md-8">
                                             <label for="description" class="control-label IRANYekanRegular">توضیحات</label>
                                             <input type="text" class="form-control input text-left" name="description" id=description" placeholder="توضیحات کالا را وارد کنید" value="{{ old('description')  }}">
                                             <span class="form-text text-danger erroralarm"> {{ $errors->first('description') }} </span>
