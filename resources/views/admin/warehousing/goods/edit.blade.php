@@ -84,7 +84,7 @@
                                                 <select name="sub_cat_id" id="sub_cat_id"  class="form-control IRANYekanRegular">
                                                     <option value="">زیردسته مورد نظر را انتخاب کنید</option>
                                                     @foreach($subs as $sub)
-                                                        <option value="{{ $sub->id }}" {{$sub->id == old('sub_cat_id') || $main->id == $good->sub_cat_id?'selected':'' }}>{{ $sub->title }}</option>
+                                                        <option value="{{ $sub->id }}" {{$sub->id == old('sub_cat_id') || $sub->id == $good->sub_cat_id?'selected':'' }}>{{ $sub->title }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -94,7 +94,7 @@
 
 
                                     <div class="form-group row">
-                                        <div class="col-12 col-md-2">
+                                        <div class="col-12 col-md-3">
                                             <label for="unit" class="control-label IRANYekanRegular">واحد مصرفی</label>
                                             <select name="unit" id="unit"  class="form-control  IRANYekanRegular" >
                                                 <option value="{{ App\Enums\Unit::cc }}" {{ App\Enums\Unit::cc== old('unit') || App\Enums\Unit::cc== $good->unit?'selected':'' }}>{{ App\Enums\Unit::cc }}</option>
@@ -114,28 +114,19 @@
                                             </select>
                                             <span class="form-text text-danger erroralarm"> {{ $errors->first('consumption_unit') }} </span>
                                         </div>
-                                        <div class="col-12 col-md-2">
+                                        <div class="col-12 col-md-3">
                                             <label for="value_per_count" class="control-label IRANYekanRegular">حجم واحد در هر عدد</label>
                                             <input type="text" class="form-control input text-right" name="value_per_count" id=value_per_count" placeholder="حجم واحد هر حدد را وارد کنید" value="{{ old('value_per_count') ?? $good->value_per_count  }}">
                                             <span class="form-text text-danger erroralarm"> {{ $errors->first('value_per_count') }} </span>
                                         </div>
-                                        <div class="col-12 col-md-2">
-                                            <label for="count_per_box" class="control-label IRANYekanRegular">تعداد در هر جبعه</label>
-                                            <input type="text" class="form-control input text-right" name="count_per_box" id="count_per_box" placeholder="تعداد در هر جعبه را وارد کنید" value="{{ old('count_per_box') ?? $good->count_per_box  }}">
-                                            <span class="form-text text-danger erroralarm"> {{ $errors->first('count_per_box') }} </span>
-                                        </div>
-                                        <div class="col-12 col-md-2">
-                                            <label for="box_stock" class="control-label IRANYekanRegular">موجودی جعبه در انبار</label>
-                                            <input type="text" class="form-control input text-right" name="box_stock" id="box_stock" placeholder="موجودی جبعه در انبار را وارد کنید" value="{{ old('box_stock') ?? $good->box_stock  }}">
-                                            <span class="form-text text-danger erroralarm"> {{ $errors->first('box_stock') }} </span>
-                                        </div>
-                                        <div class="col-12 col-md-2">
+
+                                        <div class="col-12 col-md-3">
                                             <label for="count_stock" class="control-label IRANYekanRegular">موجودی تعداد در انبار</label>
                                             <input type="text" class="form-control input text-right" name="count_stock" id="count_stock" placeholder="موجودی جبعه در انبار را وارد کنید" value="{{ old('count_stock') ?? $good->count_stock  }}">
                                             <span class="form-text text-danger erroralarm"> {{ $errors->first('count_stock') }} </span>
                                         </div>
 
-                                        <div class="col-12 col-md-2">
+                                        <div class="col-12 col-md-3">
                                             <label for="unit_stock" class="control-label IRANYekanRegular">موجودی واحد در انبار</label>
                                             <input type="text" class="form-control input text-right" name="unit_stock" id="unit_stock" placeholder="موجودی واحد در انبار را وارد کنید" value="{{ old('unit_stock')  ?? $good->unit_stock }}">
                                             <span class="form-text text-danger erroralarm"> {{ $errors->first('unit_stock') }} </span>

@@ -63,6 +63,18 @@
                                         </div>
                                     </div>
 
+                                    <div class="form-group">
+                                        <div class="col-12">
+                                            <label for="admins" class="control-label IRANYekanRegular">مسئولین:</label>
+                                            <select name="admins[]" id="admins" class="select2 select2-multiple text-right IRANYekanRegular" multiple="multiple" multiple data-placeholder="انتخاب مسئولین انبار...">
+                                                @foreach($admins as $admin)
+                                                    <option value="{{ $admin->id }}" {{ in_array(trim($admin->id),$warehouse->admins->pluck('id')->toArray())?'selected':'' }}>{{ $admin->fullname }}</option>
+                                                @endforeach
+                                            </select>
+                                            <span class="form-text text-danger erroralarm"> {{ $errors->first('admins') }} </span>
+                                        </div>
+                                    </div>
+
                                     <div class="row mt-2 p-2">
                                         <div class="col-12" style="display:inherit;">
                                             <input type="radio" id="active" name="status" value="{{ App\Enums\Status::Active }}" @if(old('status')!=App\Enums\Status::Deactive) checked @endif>

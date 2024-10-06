@@ -1871,5 +1871,49 @@ class PermissionSeeder extends Seeder
             'status'=> Status::Active
         ]);
 
+        DB::table('permissions')->insert([
+            'name' => 'warehousing.warehouses.stocks',
+            'description' => 'موجودی انبار',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'warehousing.warehouses.orders.index',
+            'description' => 'لیسست حوالات انبار',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'warehousing.warehouses.orders.create',
+            'description' => 'ایچاد حواله انبار',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'warehousing.warehouses.orders.edit',
+            'description' => 'ویرایش حواله انبار',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'warehousing.warehouses.orders.destroy',
+            'description' => 'حذف حواله انبار',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'warehousing.warehouses.orders.recycle',
+            'description' => 'بازیابی حواله انبار',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'warehousing.warehouses.orders.delivery',
+            'description' => 'تحویل حواله انبار',
+            'status'=> Status::Active
+        ]);
+
+
+
     }
 }

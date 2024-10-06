@@ -6,11 +6,7 @@ use Illuminate\Support\Facades\Schema;
 use App\Enums\Status;
 class CreateWarehousesTable extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
+
     public function up()
     {
         Schema::create('warehouses', function (Blueprint $table) {
@@ -21,13 +17,25 @@ class CreateWarehousesTable extends Migration
             $table->softDeletes();
             $table->timestamps();
         });
+
+        Schema::create('admin_warehouse', function (Blueprint $table) {
+
+            $table->unsignedBigInteger('admin_id');
+            $table->unsignedBigInteger('warehouse_id');
+
+            $table->foreign('admin_id')->references('id')->on('admins')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
+
+            $table->foreign('warehouse_id')->references('id')->on('warehouses')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
+
+            $table->primary(['admin_id','warehouse_id']);
+        });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
+
     public function down()
     {
         Schema::dropIfExists('warehouses');

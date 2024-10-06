@@ -24,8 +24,6 @@ class CreateGoodsTable extends Migration
             $table->unsignedBigInteger('sub_cat_id')->nullable();
             $table->string('unit')->default(Unit::cc);
             $table->unsignedDouble('value_per_count')->default(0);
-            $table->unsignedDouble('count_per_box')->default(0);
-            $table->unsignedDouble('box_stock')->default(0);
             $table->unsignedDouble('count_stock')->default(0);
             $table->unsignedDouble('unit_stock')->default(0);
             $table->unsignedBigInteger('price')->default(0);

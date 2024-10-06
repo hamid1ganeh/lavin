@@ -617,8 +617,6 @@ Breadcrumbs::for('provinces.cities.parts.edit', function ($trail,$province,$city
 
 
 
-
-
  // داشبورد > مشاغل
 Breadcrumbs::for('jobs', function ($trail) {
     $trail->parent('home', $trail);
@@ -1135,5 +1133,18 @@ Breadcrumbs::for('warehousing.warehouses.edit', function ($trail,$warehouse) {
     $trail->push('ویرایش انبار', route('admin.warehousing.warehouses.edit',$warehouse));
 });
 
+
+// داشبورد > لیست انبارها > موجودی انبار
+Breadcrumbs::for('warehousing.warehouses.stocks', function ($trail,$warehouse) {
+    $trail->parent('warehousing.warehouses.index', $trail);
+    $trail->push('موجودی انبار', route('admin.warehousing.warehouses.stocks',$warehouse));
+});
+
+
+// داشبورد > لیست انبارها > موجودی انبار> حوالات
+Breadcrumbs::for('warehousing.warehouses.orders.index', function ($trail,$warehouse) {
+    $trail->parent('warehousing.warehouses.stocks', $warehouse);
+    $trail->push('حوالات', route('admin.warehousing.warehouses.orders.index',$warehouse));
+});
 
 

@@ -15,6 +15,11 @@ class WarehouseStock extends Model
 
     public function good()
     {
-        return $this->belongsTo(Goods::class);
+        return $this->belongsTo(Goods::class,'goods_id','id');
+    }
+
+    public function stockAsUnit()
+    {
+        return ($this->count*$this->good->value_per_count)+$this->value;
     }
 }

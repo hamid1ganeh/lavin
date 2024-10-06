@@ -50,6 +50,7 @@
                                         <th><b class="IRANYekanRegular">ردیف</b></th>
                                         <th><b class="IRANYekanRegular">نام</b></th>
                                         <th><b class="IRANYekanRegular">توضیحات</b></th>
+                                        <th><b class="IRANYekanRegular">مسئولین</b></th>
                                         <th><b class="IRANYekanRegular">وضعیت</b></th>
                                         <th><b class="IRANYekanRegular">اقدامات</b></th>
                                     </tr>
@@ -60,6 +61,15 @@
                                             <td><strong class="IRANYekanRegular">{{ ++$index }}</strong></td>
                                             <td><strong class="IRANYekanRegular">{{ $warehouse->name }}</strong></td>
                                             <td><strong class="IRANYekanRegular">{{ $warehouse->description }}</strong></td>
+                                            <td>
+                                                <strong class="IRANYekanRegular">
+                                                    @foreach($warehouse->admins as $index=>$admin)
+                                                        @if($index>0),@endif
+                                                        {{ $admin->fullname }}
+                                                    @endforeach
+                                                </strong>
+                                            </td>
+
                                             <td>
                                                 <strong class="IRANYekanRegular">
                                                     @if($warehouse->status == App\Enums\Status::Active)
@@ -104,7 +114,7 @@
 
                                                 @else
 
-                                                    <a class="btn  btn-icon" href="{{ route('admin.warehousing.warehouses.orders.index', $warehouse) }}" title="حوالات">
+                                                    <a class="btn  btn-icon" href="{{ route('admin.warehousing.warehouses.stocks', $warehouse) }}" title="موجودی">
                                                         <i class="fa fa-cube text-warning font-20"></i>
                                                     </a>
 
@@ -130,7 +140,7 @@
                                                                     </button>
                                                                 </div>
                                                                 <div class="modal-body">
-                                                                    <h5 class="IRANYekanRegular">آیا مطمئن هستید که میخواهدی انبار  {{ $warehouse->name }} را حذف کنید؟</h5>
+                                                                    <h5 class="IRANYekanRegular">آیا مطمئن هستید که میخواهید انبار  {{ $warehouse->name }} را حذف کنید؟</h5>
                                                                 </div>
                                                                 <div class="modal-footer">
                                                                     <form action="{{ route('admin.warehousing.warehouses.destroy', $warehouse) }}"  method="POST" class="d-inline">

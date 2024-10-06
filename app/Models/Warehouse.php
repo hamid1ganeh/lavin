@@ -10,5 +10,10 @@ class Warehouse extends Model
 
      protected $fillable = ['name','description','status'];
 
+     public function admins()
+     {
+         return $this->belongsToMany(Admin::class);
+     }
+
 
 }

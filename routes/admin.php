@@ -790,11 +790,14 @@ Route::group(['middleware' => 'auth.admin'], function () {
             Route::patch('{warehouse}/update', [WarehouseController::class,'update'])->name('update');
             Route::delete('/destroy/{warehouse}', [WarehouseController::class,'destroy'])->name('destroy');
             Route::patch('/recycle/{warehouse}', [WarehouseController::class,'recycle'])->name('recycle');
+            Route::get('{warehouse}/stocks', [WarehouseController::class,'stocks'])->name('stocks');
 
             Route::prefix('{warehouse}/orders')->name('orders.')->group(function () {
                 Route::get('/', [WarehouseController::class,'orders'])->name('index');
+                Route::post('/change', [WarehouseController::class,'change'])->name('change');
+                Route::patch('{order}/deliver', [WarehouseController::class,'deliver'])->name('deliver');
 //                Route::get('/create', [WarehouseController::class,'create'])->name('create');
-//                Route::post('/store', [WarehouseController::class,'store'])->name('store');
+
 //                Route::get('{warehouse}/edit', [WarehouseController::class,'edit'])->name('edit');
 //                Route::patch('{warehouse}/update', [WarehouseController::class,'update'])->name('update');
 //                Route::delete('/destroy/{warehouse}', [WarehouseController::class,'destroy'])->name('destroy');

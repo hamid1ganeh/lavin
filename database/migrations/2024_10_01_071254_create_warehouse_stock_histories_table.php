@@ -22,6 +22,8 @@ class CreateWarehouseStockHistoriesTable extends Migration
             $table->string('unit')->default(Unit::count);
             $table->unsignedDouble('value')->default(0);
             $table->unsignedDouble('count')->default(0);
+            $table->unsignedBigInteger('delivered_by')->nullable();
+            $table->dateTime('delivered_at')->nullable();
             $table->timestamps();
 
             //references
@@ -35,6 +37,13 @@ class CreateWarehouseStockHistoriesTable extends Migration
             $table->foreign('goods_id')
                 ->references('id')
                 ->on('goods')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
+
+            //references
+            $table->foreign('delivered_by')
+                ->references('id')
+                ->on('admins')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
         });

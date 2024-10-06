@@ -19,8 +19,6 @@ class Goods extends Model
                         'brand',
                         'count',
                         'value_per_count',
-                        'count_per_box',
-                        'box_stock',
                         'count_stock',
                         'unit_stock',
                         'price',
@@ -44,6 +42,11 @@ class Goods extends Model
             return '';
         }
         return CalendarUtils::convertNumbers(CalendarUtils::strftime('Y/m/d',strtotime($this->expire_date)));
+    }
+
+    public function stockAsUnit()
+    {
+        return ($this->count_stock*$this->value_per_count)+$this->unit_stock;
     }
 
 
