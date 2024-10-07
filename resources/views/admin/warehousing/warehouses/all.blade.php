@@ -80,81 +80,90 @@
                                                 </strong>
                                             </td>
                                             <td>
-                                               @if($warehouse->trashed())
-                                                    @if(Auth::guard('admin')->user()->can('warehousing.warehouses.recycle'))
-                                                    <a class="font18" href="#recycle{{ $warehouse->id }}" data-toggle="modal" title="بازیابی">
-                                                        <i class="fa fa-recycle text-danger"></i>
-                                                    </a>
-
-                                                    <!-- Recycle Modal -->
-                                                    <div class="modal fade" id="recycle{{ $warehouse->id }}" tabindex="-1" aria-labelledby="reviewLabel" aria-hidden="true">
-                                                        <div class="modal-dialog modal-xs">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header py-3">
-                                                                    <h5 class="modal-title IRANYekanRegular" id="newReviewLabel">بازیابی دسته بندی</h5>
-                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                        <span aria-hidden="true">&times;</span>
-                                                                    </button>
-                                                                </div>
-                                                                <div class="modal-body">
-                                                                    <h5 class="IRANYekanRegular">آیا مطمئن هستید که میخواید این انبار را بازیابی کنید؟</h5>
-                                                                </div>
-                                                                <div class="modal-footer">
-                                                                    <form action="{{ route('admin.warehousing.warehouses.recycle', $warehouse) }}" method="POST" class="d-inline">
-                                                                        @csrf
-                                                                        @method('patch')
-                                                                        <button type="submit" title="بازیابی" class="btn btn-info px-8">بازیابی</button>
-                                                                    </form>
-                                                                    <button type="button" class="btn btn-secondary" title="انصراف" data-dismiss="modal">انصراف</button>
-                                                                </div>
+                                                <!-- Recycle Modal -->
+                                                <div class="modal fade" id="recycle{{ $warehouse->id }}" tabindex="-1" aria-labelledby="reviewLabel" aria-hidden="true">
+                                                    <div class="modal-dialog modal-xs">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header py-3">
+                                                                <h5 class="modal-title IRANYekanRegular" id="newReviewLabel">بازیابی دسته بندی</h5>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <h5 class="IRANYekanRegular">آیا مطمئن هستید که میخواید این انبار را بازیابی کنید؟</h5>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <form action="{{ route('admin.warehousing.warehouses.recycle', $warehouse) }}" method="POST" class="d-inline">
+                                                                    @csrf
+                                                                    @method('patch')
+                                                                    <button type="submit" title="بازیابی" class="btn btn-info px-8">بازیابی</button>
+                                                                </form>
+                                                                <button type="button" class="btn btn-secondary" title="انصراف" data-dismiss="modal">انصراف</button>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                   @endif
+                                                </div>
 
-                                                @else
-
-                                                    <a class="btn  btn-icon" href="{{ route('admin.warehousing.warehouses.stocks', $warehouse) }}" title="موجودی">
-                                                        <i class="fa fa-cube text-warning font-20"></i>
-                                                    </a>
-
-                                                    @if(Auth::guard('admin')->user()->can('warehousing.warehouses.edit'))
-                                                        <a class="btn  btn-icon" href="{{ route('admin.warehousing.warehouses.edit', $warehouse) }}" title="ویرایش">
-                                                            <i class="fa fa-edit text-success font-20"></i>
-                                                        </a>
-                                                    @endif
-
-                                                   @if(Auth::guard('admin')->user()->can('warehousing.warehouses.destroy'))
-                                                    <a href="#remove{{ $warehouse->id }}" data-toggle="modal" class="btn btn-icon" title="حذف">
-                                                        <i class="fa fa-trash text-danger font-20"></i>
-                                                    </a>
-
-                                                    <!-- Remove Modal -->
-                                                    <div class="modal fade" id="remove{{ $warehouse->id }}" tabindex="-1" aria-labelledby="reviewLabel" aria-hidden="true">
-                                                        <div class="modal-dialog modal-xs">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header py-3">
-                                                                    <h5 class="modal-title IRANYekanRegular" id="newReviewLabel">حذف انبار</h5>
-                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                        <span aria-hidden="true">&times;</span>
-                                                                    </button>
-                                                                </div>
-                                                                <div class="modal-body">
-                                                                    <h5 class="IRANYekanRegular">آیا مطمئن هستید که میخواهید انبار  {{ $warehouse->name }} را حذف کنید؟</h5>
-                                                                </div>
-                                                                <div class="modal-footer">
-                                                                    <form action="{{ route('admin.warehousing.warehouses.destroy', $warehouse) }}"  method="POST" class="d-inline">
-                                                                        @csrf
-                                                                        @method('DELETE')
-                                                                        <button type="submit" class="btn btn-danger px-8" title="حذف" >حذف</button>
-                                                                    </form>
-                                                                    <button type="button" class="btn btn-secondary" title="انصراف" data-dismiss="modal">انصراف</button>
-                                                                </div>
+                                                <!-- Remove Modal -->
+                                                <div class="modal fade" id="remove{{ $warehouse->id }}" tabindex="-1" aria-labelledby="reviewLabel" aria-hidden="true">
+                                                    <div class="modal-dialog modal-xs">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header py-3">
+                                                                <h5 class="modal-title IRANYekanRegular" id="newReviewLabel">حذف انبار</h5>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <h5 class="IRANYekanRegular">آیا مطمئن هستید که میخواهید انبار  {{ $warehouse->name }} را حذف کنید؟</h5>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <form action="{{ route('admin.warehousing.warehouses.destroy', $warehouse) }}"  method="POST" class="d-inline">
+                                                                    @csrf
+                                                                    @method('DELETE')
+                                                                    <button type="submit" class="btn btn-danger px-8" title="حذف" >حذف</button>
+                                                                </form>
+                                                                <button type="button" class="btn btn-secondary" title="انصراف" data-dismiss="modal">انصراف</button>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                  @endif
-                                                @endif
+                                                </div>
+
+                                                <div class="input-group">
+                                                    <div class="input-group-append">
+                                                        <i class=" ti-align-justify" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
+                                                        <div class="dropdown-menu">
+                                                            @if($warehouse->trashed())
+                                                                @if(Auth::guard('admin')->user()->can('warehousing.warehouses.recycle'))
+                                                                    <a class="dropdown-item IR cusrsor" href="#recycle{{ $warehouse->id }}" data-toggle="modal" title="بازیابی">
+                                                                        <i class="fa fa-recycle text-danger"></i>
+                                                                        بازیابی
+                                                                    </a>
+                                                                @endif
+                                                            @else
+                                                                @if(Auth::guard('admin')->user()->can('warehousing.warehouses.stocks'))
+                                                                    <a class="dropdown-item IR cusrsor" href="{{ route('admin.warehousing.warehouses.stocks', $warehouse) }}" title="موجودی">
+                                                                        <i class="fa fa-cube text-warning font-20"></i>
+                                                                        موجودی
+                                                                    </a>
+                                                                @endif
+                                                                @if(Auth::guard('admin')->user()->can('warehousing.warehouses.edit'))
+                                                                    <a class="dropdown-item IR cusrsor" href="{{ route('admin.warehousing.warehouses.edit', $warehouse) }}" title="ویرایش">
+                                                                        <i class="fa fa-edit text-success font-20"></i>
+                                                                        ویرایش
+                                                                    </a>
+                                                                @endif
+                                                                @if(Auth::guard('admin')->user()->can('warehousing.warehouses.destroy'))
+                                                                    <a href="#remove{{ $warehouse->id }}" data-toggle="modal" class="dropdown-item IR cusrsor" title="حذف">
+                                                                        <i class="fa fa-trash text-danger font-20"></i>
+                                                                        حذف
+                                                                    </a>
+                                                                @endif
+                                                            @endif
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </td>
                                         </tr>
                                     @endforeach

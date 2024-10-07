@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\GoodsMainController;
 use App\Http\Controllers\Admin\GoodsSubController;
 use App\Http\Controllers\Admin\GoodsController;
 use App\Http\Controllers\Admin\WarehouseController;
+use App\Http\Controllers\Admin\WareHouseOrderController;
 
 
 Route::get('/login', 'AuthController@loginPage')->name('loginPage');
@@ -793,15 +794,11 @@ Route::group(['middleware' => 'auth.admin'], function () {
             Route::get('{warehouse}/stocks', [WarehouseController::class,'stocks'])->name('stocks');
 
             Route::prefix('{warehouse}/orders')->name('orders.')->group(function () {
-                Route::get('/', [WarehouseController::class,'orders'])->name('index');
-                Route::post('/change', [WarehouseController::class,'change'])->name('change');
-                Route::patch('{order}/deliver', [WarehouseController::class,'deliver'])->name('deliver');
-//                Route::get('/create', [WarehouseController::class,'create'])->name('create');
-
-//                Route::get('{warehouse}/edit', [WarehouseController::class,'edit'])->name('edit');
-//                Route::patch('{warehouse}/update', [WarehouseController::class,'update'])->name('update');
-//                Route::delete('/destroy/{warehouse}', [WarehouseController::class,'destroy'])->name('destroy');
-//                Route::patch('/recycle/{warehouse}', [WarehouseController::class,'recycle'])->name('recycle');
+                Route::get('/', [WareHouseOrderController::class,'index'])->name('index');
+                Route::post('/change', [WareHouseOrderController::class,'store'])->name('store');
+                Route::get('/update', [WareHouseOrderController::class,'update'])->name('update');
+                Route::patch('{order}/deliver', [WareHouseOrderController::class,'deliver'])->name('deliver');
+                Route::delete('{order}/destroy', [WareHouseOrderController::class,'destroy'])->name('destroy');
             });
         });
 

@@ -42,7 +42,7 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-12 text-right">
-{{--                                    @if(Auth::guard('admin')->user()->can('warehousing.warehouses.create'))--}}
+                                    @if(Auth::guard('admin')->user()->can('warehousing.warehouses.orders.index'))
                                     <div class="btn-group" >
                                         <div class="btn-group" >
                                             <a class="btn  btn-warning btn-icon" href="{{ route('admin.warehousing.warehouses.orders.index', $warehouse) }}" title="حوالات">
@@ -50,7 +50,7 @@
                                             </a>
                                         </div>
                                     </div>
-{{--                                   @endif--}}
+                                   @endif
                                 </div>
                             </div>
 

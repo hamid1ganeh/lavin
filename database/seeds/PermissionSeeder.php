@@ -1879,13 +1879,13 @@ class PermissionSeeder extends Seeder
 
         DB::table('permissions')->insert([
             'name' => 'warehousing.warehouses.orders.index',
-            'description' => 'لیسست حوالات انبار',
+            'description' => 'لیست حوالات انبار',
             'status'=> Status::Active
         ]);
 
         DB::table('permissions')->insert([
             'name' => 'warehousing.warehouses.orders.create',
-            'description' => 'ایچاد حواله انبار',
+            'description' => 'ایجاد حواله انبار',
             'status'=> Status::Active
         ]);
 
@@ -1912,8 +1912,6 @@ class PermissionSeeder extends Seeder
             'description' => 'تحویل حواله انبار',
             'status'=> Status::Active
         ]);
-
-
 
     }
 }

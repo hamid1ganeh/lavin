@@ -42,7 +42,7 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-12 text-right">
-{{--                                    @if(Auth::guard('admin')->user()->can('warehousing.warehouses.create'))--}}
+                                    @if(Auth::guard('admin')->user()->can('warehousing.warehouses.orders.create'))
                                     <div class="btn-group" >
                                         <a href="#change{{ $warehouse->id }}" data-toggle="modal" class="btn btn-primary" title="ایجاد حواله جدید">
                                             <i class="fa fa-plus plusiconfont"></i>
@@ -60,11 +60,11 @@
                                                         </button>
                                                     </div>
                                                     <div class="modal-body text-left">
-                                                        <form action="{{ route('admin.warehousing.warehouses.orders.change',$warehouse) }}"  method="POST" class="d-inline" id="order">
+                                                        <form action="{{ route('admin.warehousing.warehouses.orders.store',$warehouse) }}"  method="POST" class="d-inline" id="order">
                                                             @csrf
                                                             <div class="row">
                                                                 <div class="col-12" style="display:inherit;">
-                                                                    <input type="radio" id="increase" name="event" value="+" @if(old('event')== '+') checked @endif>
+                                                                    <input type="radio" id="increase" name="event" value="+" @if(old('event')!= '-') checked @endif>
                                                                     &nbsp;
                                                                     <label for="active" class="IRANYekanRegular">افزودن</label><br>
                                                                     &nbsp;&nbsp; &nbsp;
@@ -110,10 +110,8 @@
                                                 </div>
                                             </div>
                                         </div>
-
-
                                     </div>
-{{--                                   @endif--}}
+                                   @endif
                                 </div>
                             </div>
 
@@ -148,10 +146,6 @@
                                             <td><strong class="IRANYekanRegular">{{ $order->deliveredBy->fullname ?? '' }}</strong></td>
                                             <td><strong class="IRANYekanRegular">{{ $order->delivered_at() }}</strong></td>
                                             <td>
-                                                @if(is_null($order->delivered_by) && (in_array(Auth::guard('admin')->id(),$warehouse->admins->pluck('id')->toArray())))
-                                                <a href="#delivery{{ $order->id }}" data-toggle="modal" class="btn btn-icon" title="تحویل">
-                                                    <i class=" ti-thumb-up  text-info font-20"></i>
-                                                </a>
                                                 <!-- Delivery Modal -->
                                                 <div class="modal fade" id="delivery{{ $order->id }}" tabindex="-1" aria-labelledby="reviewLabel" aria-hidden="true">
                                                     <div class="modal-dialog modal-xs">
@@ -176,85 +170,138 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                @endif
 
-                                                    <a href="#edit{{ $order->id }}" data-toggle="modal" class="btn btn-icon" title="ویرایش">
-                                                        <i class="fa fa-edit text-success font-20"></i>
-                                                    </a>
-                                                    <!-- Edit Modal -->
-                                                    <div class="modal fade" id="edit{{ $order->id }}" tabindex="-1" aria-labelledby="reviewLabel" aria-hidden="true">
-                                                        <div class="modal-dialog modal-xs">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header py-3">
-                                                                    <h5 class="modal-title IRANYekanRegular" id="newReviewLabel">ویرایش حواله</h5>
-                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                        <span aria-hidden="true">&times;</span>
-                                                                    </button>
-                                                                </div>
-                                                                <div class="modal-body text-left">
-                                                                    <form action="{{ route('admin.warehousing.warehouses.orders.update',$warehouse) }}"  method="POST" class="d-inline" id="edit{{ $order->id }}">
-                                                                        @csrf
-                                                                        <div class="row">
-                                                                            <div class="col-12" style="display:inherit;">
-                                                                                <input type="radio" id="increase" name="event" value="+" @if(old('event')== '+' || $order->event=='+') checked @endif>
-                                                                                &nbsp;
-                                                                                <label for="active" class="IRANYekanRegular">افزودن</label><br>
-                                                                                &nbsp;&nbsp; &nbsp;
-                                                                                <input type="radio" id="decrease" name="event" value="-" @if(old('event')== '-' || $order->event=='-') checked @endif>
-                                                                                &nbsp;
-                                                                                <label for="deactive" class="IRANYekanRegular">مرجوعی</label><br>
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <div class="form-group row">
-                                                                            <div class="col-12">
-                                                                                <label for="good" class="col-form-label IRANYekanRegular">کالا</label>
-                                                                                <select name="good" id="good"  class="width-100 form-control select2">
-                                                                                    <option value="">کالا مورد نظر را انتخاب کنید</option>
-                                                                                    @foreach($goods as $good)
-                                                                                        <option value="{{ $good->id }}" {{$good->id == old('good') || $good->id == $order->id?'selected':'' }}>{{ $good->title }}</option>
-                                                                                    @endforeach
-                                                                                </select>
-                                                                                <span class="form-text text-danger erroralarm"> {{ $errors->first('good') }} </span>
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <div class="form-group row">
-                                                                            <div class="col-12 col-md-6">
-                                                                                <label for="count" class="control-label IRANYekanRegular">تعداد</label>
-                                                                                <input type="number" class="form-control input text-center" name="count" id="count" placeholder="تعداد مورد نظر را وارد کنید" value="{{ old('count') ?? $order->count  }}">
-                                                                                <span class="form-text text-danger erroralarm"> {{ $errors->first('count') }} </span>
-                                                                            </div>
-
-                                                                            <div class="col-12 col-md-6">
-                                                                                <label for="value" class="control-label IRANYekanRegular">واحد</label>
-                                                                                <input type="number" class="form-control input text-center" name="value" id="value" placeholder=" حجم واحد مورد نظر را وارد کنید" value="{{ old('value') ?? $order->value  }}">
-                                                                                <span class="form-text text-danger erroralarm"> {{ $errors->first('value') }} </span>
-                                                                            </div>
-                                                                        </div>
-                                                                    </form>
-                                                                </div>
-                                                                <div class="modal-footer">
-                                                                    <button type="submit" class="btn btn-success px-8" title="بروزرسانی" form="edit{{ $order->id }}">بروزرسانی</button>
-                                                                    &nbsp;
-                                                                    <button type="button" class="btn btn-secondary" title="انصراف" data-dismiss="modal">انصراف</button>
-                                                                </div>
+                                                <!-- Remove Modal -->
+                                                <div class="modal fade" id="remove{{ $order->id }}" tabindex="-1" aria-labelledby="reviewLabel" aria-hidden="true">
+                                                    <div class="modal-dialog modal-xs">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header py-3">
+                                                                <h5 class="modal-title IRANYekanRegular" id="newReviewLabel">حذف حواله</h5>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body text-text">
+                                                                <p class="IRANYekanRegular">آیا مطمئن هستید که میخواهید این حواله را حذف کنید؟</p>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <form action="{{ route('admin.warehousing.warehouses.orders.destroy',[$warehouse,$order]) }}"  method="POST" class="d-inline">
+                                                                    @csrf
+                                                                    @method('DELETE')
+                                                                    <button type="submit" class="btn btn-danger px-8" title="حذف">حذف</button>
+                                                                    &nbsp;&nbsp;
+                                                                </form>
+                                                                <button type="button" class="btn btn-secondary" title="انصراف" data-dismiss="modal">انصراف</button>
                                                             </div>
                                                         </div>
                                                     </div>
+                                                </div>
+
+                                                <!-- Edit Modal -->
+                                                <div class="modal fade" id="edit{{ $order->id }}" tabindex="-1" aria-labelledby="reviewLabel" aria-hidden="true">
+                                                    <div class="modal-dialog modal-xs">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header py-3">
+                                                                <h5 class="modal-title IRANYekanRegular" id="newReviewLabel">ویرایش حواله</h5>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body text-left">
+                                                                <form action="{{ route('admin.warehousing.warehouses.orders.update',$warehouse) }}"  method="POST" class="d-inline" id="edit{{ $order->id }}">
+                                                                    @csrf
+                                                                    <div class="row">
+                                                                        <div class="col-12" style="display:inherit;">
+                                                                            <input type="radio" id="increase" name="event" value="+" @if(old('event')== '+' || $order->event=='+') checked @endif>
+                                                                            &nbsp;
+                                                                            <label for="active" class="IRANYekanRegular">افزودن</label><br>
+                                                                            &nbsp;&nbsp; &nbsp;
+                                                                            <input type="radio" id="decrease" name="event" value="-" @if(old('event')== '-' || $order->event=='-') checked @endif>
+                                                                            &nbsp;
+                                                                            <label for="deactive" class="IRANYekanRegular">مرجوعی</label><br>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="form-group row">
+                                                                        <div class="col-12">
+                                                                            <label for="good" class="col-form-label IRANYekanRegular">کالا</label>
+                                                                            <select name="good" id="good"  class="width-100 form-control select2">
+                                                                                <option value="">کالا مورد نظر را انتخاب کنید</option>
+                                                                                @foreach($goods as $good)
+                                                                                    <option value="{{ $good->id }}" {{$good->id == old('good') || $good->id == $order->goods_id?'selected':'' }}>{{ $good->title }}</option>
+                                                                                @endforeach
+                                                                            </select>
+                                                                            <span class="form-text text-danger erroralarm"> {{ $errors->first('good') }} </span>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="form-group row">
+                                                                        <div class="col-12 col-md-6">
+                                                                            <label for="count" class="control-label IRANYekanRegular">تعداد</label>
+                                                                            <input type="number" class="form-control input text-center" name="count" id="count" placeholder="تعداد مورد نظر را وارد کنید" value="{{ old('count') ?? $order->count  }}">
+                                                                            <span class="form-text text-danger erroralarm"> {{ $errors->first('count') }} </span>
+                                                                        </div>
+
+                                                                        <div class="col-12 col-md-6">
+                                                                            <label for="value" class="control-label IRANYekanRegular">واحد</label>
+                                                                            <input type="number" class="form-control input text-center" name="value" id="value" placeholder=" حجم واحد مورد نظر را وارد کنید" value="{{ old('value') ?? $order->value  }}">
+                                                                            <span class="form-text text-danger erroralarm"> {{ $errors->first('value') }} </span>
+                                                                        </div>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="submit" class="btn btn-success px-8" title="بروزرسانی" form="edit{{ $order->id }}">بروزرسانی</button>
+                                                                &nbsp;
+                                                                <button type="button" class="btn btn-secondary" title="انصراف" data-dismiss="modal">انصراف</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="input-group">
+                                                    <div class="input-group-append">
+                                                        <i class=" ti-align-justify" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
+                                                        <div class="dropdown-menu">
+                                                            @if(is_null($order->delivered_by) && (in_array(Auth::guard('admin')->id(),$warehouse->admins->pluck('id')->toArray())))
+                                                                @if(Auth::guard('admin')->user()->can('warehousing.warehouses.orders.delivery'))
+                                                                    <a href="#delivery{{ $order->id }}" data-toggle="modal" class="dropdown-item IR cusrsor" title="تحویل">
+                                                                        <i class="ti-thumb-up  text-info"></i>
+                                                                        تحویل
+                                                                    </a>
+                                                                @endif
+                                                            @endif
+                                                            @if(is_null($order->delivered_by))
+                                                                @if(Auth::guard('admin')->user()->can('warehousing.warehouses.orders.edit'))
+                                                                    <a href="#edit{{ $order->id }}" data-toggle="modal" class="dropdown-item IR cusrsor" title="ویرایش">
+                                                                        <i class="fa fa-edit text-success"></i>
+                                                                        ویرایش
+                                                                    </a>
+                                                                @endif
+                                                                @if(Auth::guard('admin')->user()->can('warehousing.warehouses.orders.destroy'))
+                                                                    <a href="#remove{{ $order->id }}" data-toggle="modal" class="dropdown-item IR cusrsor" title="حذف">
+                                                                        <i class="fa fa-trash text-danger"></i>
+                                                                        حذف
+                                                                    </a>
+                                                                @endif
+                                                            @endif
+                                                        </div>
+                                                    </div>
+                                                </div>
+
                                             </td>
                                         </tr>
                                     @endforeach
-                                    </tbody>
-                                </table>
-                                {{ $orders->render() }}
-                            </div>
-                        </div>
+                                 </tbody>
+                             </table>
+                             {{ $orders->render() }}
+                              </div>
+                          </div>
+                       </div>
                     </div>
                 </div>
-            </div>
 
         </div>
-    </div>
+</div>
 
 @endsection
