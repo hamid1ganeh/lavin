@@ -27,11 +27,15 @@ class WareHouseOrderController extends Controller
             ->paginate(10)
             ->withQueryString();
 
-
         $goods = Goods::where('status',Status::Active)->orderBy('title','asc')->get();
 
+        $warehouses = Warehouse::where('status',Status::Active)
+                                ->where('id','<>',$warehouse->id)
+                                ->orderBy('name','asc')
+                                ->get();
 
-        return view('admin.warehousing.warehouses.order',compact('goods','warehouse','orders'));
+
+        return view('admin.warehousing.warehouses.order',compact('goods','warehouse','orders','warehouses'));
     }
 
 
@@ -43,13 +47,25 @@ class WareHouseOrderController extends Controller
 
         $request->validate(
             [
+                'number' => ['required','max:255'],
                 'good' => ['required','exists:goods,id'],
                 'count' => ['nullable','integer'],
                 'value' => ['nullable','integer'],
             ],
             [
+                'number.required' => 'شماره حواله الزامی است.',
+                'number.max' => 'حداکثر طول شماره حواله 255 کارکتر.',
                 'good.required' => ' انتخاب کالا الزامی است.',
             ]);
+
+        if($request->event == '0' && is_null($request->warehouse)){
+            alert()->error('خطا','لطفا انبار مورد نظر را انتخاب کنید.');
+            return back()->withInput();
+        }
+
+        if($request->event != '0' && !is_null($request->warehouse)){
+            return back()->withInput();
+        }
 
         if (is_null($request->count) && is_null($request->value)){
             alert()->error('خطا','انتخاب مقدار واحد یا تعداد الزامی است.');
@@ -88,14 +104,17 @@ class WareHouseOrderController extends Controller
             }
         }
 
-        if (in_array($request->event,['+','-'])){
+        if (in_array($request->event,['+','-','0'])){
             $order= new WarehouseStockHistory();
             $order->warehouse_id = $warehouse->id;
+            $order->moved_warehouse_id = $request->warehouse;
+            $order->number = $request->number;
             $order->goods_id = $request->good;
             $order->event = $request->event;
             $order->unit = $good->unit;
             $order->value = $value;
             $order->count = $count;
+            $order->created_by = Auth::guard('admin')->id();
             $order->save();
             toast('حواله شما ثبت شد.','success')->position('bottom-end');
         }
@@ -113,13 +132,25 @@ class WareHouseOrderController extends Controller
         if (is_null($order->delivered_by )) {
             $request->validate(
                 [
+                    'number' => ['required','max:255'],
                     'good' => ['required', 'exists:goods,id'],
                     'count' => ['nullable', 'integer'],
                     'value' => ['nullable', 'integer'],
                 ],
                 [
+                    'number.required' => 'شماره حواله الزامی است.',
+                    'number.max' => 'حداکثر طول شماره حواله 255 کارکتر.',
                     'good.required' => ' انتخاب کالا الزامی است.',
                 ]);
+
+            if($request->event == '0' && is_null($request->warehouse)){
+                alert()->error('خطا','لطفا انبار مورد نظر را انتخاب کنید.');
+                return back()->withInput();
+            }
+
+            if($request->event != '0' && !is_null($request->warehouse)){
+                return back()->withInput();
+            }
 
             if (is_null($request->count) && is_null($request->value)) {
                 alert()->error('خطا', 'انتخاب مقدار واحد یا تعداد الزامی است.');
@@ -158,15 +189,15 @@ class WareHouseOrderController extends Controller
             }
 
 
-            if (in_array($request->event, ['+', '-'])) {
-
+            if (in_array($request->event, ['+', '-','0'])) {
+                $order->moved_warehouse_id = $request->warehouse;
+                $order->number = $request->number;
                 $order->goods_id = $request->good;
                 $order->event = $request->event;
                 $order->unit = $good->unit;
                 $order->value = $value;
                 $order->count = $count;
                 $order->save();
-
                 toast('بروزرسانی انجام شد.', 'success')->position('bottom-end');
             }
         }

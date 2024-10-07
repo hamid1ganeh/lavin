@@ -57,7 +57,6 @@ class GoodsController extends Controller
                 'unit' => ['required'],
                 'value_per_count' => ['required','integer'],
                 'count_stock' => ['required','integer'],
-                'unit_stock' => ['required','integer'],
                 'price' => ['required','integer'],
                 'description' => ['nullable','max:255'],
                 'main_cat_id' => ['required','exists:goods_main_categories,id'],
@@ -76,8 +75,6 @@ class GoodsController extends Controller
                 'value_per_count.numeric' => 'حجم واحد در هر عدد میبایست یک عدد مثبت باشد.',
                 'count_per_box.required' => ' تعداد در هر جبعه الزامی است.',
                 'count_per_box.numeric' => ' تعداد در هر جبعه  میبایست یک عدد مثبت باشد.',
-                'unit_stock.required' => 'موجودی واحد در انبار الزامی است.',
-                'unit_stock.numeric' => ' موجودی واحد در انبار میبایست یک عدد مثبت باشد.',
                 'price.required' => 'قیمت  کالا الزامی است.',
                 'description.max' => 'حداکثر  طول مجاز توضیحات کالا 255 کارکتر می باشد.',
                 'price.numeric' => 'قیمت کالا میبایست یک عدد مثبت باشد.',
@@ -92,6 +89,8 @@ class GoodsController extends Controller
         }
 
         if(in_array($request->status,[Status::Active,Status::Deactive])){
+            $unitStock = $request->value_per_count*$request->count_stock;
+            
             Goods::create([
                 'title' => $request->title,
                 'brand' => $request->brand,
@@ -101,7 +100,7 @@ class GoodsController extends Controller
                 'unit' => $request->unit,
                 'value_per_count' => $request->value_per_count,
                 'count_stock' => $request->count_stock,
-                'unit_stock' => $request->unit_stock,
+                'unit_stock' => $unitStock,
                 'price' => $request->price,
                 'description' => $request->description,
                 'expire_date' =>$expireDate,

@@ -7,11 +7,16 @@ use Morilog\Jalali\CalendarUtils;
 
 class WarehouseStockHistory extends Model
 {
-    protected $fillable=['warehouse_id','goods_id','stock','event','unit','value','count','delivered_by'];
+    protected $fillable=['warehouse_id','goods_id','stock','event','unit','value','count','delivered_by','moved_warehouse_id','number','created_by'];
 
     public function warehouse()
     {
         return $this->belongsTo(Warehouse::class);
+    }
+
+    public function movedWarehose()
+    {
+        return $this->belongsTo(Warehouse::class,'moved_warehouse_id','id');
     }
 
     public function good()
@@ -24,6 +29,12 @@ class WarehouseStockHistory extends Model
         return $this->belongsTo(Admin::class,'delivered_by','id');
     }
 
+    public function createdBy()
+    {
+        return $this->belongsTo(Admin::class,'created_by','id');
+    }
+
+
     public function delivered_at()
     {
         if (is_null($this->delivered_at)){
@@ -33,14 +44,23 @@ class WarehouseStockHistory extends Model
     }
 
 
+    public function created_at()
+    {
+        return CalendarUtils::convertNumbers(CalendarUtils::strftime('H:i:s - Y/m/d',strtotime($this->crated_at)));
+    }
+
     public function event()
     {
         if($this->event == '+'){
-            return 'افزودن';
+            return 'دریافتی';
         }
 
         if($this->event == '-'){
             return 'مرجوعی';
+        }
+
+        if($this->event == '0'){
+            return 'ارسالی';
         }
     }
 

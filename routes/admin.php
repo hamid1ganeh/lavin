@@ -495,6 +495,13 @@ Route::group(['middleware' => 'auth.admin'], function () {
       Route::delete('{upgrade}/delete', 'ReserveUpgradeController@delete')->name('delete');
     });
 
+      Route::prefix('{reserve}/consumptions')->name('consumptions.')->group(function () {
+          Route::get('/', 'ReserveConsumptionController@index')->name('index');
+          Route::post('/create', 'ReserveConsumptionController@create')->name('store');
+          Route::patch('/{complication}/update', 'ReserveConsumptionController@update')->name('update');
+          Route::delete('/{complication}/delete', 'ReserveConsumptionController@delete')->name('delete');
+      });
+
     Route::prefix('{reserve}/complications')->name('complications.')->group(function () {
       Route::get('/show', 'RegisterComplicationController@show')->name('show');
       Route::post('/create', 'RegisterComplicationController@create')->name('create');
@@ -796,7 +803,7 @@ Route::group(['middleware' => 'auth.admin'], function () {
             Route::prefix('{warehouse}/orders')->name('orders.')->group(function () {
                 Route::get('/', [WareHouseOrderController::class,'index'])->name('index');
                 Route::post('/change', [WareHouseOrderController::class,'store'])->name('store');
-                Route::get('/update', [WareHouseOrderController::class,'update'])->name('update');
+                Route::patch('{order}/update', [WareHouseOrderController::class,'update'])->name('update');
                 Route::patch('{order}/deliver', [WareHouseOrderController::class,'deliver'])->name('deliver');
                 Route::delete('{order}/destroy', [WareHouseOrderController::class,'destroy'])->name('destroy');
             });

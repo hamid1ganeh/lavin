@@ -44,13 +44,13 @@
                                 <div class="col-12 text-right">
                                     @if(Auth::guard('admin')->user()->can('warehousing.warehouses.orders.create'))
                                     <div class="btn-group" >
-                                        <a href="#change{{ $warehouse->id }}" data-toggle="modal" class="btn btn-primary" title="ایجاد حواله جدید">
+                                        <a href="#create{{ $warehouse->id }}" data-toggle="modal" class="btn btn-primary" title="ایجاد حواله جدید">
                                             <i class="fa fa-plus plusiconfont"></i>
                                             <b class="IRANYekanRegular">ایجاد حواله جدید</b>
                                         </a>
 
-                                        <!-- Change Modal -->
-                                        <div class="modal fade" id="change{{ $warehouse->id }}" tabindex="-1" aria-labelledby="reviewLabel" aria-hidden="true">
+                                        <!-- Create Modal -->
+                                        <div class="modal fade" id="create{{ $warehouse->id }}" tabindex="-1" aria-labelledby="reviewLabel" aria-hidden="true">
                                             <div class="modal-dialog modal-xs">
                                                 <div class="modal-content">
                                                     <div class="modal-header py-3">
@@ -62,22 +62,44 @@
                                                     <div class="modal-body text-left">
                                                         <form action="{{ route('admin.warehousing.warehouses.orders.store',$warehouse) }}"  method="POST" class="d-inline" id="order">
                                                             @csrf
-                                                            <div class="row">
-                                                                <div class="col-12" style="display:inherit;">
-                                                                    <input type="radio" id="increase" name="event" value="+" @if(old('event')!= '-') checked @endif>
-                                                                    &nbsp;
-                                                                    <label for="active" class="IRANYekanRegular">افزودن</label><br>
-                                                                    &nbsp;&nbsp; &nbsp;
-                                                                    <input type="radio" id="decrease" name="event" value="-" @if(old('event')== '-') checked @endif>
-                                                                    &nbsp;
-                                                                    <label for="deactive" class="IRANYekanRegular">مرجوعی</label><br>
+
+                                                            <div class="form-group row">
+                                                                <div class="col-6">
+                                                                    <label for="number" class="control-label IRANYekanRegular">شماره حواله</label>
+                                                                    <input type="text" class="form-control input text-center" name="number" id="number" placeholder=" شماره حواله را وارد کنید" value="{{ old('number')  }}" required>
+                                                                    <span class="form-text text-danger erroralarm"> {{ $errors->first('number') }} </span>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="form-group row">
+                                                                <div class="col-12">
+                                                                    <label for="event" class="col-form-label IRANYekanRegular">حواله</label>
+                                                                    <select name="event" id="event"  class="width-100 form-control IRANYekanRegular" onchange="order(this.value,'warehouse')" required>
+                                                                        <option value="+" @if(old('event')== '+') 'selected' @endif>دریافتی</option>
+                                                                        <option value="-" @if(old('event')== '-') 'selected' @endif>مرجوعی</option>
+                                                                        <option value="0" @if(old('event')== '0') 'selected' @endif>ارسالی</option>
+                                                                    </select>
+                                                                    <span class="form-text text-danger erroralarm"> {{ $errors->first('event') }} </span>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="form-group row">
+                                                                <div class="col-12">
+                                                                    <label for="warehouse" class="col-form-label IRANYekanRegular">ارسال به انبار دیگر</label>
+                                                                    <select name="warehouse" id="warehouse"  class="width-100 form-control IRANYekanRegular" onchange="send(this.value,'event')">
+                                                                        <option value="">انبار مورد نظر را انتخاب کنید</option>
+                                                                        @foreach($warehouses as $ws)
+                                                                            <option value="{{ $ws->id }}" {{$ws->id == old('warehouse')?'selected':'' }}>{{ $ws->name }}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                    <span class="form-text text-danger erroralarm"> {{ $errors->first('warehouse') }} </span>
                                                                 </div>
                                                             </div>
 
                                                             <div class="form-group row">
                                                                 <div class="col-12">
                                                                     <label for="good" class="col-form-label IRANYekanRegular">کالا</label>
-                                                                    <select name="good" id="good"  class="width-100 form-control select2">
+                                                                    <select name="good" id="good"  class="width-100 form-control IRANYekanRegular" required>
                                                                         <option value="">کالا مورد نظر را انتخاب کنید</option>
                                                                         @foreach($goods as $good)
                                                                             <option value="{{ $good->id }}" {{$good->id == old('good')?'selected':'' }}>{{ $good->title }}</option>
@@ -120,13 +142,17 @@
                                     <thead>
                                     <tr>
                                         <th><b class="IRANYekanRegular">ردیف</b></th>
+                                        <th><b class="IRANYekanRegular">شماره حواله</b></th>
                                         <th><b class="IRANYekanRegular">نام کالا</b></th>
                                         <th><b class="IRANYekanRegular">برند</b></th>
                                         <th><b class="IRANYekanRegular">دسته اصلی</b></th>
                                         <th><b class="IRANYekanRegular">دسته فرعی</b></th>
                                         <th><b class="IRANYekanRegular">تعداد</b></th>
                                         <th><b class="IRANYekanRegular">حجم واحد</b></th>
-                                        <th><b class="IRANYekanRegular">نوع</b></th>
+                                        <th><b class="IRANYekanRegular">نوع حواله</b></th>
+                                        <th><b class="IRANYekanRegular">انبار ارسالی</b></th>
+                                        <th><b class="IRANYekanRegular">ایجاد کننده</b></th>
+                                        <th><b class="IRANYekanRegular">زمان ایجاد</b></th>
                                         <th><b class="IRANYekanRegular">تحویل گیرنده</b></th>
                                         <th><b class="IRANYekanRegular">زمان تحویل</b></th>
                                         <th><b class="IRANYekanRegular">اقدامات</b></th>
@@ -136,6 +162,7 @@
                                     @foreach($orders as $index=>$order)
                                         <tr>
                                             <td><strong class="IRANYekanRegular">{{ ++$index }}</strong></td>
+                                            <td><strong class="IRANYekanRegular">{{ $order->number }}</strong></td>
                                             <td><strong class="IRANYekanRegular">{{ $order->good->title ?? '' }}</strong></td>
                                             <td><strong class="IRANYekanRegular">{{ $order->good->brand ?? '' }}</strong></td>
                                             <td><strong class="IRANYekanRegular">{{ $order->good->main_category->title ?? '' }}</strong></td>
@@ -143,6 +170,9 @@
                                             <td><strong class="IRANYekanRegular">{{ $order->count }}</strong></td>
                                             <td><strong class="IRANYekanRegular">{{ $order->value.' '.$order->unit }}</strong></td>
                                             <td><strong class="IRANYekanRegular">{{ $order->event() }}</strong></td>
+                                            <td><strong class="IRANYekanRegular">{{ $order->movedWarehose->name ?? '' }}</strong></td>
+                                            <td><strong class="IRANYekanRegular">{{ $order->createdBy->fullname ?? '' }}</strong></td>
+                                            <td><strong class="IRANYekanRegular">{{ $order->created_at() }}</strong></td>
                                             <td><strong class="IRANYekanRegular">{{ $order->deliveredBy->fullname ?? '' }}</strong></td>
                                             <td><strong class="IRANYekanRegular">{{ $order->delivered_at() }}</strong></td>
                                             <td>
@@ -208,24 +238,48 @@
                                                                 </button>
                                                             </div>
                                                             <div class="modal-body text-left">
-                                                                <form action="{{ route('admin.warehousing.warehouses.orders.update',$warehouse) }}"  method="POST" class="d-inline" id="edit{{ $order->id }}">
+                                                                <form action="{{ route('admin.warehousing.warehouses.orders.update',[$warehouse,$order]) }}"  method="POST" class="d-inline" id="update{{ $order->id }}">
                                                                     @csrf
-                                                                    <div class="row">
-                                                                        <div class="col-12" style="display:inherit;">
-                                                                            <input type="radio" id="increase" name="event" value="+" @if(old('event')== '+' || $order->event=='+') checked @endif>
-                                                                            &nbsp;
-                                                                            <label for="active" class="IRANYekanRegular">افزودن</label><br>
-                                                                            &nbsp;&nbsp; &nbsp;
-                                                                            <input type="radio" id="decrease" name="event" value="-" @if(old('event')== '-' || $order->event=='-') checked @endif>
-                                                                            &nbsp;
-                                                                            <label for="deactive" class="IRANYekanRegular">مرجوعی</label><br>
+                                                                    @method('PATCH')
+
+                                                                    <div class="form-group row">
+                                                                        <div class="col-6">
+                                                                            <label for="number{{$order->id}}" class="control-label IRANYekanRegular">شماره حواله</label>
+                                                                            <input type="text" class="form-control input text-center" name="number" id="number{{$order->id}}" placeholder=" شماره حواله را وارد کنید" value="{{ old('number') ?? $order->number }}" required>
+                                                                            <span class="form-text text-danger erroralarm"> {{ $errors->first('number') }} </span>
                                                                         </div>
                                                                     </div>
 
                                                                     <div class="form-group row">
                                                                         <div class="col-12">
+                                                                            <label for="event{{$order->id}}" class="col-form-label IRANYekanRegular">حواله</label>
+                                                                            <select name="event" id="event{{$order->id}}"  class="width-100 form-control IRANYekanRegular" onchange="order(this.value,'warehouse{{$order->id}}')">
+                                                                                <option value="+" @if(old('event')== '+' || $warehouse->event == '+') 'selected' @endif>دریافتی</option>
+                                                                                <option value="-" @if(old('event')== '-' || $warehouse->event == '+') 'selected' @endif>مرجوعی</option>
+                                                                                <option value="0" @if(old('event')== '0' ||  $warehouse->event == '0')) 'selected' @endif>ارسالی</option>
+                                                                            </select>
+                                                                            <span class="form-text text-danger erroralarm"> {{ $errors->first('event') }} </span>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="form-group row">
+                                                                        <div class="col-12">
+                                                                            <label for="warehouse{{$order->id}}" class="col-form-label IRANYekanRegular">ارسال به انبار دیگر</label>
+                                                                            <select name="warehouse" id="warehouse{{$order->id}}"  class="width-100 form-control IRANYekanRegular" onchange="send(this.value,'event{{$order->id}}')">
+                                                                                <option value="">انبار مورد نظر را انتخاب کنید</option>
+                                                                                @foreach($warehouses as $ws)
+                                                                                    <option value="{{ $ws->id }}" {{$ws->id == old('warehouse') || $ws->id ==  $warehouse->moved_warehouse_id?'selected':'' }}>{{ $ws->name }}</option>
+                                                                                @endforeach
+                                                                            </select>
+                                                                            <span class="form-text text-danger erroralarm"> {{ $errors->first('warehouse') }} </span>
+                                                                        </div>
+                                                                    </div>
+
+
+                                                                    <div class="form-group row">
+                                                                        <div class="col-12">
                                                                             <label for="good" class="col-form-label IRANYekanRegular">کالا</label>
-                                                                            <select name="good" id="good"  class="width-100 form-control select2">
+                                                                            <select name="good" id="good{{$order->id}}"  class="width-100 form-control IRANYekanRegular">
                                                                                 <option value="">کالا مورد نظر را انتخاب کنید</option>
                                                                                 @foreach($goods as $good)
                                                                                     <option value="{{ $good->id }}" {{$good->id == old('good') || $good->id == $order->goods_id?'selected':'' }}>{{ $good->title }}</option>
@@ -237,21 +291,22 @@
 
                                                                     <div class="form-group row">
                                                                         <div class="col-12 col-md-6">
-                                                                            <label for="count" class="control-label IRANYekanRegular">تعداد</label>
-                                                                            <input type="number" class="form-control input text-center" name="count" id="count" placeholder="تعداد مورد نظر را وارد کنید" value="{{ old('count') ?? $order->count  }}">
+                                                                            <label for="count{{$order->id}}" class="control-label IRANYekanRegular">تعداد</label>
+                                                                            <input type="number" class="form-control input text-center" name="count" id="count{{$order->id}}" placeholder="تعداد مورد نظر را وارد کنید" value="{{ old('count') ?? $order->count  }}">
                                                                             <span class="form-text text-danger erroralarm"> {{ $errors->first('count') }} </span>
                                                                         </div>
 
                                                                         <div class="col-12 col-md-6">
-                                                                            <label for="value" class="control-label IRANYekanRegular">واحد</label>
-                                                                            <input type="number" class="form-control input text-center" name="value" id="value" placeholder=" حجم واحد مورد نظر را وارد کنید" value="{{ old('value') ?? $order->value  }}">
+                                                                            <label for="value{{$order->id}}" class="control-label IRANYekanRegular">واحد</label>
+                                                                            <input type="number" class="form-control input text-center" name="value" id="value{{$order->id}}" placeholder=" حجم واحد مورد نظر را وارد کنید" value="{{ old('value') ?? $order->value  }}">
                                                                             <span class="form-text text-danger erroralarm"> {{ $errors->first('value') }} </span>
                                                                         </div>
                                                                     </div>
+
                                                                 </form>
                                                             </div>
                                                             <div class="modal-footer">
-                                                                <button type="submit" class="btn btn-success px-8" title="بروزرسانی" form="edit{{ $order->id }}">بروزرسانی</button>
+                                                                <button type="submit" class="btn btn-success px-8" form="update{{ $order->id }}" title="بروزرسانی">بروزرسانی</button>
                                                                 &nbsp;
                                                                 <button type="button" class="btn btn-secondary" title="انصراف" data-dismiss="modal">انصراف</button>
                                                             </div>
@@ -303,5 +358,37 @@
 
         </div>
 </div>
+
+@endsection
+
+@section('script')
+        <script type="text/javascript">
+            function send(value,id)
+            {
+                if(value=='')
+                {
+                    document.getElementById(id).value = "+";
+                }
+
+                if(value!='')
+                {
+                    document.getElementById(id).value = "0";
+                }
+
+            }
+
+            function order(value,id)
+            {
+                if(value!='0')
+                {
+                    document.getElementById(id).value = "";
+                    document.getElementById(id).removeAttribute("required");
+                }
+                else
+                {
+                    document.getElementById(id).required = true;
+                }
+            }
+        </script>
 
 @endsection

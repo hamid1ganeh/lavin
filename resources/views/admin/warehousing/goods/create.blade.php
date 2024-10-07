@@ -126,27 +126,23 @@
                                         </div>
 
                                         <div class="col-12 col-md-3">
-                                            <label for="unit_stock" class="control-label IRANYekanRegular">موجودی واحد در انبار</label>
-                                            <input type="text" class="form-control input text-right" name="unit_stock" id="unit_stock" placeholder="موجودی واحد در انبار را وارد کنید" value="{{ old('unit_stock')  }}">
-                                            <span class="form-text text-danger erroralarm"> {{ $errors->first('unit_stock') }} </span>
+                                            <label for="price" class="control-label IRANYekanRegular">قیمت واحد مصرفی</label>
+                                            <input type="text" class="form-control input text-left" name="price" id=price" placeholder="قیمت واحد مصرفی کالا را وارد کنید" value="{{ old('price')  }}">
+                                            <span class="form-text text-danger erroralarm"> {{ $errors->first('price') }} </span>
                                         </div>
 
                                     </div>
 
 
                                     <div class="form-group row">
-                                        <div class="col-12 col-md-2">
-                                            <label for="price" class="control-label IRANYekanRegular">قیمت واحد مصرفی</label>
-                                            <input type="text" class="form-control input text-left" name="price" id=price" placeholder="قیمت واحد مصرفی کالا را وارد کنید" value="{{ old('price')  }}">
-                                            <span class="form-text text-danger erroralarm"> {{ $errors->first('price') }} </span>
-                                        </div>
+
                                         <div class="col-12 col-md-2">
                                             <label for="expireDate" class="control-label IRANYekanRegular">تاریخ انقضاء</label>
                                             <input type="text"   class="form-control text-center" id="expireDate" name="expireDate" readonly value="{{ old('expireDate')  }}">
                                             <span class="form-text text-danger erroralarm"> {{ $errors->first('expireDate') }} </span>
                                             <i class="mdi mdi-replay text-danger font-20 cursor-pointer" title="پاک کردن" onclick="reset('expireDate')"></i>
                                         </div>
-                                        <div class="col-12 col-md-8">
+                                        <div class="col-12 col-md-10">
                                             <label for="description" class="control-label IRANYekanRegular">توضیحات</label>
                                             <input type="text" class="form-control input text-left" name="description" id=description" placeholder="توضیحات کالا را وارد کنید" value="{{ old('description')  }}">
                                             <span class="form-text text-danger erroralarm"> {{ $errors->first('description') }} </span>
