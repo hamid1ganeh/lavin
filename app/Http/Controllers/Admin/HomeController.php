@@ -23,6 +23,7 @@ use App\Enums\Status;
 use App\Enums\PaymentStatus;
 use App\Enums\DeliveryStatus;
 use App\Enums\NumberStatus;
+use App\Models\WarehouseStock;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\ServiceCollection;
@@ -401,6 +402,14 @@ class HomeController extends Controller
                                 'advisers'=>$advisers,
                                 'branches'=>$service->branches],200);
     }
+
+    public function goodsfetch()
+    {
+        $warehouse = request('warehouse');
+        $goods = WarehouseStock::with('good')->where('warehouse_id',$warehouse)->get();
+        return response()->json(['goods'=>$goods->pluck('good')],200);
+    }
+
 
     public function videoupload(Request $request)
     {

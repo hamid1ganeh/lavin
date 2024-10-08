@@ -23,6 +23,7 @@ Route::get('/fetch_cities', 'HomeController@fetch_cities')->name('fetch_cities')
 Route::get('/servicefetch', 'HomeController@servicefetch')->name('servicefetch');
 Route::get('/doctorsfetch', 'HomeController@doctorsfetch')->name('doctorsfetch');
 Route::get('/detailsfetch', 'HomeController@detailsfetch')->name('detailsfetch');
+Route::get('/goodsfetch', 'HomeController@goodsfetch')->name('goodsfetch');
 
 
 
@@ -497,9 +498,9 @@ Route::group(['middleware' => 'auth.admin'], function () {
 
       Route::prefix('{reserve}/consumptions')->name('consumptions.')->group(function () {
           Route::get('/', 'ReserveConsumptionController@index')->name('index');
-          Route::post('/create', 'ReserveConsumptionController@create')->name('store');
-          Route::patch('/{complication}/update', 'ReserveConsumptionController@update')->name('update');
-          Route::delete('/{complication}/delete', 'ReserveConsumptionController@delete')->name('delete');
+          Route::post('/create', 'ReserveConsumptionController@store')->name('store');
+          Route::patch('{consumption}/update', 'ReserveConsumptionController@update')->name('update');
+          Route::delete('/{consumption}/delete', 'ReserveConsumptionController@delete')->name('delete');
       });
 
     Route::prefix('{reserve}/complications')->name('complications.')->group(function () {

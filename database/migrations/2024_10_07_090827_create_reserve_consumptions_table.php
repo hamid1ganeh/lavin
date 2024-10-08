@@ -20,7 +20,8 @@ class CreateReserveConsumptionsTable extends Migration
             $table->unsignedBigInteger('goods_id');
             $table->string('unit');
             $table->unsignedBigInteger('value')->default(0);
-            $table->unsignedBigInteger('price')->default(0);
+            $table->unsignedBigInteger('price_per_unit')->default(0);
+            $table->unsignedBigInteger('total_price')->default(0);
             $table->timestamps();
 
             //references

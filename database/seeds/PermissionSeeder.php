@@ -1027,6 +1027,30 @@ class PermissionSeeder extends Seeder
         ]);
 
         DB::table('permissions')->insert([
+            'name' => 'reserves.consumptions.index',
+            'description' => 'لیست مواد مصرفی رزرو',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'reserves.consumptions.create',
+            'description' => 'ثبت مواد مصرفی رزرو',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'reserves.consumptions.edit',
+            'description' => 'ویرایش مواد مصرفی رزرو',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'reserves.consumptions.destroy',
+            'description' => 'حذف مواد مصرفی رزرو',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
             'name' => 'jobs.index',
             'description' => 'لیست مشاغل',
             'status'=> Status::Active

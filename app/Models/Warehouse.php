@@ -15,5 +15,9 @@ class Warehouse extends Model
          return $this->belongsToMany(Admin::class);
      }
 
+     public function stocks()
+     {
+         return $this->hasMany(WarehouseStock::class,'warehouse_id','id');
+     }
 
 }

@@ -234,6 +234,13 @@ Breadcrumbs::for('reserves.determining', function ($trail,$reserve) {
 });
 
 
+// داشبورد > رزرو > مواد مصرفی
+Breadcrumbs::for('reserves.consumptions', function ($trail,$reserve) {
+    $trail->parent('reserves', $trail);
+    $trail->push('مواد مصرفی', route('admin.reserves.consumptions.index',$reserve));
+});
+
+
 // داشبورد > رزرو > ارتقاء
 Breadcrumbs::for('reserves.upgrade', function ($trail,$reserve) {
     $trail->parent('reserves', $trail);
@@ -252,6 +259,8 @@ Breadcrumbs::for('reserves.upgrade.edit', function ($trail,$reserve,$upgrade) {
     $trail->parent('reserves.upgrade',$reserve);
     $trail->push('ویرایش ارتقاء', route('admin.reserves.upgrade.edit',[$reserve,$upgrade]));
 });
+
+
 
 
 // داشبورد > شعبه ها
