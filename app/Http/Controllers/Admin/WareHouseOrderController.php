@@ -180,7 +180,7 @@ class WareHouseOrderController extends Controller
                 return back()->withInput();
             }
 
-            if ($request->event == '-') {
+            if ($request->event == '-' || $request->event == '0') {
                 $stock = WarehouseStock::where('warehouse_id', $warehouse->id)->where('goods_id', $request->good)->first();
                 if (is_null($stock) || $ask > $stock->stockAsUnit()) {
                     alert()->error('خطا', 'مقدار درخواستی شما در انبار شما موجود نمی باشد.');
@@ -225,21 +225,32 @@ class WareHouseOrderController extends Controller
                     $stock->value = $order->value;
                 }else{
                     $stock->count += $order->count;
-
-
                     $stock->value += $order->value;
                 }
 
                 $good->count_stock -= $order->count;
                 $good->unit_stock -= $order->value;
+
+
+                $stock->warehouse_id = $order->warehouse_id;
+                $stock->goods_id = $order->goods_id;
+                $stock->unit = $order->unit;
+
+                DB::transaction(function() use ($stock, $order,$good) {
+                    $stock->save();
+                    $order->save();
+                    $good->save();
+                });
+
             }
 
 
-            if ($order->event == '-'){
+            if ($order->event == '-' || $order->event == '0'){
                 if($order->stockAsUnit() > $stock->stockAsUnit()){
                     alert()->error('خطا','مقدار درخواستی شما در انبار شما موجود نمی باشد.');
                     return back();
                 }
+
 
                 if (is_null($stock)){
                     $stock->count = 0;
@@ -258,20 +269,48 @@ class WareHouseOrderController extends Controller
                         $stock->value -= $order->value;
                     }
                 }
-                $good->count_stock += $order->count;
-                $good->unit_stock += $order->value;
+
+                if ($order->event == '-'){
+                    $good->count_stock += $order->count;
+                    $good->unit_stock += $order->value;
+
+                    $stock->warehouse_id = $order->warehouse_id;
+                    $stock->goods_id = $order->goods_id;
+                    $stock->unit = $order->unit;
+
+                    DB::transaction(function() use ($stock, $order,$good) {
+                        $stock->save();
+                        $order->save();
+                        $good->save();
+                    });
+                }
+
+                if ($order->event == '0'){
+                    $stockMoved = WarehouseStock::where('warehouse_id',$order->moved_warehouse_id)->where('goods_id',$order->goods_id)->firstOrNew();
+
+                    if(is_null($stockMoved)){
+                        $stockMoved->count_stock = 0;
+                        $stockMoved->value = 0;
+                    }else{
+                        $stockMoved->count += $order->count;
+                        $stockMoved->value += $order->value;
+                    }
+
+                    $stockMoved->warehouse_id = $order->moved_warehouse_id;
+                    $stockMoved->goods_id = $order->goods_id;
+                    $stockMoved->unit = $order->unit;
+
+                    $stock->warehouse_id = $order->warehouse_id;
+                    $stock->goods_id = $order->goods_id;
+                    $stock->unit = $order->unit;
+
+                    DB::transaction(function() use ($stock, $order,$stockMoved) {
+                        $stock->save();
+                        $order->save();
+                        $stockMoved->save();
+                    });
+                }
             }
-
-            $stock->warehouse_id = $order->warehouse_id;
-            $stock->goods_id = $order->goods_id;
-            $stock->unit = $order->unit;
-
-            DB::transaction(function() use ($stock, $order,$good) {
-                $stock->save();
-                $order->save();
-                $good->save();
-            });
-
             toast('حواله مورد نظر تحویل گرفته شد.','success')->position('bottom-end');
         }
         return back();
