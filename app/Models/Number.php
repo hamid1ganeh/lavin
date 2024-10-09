@@ -2,18 +2,16 @@
 
 namespace App\Models;
 
-use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Morilog\Jalali\CalendarUtils;
 use  App\Enums\NumberStatus;
 use  App\Enums\NumberType;
 use Morilog\Jalali\Jalalian;
-use App\Services\FunctionService;
 
 class Number extends Model
 {
     protected $fillable = ['user_id','operator_id','management_id','firstname','lastname','mobile','type',
-                            'information','status','operator_description','adviser_description'];
+        'information','status','operator_description','adviser_description'];
 
     public function user()
     {
@@ -74,14 +72,26 @@ class Number extends Model
         }
     }
 
-     public function club()
-     {
-       return User::where('mobile',$this->mobile)->withTrashed()->exists();
-     }
+    public function club()
+    {
+        return User::where('mobile',$this->mobile)->withTrashed()->exists();
+    }
 
     public function getUserByMobile()
     {
         return User::where('mobile',$this->mobile)->withTrashed()->first();
+    }
+
+    public function completeInfo ()
+    {
+        $user = $this->getUserByMobile();
+        if(!is_null($user) &&
+            UserInfo::where('user_id',$user->id)->exists() &&
+            UserAddress::where('user_id',$user->id)->exists()){
+            return  true;
+        }
+
+        return false;
     }
 
     public function getStatus()
@@ -209,7 +219,7 @@ class Number extends Model
         if(isset($advisers) && $advisers != '')
         {
             $query->whereHas('advisers',function($q) use ($advisers){
-               $q->whereIn('adviser_id',$advisers);
+                $q->whereIn('adviser_id',$advisers);
             });
         }
 
