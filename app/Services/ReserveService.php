@@ -35,6 +35,7 @@ class ReserveService
             'reception_desc'=>$reception_desc,
             'status'=>$status,
             'complication_id'=>$complication_id,
+            'price'=> $detail->price,
         ]);
     }
 }

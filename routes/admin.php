@@ -479,6 +479,7 @@ Route::group(['middleware' => 'auth.admin'], function () {
     Route::get('{reserve}/payment', 'ReserveServiceController@payment')->name('payment');
     Route::post('{payment}/pay', 'ReserveServiceController@pay')->name('pay');
     Route::post('{reserve}/poll', 'ReserveServiceController@poll')->name('poll');
+    Route::patch('{reserve}/price', 'ReserveServiceController@price')->name('price');
 
     Route::prefix('{reserve}/upgrade')->name('upgrade.')->group(function () {
       Route::get('/', 'ReserveUpgradeController@index')->name('index');

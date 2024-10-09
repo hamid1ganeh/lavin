@@ -16,11 +16,12 @@ class ServiceReserve extends Model
 {
    use SoftDeletes;
 
-    protected $fillable = ['user_id','branch_id','service_id',
+    protected $fillable = [ 'user_id','branch_id','service_id',
                             'service_name','detail_id','detail_name',
                             'doctor_id','secratary_id','asistant_id',
                             'reception_id','adviser_id','time','complication_id',
-                            'status','type','code','doneTime','reception_desc'];
+                            'status','type','code','doneTime','reception_desc',
+                            'total_price','price_description'];
 
     public function user()
     {

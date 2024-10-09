@@ -521,6 +521,18 @@
                                                                          </div>
                                                                      </div>
 
+                                                                     <div class="row mt-2">
+                                                                         <div class="col-12">
+                                                                             <p>مبلغ کل(تومان): <br>{{ $reserve->total_price }}</p>
+                                                                         </div>
+                                                                     </div>
+
+                                                                     <div class="row mt-2">
+                                                                         <div class="col-12">
+                                                                             <p>توضیحات مبلغ: <br>{{ $reserve->price_description }}</p>
+                                                                         </div>
+                                                                     </div>
+
 
                                                                     <div class="row">
                                                                         <div class="col-12">
@@ -598,7 +610,6 @@
 
                                                                          </div>
                                                                      </div>
-
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-secondary" title="انصراف" data-dismiss="modal">بستن</button>
@@ -882,19 +893,61 @@
                                                     </div>
                                                 </div>
 
+                                                <!-- Price Modal -->
+                                                <div class="modal fade" id="price{{ $reserve->id }}" tabindex="-1" aria-labelledby="reviewLabel" aria-hidden="true">
+                                                    <div class="modal-dialog modal-xs">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header py-3">
+                                                                <h5 class="modal-title IRANYekanRegular" id="newReviewLabel">تغییر قیمت</h5>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <form action="{{ route('admin.reserves.price', $reserve) }}"  method="POST" class="d-inline" id="price-form{{ $reserve->id }}">
+                                                                    @csrf
+                                                                    @method('PATCH')
+                                                                    <div class="form-group row">
+                                                                        <label for="price" class="col-md-12 col-form-label text-md-left IRANYekanRegular">قیمت قابل پرداخت (تومان):</label>
+                                                                        <div class="col-6">
+                                                                            <input id="price" type="number" class="form-control text-center @error('price') is-invalid @enderror" name="price" value="{{ old('price') ?? $reserve->total_price }}"  autofocus placeholder="قیمت" required>
+                                                                            <span class="form-text text-danger erroralarm"> {{ $errors->first('price') }} </span>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="form-group row">
+                                                                        <label for="description" class="col-md-12 col-form-label text-md-left IRANYekanRegular">توضیحات:</label>
+                                                                        <div class="col-12">
+                                                                            <input id="description" type="text" class="form-control  @error('description') is-invalid @enderror" name="description" value="{{ old('description') ?? $reserve->price_description }}"  autofocus placeholder="توضیحات" required>
+                                                                            <span class="form-text text-danger erroralarm"> {{ $errors->first('description') }} </span>
+                                                                        </div>
+                                                                    </div>
+
+                                                                </form>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="submit" title="ثبت" class="btn btn-success px-8"  form="price-form{{ $reserve->id }}">بروزرسانی</button>
+                                                                &nbsp;
+                                                                <button type="button" class="btn btn-secondary" title="انصراف" data-dismiss="modal">انصراف</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
                                                 <div class="input-group">
                                                     <div class="input-group-append">
                                                         <i class=" ti-align-justify" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
                                                         <div class="dropdown-menu">
 
                                                             <a href="#info{{ $reserve->id }}" data-toggle="modal" class="dropdown-item IR cusrsor" title="اطلاعات">
-                                                                <i class="fa fa-info text-dark font-16"></i>
+                                                                <i class="fa fa-info text-dark font-16 cursor-pointer"></i>
                                                                 <span class="p-1">اطلاعات</span>
                                                             </a>
 
                                                              @if(Auth::guard('admin')->user()->can('reserves.determining'))
                                                               <a class="dropdown-item IR cusrsor" href="{{ route('admin.reserves.show', $reserve) }}" title="تعیین وضعیت رزرو">
-                                                                <i class="fas fa-thumbs-up text-primary"></i>
+                                                                <i class="fas fa-thumbs-up text-primary cursor-pointer"></i>
                                                                 <span class="p-1">تعیین وضعیت رزرو</span>
                                                               </a>
                                                               @endif
@@ -902,22 +955,31 @@
                                                               @if(Auth::guard('admin')->user()->can('reserves.review') &&
                                                                    $reserve->status == App\Enums\ReserveStatus::done)
                                                                 <a class="dropdown-item IR cusrsor" href="#review{{ $reserve->id }}" data-toggle="modal" title="نظرسنجی">
-                                                                    <i class="fa fa-comment text-danger cusrsor"></i>
+                                                                    <i class="fa fa-comment text-danger cursor-pointer"></i>
                                                                     <span class="p-1">نظرسنجی عمومی</span>
                                                                 </a>
 
                                                                 <a class="dropdown-item IR cusrsor" href="#poll{{ $reserve->id }}" data-toggle="modal" title="نظرسنجی اختصاصی">
-                                                                    <i class="fa fa-comment text-info cusrsor"></i>
+                                                                    <i class="fa fa-comment text-info cursor-pointer"></i>
                                                                     <span class="p-1">نظرسنجی اختصاصی</span>
                                                                 </a>
                                                               @endif
 
                                                                @if(Auth::guard('admin')->user()->can('reserves.payment'))
                                                                 <a href="{{ route('admin.reserves.payment',$reserve) }}" class="dropdown-item IR cusrsor" title="پرداخت" target="_blank">
-                                                                    <i class="fas fa-dollar-sign text-primary cusrsor"></i>
+                                                                    <i class="fas fa-dollar-sign text-primary cursor-pointer"></i>
                                                                     <span class="p-1">پرداخت</span>
                                                                 </a>
                                                                @endif
+
+                                                                @if(Auth::guard('admin')->user()->can('reserves.price')  &&
+                                                                    App\Enums\reserveStatus::done != $reserve->status)
+                                                                <a href="#price{{ $reserve->id }}" data-toggle="modal" class="dropdown-item IR cusrsor" title="تغییر قیمت">
+                                                                    <i class="fas fa-dollar-sign text-success cursor-pointer"></i>
+                                                                    <span class="p-1">تغییر قیمت</span>
+                                                                </a>
+                                                               @endif
+
 
                                                                 @if(App\Enums\reserveStatus::done != $reserve->status && Auth::guard('admin')->user()->can('reserves.secratry') && $reserve->paid())
                                                                 <a class="dropdown-item IR cusrsor" href="#secratry{{ $reserve->id }}" data-toggle="modal" title="تعیین منشی">
@@ -930,7 +992,7 @@
                                                                 @if(Auth::guard('admin')->user()->can('reserves.done') &&
                                                                 (App\Enums\reserveStatus::done == $reserve->status || App\Enums\reserveStatus::secratry == $reserve->status ))
                                                                 <a class="dropdown-item IR cusrsor" href="#asistant{{ $reserve->id }}" data-toggle="modal" title="تعیین وضعیت">
-                                                                    <i class="fas fa-thumbs-up  text-primary  cusrsor"></i>
+                                                                    <i class="fas fa-thumbs-up  text-primary cursor-pointer"></i>
                                                                     <span class="p-1">تعیین وضعیت</span>
                                                                 </a>
                                                                 @endif
@@ -939,7 +1001,7 @@
                                                                     App\Enums\reserveStatus::done == $reserve->status &&
                                                                      !is_null($reserve->secratry_id))
                                                                     <a class="dropdown-item IR cusrsor" href="{{ route('admin.reserves.upgrade.index', $reserve) }}" title="ارتقاء" target="_blank">
-                                                                        <i class="fas fa-level-up-alt text-success"></i>
+                                                                        <i class="fas fa-level-up-alt text-success cursor-pointer"></i>
                                                                         <span class="p-1">ارتقاء</span>
                                                                     </a>
                                                                 @endif
@@ -947,7 +1009,7 @@
                                                                 @if(Auth::guard('admin')->user()->can('complications.show') &&
                                                                     App\Enums\reserveStatus::done == $reserve->status   )
                                                                     <a class="dropdown-item IR cusrsor" href="{{ route('admin.reserves.complications.show', $reserve) }}" title="عوارض" target="_blank">
-                                                                        <i class="fa fa-exclamation text-warning"></i>
+                                                                        <i class="fa fa-exclamation text-warning cursor-pointer"></i>
                                                                         <span class="p-1">عوارض</span>
                                                                     </a>
                                                                 @endif

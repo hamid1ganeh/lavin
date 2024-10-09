@@ -253,6 +253,7 @@
                                             <th><b class="IRANYekanRegular">پزشک</b></th>
                                             <th><b class="IRANYekanRegular">رزور</b></th>
                                             <th><b class="IRANYekanRegular">نوبت</b></th>
+                                            <th><b class="IRANYekanRegular">قیمت قابل پرداخت(تومان)</b></th>
                                             <th><b class="IRANYekanRegular">وضعیت</b></th>
                                             <th><b class="IRANYekanRegular">اقدامات</b></th>
                                         </tr>
@@ -276,21 +277,37 @@
                                                 </strong>
                                                 @endif
                                             </td>
+                                            <td><strong class="IRANYekanRegular">{{ $reserve->total_price }}</strong></td>
                                             <td>
                                                 <strong class="IRANYekanRegular">
                                                     @switch($reserve->status)
                                                         @case(App\Enums\ReserveStatus::waiting)
-                                                        <span class="badge badge-warning IR p-1">درانتظار</span>
-                                                        @break
+                                                            <span class="badge badge-warning IR p-1">درانتظار رزرو</span>
+                                                            @break
                                                         @case(App\Enums\ReserveStatus::confirm)
-                                                        <span class="badge badge-success IR p-1">تایید</span>
-                                                        @break
+                                                            <span class="badge badge-success IR p-1">رزرو</span>
+                                                            @break
+                                                        @case(App\Enums\ReserveStatus::accept)
+                                                            <span class="badge badge-success IR p-1">پذیرش</span>
+                                                            @break
                                                         @case(App\Enums\ReserveStatus::cancel)
-                                                        <span class="badge badge-danger IR p-1">لغو</span>
-                                                        @break
+                                                            <span class="badge badge-danger IR p-1">لغو</span>
+                                                            @break
+                                                        @case(App\Enums\ReserveStatus::secratry)
+                                                            <span class="badge badge-info IR p-1">ارجاع به منشی</span>
+                                                            @break
                                                         @case(App\Enums\ReserveStatus::done)
-                                                        <span class="badge badge-primary IR p-1">انجام شده</span>
-                                                        @break
+                                                            <span class="badge badge-primary IR p-1">انجام شده</span>
+                                                            @break
+                                                        @case(App\Enums\ReserveStatus::paid)
+                                                            <span class="badge badge-primary IR p-1">پرداخت شده</span>
+                                                            @break
+                                                        @case(App\Enums\ReserveStatus::wittingForAdviser)
+                                                            <span class="badge badge-warning IR p-1">در انتظار مشاور</span>
+                                                            @break
+                                                        @case(App\Enums\ReserveStatus::Adviser)
+                                                            <span class="badge badge-warning IR p-1">مشاوره شده</span>
+                                                            @break
                                                     @endswitch
                                                 </strong>
                                             </td>

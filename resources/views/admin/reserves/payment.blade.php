@@ -39,19 +39,19 @@
                                         <div class="col-6">
                                             <address>
                                               <p class="IR">
-                                                عنوان سرویس:{{ $payement->reserve->service_name }}
+                                                عنوان سرویس:{{ $payment->reserve->service_name }}
                                               </p>
 
                                               <p class="IR">
-                                                جزئیات سرویس:{{ $payement->reserve->detail_name  }}
+                                                جزئیات سرویس:{{ $payment->reserve->detail_name  }}
                                               </p>
 
                                               <p class="IR">
-                                               مبلغ قابل پرداخت:{{ number_format($payement->price) }} تومان
+                                               مبلغ قابل پرداخت:{{ number_format($payment->price) }} تومان
                                               </p>
 
                                               <strong class="IRANYekanRegular">
-                                                    @switch($payement->status)
+                                                    @switch($payment->status)
                                                         @case(App\Enums\PaymentStatus::unpaid)
                                                         <span class="badge badge-warning IR p-1">پرداخت نشده</span>
                                                         @break
@@ -69,12 +69,12 @@
                                             </address>
                                         </div>
 
-                                        @if($payement->status == App\Enums\PaymentStatus::paid)
+                                        @if($payment->status == App\Enums\PaymentStatus::paid)
                                         <div class="col-6">
                                             <address>
 
                                                 <strong class="IRANYekanRegular">
-                                                    @switch($payement->payway)
+                                                    @switch($payment->payway)
                                                         @case(App\Enums\PayWay::online)
                                                         <span class="badge badge-primary IR p-1">پرداخت آنلاین</span>
                                                         @break
@@ -85,13 +85,13 @@
                                                 </strong>
 
                                                 <p class="IR mt-2">
-                                                    شماره قبض:{{ $payement->res_code }}
+                                                    شماره قبض:{{ $payment->res_code }}
                                                 </p>
 
-                                                @if($payement->payway == App\Enums\PayWay::online)
+                                                @if($payment->payway == App\Enums\PayWay::online)
                                                 <p class="IR mt-2">
                                                     درگاه پرداخت:
-                                                    @switch($payement->getway)
+                                                    @switch($payment->getway)
                                                         @case('zarinpal')
                                                          زرین پال
                                                         @break
@@ -108,11 +108,11 @@
 
 
                                         <div class="col-6">
-                                            <form action="{{ route('admin.reserves.pay',$payement) }}" method="post">
+                                            <form action="{{ route('admin.reserves.pay',$payment) }}" method="post">
                                                 @csrf
                                                 <label for="title" class="control-label IRANYekanRegular">شماره قبض</label>
                                                 <input type="text" class="form-control input text-right" name="res_code" id="res_code" placeholder="شماره قبض را وارد کنید" value="{{ old('code')  }}">
-                                                <input type="hidden" name="model"  value="{{ $payement->reserve->id  }}">
+                                                <input type="hidden" name="model"  value="{{ $payment->reserve->id  }}">
                                                 <span class="form-text text-danger erroralarm"> {{ $errors->first('res_code') }} </span>
                                                  <button class="btn btn-primary" type="submite">پرداخت</button>
                                             </form>

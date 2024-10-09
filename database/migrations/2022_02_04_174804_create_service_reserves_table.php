@@ -32,6 +32,8 @@ class CreateServiceReservesTable extends Migration
             $table->string('type',1)->nullable();
             $table->DateTime('doneTime')->nullable();
             $table->text('reception_desc')->nullable();
+            $table->unsignedBigInteger('total_price')->default(0);
+            $table->string('price_description')->nullable();
             $table->softDeletes();
             $table->timestamps();
 

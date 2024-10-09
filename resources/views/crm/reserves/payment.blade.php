@@ -39,15 +39,15 @@
                                         <div class="col-6">
                                             <address>
                                               <p class="IR">
-                                                عنوان سرویس:{{ $payement->reserve->service_name }}
+                                                عنوان سرویس:{{ $payment->reserve->service_name }}
                                               </p>
 
                                               <p class="IR">
-                                                جزئیات سرویس:{{ $payement->reserve->detail_name  }}
+                                                جزئیات سرویس:{{ $payment->reserve->detail_name  }}
                                               </p>
 
                                               <strong class="IRANYekanRegular">
-                                                    @switch($payement->status)
+                                                    @switch($payment->status)
                                                         @case(App\Enums\PaymentStatus::unpaid)
                                                         <span class="badge badge-warning IR p-1">پرداخت نشده</span>
                                                         @break
@@ -65,12 +65,12 @@
                                             </address>
                                         </div>
 
-                                        @if($payement->status == App\Enums\PaymentStatus::paid)
+                                        @if($payment->status == App\Enums\PaymentStatus::paid)
                                         <div class="col-6">
                                             <address>
 
                                                 <strong class="IRANYekanRegular">
-                                                    @switch($payement->payway)
+                                                    @switch($payment->payway)
                                                         @case(App\Enums\PayWay::online)
                                                         <span class="badge badge-primary IR p-1">پرداخت آنلاین</span>
                                                         @break
@@ -81,13 +81,13 @@
                                                 </strong>
 
                                                 <p class="IR mt-2">
-                                                     شماره تراکنش:{{ $payement->res_code }}
+                                                     شماره تراکنش:{{ $payment->res_code }}
                                                 </p>
 
-                                                @if($payement->payway == App\Enums\PayWay::online)
+                                                @if($payment->payway == App\Enums\PayWay::online)
                                                 <p class="IR mt-2">
                                                     درگاه پرداخت:
-                                                    @switch($payement->getway)
+                                                    @switch($payment->getway)
                                                         @case('zarinpal')
                                                          زرین پال
                                                         @break
@@ -102,14 +102,14 @@
 
                                     </div>
 
-                                    @if($payement->status != App\Enums\PaymentStatus::paid)
+                                    @if($payment->status != App\Enums\PaymentStatus::paid)
                                     <div class="row">
                                         <div class="col-12">
-                                            <form action="{{ route('website.account.reserves.discount',$payement->reserve) }}" method="post">
+                                            <form action="{{ route('website.account.reserves.discount',$payment->reserve) }}" method="post">
                                                 @csrf
                                                 <label for="title" class="control-label IRANYekanRegular">کد تخفیف</label>
                                                 <input type="text" class="form-control input text-right" name="code" id="code" placeholder="کد تخفیف را وارد کنید" value="{{ old('code')  }}">
-                                                <input type="hidden" name="model"  value="{{ $payement->reserve->id  }}">
+                                                <input type="hidden" name="model"  value="{{ $payment->reserve->id  }}">
                                                 <span class="form-text text-danger erroralarm"> {{ $errors->first('discount') }} </span>
                                                 <button class="btn btn-success" type="submite">اعمال کد تخفیف</button>
                                             </form>
@@ -117,18 +117,18 @@
                                     </div>
                                     @endif
 
-                                    @if($payement->status != App\Enums\PaymentStatus::paid)
+                                    @if($payment->status != App\Enums\PaymentStatus::paid)
 
                                         <div class="row">
 
                                             <div class="col-12">
                                                 <div class="float-right">
-                                                    <p class="IR"><b>مبلغ سرویس:</b> <span class="float-right">{{ number_format($payement->price) }} تومان</span></p>
+                                                    <p class="IR"><b>مبلغ سرویس:</b> <span class="float-right">{{ number_format($payment->price) }} تومان</span></p>
 
                                                         @if(Session::has('offer'))
                                                             <p class="IR"><b>تخفیف:</b> <span class="float-right">{{ number_format(Session::get('offer')) }} تومان</span></p>
                                                         @endif
-                                                        <h3 class="IR"><b>مبلغ قابل پرداخت:</b> <span class="float-right">{{ number_format($payement->price - Session::get('offer')) }}</span></h3>
+                                                        <h3 class="IR"><b>مبلغ قابل پرداخت:</b> <span class="float-right">{{ number_format($payment->price - Session::get('offer')) }}</span></h3>
 
                                                 </div>
                                                 <div class="clearfix"></div>
@@ -138,10 +138,10 @@
 
                                         <div class="mt-4 mb-1">
                                             <div class="text-right d-print-none">
-                                                <form action="{{ route('website.account.reserves.pay',$payement) }}" method="post">
+                                                <form action="{{ route('website.account.reserves.pay',$payment) }}" method="post">
                                                     @csrf
                                                     <input type="hidden" name="code" value="{{ Session::get('code') }}">
-                                                    <input type="hidden" name="model"  value="{{ $payement->reserve->id  }}">
+                                                    <input type="hidden" name="model"  value="{{ $payment->reserve->id  }}">
                                                     <button class="btn btn-primary" type="submite">پرداخت</button>
                                                 </form>
                                             </div>

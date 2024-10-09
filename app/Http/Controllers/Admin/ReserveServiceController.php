@@ -375,19 +375,23 @@ class ReserveServiceController extends Controller
         config(['auth.defaults.guard' => 'admin']);
         $this->authorize('reserves.payment');
 
-         $payement = ReservePayment::with('reserve.service')->where('reserve_id',$reserve->id)->first();
+         $payment = ReservePayment::with('reserve.service')->where('reserve_id',$reserve->id)->first();
 
-         if($payement==null)
+
+         if($payment==null)
          {
              $detail = ServiceDetail::find($reserve->detail_id);
             $payement = ReservePayment::with('reserve.service')->create([
                 'reserve_id' => $reserve->id,
                 'user_id' => $reserve->user_id,
-                'price' => $detail->price,
+                'price' => $reserve->total_price,
             ]);
+         }else{
+             $payment->price = $reserve->total_price;
+             $payment->save();
          }
 
-        return view('admin.reserves.payment',compact('payement'));
+        return view('admin.reserves.payment',compact('payment'));
     }
 
      public function pay(ReservePayment $payment,Request $request)
@@ -585,6 +589,25 @@ class ReserveServiceController extends Controller
         $receptions = Admin::whereHas('roles', function($q){$q->where('name', 'reception');})->orderBy('fullname','asc')->get();
 
         return view('admin.reserves.upgrades',compact('upgrades','doctors','secretaries','asistants','serviceDetails','branches','receptions'));
+    }
+
+    public  function price(ServiceReserve $reserve,Request $request)
+    {
+        //اجازه دسترسی
+        config(['auth.defaults.guard' => 'admin']);
+        $this->authorize('reserves.price');
+
+        if($reserve->status == ReserveStatus::done){
+            return abort(403);
+        }
+
+        $reserve->total_price = $request->price;
+        $reserve->price_description = $request->description;
+        $reserve->save();
+
+        toast('مبلغ رزرو بروزرسانی شد.','success')->position('bottom-end');
+        return back();
+
     }
 
 }

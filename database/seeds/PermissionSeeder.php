@@ -1027,6 +1027,12 @@ class   PermissionSeeder extends Seeder
         ]);
 
         DB::table('permissions')->insert([
+            'name' => 'reserves.price',
+                'description' => 'ویرایش هزینه رزرو',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
             'name' => 'jobs.index',
             'description' => 'لیست مشاغل',
             'status'=> Status::Active
