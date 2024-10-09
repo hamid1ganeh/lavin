@@ -1007,12 +1007,21 @@
                                                                 @endif
 
                                                                 @if(Auth::guard('admin')->user()->can('complications.show') &&
-                                                                    App\Enums\reserveStatus::done == $reserve->status   )
+                                                                    App\Enums\reserveStatus::done == $reserve->status)
                                                                     <a class="dropdown-item IR cusrsor" href="{{ route('admin.reserves.complications.show', $reserve) }}" title="عوارض" target="_blank">
                                                                         <i class="fa fa-exclamation text-warning cursor-pointer"></i>
                                                                         <span class="p-1">عوارض</span>
                                                                     </a>
                                                                 @endif
+
+
+                                                            @if(Auth::guard('admin')->user()->can('reserves.consumptions.index'))
+                                                                <a class="dropdown-item IR cusrsor" href="{{ route('admin.reserves.consumptions.index', $reserve) }}" title="مصرفی" target="_blank">
+                                                                    <i class="fas fa-shopping-cart text-info"></i>
+                                                                    <span class="p-1">مصرفی</span>
+                                                                </a>
+                                                            @endif
+
                                                         </div>
                                                     </div>
                                                 </div>

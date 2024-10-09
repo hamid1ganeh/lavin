@@ -233,6 +233,7 @@
                                                     <option value="{{ App\Enums\NumberType::lahijan }}" @if(request('type')!=null) {{ in_array(App\Enums\NumberType::lahijan,request('type'))?'selected':'' }} @endif>شعبه لاهیجان</option>
                                                     <option value="{{ App\Enums\NumberType::tehran }}" @if(request('type')!=null) {{ in_array(App\Enums\NumberType::tehran,request('type'))?'selected':'' }} @endif>شعبه تهران</option>
                                                     <option value="{{ App\Enums\NumberType::hozoori }}" @if(request('type')!=null) {{ in_array(App\Enums\NumberType::hozoori,request('type'))?'selected':'' }} @endif>حضوری</option>
+
                                                 </select>
                                             </div>
                                         </div>
@@ -343,8 +344,8 @@
                                             <td><a class="IRANYekanRegular" href="{{ route('admin.receptions.index',['mobile'=>$number->mobile]) }}" target="_blank">{{ $number->mobile }}</a></td>
                                             <td>
                                                 @if($number->club())
-                                                    <a  href="{{ route('admin.numbers.info.show',$number)  }}" class="dropdown-item IR cusrsor"  title="اطلاعات تکمیلی کاربر" target="_blank">
-                                                        <i class="fa fa-info  cursor-pointer @if($number->completeInfo())  text-primary @endif"></i>
+                                                    <a  href="{{ route('admin.numbers.info.show',$number)  }}" class="dropdown-item IR cusrsor"  title="اطلاعات تکمیلی کاربر">
+                                                        <i class="fa fa-info cursor-pointer"></i>
                                                     </a>
                                                 @elseif(Auth::guard('admin')->user()->can('numbers.add2club'))
                                                     <a  href="#register{{ $number->id }}" class="dropdown-item IR cusrsor" data-toggle="modal" title="افزودن به باشگاه مشتریان">

@@ -84,18 +84,6 @@ class Number extends Model
         return User::where('mobile',$this->mobile)->withTrashed()->first();
     }
 
-    public function completeInfo ()
-    {
-        $user = $this->getUserByMobile();
-        if(!is_null($user) &&
-          UserInfo::where('user_id',$user->id)->exists() &&
-          UserAddress::where('user_id',$user->id)->exists()){
-            return  true;
-        }
-
-        return false;
-    }
-
     public function getStatus()
     {
         switch ($this->status) {
@@ -168,9 +156,6 @@ class Number extends Model
                 break;
             case NumberType::call:
                 $res = "تماس های ورودی";
-                break;
-            case NumberType::festival:
-                $res = "آینه منوع";
                 break;
         }
         return  $res;

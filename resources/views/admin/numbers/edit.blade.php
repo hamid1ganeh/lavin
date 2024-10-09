@@ -37,23 +37,6 @@
                                 @csrf
                                 @method('PATCH')
                                 <div class="form-group row">
-
-                                    <div class="col-12">
-                                        <label for="user" class="control-label IRANYekanRegular">معرف</label>
-                                        @if($number->user != null)
-                                            <span class="form-text text-danger erroralarm"> {{ $number->user->firstname.' '.$number->user->lastname.' ('.$number->user->mobile.')' }} </span>
-                                            <input
-                                                type="checkbox"
-                                                id="remove-user"
-                                                name="remove_user"
-                                                value="remove_user" />
-                                            <label for="subscribeNews IRANYekanRegular  ">حذف معرف</label>
-                                        @endif
-                                        <select class="widht-100 form-control select2" name="user" id="user"></select>
-                                        <span class="form-text text-danger erroralarm"> {{ $errors->first('user') }} </span>
-
-                                    </div>
-
                                     <div class="col-md-6 col-12">
                                        <label for="firstname" class="col-md-12 col-form-label text-md-left IRANYekanRegular">نام :</label>
                                         <input id="firstname" type="text" class="form-control  @error('firstname') is-invalid @enderror" name="firstname" value="{{ old('firstname') ?? $number->firstname }}"  autofocus placeholder="نام">
@@ -82,8 +65,6 @@
                                             <option value="{{ App\Enums\NumberType::lahijan }}" {{ App\Enums\NumberType::lahijan==old('type')||App\Enums\NumberType::lahijan==$number->type?'selected':'' }}>شعبه لاهیجان</option>
                                             <option value="{{ App\Enums\NumberType::tehran }}" {{ App\Enums\NumberType::tehran==old('type')||App\Enums\NumberType::tehran==$number->type?'selected':'' }}>شعبه تهران</option>
                                             <option value="{{ App\Enums\NumberType::call }}" {{ App\Enums\NumberType::call==old('type')||App\Enums\NumberType::call==$number->type?'selected':'' }}>تماس های ورودی</option>
-                                            <option value="{{ App\Enums\NumberType::festival }}" {{ App\Enums\NumberType::festival==old('type')||App\Enums\NumberType::festival==$number->type?'selected':'' }}>آینه ممنوع</option>
-
                                         </select>
                                         <span class="form-text text-danger erroralarm"> {{ $errors->first('status') }} </span>
                                     </div>
@@ -106,36 +87,6 @@
         </div>
     </div>
 </div>
-
-
-@section('script')
-    <script type="text/javascript">
-        $("#user").select2({
-
-            placeholder: '... نام و نام خانوادگی یا شماره موبایل یا شماره ملی',
-            ajax: {
-                url: '{{ route("admin.users.fetch") }}',
-
-                processResults: function (data) {
-                    let res = [];
-
-                    $.each(data.data, function (index, item) {
-                        res.push({
-                            'id': item.id,
-                            'text': item.name
-                        });
-                    });
-
-
-                    return {
-                        results: res
-                    };
-                }
-            }
-        });
-
-    </script>
-@endsection
 
 @endsection
 

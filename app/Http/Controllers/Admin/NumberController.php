@@ -157,7 +157,6 @@ class NumberController extends Controller
           $this->authorize('numbers.create');
 
           $request->validate([
-               'user'=>'nullable|numeric|exists:users,id',
                'firstname'=> 'required|max:255',
                'lastname'=> 'required|max:255',
                'mobile'=>'required|min:11|max:11|regex:/^[0-9]+$/|unique:numbers',
@@ -174,8 +173,7 @@ class NumberController extends Controller
                'mobile.unique'=>' شماره موبایل قبلا ثبت شده است',
            ]);
 
-           Number::create(["user_id" => $request->user,
-                            "firstname" => $request->firstname,
+           Number::create(["firstname" => $request->firstname,
                             "lastname" => $request->lastname,
                             "mobile" => $request->mobile,
                             "type"=> $request->type]);
@@ -201,7 +199,6 @@ class NumberController extends Controller
          $this->authorize('numbers.edit');
 
           $request->validate([
-              'user'=>'nullable|numeric|exists:users,id',
                'firstname'=> 'required|max:255',
                'lastname'=> 'required|max:255',
                'mobile'=>'required|min:11|max:11|regex:/^[0-9]+$/|unique:numbers,mobile,'.$number->id,
@@ -218,16 +215,7 @@ class NumberController extends Controller
                 'mobile.unique'=>' شماره موبایل قبلا ثبت شده است',
            ]);
 
-          $user = $number->user_id;
-          if (isset($request->user)){
-              $user = $request->user;
-          }
-          if (isset($request->remove_user)){
-              $user = null;
-
-          }
-           $number->update(["user_id" => $user,
-                            "firstname" => $request->firstname,
+           $number->update(["firstname" => $request->firstname,
                              "lastname" => $request->lastname,
                              "mobile" => $request->mobile,
                              "type"=> $request->type]);

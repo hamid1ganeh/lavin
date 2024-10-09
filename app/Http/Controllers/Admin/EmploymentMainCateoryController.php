@@ -48,7 +48,7 @@ class EmploymentMainCateoryController extends Controller
         if(in_array($request->status,[Status::Active,Status::Deactive])){
             EmploymentMainCategory::create([
                 'title'=>$request->title,
-                'status'=> Status::Active
+                'status'=>$request->status,
             ]);
 
             toast('دسته بندی جدید افزوده شد.','success')->position('bottom-end');

@@ -5,6 +5,11 @@ use App\Http\Controllers\Admin\EmploymentMainCateoryController;
 use App\Http\Controllers\Admin\EmploymentSubCateoryController;
 use App\Http\Controllers\Admin\EmploumentJobController;
 use App\Http\Controllers\Admin\EmploymentController;
+use App\Http\Controllers\Admin\GoodsMainController;
+use App\Http\Controllers\Admin\GoodsSubController;
+use App\Http\Controllers\Admin\GoodsController;
+use App\Http\Controllers\Admin\WarehouseController;
+use App\Http\Controllers\Admin\WareHouseOrderController;
 
 
 Route::get('/login', 'AuthController@loginPage')->name('loginPage');
@@ -18,6 +23,7 @@ Route::get('/fetch_cities', 'HomeController@fetch_cities')->name('fetch_cities')
 Route::get('/servicefetch', 'HomeController@servicefetch')->name('servicefetch');
 Route::get('/doctorsfetch', 'HomeController@doctorsfetch')->name('doctorsfetch');
 Route::get('/detailsfetch', 'HomeController@detailsfetch')->name('detailsfetch');
+Route::get('/goodsfetch', 'HomeController@goodsfetch')->name('goodsfetch');
 
 
 
@@ -491,6 +497,13 @@ Route::group(['middleware' => 'auth.admin'], function () {
       Route::delete('{upgrade}/delete', 'ReserveUpgradeController@delete')->name('delete');
     });
 
+      Route::prefix('{reserve}/consumptions')->name('consumptions.')->group(function () {
+          Route::get('/', 'ReserveConsumptionController@index')->name('index');
+          Route::post('/create', 'ReserveConsumptionController@store')->name('store');
+          Route::patch('{consumption}/update', 'ReserveConsumptionController@update')->name('update');
+          Route::delete('/{consumption}/delete', 'ReserveConsumptionController@delete')->name('delete');
+      });
+
     Route::prefix('{reserve}/complications')->name('complications.')->group(function () {
       Route::get('/show', 'RegisterComplicationController@show')->name('show');
       Route::post('/create', 'RegisterComplicationController@create')->name('create');
@@ -754,6 +767,63 @@ Route::group(['middleware' => 'auth.admin'], function () {
             Route::delete('/destroy/{job}', [EmploumentJobController::class,'destroy'])->name('destroy');
             Route::patch('/recycle/{job}', [EmploumentJobController::class,'recycle'])->name('recycle');
         });
+
+    });
+
+
+    Route::prefix('warehousing')->name('warehousing.')->group(function () {
+
+
+        Route::prefix('categories')->name('categories.')->group(function () {
+            Route::get('/', [GoodsMainController::class,'index'])->name('main.index');
+            Route::get('/create', [GoodsMainController::class,'create'])->name('main.create');
+            Route::post('/store', [GoodsMainController::class,'store'])->name('main.store');
+            Route::get('{main}/edit', [GoodsMainController::class,'edit'])->name('main.edit');
+            Route::patch('{main}/update', [GoodsMainController::class,'update'])->name('main.update');
+            Route::delete('/destroy/{main}', [GoodsMainController::class,'destroy'])->name('main.destroy');
+            Route::patch('/recycle/{main}', [GoodsMainController::class,'recycle'])->name('main.recycle');
+            Route::get('/fetch_sub', [GoodsMainController::class,'fetch_sub'])->name('fetch_sub');
+
+            Route::prefix('{main}/sub')->name('sub.')->group(function () {
+                Route::get('/', [GoodsSubController::class,'index'])->name('index');
+                Route::get('/create', [GoodsSubController::class,'create'])->name('create');
+                Route::post('/store', [GoodsSubController::class,'store'])->name('store');
+                Route::get('{sub}/edit', [GoodsSubController::class,'edit'])->name('edit');
+                Route::patch('{sub}/update', [GoodsSubController::class,'update'])->name('update');
+                Route::delete('/destroy/{sub}', [GoodsSubController::class,'destroy'])->name('destroy');
+                Route::patch('/recycle/{sub}', [GoodsSubController::class,'recycle'])->name('recycle');
+            });
+        });
+
+        Route::prefix('goods')->name('goods.')->group(function () {
+            Route::get('/', [GoodsController::class,'index'])->name('index');
+            Route::get('/create', [GoodsController::class,'create'])->name('create');
+            Route::post('/store', [GoodsController::class,'store'])->name('store');
+            Route::get('{good}/edit', [GoodsController::class,'edit'])->name('edit');
+            Route::patch('{good}/update', [GoodsController::class,'update'])->name('update');
+            Route::delete('/destroy/{good}', [GoodsController::class,'destroy'])->name('destroy');
+            Route::patch('/recycle/{good}', [GoodsController::class,'recycle'])->name('recycle');
+        });
+
+        Route::prefix('warehouses')->name('warehouses.')->group(function () {
+            Route::get('/', [WarehouseController::class,'index'])->name('index');
+            Route::get('/create', [WarehouseController::class,'create'])->name('create');
+            Route::post('/store', [WarehouseController::class,'store'])->name('store');
+            Route::get('{warehouse}/edit', [WarehouseController::class,'edit'])->name('edit');
+            Route::patch('{warehouse}/update', [WarehouseController::class,'update'])->name('update');
+            Route::delete('/destroy/{warehouse}', [WarehouseController::class,'destroy'])->name('destroy');
+            Route::patch('/recycle/{warehouse}', [WarehouseController::class,'recycle'])->name('recycle');
+            Route::get('{warehouse}/stocks', [WarehouseController::class,'stocks'])->name('stocks');
+
+            Route::prefix('{warehouse}/orders')->name('orders.')->group(function () {
+                Route::get('/', [WareHouseOrderController::class,'index'])->name('index');
+                Route::post('/change', [WareHouseOrderController::class,'store'])->name('store');
+                Route::patch('{order}/update', [WareHouseOrderController::class,'update'])->name('update');
+                Route::patch('{order}/deliver', [WareHouseOrderController::class,'deliver'])->name('deliver');
+                Route::delete('{order}/destroy', [WareHouseOrderController::class,'destroy'])->name('destroy');
+            });
+        });
+
 
     });
 
