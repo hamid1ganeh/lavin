@@ -7,11 +7,6 @@ use App\Enums\Unit;
 
 class CreateWarehouseStockHistoriesTable extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up()
     {
         Schema::create('warehouse_stock_histories', function (Blueprint $table) {
@@ -21,9 +16,7 @@ class CreateWarehouseStockHistoriesTable extends Migration
             $table->unsignedBigInteger('moved_warehouse_id')->nullable();
             $table->unsignedBigInteger('goods_id');
             $table->char('event',1);
-            $table->string('unit')->default(Unit::count);
-            $table->unsignedDouble('value')->default(0);
-            $table->unsignedDouble('count')->default(0);
+            $table->unsignedDouble('stock')->default(0);
             $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('delivered_by')->nullable();
             $table->dateTime('delivered_at')->nullable();
@@ -61,11 +54,6 @@ class CreateWarehouseStockHistoriesTable extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
         Schema::dropIfExists('warehouse_stock_histories');

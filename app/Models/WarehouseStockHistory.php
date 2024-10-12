@@ -7,7 +7,7 @@ use Morilog\Jalali\CalendarUtils;
 
 class WarehouseStockHistory extends Model
 {
-    protected $fillable=['warehouse_id','goods_id','stock','event','unit','value','count','delivered_by','moved_warehouse_id','number','created_by'];
+    protected $fillable=['warehouse_id','goods_id','event','unit','stock','delivered_by','moved_warehouse_id','number','created_by'];
 
     public function warehouse()
     {
@@ -63,10 +63,34 @@ class WarehouseStockHistory extends Model
             return 'ارسالی';
         }
     }
-
-    public function stockAsUnit()
+    public function countStock()
     {
-        return ($this->count*$this->good->value_per_count)+$this->value;
+        return (int)($this->stock/$this->good->value_per_count);
+    }
+
+    public function remainderStock()
+    {
+        return fmod($this->stock,$this->good->value_per_count);
+    }
+    public function stock()
+    {
+         $count = $this->countStock();
+         $remainder = $this->remainderStock();
+         $result='';
+
+         if($count>0){
+             $result .=$count.' عدد ';
+
+             if($remainder>0){
+                 $result .= ' و ';
+             }
+         }
+
+        if($remainder>0){
+            $result .= $remainder.' '.$this->good->unit;
+        }
+
+         return   $result;
     }
 
 }

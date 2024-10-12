@@ -63,8 +63,9 @@
                                         <th><b class="IRANYekanRegular">برند</b></th>
                                         <th><b class="IRANYekanRegular">دسته اصلی</b></th>
                                         <th><b class="IRANYekanRegular">دسته فرعی</b></th>
-                                        <th><b class="IRANYekanRegular">تعداد</b></th>
-                                        <th><b class="IRANYekanRegular">حجم واحد</b></th>
+                                        <th><b class="IRANYekanRegular">موجودی واحد در هر عدد</b></th>
+                                        <th><b class="IRANYekanRegular">موجودی</b></th>
+
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -75,8 +76,8 @@
                                             <td><strong class="IRANYekanRegular">{{ $stock->good->brand ?? '' }}</strong></td>
                                             <td><strong class="IRANYekanRegular">{{ $stock->good->main_category->title ?? '' }}</strong></td>
                                             <td><strong class="IRANYekanRegular">{{ $stock->good->sub_category->title ?? '' }}</strong></td>
-                                            <td><strong class="IRANYekanRegular">{{ $stock->count }}</strong></td>
-                                            <td><strong class="IRANYekanRegular">{{ $stock->value.' '.$stock->unit }}</strong></td>
+                                            <td><strong class="IRANYekanRegular">{{ $stock->good->value_per_count.' '.$stock->good->unit.' در هر عدد ' }}</strong></td>
+                                            <td><strong class="IRANYekanRegular">{{ $stock->stock() ?? '' }}</strong></td>
                                         </tr>
                                     @endforeach
                                     </tbody>

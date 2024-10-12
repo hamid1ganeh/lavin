@@ -147,8 +147,8 @@
                                         <th><b class="IRANYekanRegular">برند</b></th>
                                         <th><b class="IRANYekanRegular">دسته اصلی</b></th>
                                         <th><b class="IRANYekanRegular">دسته فرعی</b></th>
-                                        <th><b class="IRANYekanRegular">تعداد</b></th>
-                                        <th><b class="IRANYekanRegular">حجم واحد</b></th>
+                                        <th><b class="IRANYekanRegular">موجودی واحد در هر عدد</b></th>
+                                        <th><b class="IRANYekanRegular">موجودی کل</b></th>
                                         <th><b class="IRANYekanRegular">نوع حواله</b></th>
                                         <th><b class="IRANYekanRegular">انبار ارسالی</b></th>
                                         <th><b class="IRANYekanRegular">ایجاد کننده</b></th>
@@ -167,8 +167,8 @@
                                             <td><strong class="IRANYekanRegular">{{ $order->good->brand ?? '' }}</strong></td>
                                             <td><strong class="IRANYekanRegular">{{ $order->good->main_category->title ?? '' }}</strong></td>
                                             <td><strong class="IRANYekanRegular">{{ $order->good->sub_category->title ?? '' }}</strong></td>
-                                            <td><strong class="IRANYekanRegular">{{ $order->count }}</strong></td>
-                                            <td><strong class="IRANYekanRegular">{{ $order->value.' '.$order->unit }}</strong></td>
+                                            <td><strong class="IRANYekanRegular">{{ $order->good->value_per_count.' '.$order->good->unit.' در هر عدد ' }}</strong></td>
+                                            <td><strong class="IRANYekanRegular">{{ $order->stock() ?? '' }}</strong></td>
                                             <td><strong class="IRANYekanRegular">{{ $order->event() }}</strong></td>
                                             <td><strong class="IRANYekanRegular">{{ $order->movedWarehose->name ?? '' }}</strong></td>
                                             <td><strong class="IRANYekanRegular">{{ $order->createdBy->fullname ?? '' }}</strong></td>
@@ -292,13 +292,13 @@
                                                                     <div class="form-group row">
                                                                         <div class="col-12 col-md-6">
                                                                             <label for="count{{$order->id}}" class="control-label IRANYekanRegular">تعداد</label>
-                                                                            <input type="number" class="form-control input text-center" name="count" id="count{{$order->id}}" placeholder="تعداد مورد نظر را وارد کنید" value="{{ old('count') ?? $order->count  }}">
+                                                                            <input type="number" class="form-control input text-center" name="count" id="count{{$order->id}}" placeholder="تعداد مورد نظر را وارد کنید" value="{{ old('count') ?? $order->countStock()  }}">
                                                                             <span class="form-text text-danger erroralarm"> {{ $errors->first('count') }} </span>
                                                                         </div>
 
                                                                         <div class="col-12 col-md-6">
                                                                             <label for="value{{$order->id}}" class="control-label IRANYekanRegular">واحد</label>
-                                                                            <input type="number" class="form-control input text-center" name="value" id="value{{$order->id}}" placeholder=" حجم واحد مورد نظر را وارد کنید" value="{{ old('value') ?? $order->value  }}">
+                                                                            <input type="number" class="form-control input text-center" name="value" id="value{{$order->id}}" placeholder=" حجم واحد مورد نظر را وارد کنید" value="{{ old('value') ?? $order->remainderStock()  }}">
                                                                             <span class="form-text text-danger erroralarm"> {{ $errors->first('value') }} </span>
                                                                         </div>
                                                                     </div>

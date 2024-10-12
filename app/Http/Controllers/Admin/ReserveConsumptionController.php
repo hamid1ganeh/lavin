@@ -11,6 +11,7 @@ use App\Models\Warehouse;
 use App\Models\WarehouseStock;
 use Illuminate\Http\Request;
 use App\Enums\ReserveStatus;
+use Illuminate\Support\Facades\DB;
 
 class ReserveConsumptionController extends Controller
 {
@@ -58,7 +59,7 @@ class ReserveConsumptionController extends Controller
            ]);
 
        $stock = WarehouseStock::where('warehouse_id',$request->warehouse)->where('goods_id',$request->good)->first();
-       if(is_null($stock) || $stock->stockAsUnit()<$request->value){
+       if(is_null($stock) || $stock->stock<$request->value){
            alert()->error('خطا','واحد مصرفی کالا در انبار موجود نمی باشد.');
            return back()->withInput();
        }
@@ -70,14 +71,21 @@ class ReserveConsumptionController extends Controller
 
        $good = Goods::find($request->good);
 
-       ReserveConsumption::create(['reserve_id'=>$reserve->id,
-                                   'warehouse_id'=>$request->warehouse,
-                                    'goods_id'=>$good->id,
-                                    'unit'=>$good->unit,
-                                    'value'=>$request->value,
-                                    'price_per_unit'=>$good->price,
-                                    'total_price'=>$good->price*$request->value]);
+       $cunsumption = new ReserveConsumption();
+       $cunsumption->reserve_id = $reserve->id;
+       $cunsumption->warehouse_id = $request->warehouse;
+       $cunsumption->goods_id = $good->id;
+       $cunsumption->unit = $good->unit;
+       $cunsumption->value = $request->value;
+       $cunsumption->price_per_unit = $good->price;
+       $cunsumption->total_price = $good->price*$request->value;
 
+       $stock->stock -=$request->value;
+
+       DB::transaction(function() use ($stock,$cunsumption) {
+           $stock->save();
+           $cunsumption->save();
+       });
 
        toast('موارد مصرفی جدید ثبت شد.','success')->position('bottom-end');
        return back();
@@ -106,8 +114,9 @@ class ReserveConsumptionController extends Controller
                 'value.required' => ' واحد مصرفی الزامی است.',
             ]);
 
+        $oldStock = WarehouseStock::where('warehouse_id',$consumption->warehouse_id)->where('goods_id',$consumption->goods_id)->first();
         $stock = WarehouseStock::where('warehouse_id',$request->warehouse)->where('goods_id',$request->good)->first();
-        if(is_null($stock) || $stock->stockAsUnit()<$request->value){
+        if(is_null($stock) || ($stock->stock+$consumption->value)<$request->value){
             alert()->error('خطا','واحد مصرفی کالا در انبار موجود نمی باشد.');
             return back()->withInput();
         }
@@ -119,12 +128,21 @@ class ReserveConsumptionController extends Controller
 
         $good = Goods::find($request->good);
 
-        $consumption->update(['warehouse_id'=>$request->warehouse,
-                              'goods_id'=>$good->id,
-                               'unit'=>$good->unit,
-                               'value'=>$request->value,
-                               'price_per_unit'=>$good->price,
-                               'total_price'=>$good->price*$request->value]);
+        $oldStock->stock += $consumption->value;
+        $stock->stock -= $request->value;
+        $consumption->warehouse_id = $request->warehouse;
+        $consumption->goods_id = $good->id;
+        $consumption->unit = $good->unit;
+        $consumption->value = $request->value;
+        $consumption->price_per_unit = $good->price;
+        $consumption->total_price =$good->price*$request->value;
+
+
+        DB::transaction(function() use ($oldStock,$stock, $consumption) {
+            $oldStock->save();
+            $stock->save();
+            $consumption->save();
+        });
 
 
         toast('موارد مصرفی بروزرسانی  شد.','success')->position('bottom-end');
@@ -141,7 +159,15 @@ class ReserveConsumptionController extends Controller
             return abort(403);
         }
 
+        $oldStock = WarehouseStock::where('warehouse_id',$consumption->warehouse_id)->where('goods_id',$consumption->goods_id)->first();
+        $oldStock->stock += $consumption->value;
         $consumption->delete();
+
+
+        DB::transaction(function() use ($oldStock, $consumption) {
+            $oldStock->save();
+            $consumption->delete();
+        });
         toast('موارد مصرفی حذف شد.','error')->position('bottom-end');
         return back();
     }

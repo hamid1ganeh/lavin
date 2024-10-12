@@ -98,7 +98,7 @@ class WareHouseOrderController extends Controller
 
         if ($request->event == '-'){
             $stock = WarehouseStock::where('warehouse_id',$warehouse->id)->where('goods_id',$request->good)->first();
-            if(is_null($stock) || $ask>$stock->stockAsUnit()){
+            if(is_null($stock) || $ask>$stock->stock()){
                 alert()->error('خطا','مقدار درخواستی شما در انبار شما موجود نمی باشد.');
                 return back()->withInput();
             }
@@ -111,9 +111,7 @@ class WareHouseOrderController extends Controller
             $order->number = $request->number;
             $order->goods_id = $request->good;
             $order->event = $request->event;
-            $order->unit = $good->unit;
-            $order->value = $value;
-            $order->count = $count;
+            $order->stock = ($order->good->value_per_count*$count)+$value;
             $order->created_by = Auth::guard('admin')->id();
             $order->save();
             toast('حواله شما ثبت شد.','success')->position('bottom-end');
@@ -188,15 +186,12 @@ class WareHouseOrderController extends Controller
                 }
             }
 
-
             if (in_array($request->event, ['+', '-','0'])) {
                 $order->moved_warehouse_id = $request->warehouse;
                 $order->number = $request->number;
                 $order->goods_id = $request->good;
                 $order->event = $request->event;
-                $order->unit = $good->unit;
-                $order->value = $value;
-                $order->count = $count;
+                $order->stock =($order->good->value_per_count*$count)+$value;
                 $order->save();
                 toast('بروزرسانی انجام شد.', 'success')->position('bottom-end');
             }
@@ -216,25 +211,22 @@ class WareHouseOrderController extends Controller
             $stock = WarehouseStock::where('warehouse_id',$order->warehouse_id )->where('goods_id',$order->goods_id)->firstOrNew();
 
             if ($order->event == '+'){
-                if($order->stockAsUnit() > $order->good->stockAsUnit()){
+                if($order->stock > $order->good->stockAsUnit()){
                     alert()->error('خطا','مقدار درخواستی شما در انبار مرکزی موجود نمی باشد.');
                     return back();
                 }
                 if (is_null($stock)){
-                    $stock->count = $order->count;
-                    $stock->value = $order->value;
+                    $stock->stock = $order->stoock;
                 }else{
-                    $stock->count += $order->count;
-                    $stock->value += $order->value;
+                    $stock->stock += $order->stock;
                 }
 
-                $good->count_stock -= $order->count;
-                $good->unit_stock -= $order->value;
+                $good->count_stock -= $order->countStock();
+                $good->unit_stock -= $order->remainderStock();
 
 
                 $stock->warehouse_id = $order->warehouse_id;
                 $stock->goods_id = $order->goods_id;
-                $stock->unit = $order->unit;
 
                 DB::transaction(function() use ($stock, $order,$good) {
                     $stock->save();
@@ -244,39 +236,25 @@ class WareHouseOrderController extends Controller
 
             }
 
-
             if ($order->event == '-' || $order->event == '0'){
-                if($order->stockAsUnit() > $stock->stockAsUnit()){
+                if($order->stock > $stock->stock){
                     alert()->error('خطا','مقدار درخواستی شما در انبار شما موجود نمی باشد.');
                     return back();
                 }
 
-
                 if (is_null($stock)){
-                    $stock->count = 0;
-                    $stock->value = 0;
+                    $stock->stock = 0;
 
                 }else{
-                    if ($order->count > $stock->count){
-                        $stock->count = 0;
-                    }else{
-                        $stock->count -= $order->count;
-                    }
-
-                    if ($order->value > $stock->value){
-                        $stock->value = 0;
-                    }else{
-                        $stock->value -= $order->value;
-                    }
+                    $stock->stock -= $order->stock;
                 }
 
                 if ($order->event == '-'){
-                    $good->count_stock += $order->count;
-                    $good->unit_stock += $order->value;
+                    $good->count_stock += $order->countStock();
+                    $good->unit_stock += $order->remainderStock();
 
                     $stock->warehouse_id = $order->warehouse_id;
                     $stock->goods_id = $order->goods_id;
-                    $stock->unit = $order->unit;
 
                     DB::transaction(function() use ($stock, $order,$good) {
                         $stock->save();
@@ -286,23 +264,20 @@ class WareHouseOrderController extends Controller
                 }
 
                 if ($order->event == '0'){
+
                     $stockMoved = WarehouseStock::where('warehouse_id',$order->moved_warehouse_id)->where('goods_id',$order->goods_id)->firstOrNew();
 
                     if(is_null($stockMoved)){
-                        $stockMoved->count_stock = 0;
-                        $stockMoved->value = 0;
+                        $stockMoved->stock = 0;
                     }else{
-                        $stockMoved->count += $order->count;
-                        $stockMoved->value += $order->value;
+                        $stockMoved->stock += $order->stock;
                     }
 
                     $stockMoved->warehouse_id = $order->moved_warehouse_id;
                     $stockMoved->goods_id = $order->goods_id;
-                    $stockMoved->unit = $order->unit;
 
                     $stock->warehouse_id = $order->warehouse_id;
                     $stock->goods_id = $order->goods_id;
-                    $stock->unit = $order->unit;
 
                     DB::transaction(function() use ($stock, $order,$stockMoved) {
                         $stock->save();

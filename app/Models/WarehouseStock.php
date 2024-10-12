@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class WarehouseStock extends Model
 {
-    protected $fillable=['warehouse_id','goods_id','count','value','unit'];
+    protected $fillable=['warehouse_id','goods_id','stock'];
 
     public function warehouse()
     {
@@ -18,8 +18,33 @@ class WarehouseStock extends Model
         return $this->belongsTo(Goods::class,'goods_id','id');
     }
 
-    public function stockAsUnit()
+    public function countStock()
     {
-        return ($this->count*$this->good->value_per_count)+$this->value;
+        return (int)($this->stock/$this->good->value_per_count);
+    }
+
+    public function remainderStock()
+    {
+        return fmod($this->stock,$this->good->value_per_count);
+    }
+    public function stock()
+    {
+        $count = $this->countStock();
+        $remainder = $this->remainderStock();
+        $result='';
+
+        if($count>0){
+            $result .=$count.' عدد ';
+
+            if($remainder>0){
+                $result .= ' و ';
+            }
+        }
+
+        if($remainder>0){
+            $result .= $remainder.' '.$this->good->unit;
+        }
+
+        return   $result;
     }
 }
