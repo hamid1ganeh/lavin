@@ -13,6 +13,12 @@ Breadcrumbs::for('static', function ($trail) {
     $trail->push('آمار', route('admin.static'));
 });
 
+// داشبورد > گزارش مواد مصرفی
+Breadcrumbs::for('reports.consumptions', function ($trail) {
+    $trail->parent('home', $trail);
+    $trail->push('گزارش مواد مصرفی', route('admin.reports.consumptions'));
+});
+
 // داشبورد > پرونده پرسنلی
 Breadcrumbs::for('staff.documents', function ($trail) {
     $trail->parent('home', $trail);

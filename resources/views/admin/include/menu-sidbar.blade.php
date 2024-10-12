@@ -331,7 +331,8 @@
                  @endif
 
                 @if(Auth::guard('admin')->user()->can('static') ||
-                    Auth::guard('admin')->user()->can('sms.history'))
+                    Auth::guard('admin')->user()->can('sms.history') ||
+                    Auth::guard('admin')->user()->can('reserves.consumptions.reports'))
                     <li>
                         <a href="javascript: void(0);" class="waves-effect">
                             <i class="ti-pie-chart"></i>
@@ -350,22 +351,31 @@
                             @endif
 
                             @if(Auth::guard('admin')->user()->can('complications.report'))
-                        <li>
-                            <a href="{{ route('admin.complications.registered') }}" class="waves-effect">
-                                <i class="fa fa-exclamation"></i>
-                                <span class="IRANYekanRegular">عوارض</span>
-                            </a>
-                        </li>
-                    @endif
+                               <li>
+                                    <a href="{{ route('admin.complications.registered') }}" class="waves-effect">
+                                        <i class="fa fa-exclamation"></i>
+                                        <span class="IRANYekanRegular">عوارض</span>
+                                    </a>
+                                </li>
+                            @endif
+
+                           @if(Auth::guard('admin')->user()->can('reserves.consumptions.reports'))
+                            <li>
+                                <a href="{{ route('admin.reports.consumptions') }}" class="waves-effect">
+                                    <i class="fas fa-shopping-cart"></i>
+                                    <span class="IRANYekanRegular">مواد مصرفی</span>
+                                </a>
+                            </li>
+                           @endif
 
                             @if(Auth::guard('admin')->user()->can('sms.history'))
-                        <li>
-                            <a href="{{ route('admin.sms.history') }}" class="waves-effect">
-                                <i class="fas fa-history"></i>
-                                <span class="IRANYekanRegular">تاریخچه پیامک ها</span>
-                            </a>
-                        </li>
-                    @endif
+                            <li>
+                                <a href="{{ route('admin.sms.history') }}" class="waves-effect">
+                                    <i class="fas fa-history"></i>
+                                    <span class="IRANYekanRegular">تاریخچه پیامک ها</span>
+                                </a>
+                            </li>
+                            @endif
 
                         </ul>
                     </li>

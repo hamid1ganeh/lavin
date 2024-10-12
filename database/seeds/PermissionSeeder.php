@@ -4,7 +4,7 @@ use App\Enums\Status;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class   PermissionSeeder extends Seeder
+class PermissionSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -1027,8 +1027,32 @@ class   PermissionSeeder extends Seeder
         ]);
 
         DB::table('permissions')->insert([
-            'name' => 'reserves.price',
-                'description' => 'ویرایش هزینه رزرو',
+            'name' => 'reserves.consumptions.index',
+            'description' => 'لیست مواد مصرفی رزرو',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'reserves.consumptions.create',
+            'description' => 'ثبت مواد مصرفی رزرو',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'reserves.consumptions.edit',
+            'description' => 'ویرایش مواد مصرفی رزرو',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'reserves.consumptions.destroy',
+            'description' => 'حذف مواد مصرفی رزرو',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'reserves.consumptions.reports',
+            'description' => 'گزارش گیری مواد مصرفی',
             'status'=> Status::Active
         ]);
 
@@ -1127,6 +1151,12 @@ class   PermissionSeeder extends Seeder
         ]);
 
         DB::table('permissions')->insert([
+            'name' => 'provinces.edit',
+            'description' => 'ویرایش استان',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
             'name' => 'provinces.cities.index',
             'description' => 'لیست شهرهای استان',
             'status'=> Status::Active
@@ -1145,74 +1175,20 @@ class   PermissionSeeder extends Seeder
         ]);
 
         DB::table('permissions')->insert([
-            'name' => 'provinces.cities.delete',
-            'description' => 'حذف شهر',
-            'status'=> Status::Active
-        ]);
-
-        DB::table('permissions')->insert([
-            'name' => 'provinces.cities.recycle',
-            'description' => 'بازیابی شهر',
-            'status'=> Status::Active
-        ]);
-
-        DB::table('permissions')->insert([
             'name' => 'provinces.cities.parts.index',
-            'description' => 'لیست مناطق شهر',
+            'description' => 'لیست بخشهای شهر',
             'status'=> Status::Active
         ]);
 
         DB::table('permissions')->insert([
             'name' => 'provinces.cities.parts.create',
-            'description' => 'ایجاد منطقه جدید',
+            'description' => 'ایجاد بخش جدید',
             'status'=> Status::Active
         ]);
 
         DB::table('permissions')->insert([
             'name' => 'provinces.cities.parts.edit',
-            'description' => 'ویرایش منطقه',
-            'status'=> Status::Active
-        ]);
-
-        DB::table('permissions')->insert([
-            'name' => 'provinces.cities.parts.delete',
-            'description' => 'حذف منطقه',
-            'status'=> Status::Active
-        ]);
-
-        DB::table('permissions')->insert([
-            'name' => 'provinces.cities.parts.recycle',
-            'description' => 'بازیابی منطقه',
-            'status'=> Status::Active
-        ]);
-
-        DB::table('permissions')->insert([
-            'name' => 'provinces.cities.parts.areas.index',
-            'description' => 'لیست محلات مناطق',
-            'status'=> Status::Active
-        ]);
-
-        DB::table('permissions')->insert([
-            'name' => 'provinces.cities.parts.areas.create',
-            'description' => 'ایجاد محله جدید',
-            'status'=> Status::Active
-        ]);
-
-        DB::table('permissions')->insert([
-            'name' => 'provinces.cities.parts.areas.edit',
-            'description' => 'ویرایش محله',
-            'status'=> Status::Active
-        ]);
-
-        DB::table('permissions')->insert([
-            'name' => 'provinces.cities.parts.areas.delete',
-            'description' => 'حذف محله',
-            'status'=> Status::Active
-        ]);
-
-        DB::table('permissions')->insert([
-            'name' => 'provinces.cities.parts.areas.recycle',
-            'description' => 'بازیابی محله',
+            'description' => 'ویرایش بخش',
             'status'=> Status::Active
         ]);
 
@@ -1802,5 +1778,170 @@ class   PermissionSeeder extends Seeder
             'description' => 'پاسخ دادن به استخدام',
             'status'=> Status::Active
         ]);
+
+
+        DB::table('permissions')->insert([
+            'name' => 'warehousing.categories.main.index',
+            'description' => 'لیست دسته بندی های اصلی کالاها',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'warehousing.categories.main.create',
+            'description' => 'ایجاد دسته بندی های اصلی کالاها',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'warehousing.categories.main.edit',
+            'description' => 'ویرایش دسته بندی های اصلی کالاها',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'warehousing.categories.main.destroy',
+            'description' => 'حذف دسته بندی های اصلی کالاها',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'warehousing.categories.main.recycle',
+            'description' => 'بازیابی دسته بندی های اصلی کالاها',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'warehousing.categories.sub.index',
+            'description' => 'لیست زیردسته های کالاها',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'warehousing.categories.sub.create',
+            'description' => 'ایجاد زیردسته های کالاها',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'warehousing.categories.sub.edit',
+            'description' => 'ویرایش زیردسته های کالاها',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'warehousing.categories.sub.destroy',
+            'description' => 'حذف زیردسته های کالاها',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'warehousing.categories.sub.recycle',
+            'description' => 'بازیابی زیردسته های کالاها',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'warehousing.goods.index',
+            'description' => 'لیست کالاها',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'warehousing.goods.create',
+            'description' => 'ایجاد کالا جدید',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'warehousing.goods.edit',
+            'description' => 'ویرایش کالا',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'warehousing.goods.destroy',
+            'description' => 'حذف کالا',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'warehousing.goods.recycle',
+            'description' => 'بازیابی کالا',
+            'status'=> Status::Active
+        ]);
+
+
+        DB::table('permissions')->insert([
+            'name' => 'warehousing.warehouses.index',
+            'description' => 'لیست انبارها',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'warehousing.warehouses.create',
+            'description' => 'ایجاد انبار جدید',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'warehousing.warehouses.edit',
+            'description' => 'ویرایش انبار',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'warehousing.warehouses.destroy',
+            'description' => 'حذف انبار',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'warehousing.warehouses.recycle',
+            'description' => 'بازیابی انبار',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'warehousing.warehouses.stocks',
+            'description' => 'موجودی انبار',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'warehousing.warehouses.orders.index',
+            'description' => 'لیست حوالات انبار',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'warehousing.warehouses.orders.create',
+            'description' => 'ایجاد حواله انبار',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'warehousing.warehouses.orders.edit',
+            'description' => 'ویرایش حواله انبار',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'warehousing.warehouses.orders.destroy',
+            'description' => 'حذف حواله انبار',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'warehousing.warehouses.orders.recycle',
+            'description' => 'بازیابی حواله انبار',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'warehousing.warehouses.orders.delivery',
+            'description' => 'تحویل حواله انبار',
+            'status'=> Status::Active
+        ]);
+
     }
 }

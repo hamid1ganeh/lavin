@@ -10,7 +10,7 @@ use App\Http\Controllers\Admin\GoodsSubController;
 use App\Http\Controllers\Admin\GoodsController;
 use App\Http\Controllers\Admin\WarehouseController;
 use App\Http\Controllers\Admin\WareHouseOrderController;
-
+use App\Http\Controllers\Admin\ReportController;
 
 Route::get('/login', 'AuthController@loginPage')->name('loginPage');
 Route::post('/login', 'AuthController@login')->name('login');
@@ -28,6 +28,10 @@ Route::get('/goodsfetch', 'HomeController@goodsfetch')->name('goodsfetch');
 
 
 Route::group(['middleware' => 'auth.admin'], function () {
+
+    Route::prefix('/reports')->name('reports.')->group(function () {
+        Route::get('/consumptions', [ReportController::class,'consumptions'])->name('consumptions');
+    });
 
   Route::POST('/upload', 'HomeController@videoupload')->name('upload.video');
 
@@ -772,7 +776,6 @@ Route::group(['middleware' => 'auth.admin'], function () {
 
 
     Route::prefix('warehousing')->name('warehousing.')->group(function () {
-
 
         Route::prefix('categories')->name('categories.')->group(function () {
             Route::get('/', [GoodsMainController::class,'index'])->name('main.index');

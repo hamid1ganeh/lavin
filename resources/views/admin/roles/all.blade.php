@@ -39,7 +39,7 @@
                                 </div>
 
                                 <div class="form-group col-6 text-right">
-                                    @if(Auth::guard('admin')->user()->can('roles.create')) 
+                                    @if(Auth::guard('admin')->user()->can('roles.create'))
                                     <div class="btn-group" >
                                         <a href="{{ route('admin.roles.create') }}" class="btn btn-sm btn-primary">
                                             <i class="fa fa-plus plusiconfont"></i>
@@ -65,10 +65,10 @@
                                                 <input type="text"  class="form-control input" id="description-filter" name="description" placeholder="توضیحات  را وارد کنید" value="{{ request('description') }}">
                                             </div>
 
-                                          
+
                                             <div class="form-group justify-content-center col-6">
                                                 <label for="name" class="control-label IRANYekanRegular">دسترسی ها</label>
-                                                 <select name="permissions[]" id="permissions-filter" class="form-control select2 select2-multiple text-right IRANYekanRegular" multiple="multiple" multiple data-placeholder="... نقش‌های مورد نظر را انتخاب نمایید"> 
+                                                 <select name="permissions[]" id="permissions-filter" class="form-control select2 select2-multiple text-right IRANYekanRegular" multiple="multiple" multiple data-placeholder="... نقش‌های مورد نظر را انتخاب نمایید">
                                                     @foreach($permissions as $permission)
                                                     <option value="{{ $permission->id }}" @if(request('permissions')!=null) {{ in_array($permission->id,request('permissions'))?'selected':'' }} @endif>({{ $permission->description }}) {{ $permission->name }} </option>
                                                     @endforeach
@@ -98,7 +98,7 @@
                                                     document.getElementById("email-filter").value = "";
                                                     document.getElementById("mobile-filter").value = "";
                                                     $("#roles-filter").val(null).trigger("change")
-                      
+
                                                 }
                                             </script>
 
@@ -128,7 +128,7 @@
                                             <td>
                                                 @if(Auth::guard('admin')->user()->can('roles.edit'))
                                                 <a class="btn  btn-icon" href="{{ route('admin.roles.edit',$role) }}" title="ویرایش">
-                                                    <i class="fa fa-edit text-primary font-20"></i>
+                                                    <i class="fa fa-edit text-success font-20"></i>
                                                 </a>
                                                 @endif
 
@@ -162,7 +162,7 @@
                                                     </div>
                                                 </div>
                                                 @endif
- 
+
                                             </td>
                                          </tr>
                                         @endforeach
