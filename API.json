@@ -943,6 +943,334 @@
 			]
 		},
 		{
+			"name": "Employment",
+			"item": [
+				{
+					"name": "store",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "5|p51dxuYRQH3lxKyT83qcWwgHSnSmHcBx1k0K0obm",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "fullname",
+									"value": "حمید یگانه دوست",
+									"type": "text"
+								},
+								{
+									"key": "mobile",
+									"value": "09364283366",
+									"type": "text"
+								},
+								{
+									"key": "job",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "about",
+									"value": "برنامه نویس لاراول هستم",
+									"type": "text"
+								},
+								{
+									"key": "resume",
+									"type": "file",
+									"src": "/C:/Users/TKP/Desktop/41255217-16003a28-6dc6-11e8-87ee-d25b37c7e440.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{v1}}/employments/register",
+							"host": [
+								"{{v1}}"
+							],
+							"path": [
+								"employments",
+								"register"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "store",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "fullname",
+											"value": "حمید یگانه دوست",
+											"type": "text"
+										},
+										{
+											"key": "mobile",
+											"value": "09364283366",
+											"type": "text"
+										}
+									],
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{v1}}/employments/register",
+									"host": [
+										"{{v1}}"
+									],
+									"path": [
+										"employments",
+										"register"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "nginx/1.25.5"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/7.4.33"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 24 Sep 2024 11:35:53 GMT"
+								},
+								{
+									"key": "X-RateLimit-Limit",
+									"value": "60"
+								},
+								{
+									"key": "X-RateLimit-Remaining",
+									"value": "59"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"errors\": {\n        \"job\": [\n            \"انتخاب شغل الزامی است.\"\n        ],\n        \"resume\": [\n            \"ارسال رزومه الزامی است.\"\n        ]\n    },\n    \"status\": 400\n}"
+						},
+						{
+							"name": "successfull",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "fullname",
+											"value": "حمید یگانه دوست",
+											"type": "text"
+										},
+										{
+											"key": "mobile",
+											"value": "09364283366",
+											"type": "text"
+										},
+										{
+											"key": "job",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "about",
+											"value": "برنامه نویس لاراول هستم",
+											"type": "text"
+										},
+										{
+											"key": "resume",
+											"type": "file",
+											"src": "/C:/Users/TKP/Desktop/41255217-16003a28-6dc6-11e8-87ee-d25b37c7e440.png"
+										}
+									],
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{v1}}/employments/register",
+									"host": [
+										"{{v1}}"
+									],
+									"path": [
+										"employments",
+										"register"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "nginx/1.25.5"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/7.4.33"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 24 Sep 2024 11:41:44 GMT"
+								},
+								{
+									"key": "X-RateLimit-Limit",
+									"value": "60"
+								},
+								{
+									"key": "X-RateLimit-Remaining",
+									"value": "58"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"درخواست شما با موفقیت ثبت شد.\"\n}"
+						}
+					]
+				},
+				{
+					"name": "form",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "6|N7vVuPdePred9Jh5c1RTfKlr0ppH9xS9pteXfvIO",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{v1}}/employments/form",
+							"host": [
+								"{{v1}}"
+							],
+							"path": [
+								"employments",
+								"form"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "sucessfull",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{v1}}/employments/form",
+									"host": [
+										"{{v1}}"
+									],
+									"path": [
+										"employments",
+										"form"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "nginx/1.25.5"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/7.4.33"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 24 Sep 2024 11:22:45 GMT"
+								},
+								{
+									"key": "X-RateLimit-Limit",
+									"value": "60"
+								},
+								{
+									"key": "X-RateLimit-Remaining",
+									"value": "56"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"jobs\": [\n        {\n            \"id\": 1,\n            \"title\": \"backend developer\",\n            \"main_category\": \"فناوری اطلاعات\",\n            \"sub_category\": \"برنامه نویسی\"\n        },\n        {\n            \"id\": 2,\n            \"title\": \"Frontend Developer\",\n            \"main_category\": \"فناوری اطلاعات\",\n            \"sub_category\": \"برنامه نویسی\"\n        }\n    ]\n}"
+						}
+					]
+				}
+			]
+		},
+		{
 			"name": "HomePage",
 			"item": [
 				{
