@@ -3,7 +3,6 @@
 /public/videos
 /public/storage
 /public/images
-!/public/images/front
 /storage/*.key
 /vendor
 .env
