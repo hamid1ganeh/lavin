@@ -87,6 +87,8 @@ Route::get('/fetchparts', 'FetchController@fetchparts')->name('fetchparts');
 Route::get('/fetchareas', 'FetchController@fetchareas')->name('fetchareas');
 Route::get('/gallery','PageController@gallery')->name('gallery');
 Route::post('/subcat','ProductController@subcat')->name('subcat');
+Route::get('/football','HomeController@football')->name('football');
+Route::post('/football','HomeController@football_register')->name('football.register');
 
 
 

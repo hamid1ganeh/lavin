@@ -18,7 +18,12 @@ use App\Models\FAQ;
 use App\Enums\Status;
 use App\Enums\ArticleStatus;
 use Carbon\Carbon;
-use App\Services\SMS;
+use App\Models\Number;
+use App\Models\User;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
+use App\Services\CodeService;
 
 
 class HomeController extends Controller
@@ -26,7 +31,7 @@ class HomeController extends Controller
      public function index()
      {
         $allservices = Service::with('details')->where('displayed',true)->where('status',Status::Active)->get();
-        
+
         $doctors = Admin::with('doctor')
         ->whereHas('roles', function($q){$q->where('name', 'doctor');})
         ->orderBy('fullname','asc')
@@ -39,7 +44,7 @@ class HomeController extends Controller
              $q->where('status',ArticleStatus::publish)->
              where('publishDateTime','<',Carbon::now()->format('Y-m-d H:i:s'))->orderBy('publishDateTime','desc');
          })->orderBy('name','asc')->get();
- 
+
 
          $galleries = Gallery::with('images')->orderBy('created_at','desc')->where('status',Status::Active)->limit(9)->get();
          return view('index',compact('products','articleCategories','galleries','doctors','allservices'));
@@ -91,7 +96,7 @@ class HomeController extends Controller
 
         alert()->success('پیام شما ثبت شد.', 'تبریک');
         return back();
-        
+
      }
 
 
@@ -105,5 +110,65 @@ class HomeController extends Controller
      {
          $faqs = FAQ::where('display',Status::Active)->orderBy('created_at','asc')->get();
          return  view('website.faq',compact('faqs'));
+     }
+
+     public function football()
+     {
+         return view('website.football');
+     }
+
+     public function football_register(Request $request)
+     {
+         $request->validate([
+             'firstname'=> 'required|max:255',
+             'lastname'=> 'required|max:255',
+             'mobile'=> 'nullable|min:11|max:11|regex:/^[0-9]+$/|unique:numbers|unique:users',
+             'nationcode'=>'required|min:10|max:10|regex:/^[0-9]+$/|unique:users',
+         ],
+         [
+             'firstname.required'=>'نام و نام خانوادگی را وارد نمایید.',
+             'firstname.max'=>'حداکثر طول نام و نام خانوادگی 255 کارکتر',
+             'lastname.required'=>'نام و نام خانوادگی را وارد نمایید.',
+             'lastname.max'=>'حداکثر طول نام و نام خانوادگی 255 کارکتر',
+             'mobile.required'=>'شماره موبایل را وارد نمایید.',
+             'mobile.unique'=>'این شماره موبایل قبلا ثبت شده است.',
+             'mobile.min'=>'شماره موبایل صحیح نیست.',
+             'mobile.max'=>' شماره موبایل صحیح نیست.',
+             'mobile.regex'=>' شماره موبایل صحیح نیست.',
+             'nationcode.required'=> " کد ملی 10 رقمی را وارد کنید.",
+             'nationcode.min'=>  " کد ملی 10 رقمی را وارد کنید.",
+             'nationcode.max'=> " کد ملی 10 رقمی را وارد کنید.",
+             'nationcode.regex'=> " کد ملی 10 رقمی را وارد کنید.",
+             'nationcode.unique'=> " این کدملی قبلا ثبت شده است .",
+         ]);
+
+         $verify_code = rand(1000,9999);
+         $verify_expire = Carbon::now("+3:30")->addMinute(5)->format('Y-m-d H:i:s');
+         $password = Str::random(6);
+         $code = new CodeService();
+
+         $number = new Number();
+         $number->firstname = $request->firstname;
+         $number->lastname = $request->lastname;
+         $number->mobile = $request->mobile;
+         $number->festival_id = 8;
+         $user = new User();
+         $user->firstname = $number->firstname;
+         $user->lastname = $number->lastname;
+         $user->mobile = $number->mobile;
+         $user->nationcode = $request ->nationcode;
+         $user->verify_code = $verify_code;
+         $user->verify_expire = $verify_expire;
+         $user->gender = $request->gender;
+         $user->code  = $code->create($user,10);
+         $user->password =Hash::make($password);
+
+         DB::transaction(function() use ($number,$user) {
+             $number->save();
+             $user->save();
+         });
+
+         toast('مشخصات شما ثبت شد.','success')->position('bottom-end');
+         return back();
      }
 }

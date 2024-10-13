@@ -48,9 +48,9 @@
                             </div>
 
                             <div class="col-12 form-control w-100 mt-2">
-                                <label class="w-100 mb-0 small text-black">توضیحات</label>
-                                <textarea name="content" id="content" cols="30" rows="3" class="w-100 p-3">{{ old('content') }}</textarea>
-                                <span class="form-text text-danger erroralarm"> {{ $errors->first('content') }} </span>
+                                <label class="w-100 mb-0 small text-black">کدملی</label>
+                                <textarea name="nationcode" id="nationcode" cols="30" rows="3" class="w-100 p-3">{{ old('nationcode') }}</textarea>
+                                <span class="form-text text-danger erroralarm"> {{ $errors->first('nationcode') }} </span>
                             </div>
 
                             <div class="col-12 mt-3 text-center">
