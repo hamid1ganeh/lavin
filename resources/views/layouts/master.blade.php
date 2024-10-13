@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="/css/style.css">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ url('/') }}/panel/assets/js/sweetalert.min.js" />
+    <script src='https://www.google.com/recaptcha/api.js'></script>
     @stack('css')
 </head>
 <body>

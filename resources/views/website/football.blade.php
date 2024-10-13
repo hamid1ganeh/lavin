@@ -75,7 +75,15 @@
                             <span class="form-text text-danger erroralarm"> {{ $errors->first('gender') }} </span>
                         </div>
 
-
+                        <div class="col-md-12">
+                            <div class="form-group text-center">
+                                @if(config('recaptcha.api_site_key'))
+                                    <div class="g-recaptcha"
+                                         data-sitekey="{{config('recaptcha.api_site_key')}}">
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
 
 
                         <div class="col-12 mt-3 text-center">

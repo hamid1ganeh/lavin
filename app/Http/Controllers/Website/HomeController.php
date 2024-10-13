@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Website;
 
+use App\Enums\genderType;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Product;
@@ -124,6 +125,7 @@ class HomeController extends Controller
              'lastname'=> 'required|max:255',
              'mobile'=> 'nullable|min:11|max:11|regex:/^[0-9]+$/|unique:numbers|unique:users',
              'nationcode'=>'required|min:10|max:10|regex:/^[0-9]+$/|unique:users',
+             'g-recaptcha-response' => 'required|recaptcha'
          ],
          [
              'firstname.required'=>'نام و نام خانوادگی را وارد نمایید.',
@@ -140,35 +142,41 @@ class HomeController extends Controller
              'nationcode.max'=> " کد ملی 10 رقمی را وارد کنید.",
              'nationcode.regex'=> " کد ملی 10 رقمی را وارد کنید.",
              'nationcode.unique'=> " این کدملی قبلا ثبت شده است .",
+             'g-recaptcha-response.recaptcha' => 'ریکپچا گوکل معتبر نمیباشد.',
+             'g-recaptcha-response.required' => 'لطفا ریکچا گوگل را ثبت کنید.'
          ]);
 
-         $verify_code = rand(1000,9999);
-         $verify_expire = Carbon::now("+3:30")->addMinute(5)->format('Y-m-d H:i:s');
-         $password = Str::random(6);
-         $code = new CodeService();
+         if(in_array($request->gender,genderType::getGenderList)){
 
-         $number = new Number();
-         $number->firstname = $request->firstname;
-         $number->lastname = $request->lastname;
-         $number->mobile = $request->mobile;
-         $number->festival_id = 8;
-         $user = new User();
-         $user->firstname = $number->firstname;
-         $user->lastname = $number->lastname;
-         $user->mobile = $number->mobile;
-         $user->nationcode = $request ->nationcode;
-         $user->verify_code = $verify_code;
-         $user->verify_expire = $verify_expire;
-         $user->gender = $request->gender;
-         $user->code  = $code->create($user,10);
-         $user->password =Hash::make($password);
+             $verify_code = rand(1000,9999);
+             $verify_expire = Carbon::now("+3:30")->addMinute(5)->format('Y-m-d H:i:s');
+             $password = Str::random(6);
+             $code = new CodeService();
 
-         DB::transaction(function() use ($number,$user) {
-             $number->save();
-             $user->save();
-         });
+             $number = new Number();
+             $number->firstname = $request->firstname;
+             $number->lastname = $request->lastname;
+             $number->mobile = $request->mobile;
+             $number->festival_id = 8;
+             $user = new User();
+             $user->firstname = $number->firstname;
+             $user->lastname = $number->lastname;
+             $user->mobile = $number->mobile;
+             $user->nationcode = $request ->nationcode;
+             $user->verify_code = $verify_code;
+             $user->verify_expire = $verify_expire;
+             $user->gender = $request->gender;
+             $user->code  = $code->create($user,10);
+             $user->password =Hash::make($password);
 
-         toast('مشخصات شما ثبت شد.','success')->position('bottom-end');
+             DB::transaction(function() use ($number,$user) {
+                 $number->save();
+                 $user->save();
+             });
+
+             toast('مشخصات شما ثبت شد.','success')->position('bottom-end');
+
+         }
          return back();
      }
 }
