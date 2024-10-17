@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\GoodsController;
 use App\Http\Controllers\Admin\WarehouseController;
 use App\Http\Controllers\Admin\WareHouseOrderController;
 use App\Http\Controllers\Admin\ReportController;
+use App\Http\Controllers\Admin\LaserDeviceController;
 
 Route::get('/login', 'AuthController@loginPage')->name('loginPage');
 Route::post('/login', 'AuthController@login')->name('login');
@@ -825,6 +826,16 @@ Route::group(['middleware' => 'auth.admin'], function () {
                 Route::patch('{order}/deliver', [WareHouseOrderController::class,'deliver'])->name('deliver');
                 Route::delete('{order}/destroy', [WareHouseOrderController::class,'destroy'])->name('destroy');
             });
+        });
+
+        Route::prefix('lasers')->name('lasers.')->group(function () {
+            Route::get('/', [LaserDeviceController::class,'index'])->name('index');
+//            Route::get('/create', [GoodsController::class,'create'])->name('create');
+//            Route::post('/store', [GoodsController::class,'store'])->name('store');
+//            Route::get('{good}/edit', [GoodsController::class,'edit'])->name('edit');
+//            Route::patch('{good}/update', [GoodsController::class,'update'])->name('update');
+//            Route::delete('/destroy/{good}', [GoodsController::class,'destroy'])->name('destroy');
+//            Route::patch('/recycle/{good}', [GoodsController::class,'recycle'])->name('recycle');
         });
 
 

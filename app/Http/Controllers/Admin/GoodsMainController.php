@@ -61,6 +61,9 @@ class GoodsMainController extends Controller
 
     public function edit(GoodsMainCategory $main)
     {
+        if ($main->id == 1){
+            abort(403);
+        }
         //اجازه دسترسی
         config(['auth.defaults.guard' => 'admin']);
         $this->authorize('warehousing.categories.main.edit');
@@ -71,6 +74,10 @@ class GoodsMainController extends Controller
 
     public function update(Request $request, GoodsMainCategory $main)
     {
+        if ($main->id == 1){
+            abort(403);
+        }
+
         //اجازه دسترسی
         config(['auth.defaults.guard' => 'admin']);
         $this->authorize('warehousing.categories.main.edit');
@@ -98,6 +105,10 @@ class GoodsMainController extends Controller
 
     public function destroy(GoodsMainCategory $main)
     {
+        if ($main->id == 1){
+            abort(403);
+        }
+
         //اجازه دسترسی
         config(['auth.defaults.guard' => 'admin']);
         $this->authorize('warehousing.categories.main.destroy');

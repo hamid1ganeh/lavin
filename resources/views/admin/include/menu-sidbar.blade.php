@@ -479,6 +479,15 @@
                             </ul>
                             @endif
 
+                            <ul class="nav-second-level" aria-expanded="false">
+                                <li class="IRANYekanRegular">
+                                    <a href="{{ route('admin.warehousing.lasers.index') }}">
+                                        <i class="fa fa-laser"></i>
+                                        <span>دستگاهای لیزر</span>
+                                    </a>
+                                </li>
+                            </ul>
+
                             @if(Auth::guard('admin')->user()->can('warehousing.warehouses.index'))
                             <ul class="nav-second-level" aria-expanded="false">
                                 <li class="IRANYekanRegular">
