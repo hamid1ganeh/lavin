@@ -77,11 +77,8 @@
 
                         <div class="col-md-12">
                             <div class="form-group text-center">
-                                @if(config('recaptcha.api_site_key'))
-                                    <div class="g-recaptcha"
-                                         data-sitekey="{{config('recaptcha.api_site_key')}}">
-                                    </div>
-                                @endif
+                                {!! RecaptchaV3::field('register') !!}
+                                <input type="submit" value="Register"></input>
                             </div>
                         </div>
 

@@ -256,7 +256,7 @@
                                                                 </a>
                                                                 @endif
 
-                                                                @if(Auth::guard('admin')->user()->can('admins.delete'))
+                                                                @if(Auth::guard('admin')->user()->can('admins.destroy'))
                                                                 <a href="#remove{{ $admin->id }}" data-toggle="modal" class="dropdown-item IR cusrsor"  title="حذف">
                                                                     <i class="fa fa-trash text-danger"></i>
                                                                     حذف

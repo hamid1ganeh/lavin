@@ -99,53 +99,58 @@ class AdminController extends Controller
             "branches.required"=> "انتخاب حداقل یک شعبه الزامی است."
         ]);
 
+        if(in_array($request->status,[Status::Active,Status::Deactive])){
 
-        $admin = Admin::create([
-            "fullname"=> $request->fullname,
-            "mobile"=> $request->mobile,
-            "nationalcode"=> $request->nationalcode,
-            "email"=> $request->email,
-            "gender"=> $request->gender,
-            "status"=> $request->status,
-            'password' => Hash::make($request->password),
-        ]);
-
-        $admin->roles()->sync($request->roles);
-        $admin->branches()->sync($request->branches);
-
-        if(isset($request->image))
-        {
-            $path = $this->imageService->path();
-            $image = $this->imageService->upload($request->image,[
-                'original' => [
-                    'w'=>getimagesize($request->image)[0],
-                    'h'=>getimagesize($request->image)[1],
-                ],
-                'large' => [
-                    'w'=>1023,
-                    'h'=>507,
-                ],
-                'medium' => [
-                    'w'=>267,
-                    'h'=>273,
-                ],
-                'thumbnail' => [
-                    'w'=>150,
-                    'h'=>54,
-                ],
-            ],$path);
-
-
-            $admin->image()->create([
-                'title' => $request->name,
-                'alt' => $request->name,
-                'name' => $image,
-                'path'=>$path
+            $admin = Admin::create([
+                "fullname"=> $request->fullname,
+                "mobile"=> $request->mobile,
+                "nationalcode"=> $request->nationalcode,
+                "email"=> $request->email,
+                "gender"=> $request->gender,
+                "status"=> $request->status,
+                'password' => Hash::make($request->password),
             ]);
 
-        }
+            $admin->roles()->sync($request->roles);
+            $admin->branches()->sync($request->branches);
 
-        toast('کاربر جدید افزوده شد.','success')->position('bottom-end');
+            if(isset($request->image))
+            {
+                $path = $this->imageService->path();
+                $image = $this->imageService->upload($request->image,[
+                    'original' => [
+                        'w'=>getimagesize($request->image)[0],
+                        'h'=>getimagesize($request->image)[1],
+                    ],
+                    'large' => [
+                        'w'=>1023,
+                        'h'=>507,
+                    ],
+                    'medium' => [
+                        'w'=>267,
+                        'h'=>273,
+                    ],
+                    'thumbnail' => [
+                        'w'=>150,
+                        'h'=>54,
+                    ],
+                ],$path);
+
+
+                $admin->image()->create([
+                    'title' => $request->name,
+                    'alt' => $request->name,
+                    'name' => $image,
+                    'path'=>$path
+                ]);
+
+            }
+
+            if ( $admin->status == Status::Deactive){
+                $admin->delete();
+            }
+            toast('کاربر جدید افزوده شد.','success')->position('bottom-end');
+        }
 
         return redirect(route('admin.admins.index'));
     }
@@ -270,6 +275,14 @@ class AdminController extends Controller
                 ]);
             }
 
+        if ( $admin->status == Status::Deactive){
+            $admin->delete();
+        }
+
+        if ( $admin->status == Status::Active && $admin->trashed()){
+            $admin->restore();
+        }
+
         toast('بروزرسانی انجام شد.','success')->position('bottom-end');
 
         return redirect(route('admin.admins.index'));
@@ -297,6 +310,8 @@ class AdminController extends Controller
 
         $admin = Admin::withTrashed()->find($id);
         $admin->restore();
+        $admin->status = Status::Active;
+        $admin->Save();
         toast('ادمین مورد نظر بازیابی شد.','error')->position('bottom-end');
         return back();
     }
