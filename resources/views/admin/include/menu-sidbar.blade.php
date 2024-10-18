@@ -541,20 +541,20 @@
                           </a>
                           <ul class="nav-second-level" aria-expanded="false">
 
-                              @if(Auth::guard('admin')->user()->can('services.index'))
-                                  <li>
-                                      <a href="{{ route('admin.services.index') }}" class="waves-effect">
-                                          <i class="fab fa-servicestack"></i>
-                                          <span class="IRANYekanRegular">سرگروه خدمات</span>
-                                      </a>
-                                  </li>
-                              @endif
-
                               @if(Auth::guard('admin')->user()->can('services.categories.index'))
                                   <li>
                                       <a href="{{ route('admin.services.categories.index') }}" class="waves-effect">
                                           <i class="fas fa-layer-group"></i>
                                           <span class="IRANYekanRegular">دسته بندی‌ها</span>
+                                      </a>
+                                  </li>
+                              @endif
+
+                              @if(Auth::guard('admin')->user()->can('services.index'))
+                                  <li>
+                                      <a href="{{ route('admin.services.index') }}" class="waves-effect">
+                                          <i class="fab fa-servicestack"></i>
+                                          <span class="IRANYekanRegular">سرگروه خدمات</span>
                                       </a>
                                   </li>
                               @endif
@@ -567,6 +567,16 @@
                                       </a>
                                   </li>
                               @endif
+
+{{--                              @if(Auth::guard('admin')->user()->can('services.lasers.index'))--}}
+                                  <li>
+                                      <a href="{{ route('admin.services.lasers.index') }}" class="waves-effect">
+                                          <i class="fas fa-deaf"></i>
+                                          <span class="IRANYekanRegular">خدمات لیزر</span>
+                                      </a>
+                                  </li>
+{{--                              @endif--}}
+
 
                               @if(Auth::guard('admin')->user()->can('analysis.index'))
                                   <li>

@@ -51,7 +51,7 @@ class GoodsController extends Controller
 
         $request->validate(
             [
-                'title' => ['required','max:255','unique:goods'],
+                'title' => ['required','max:255'],
                 'brand' => ['required','max:255'],
                 'code' => ['nullable','max:255','unique:goods'],
                 'unit' => ['required'],
@@ -65,7 +65,6 @@ class GoodsController extends Controller
             [
                 'title.required' => 'عنوان  کالا الزامی است.',
                 'title.max' => 'حداکثر  طول مجاز عنوان کالا 255 کارکتر می باشد.',
-                'title.unique' => 'این کالا قبلا ثبت شده است.',
                 'brand.required' => 'برند  کالا الزامی است.',
                 'brand.max' => 'حداکثر  طول مجاز برند کالا 255 کارکتر می باشد.',
                 'code.max' => 'حداکثر  طول مجاز کد کالا 255 کارکتر می باشد.',
@@ -81,6 +80,7 @@ class GoodsController extends Controller
                 'main_cat_id.required' => ' دسته بندی اصلی الزامی است.',
             ]);
 
+
         $expireDate=null;
         $fuctionService = new FunctionService();
         if(isset($request->expireDate)){
@@ -90,7 +90,7 @@ class GoodsController extends Controller
 
         if(in_array($request->status,[Status::Active,Status::Deactive])){
             $unitStock = $request->value_per_count*$request->count_stock;
-            
+
             Goods::create([
                 'title' => $request->title,
                 'brand' => $request->brand,
@@ -135,7 +135,7 @@ class GoodsController extends Controller
     {
         $request->validate(
             [
-                'title' => ['required','max:255','unique:goods,title,'.$good->id],
+                'title' => ['required','max:255'],
                 'brand' => ['required','max:255'],
                 'code' => ['nullable','max:255','unique:goods,code,'.$good->id],
                 'unit' => ['required'],
@@ -149,7 +149,6 @@ class GoodsController extends Controller
             ], [
                 'title.required' => 'عنوان  کالا الزامی است.',
                 'title.max' => 'حداکثر  طول مجاز عنوان کالا 255 کارکتر می باشد.',
-                'title.unique' => 'این کالا قبلا ثبت شده است.',
                 'brand.required' => 'برند  کالا الزامی است.',
                 'brand.max' => 'حداکثر  طول مجاز برند کالا 255 کارکتر می باشد.',
                 'code.max' => 'حداکثر  طول مجاز کد کالا 255 کارکتر می باشد.',

@@ -98,7 +98,7 @@ class WareHouseOrderController extends Controller
 
         if ($request->event == '-'){
             $stock = WarehouseStock::where('warehouse_id',$warehouse->id)->where('goods_id',$request->good)->first();
-            if(is_null($stock) || $ask>$stock->stock()){
+            if(is_null($stock) || $ask>$stock->stock){
                 alert()->error('خطا','مقدار درخواستی شما در انبار شما موجود نمی باشد.');
                 return back()->withInput();
             }
@@ -204,11 +204,11 @@ class WareHouseOrderController extends Controller
         config(['auth.defaults.guard' => 'admin']);
         $this->authorize('warehousing.warehouses.orders.delivery');
 
-        if (is_null($order->delivered_by )){
+        if (is_null($order->delivered_by)){
             $good = $order->good;
             $order->delivered_by = Auth::guard('admin')->id();
             $order->delivered_at = Carbon::now('+3:30')->format('Y-m-d H:i:s');
-            $stock = WarehouseStock::where('warehouse_id',$order->warehouse_id )->where('goods_id',$order->goods_id)->firstOrNew();
+            $stock = WarehouseStock::where('warehouse_id',$order->warehouse_id )->where('goods_id',$order->goods_id)->first();
 
             if ($order->event == '+'){
                 if($order->stock > $order->good->stockAsUnit()){
@@ -216,7 +216,8 @@ class WareHouseOrderController extends Controller
                     return back();
                 }
                 if (is_null($stock)){
-                    $stock->stock = $order->stoock;
+                    $stock = new WarehouseStock();
+                    $stock->stock = $order->stock;
                 }else{
                     $stock->stock += $order->stock;
                 }
@@ -228,6 +229,7 @@ class WareHouseOrderController extends Controller
                 $stock->warehouse_id = $order->warehouse_id;
                 $stock->goods_id = $order->goods_id;
 
+
                 DB::transaction(function() use ($stock, $order,$good) {
                     $stock->save();
                     $order->save();
@@ -237,17 +239,13 @@ class WareHouseOrderController extends Controller
             }
 
             if ($order->event == '-' || $order->event == '0'){
-                if($order->stock > $stock->stock){
+
+                if(is_null($stock) || $order->stock > $stock->stock){
                     alert()->error('خطا','مقدار درخواستی شما در انبار شما موجود نمی باشد.');
                     return back();
                 }
 
-                if (is_null($stock)){
-                    $stock->stock = 0;
-
-                }else{
-                    $stock->stock -= $order->stock;
-                }
+                $stock->stock -= $order->stock;
 
                 if ($order->event == '-'){
                     $good->count_stock += $order->countStock();
@@ -265,10 +263,11 @@ class WareHouseOrderController extends Controller
 
                 if ($order->event == '0'){
 
-                    $stockMoved = WarehouseStock::where('warehouse_id',$order->moved_warehouse_id)->where('goods_id',$order->goods_id)->firstOrNew();
+                    $stockMoved = WarehouseStock::where('warehouse_id',$order->moved_warehouse_id)->where('goods_id',$order->goods_id)->first();
 
                     if(is_null($stockMoved)){
-                        $stockMoved->stock = 0;
+                        $stockMoved = new WarehouseStock();
+                        $stockMoved->stock = $order->stock;
                     }else{
                         $stockMoved->stock += $order->stock;
                     }

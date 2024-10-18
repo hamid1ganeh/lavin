@@ -15,12 +15,12 @@
                     <div class="page-title-box">
                         <div class="page-title-right">
                             <ol class="breadcrumb m-0 IR">
-                                {{ Breadcrumbs::render('warehousing.lasers.edit',$laser) }}
+{{--                                {{ Breadcrumbs::render('warehousing.lasers.edit',$laser) }}--}}
                             </ol>
                         </div>
                         <h4 class="page-title">
                             <i class="fas fa-deaf page-icon"></i>
-                             ویرایش دستگاه دستگاه
+                             ویرایش دستگاه لیزر
                         </h4>
                     </div>
                 </div>

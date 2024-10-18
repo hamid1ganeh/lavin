@@ -12,6 +12,8 @@ use App\Http\Controllers\Admin\WarehouseController;
 use App\Http\Controllers\Admin\WareHouseOrderController;
 use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\LaserDeviceController;
+use App\Http\Controllers\Admin\ServiceLaserController;
+
 
 Route::get('/login', 'AuthController@loginPage')->name('loginPage');
 Route::post('/login', 'AuthController@login')->name('login');
@@ -285,6 +287,16 @@ Route::group(['middleware' => 'auth.admin'], function () {
 
     });
 
+      Route::prefix('lasers')->name('lasers.')->group(function () {
+          Route::get('/', [ServiceLaserController::class,'index'])->name('index');
+          Route::get('/create', [ServiceLaserController::class,'create'])->name('create');
+          Route::post('/store', [ServiceLaserController::class,'store'])->name('store');
+          Route::get('{laser}/edit', [ServiceLaserController::class,'edit'])->name('edit');
+          Route::patch('{laser}/update', [ServiceLaserController::class,'update'])->name('update');
+          Route::delete('/destroy/{laser}', [ServiceLaserController::class,'destroy'])->name('destroy');
+          Route::delete('/recycle/{id}', [ServiceLaserController::class,'recycle'])->name('recycle');
+      });
+
   });
 
   Route::prefix('service_details')->name('details.')->group(function () {
@@ -328,7 +340,10 @@ Route::group(['middleware' => 'auth.admin'], function () {
 
 });
 
-  Route::prefix('comments')->name('comments.')->group(function () {
+
+
+
+    Route::prefix('comments')->name('comments.')->group(function () {
       Route::get('/', 'CommentsController@index')->name('index');
       Route::PATCH('update/{comment}', 'CommentsController@update')->name('update');
       Route::delete('/destroy/{comment}', 'CommentsController@destroy')->name('destroy');
@@ -835,7 +850,6 @@ Route::group(['middleware' => 'auth.admin'], function () {
             Route::get('{laser}/edit', [LaserDeviceController::class,'edit'])->name('edit');
             Route::patch('{laser}/update', [LaserDeviceController::class,'update'])->name('update');
             Route::delete('/destroy/{laser}', [LaserDeviceController::class,'destroy'])->name('destroy');
-
         });
 
 

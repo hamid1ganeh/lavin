@@ -93,7 +93,7 @@
                                                                 </button>
                                                             </div>
                                                             <div class="modal-body">
-                                                                <h5 class="IRANYekanRegular">آیا مطمئن هستید که میخواهدی  دستگاه لیزر  {{ $laser->name }} را حذف کنید؟</h5>
+                                                                <h5 class="IRANYekanRegular">آیا مطمئن هستید که میخواهید  دستگاه لیزر  {{ $laser->name }} را حذف کنید؟</h5>
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <form action="{{ route('admin.warehousing.lasers.destroy', $laser) }}"  method="POST" class="d-inline">

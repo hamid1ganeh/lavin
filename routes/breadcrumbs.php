@@ -201,6 +201,26 @@ Breadcrumbs::for('services.cat.sub.edit', function ($trail,$parent,$sub) {
 });
 
 
+// داشبورد >  خدمات لیزر
+Breadcrumbs::for('services.lasers.index', function ($trail) {
+    $trail->parent('home', $trail);
+    $trail->push('خدمات لیزر', route('admin.services.lasers.index'));
+});
+
+// داشبورد >  خدمات لیزر > ایجاد سرویس لیزر
+Breadcrumbs::for('services.lasers.create', function ($trail) {
+    $trail->parent('services.lasers.index', $trail);
+    $trail->push('ایجاد سرویس لیزر', route('admin.services.lasers.create'));
+});
+
+// داشبورد >  خدمات لیزر > ویرایش خدمت لیزر
+Breadcrumbs::for('services.lasers.edit', function ($trail,$laser) {
+    $trail->parent('services.lasers.index', $trail);
+    $trail->push('ویرایش سرویس لیزر', route('admin.services.lasers.edit',$laser));
+});
+
+
+
 // داشبورد > رزرو
 Breadcrumbs::for('reserves', function ($trail) {
     $trail->parent('home', $trail);

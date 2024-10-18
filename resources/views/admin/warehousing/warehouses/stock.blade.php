@@ -64,8 +64,7 @@
                                         <th><b class="IRANYekanRegular">دسته اصلی</b></th>
                                         <th><b class="IRANYekanRegular">دسته فرعی</b></th>
                                         <th><b class="IRANYekanRegular">موجودی واحد در هر عدد</b></th>
-                                        <th><b class="IRANYekanRegular">موجودی</b></th>
-
+                                        <th><b class="IRANYekanRegular">موجودی کل</b></th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -77,7 +76,7 @@
                                             <td><strong class="IRANYekanRegular">{{ $stock->good->main_category->title ?? '' }}</strong></td>
                                             <td><strong class="IRANYekanRegular">{{ $stock->good->sub_category->title ?? '' }}</strong></td>
                                             <td><strong class="IRANYekanRegular">{{ $stock->good->value_per_count.' '.$stock->good->unit.' در هر عدد ' }}</strong></td>
-                                            <td><strong class="IRANYekanRegular">{{ $stock->stock() ?? '' }}</strong></td>
+                                            <td><strong class="IRANYekanRegular">{{ $stock->stock .' '.$stock->good->unit ?? '' }}</strong></td>
                                         </tr>
                                     @endforeach
                                     </tbody>
@@ -91,5 +90,4 @@
 
         </div>
     </div>
-
 @endsection
