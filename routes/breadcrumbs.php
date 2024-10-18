@@ -1179,4 +1179,24 @@ Breadcrumbs::for('warehousing.warehouses.orders.index', function ($trail,$wareho
     $trail->push('حوالات', route('admin.warehousing.warehouses.orders.index',$warehouse));
 });
 
+// داشبورد > لیست دستگاههای لیزر
+Breadcrumbs::for('warehousing.lasers.index', function ($trail) {
+    $trail->parent('home', $trail);
+    $trail->push(' دستگاههای لیزر', route('admin.warehousing.lasers.index'));
+});
+
+// داشبورد > لیست دستگاههای لیزر >>ایجاد دستگاه لیزر جدید
+Breadcrumbs::for('warehousing.lasers.create', function ($trail) {
+    $trail->parent('warehousing.lasers.index', $trail);
+    $trail->push('ایجاد دستگاه لیزر جدید', route('admin.warehousing.lasers.create'));
+});
+
+// داشبورد > لیست دستگاههای لیزر >>ویرایش دستگاه لیزر
+Breadcrumbs::for('warehousing.lasers.edit', function ($trail,$laser) {
+    $trail->parent('warehousing.lasers.index', $trail);
+    $trail->push('ویرایش دستگاه لیزر', route('admin.warehousing.lasers.edit',$laser));
+});
+
+
+
 

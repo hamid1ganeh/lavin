@@ -1943,5 +1943,29 @@ class PermissionSeeder extends Seeder
             'status'=> Status::Active
         ]);
 
+        DB::table('permissions')->insert([
+            'name' => 'warehousing.lasers.index',
+            'description' => 'لیست دستگاه های لیزر',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'warehousing.lasers.create',
+            'description' => 'ایجاد دستگاه لیزر جدید',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'warehousing.lasers.edit',
+            'description' => 'ویرایش دستگاه لیزر',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'warehousing.lasers.destroy',
+            'description' => 'حذف دستگاه لیزر',
+            'status'=> Status::Active
+        ]);
+
     }
 }

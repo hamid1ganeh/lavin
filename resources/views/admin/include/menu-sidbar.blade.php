@@ -450,7 +450,8 @@
                    @if(Auth::guard('admin')->user()->can('warehousing.categories.main.index')||
                        Auth::guard('admin')->user()->can('warehousing.categories.sub.index') ||
                        Auth::guard('admin')->user()->can('warehousing.goods.index') ||
-                       Auth::guard('admin')->user()->can('warehousing.warehouses.index'))
+                       Auth::guard('admin')->user()->can('warehousing.warehouses.index') ||
+                       Auth::guard('admin')->user()->can('warehousing.lasers.index'))
                         <li>
                             <a href="javascript: void(0);" class="waves-effect">
                                 <i class="mdi mdi-city"></i>
@@ -479,14 +480,16 @@
                             </ul>
                             @endif
 
+                            @if(Auth::guard('admin')->user()->can('warehousing.lasers.index'))
                             <ul class="nav-second-level" aria-expanded="false">
                                 <li class="IRANYekanRegular">
                                     <a href="{{ route('admin.warehousing.lasers.index') }}">
-                                        <i class="fa fa-laser"></i>
+                                        <i class="fas fa-deaf"></i>
                                         <span>دستگاهای لیزر</span>
                                     </a>
                                 </li>
                             </ul>
+                            @endif
 
                             @if(Auth::guard('admin')->user()->can('warehousing.warehouses.index'))
                             <ul class="nav-second-level" aria-expanded="false">
