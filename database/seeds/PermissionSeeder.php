@@ -1997,5 +1997,11 @@ class PermissionSeeder extends Seeder
             'status'=> Status::Active
         ]);
 
+        DB::table('permissions')->insert([
+            'name' => 'warehousing.lasers.recycle',
+            'description' => 'بازیابی دستگاه لیزر',
+            'status'=> Status::Active
+        ]);
+
     }
 }

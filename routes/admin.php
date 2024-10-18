@@ -850,6 +850,7 @@ Route::group(['middleware' => 'auth.admin'], function () {
             Route::get('{laser}/edit', [LaserDeviceController::class,'edit'])->name('edit');
             Route::patch('{laser}/update', [LaserDeviceController::class,'update'])->name('update');
             Route::delete('/destroy/{laser}', [LaserDeviceController::class,'destroy'])->name('destroy');
+            Route::delete('/recycle/{laser}', [LaserDeviceController::class,'recycle'])->name('recycle');
         });
 
 

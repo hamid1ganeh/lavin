@@ -22,6 +22,7 @@ class CreateLaserDevicesTable extends Migration
             $table->string('year',4);
             $table->unsignedBigInteger('tube_id')->nullable();
             $table->unsignedBigInteger('shot')->default(0);
+            $table->softDeletes();
             $table->timestamps();
 
             //references

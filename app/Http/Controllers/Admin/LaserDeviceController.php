@@ -14,7 +14,9 @@ class LaserDeviceController extends Controller
         config(['auth.defaults.guard' => 'admin']);
         $this->authorize('warehousing.lasers.index');
 
-        $lasers = LaserDevice::orderBy('name','asc')->get();
+        $lasers = LaserDevice::orderBy('name','asc')
+                                ->withTrashed()
+                                ->get();
         return view('admin.warehousing.lasers.all',compact('lasers'));
     }
 
@@ -134,6 +136,17 @@ class LaserDeviceController extends Controller
 
         $laser->delete();
         toast('دستگاه مورد نظر حذف  شد.', 'error')->position('bottom-end');
+        return back();
+    }
+
+    public function recycle($id)
+    {
+        //اجازه دسترسی
+        config(['auth.defaults.guard' => 'admin']);
+        $this->authorize('warehousing.lasers.recycle');
+        $laser = LaserDevice::onlyTrashed()->findOrFail($id);
+        $laser->restore();
+        toast('دستگاه مورد نظر بازیابی  شد.', 'error')->position('bottom-end');
         return back();
     }
 }

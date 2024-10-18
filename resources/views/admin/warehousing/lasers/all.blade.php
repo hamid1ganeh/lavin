@@ -70,18 +70,46 @@
                                             <td><strong class="IRANYekanRegular">{{ $laser->tube_id }}</strong></td>
                                             <td><strong class="IRANYekanRegular">{{ $laser->shot }}</strong></td>
                                             <td>
-
+                                                @if($laser->trashed())
+                                                @if(Auth::guard('admin')->user()->can('warehousing.lasers.recycle'))
+                                                    <a href="#recycle{{ $laser->id }}" data-toggle="modal" class="btn btn-icon" title="بازیابی">
+                                                        <i class="fa fa-recycle text-danger font-20"></i>
+                                                    </a>
+                                                    <!-- Remove Modal -->
+                                                    <div class="modal fade" id="recycle{{ $laser->id }}" tabindex="-1" aria-labelledby="reviewLabel" aria-hidden="true">
+                                                        <div class="modal-dialog modal-xs">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header py-3">
+                                                                    <h5 class="modal-title IRANYekanRegular" id="newReviewLabel">بازیابی دستگاه لیزر</h5>
+                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                        <span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <h5 class="IRANYekanRegular">آیا مطمئن هستید که میخواهید این دستگاه لیزر را بازیابی کنید؟ </h5>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <form action="{{ route('admin.warehousing.lasers.recycle', $laser) }}"  method="POST" class="d-inline">
+                                                                        @csrf
+                                                                        @method('DELETE')
+                                                                        <button type="submit" class="btn btn-danger px-8" title="بازیابی" >بازیابی</button>
+                                                                    </form>
+                                                                    <button type="button" class="btn btn-secondary" title="انصراف" data-dismiss="modal">انصراف</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                @endif
+                                                @else
                                                 @if(Auth::guard('admin')->user()->can('warehousing.lasers.edit'))
                                                     <a class="btn  btn-icon" href="{{ route('admin.warehousing.lasers.edit', $laser) }}" title="ویرایش">
                                                         <i class="fa fa-edit text-success font-20"></i>
                                                     </a>
                                                 @endif
-
                                                @if(Auth::guard('admin')->user()->can('warehousing.lasers.destroy'))
                                                 <a href="#remove{{ $laser->id }}" data-toggle="modal" class="btn btn-icon" title="حذف">
                                                     <i class="fa fa-trash text-danger font-20"></i>
                                                 </a>
-
                                                 <!-- Remove Modal -->
                                                 <div class="modal fade" id="remove{{ $laser->id }}" tabindex="-1" aria-labelledby="reviewLabel" aria-hidden="true">
                                                     <div class="modal-dialog modal-xs">
@@ -106,6 +134,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                               @endif
                                                @endif
 
                                             </td>
