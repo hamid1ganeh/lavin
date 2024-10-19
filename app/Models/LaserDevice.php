@@ -12,6 +12,16 @@ class LaserDevice extends Model
 
      public function tube()
      {
-         return $this->belongsTo('App\Models\Tube','tube_id', 'id');
+         return $this->belongsTo( Goods::class,'tube_id', 'id');
+     }
+
+     public function good()
+     {
+         if(is_null($this->tube_id))
+         {
+             return null;
+         }
+
+         return $this->tube->title.' '.$this->tube->brand.' ('.$this->tube->value_per_count.' '.$this->unit.')';
      }
 }

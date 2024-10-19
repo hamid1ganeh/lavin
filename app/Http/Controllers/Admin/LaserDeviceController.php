@@ -2,9 +2,15 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Enums\Status;
 use App\Http\Controllers\Controller;
+use App\Models\Goods;
+use App\Models\LaserTubeHistory;
+use App\Models\WarehouseStock;
 use Illuminate\Http\Request;
 use App\Models\LaserDevice;
+use Auth;
+use Illuminate\Support\Facades\DB;
 
 class LaserDeviceController extends Controller
 {
@@ -17,7 +23,15 @@ class LaserDeviceController extends Controller
         $lasers = LaserDevice::orderBy('name','asc')
                                 ->withTrashed()
                                 ->get();
-        return view('admin.warehousing.lasers.all',compact('lasers'));
+
+        $goods = WarehouseStock::with('good')
+                ->where('warehouse_id',1)
+                ->whereHas('good',function($q){
+                    $q->where('status',Status::Active)->orderBy('title','asc');
+                })->get()->pluck('good');
+
+
+        return view('admin.warehousing.lasers.all',compact('lasers','goods'));
     }
 
 
@@ -148,5 +162,66 @@ class LaserDeviceController extends Controller
         $laser->restore();
         toast('دستگاه مورد نظر بازیابی  شد.', 'error')->position('bottom-end');
         return back();
+    }
+
+    public function tube(LaserDevice $laser,Request $request)
+    {
+        //اجازه دسترسی
+        config(['auth.defaults.guard' => 'admin']);
+        $this->authorize('warehousing.lasers.tube');
+
+            $request->validate(
+            [
+                "good"=>['required','exists:goods,id'],
+                "description"=>['nullable','max:255'],
+            ],
+            [
+                "good.required"=>" انتخاب کالا الزامی است",
+                "code.max"=>"حداکثر طول مجاز برای کد دستگاه 255 کارکتر",
+                "code.unique"=>"کد دستگاه قبلا ثبت شده است",
+                "description.max"=>"حداکثر طول مجاز برای  توضیحات 255 کارکتر",
+            ]);
+
+            $waste = 0;
+            if(!is_null($laser->shot)){
+                $waste = $laser->shot;
+            }
+
+            if($waste && is_null($request->description)){
+                alert()->error('تویپ فعلی به اتمام نرسیده است. لطفا توضیحاتی برای آن ثبت کنید.');
+                return back();
+            }
+
+            $good = Goods::find($request->good);
+
+            $history = new LaserTubeHistory();
+            $history->laser_device_id =  $laser->id;
+            $history->goods_id =  $good->id;
+            $history->good_title = $good->title;
+            $history->good_brand = $good->brand;
+            $history->changed_by = Auth::guard('admin')->id();
+            $history->shot =  $good->value_per_count;
+            $history->waste =  $waste;
+
+             $laser->tube_id =  $good->id;
+             $laser->shot =  $good->value_per_count;
+
+            DB::transaction(function() use ($history,$laser) {
+                $history->save();
+                $laser->save();
+            });
+
+            toast('تویب لیزر تعوض شد.', 'error')->position('bottom-end');
+            return back();
+    }
+
+    public function history(LaserDevice $laser)
+    {
+        //اجازه دسترسی
+        config(['auth.defaults.guard' => 'admin']);
+        $this->authorize('warehousing.lasers.tube.history');
+
+        $histories = LaserTubeHistory::where('laser_device_id',$laser->id)->orderBy('created_at','desc')->get();
+        return view('admin.warehousing.lasers.history',compact('histories','laser'));
     }
 }

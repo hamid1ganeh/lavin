@@ -59,20 +59,20 @@
                                     <thead>
                                     <tr>
                                         <th><b class="IRANYekanRegular">ردیف</b></th>
-                                        <th><b class="IRANYekanRegular">نام کالا</b></th>
-                                        <th><b class="IRANYekanRegular">برند</b></th>
-                                        <th><b class="IRANYekanRegular">دسته اصلی</b></th>
-                                        <th><b class="IRANYekanRegular">دسته فرعی</b></th>
-                                        <th><b class="IRANYekanRegular">موجودی واحد در هر عدد</b></th>
-                                        <th><b class="IRANYekanRegular">موجودی کل</b></th>
+                                        <th><b class="IRANYekanRegular">نام تیوب</b></th>
+                                        <th><b class="IRANYekanRegular">برند تیوب</b></th>
+                                        <th><b class="IRANYekanRegular">شات</b></th>
+                                        <th><b class="IRANYekanRegular">ضایعات تیوب قبلی</b></th>
+                                        <th><b class="IRANYekanRegular">تعوضی کننده</b></th>
+                                        <th><b class="IRANYekanRegular">توضیحات</b></th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    @foreach($stocks as $index=>$stock)
+                                    @foreach($histories as $index=>$history)
                                         <tr>
                                             <td><strong class="IRANYekanRegular">{{ ++$index }}</strong></td>
-                                            <td><strong class="IRANYekanRegular">{{ $stock->good->title ?? '' }}</strong></td>
-                                            <td><strong class="IRANYekanRegular">{{ $stock->good->brand ?? '' }}</strong></td>
+                                            <td><strong class="IRANYekanRegular">{{ $stock->good_title ?? '' }}</strong></td>
+                                            <td><strong class="IRANYekanRegular">{{ $stock->good_brand ?? '' }}</strong></td>
                                             <td><strong class="IRANYekanRegular">{{ $stock->good->main_category->title ?? '' }}</strong></td>
                                             <td><strong class="IRANYekanRegular">{{ $stock->good->sub_category->title ?? '' }}</strong></td>
                                             <td><strong class="IRANYekanRegular">{{ $stock->good->value_per_count.' '.$stock->good->unit.' در هر عدد ' }}</strong></td>

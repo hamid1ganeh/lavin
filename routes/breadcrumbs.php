@@ -1205,6 +1205,12 @@ Breadcrumbs::for('warehousing.lasers.index', function ($trail) {
     $trail->push(' دستگاههای لیزر', route('admin.warehousing.lasers.index'));
 });
 
+// داشبورد > لیست دستگاههای لیزر > تاریخچه تعویض تیوب
+Breadcrumbs::for('warehousing.lasers.tube.history', function ($trail,$laser) {
+    $trail->parent('warehousing.lasers.index', $trail);
+    $trail->push('تاریخچه تعویض تیوب', route('admin.warehousing.lasers.tube.history',$laser));
+});
+
 // داشبورد > لیست دستگاههای لیزر >>ایجاد دستگاه لیزر جدید
 Breadcrumbs::for('warehousing.lasers.create', function ($trail) {
     $trail->parent('warehousing.lasers.index', $trail);

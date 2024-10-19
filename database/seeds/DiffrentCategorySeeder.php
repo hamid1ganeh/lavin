@@ -1,19 +1,12 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
-use App\Enums\genderType;
 use App\Enums\Status;
 
 
-class CategorySeeder extends Seeder
+class DiffrentCategorySeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
     public function run()
     {
         DB::table('service_categories')->insert([

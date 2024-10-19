@@ -14,7 +14,6 @@ use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\LaserDeviceController;
 use App\Http\Controllers\Admin\ServiceLaserController;
 
-
 Route::get('/login', 'AuthController@loginPage')->name('loginPage');
 Route::post('/login', 'AuthController@login')->name('login');
 Route::get('/logout','AuthController@logout')->name('logout');
@@ -521,8 +520,17 @@ Route::group(['middleware' => 'auth.admin'], function () {
           Route::get('/', 'ReserveConsumptionController@index')->name('index');
           Route::post('/create', 'ReserveConsumptionController@store')->name('store');
           Route::patch('{consumption}/update', 'ReserveConsumptionController@update')->name('update');
-          Route::delete('/{consumption}/delete', 'ReserveConsumptionController@delete')->name('delete');
+          Route::delete('/{consumption}/delete', 'ReserveConsumptionController@delete')->name('delete');+
+
+          Route::prefix('/lasers')->name('lasers.')->group(function () {
+              Route::get('/', 'ReserveConsumptionLaserController@index')->name('index');
+              Route::post('/create', 'ReserveConsumptionLaserController@store')->name('store');
+              Route::patch('{laser}/update', 'ReserveConsumptionLaserController@update')->name('update');
+              Route::delete('/{laser}/delete', 'ReserveConsumptionLaserController@delete')->name('delete');
+          });
       });
+
+
 
     Route::prefix('{reserve}/complications')->name('complications.')->group(function () {
       Route::get('/show', 'RegisterComplicationController@show')->name('show');
@@ -851,6 +859,8 @@ Route::group(['middleware' => 'auth.admin'], function () {
             Route::patch('{laser}/update', [LaserDeviceController::class,'update'])->name('update');
             Route::delete('/destroy/{laser}', [LaserDeviceController::class,'destroy'])->name('destroy');
             Route::delete('/recycle/{laser}', [LaserDeviceController::class,'recycle'])->name('recycle');
+            Route::post('{laser}/tube', [LaserDeviceController::class,'tube'])->name('tube');
+            Route::get('{laser}/tube/history', [LaserDeviceController::class,'history'])->name('tube.history');
         });
 
 

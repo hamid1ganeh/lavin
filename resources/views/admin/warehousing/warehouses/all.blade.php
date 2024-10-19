@@ -136,29 +136,31 @@
                                                         <div class="dropdown-menu">
                                                             @if($warehouse->trashed())
                                                                 @if(Auth::guard('admin')->user()->can('warehousing.warehouses.recycle'))
-                                                                    <a class="dropdown-item IR cusrsor" href="#recycle{{ $warehouse->id }}" data-toggle="modal" title="بازیابی">
+                                                                    <a class="dropdown-item IR cursor-pointer" href="#recycle{{ $warehouse->id }}" data-toggle="modal" title="بازیابی">
                                                                         <i class="fa fa-recycle text-danger"></i>
                                                                         بازیابی
                                                                     </a>
                                                                 @endif
                                                             @else
                                                                 @if(Auth::guard('admin')->user()->can('warehousing.warehouses.stocks'))
-                                                                    <a class="dropdown-item IR cusrsor" href="{{ route('admin.warehousing.warehouses.stocks', $warehouse) }}" title="موجودی">
+                                                                    <a class="dropdown-item IR cursor-pointer" href="{{ route('admin.warehousing.warehouses.stocks', $warehouse) }}" title="موجودی">
                                                                         <i class="fa fa-cube text-warning font-20"></i>
                                                                         موجودی
                                                                     </a>
                                                                 @endif
                                                                 @if(Auth::guard('admin')->user()->can('warehousing.warehouses.edit'))
-                                                                    <a class="dropdown-item IR cusrsor" href="{{ route('admin.warehousing.warehouses.edit', $warehouse) }}" title="ویرایش">
+                                                                    <a class="dropdown-item IR cursor-pointer" href="{{ route('admin.warehousing.warehouses.edit', $warehouse) }}" title="ویرایش">
                                                                         <i class="fa fa-edit text-success font-20"></i>
                                                                         ویرایش
                                                                     </a>
                                                                 @endif
+                                                                @if($warehouse->id != 1)
                                                                 @if(Auth::guard('admin')->user()->can('warehousing.warehouses.destroy'))
-                                                                    <a href="#remove{{ $warehouse->id }}" data-toggle="modal" class="dropdown-item IR cusrsor" title="حذف">
+                                                                    <a href="#remove{{ $warehouse->id }}" data-toggle="modal" class="dropdown-item IR cursor-pointer" title="حذف">
                                                                         <i class="fa fa-trash text-danger font-20"></i>
                                                                         حذف
                                                                     </a>
+                                                                @endif
                                                                 @endif
                                                             @endif
                                                         </div>

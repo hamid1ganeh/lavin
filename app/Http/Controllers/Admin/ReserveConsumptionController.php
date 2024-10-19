@@ -34,7 +34,7 @@ class ReserveConsumptionController extends Controller
                ->pluck('good');
        }
 
-       return  view('admin.reserves.consumptions',compact('consumptions','reserve','warehouses','goods'));
+       return  view('admin.reserves.consumptions.consumptions',compact('consumptions','reserve','warehouses','goods'));
    }
 
    public function store(ServiceReserve $reserve,Request $request)

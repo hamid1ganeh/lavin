@@ -101,11 +101,15 @@ class WarehouseController extends Controller
                 'description.max' => 'حداکثر  طول مجاز توضیحات انبار 255 کارکتر می باشد.',
             ]);
 
-
         if(in_array($request->status,[Status::Active,Status::Deactive])){
-            $warehouse->update(['name'=>$request->name,
-                                'description'=>$request->description,
-                                 'status'=>$request->status,]);
+
+            if($warehouse->id != 1){
+                $warehouse->name = $request->name;
+                $warehouse->status = $request->status;
+            }
+
+            $warehouse->description = $request->description;
+            $warehouse->save();
 
             $warehouse->admins()->sync($request->admins);
 

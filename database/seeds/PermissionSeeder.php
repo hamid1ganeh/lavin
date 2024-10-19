@@ -2003,5 +2003,17 @@ class PermissionSeeder extends Seeder
             'status'=> Status::Active
         ]);
 
+        DB::table('permissions')->insert([
+            'name' => 'warehousing.lasers.tube',
+            'description' => 'تعویض تیوب',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'warehousing.lasers.tube.history',
+            'description' => 'تاریخچه تعویض تیوب',
+            'status'=> Status::Active
+        ]);
+
     }
 }

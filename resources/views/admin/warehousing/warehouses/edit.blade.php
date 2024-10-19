@@ -50,7 +50,7 @@
                                     <div class="form-group">
                                         <div class="col-12">
                                             <label for="name" class="control-label IRANYekanRegular">عنوان</label>
-                                            <input type="text" class="form-control input" name="name" id="name" placeholder="عنوان انبار را وارد کنید" value="{{ old('name') ?? $warehouse->name }}">
+                                            <input type="text" class="form-control input" name="name" id="name" placeholder="عنوان انبار را وارد کنید" value="{{ old('name') ?? $warehouse->name }}" @if($warehouse->id==1) readonly @endif>
                                             <span class="form-text text-danger erroralarm"> {{ $errors->first('name') }} </span>
                                         </div>
                                     </div>
