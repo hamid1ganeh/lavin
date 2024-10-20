@@ -325,7 +325,6 @@
                                             <th><b class="IRANYekanRegular">شعبه</b></th>
                                             <th><b class="IRANYekanRegular">سرویس</b></th>
                                             <th><b class="IRANYekanRegular">پزشک</b></th>
-                                            <th><b class="IRANYekanRegular">رزور</b></th>
                                             <th><b class="IRANYekanRegular">نوبت</b></th>
                                             <th><b class="IRANYekanRegular">نوع رزرو</b></th>
                                             <th><b class="IRANYekanRegular">ارتقاء</b></th>
@@ -347,11 +346,6 @@
                                             <td><strong class="IRANYekanRegular">{{ $reserve->branch->name }}</strong></td>
                                             <td><strong class="IRANYekanRegular">{{ $reserve->detail_name }}</strong></td>
                                             <td><strong class="IRANYekanRegular">{{ $reserve->doctor->fullname ?? "" }}</strong></td>
-                                            <td>
-                                                <strong class="IRANYekanRegular">
-                                                    {{ $reserve->reserve_time() }}
-                                                </strong>
-                                            </td>
                                             <td>
                                                 @if($reserve->time!=null)
                                                 <strong class="IRANYekanRegular">
@@ -461,11 +455,11 @@
                                                                          </div>
                                                                      </div>
 
-                                                                    <div class="row">
-                                                                        <div class="col-12">
-                                                                            <p>زمان رزرو:<br> {{ $reserve->reserve_time() }}</p>
-                                                                        </div>
-                                                                    </div>
+{{--                                                                    <div class="row">--}}
+{{--                                                                        <div class="col-12">--}}
+{{--                                                                            <p>زمان رزرو:<br> {{ $reserve->reserve_time() }}</p>--}}
+{{--                                                                        </div>--}}
+{{--                                                                    </div>--}}
 
                                                                     <div class="row">
                                                                         <div class="col-12">

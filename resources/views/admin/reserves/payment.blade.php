@@ -39,11 +39,11 @@
                                         <div class="col-6">
                                             <address>
                                               <p class="IR">
-                                                عنوان سرویس:{{ $payment->reserve->service_name }}
+                                                عنوان سرویس:{{ $payment->reserve->service_name ?? ''}}
                                               </p>
 
                                               <p class="IR">
-                                                جزئیات سرویس:{{ $payment->reserve->detail_name  }}
+                                                جزئیات سرویس:{{ $payment->reserve->detail_name ??'' }}
                                               </p>
 
                                               <p class="IR">
