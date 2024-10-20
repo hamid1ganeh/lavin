@@ -24,4 +24,9 @@ class LaserDevice extends Model
 
          return $this->tube->title.' '.$this->tube->brand.' ('.$this->tube->value_per_count.' '.$this->unit.')';
      }
+
+     public function device()
+     {
+         return $this->name.' '.$this->brand.' '.$this->model;
+     }
 }
