@@ -15,12 +15,6 @@ class DiffrentCategorySeeder extends Seeder
             'status' => Status::Active,
         ]);
 
-        DB::table('goods_sub_categories')->insert([
-            'main_id' => 1,
-            'title' =>'تیوب',
-            'status' => Status::Active,
-        ]);
-
         DB::table('goods_main_categories')->insert([
             'title' =>'لیزر',
             'status' => Status::Active,
@@ -31,5 +25,6 @@ class DiffrentCategorySeeder extends Seeder
             'title' =>'تیوب',
             'status' => Status::Active,
         ]);
+
     }
 }
