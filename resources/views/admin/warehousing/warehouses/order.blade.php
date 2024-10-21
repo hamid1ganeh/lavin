@@ -102,7 +102,7 @@
                                                                     <select name="good" id="good"  class="width-100 form-control IRANYekanRegular" required>
                                                                         <option value="">کالا مورد نظر را انتخاب کنید</option>
                                                                         @foreach($goods as $good)
-                                                                            <option value="{{ $good->id }}" {{$good->id == old('good')?'selected':'' }}>{{ $good->title }}</option>
+                                                                            <option value="{{ $good->id }}" {{$good->id == old('good')?'selected':'' }}>{{ $good->title.' ('.$good->brand.')' }}</option>
                                                                         @endforeach
                                                                     </select>
                                                                     <span class="form-text text-danger erroralarm"> {{ $errors->first('good') }} </span>

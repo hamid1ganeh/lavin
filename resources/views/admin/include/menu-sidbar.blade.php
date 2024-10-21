@@ -450,7 +450,8 @@
                    @if(Auth::guard('admin')->user()->can('warehousing.categories.main.index')||
                        Auth::guard('admin')->user()->can('warehousing.categories.sub.index') ||
                        Auth::guard('admin')->user()->can('warehousing.goods.index') ||
-                       Auth::guard('admin')->user()->can('warehousing.warehouses.index'))
+                       Auth::guard('admin')->user()->can('warehousing.warehouses.index') ||
+                       Auth::guard('admin')->user()->can('warehousing.lasers.index'))
                         <li>
                             <a href="javascript: void(0);" class="waves-effect">
                                 <i class="mdi mdi-city"></i>
@@ -474,6 +475,17 @@
                                     <a href="{{ route('admin.warehousing.goods.index') }}">
                                         <i class="fas fa-shopping-cart"></i>
                                         <span>کالا ها</span>
+                                    </a>
+                                </li>
+                            </ul>
+                            @endif
+
+                            @if(Auth::guard('admin')->user()->can('warehousing.lasers.index'))
+                            <ul class="nav-second-level" aria-expanded="false">
+                                <li class="IRANYekanRegular">
+                                    <a href="{{ route('admin.warehousing.lasers.index') }}">
+                                        <i class="fas fa-deaf"></i>
+                                        <span>دستگاهای لیزر</span>
                                     </a>
                                 </li>
                             </ul>
@@ -529,20 +541,20 @@
                           </a>
                           <ul class="nav-second-level" aria-expanded="false">
 
-                              @if(Auth::guard('admin')->user()->can('services.index'))
-                                  <li>
-                                      <a href="{{ route('admin.services.index') }}" class="waves-effect">
-                                          <i class="fab fa-servicestack"></i>
-                                          <span class="IRANYekanRegular">سرگروه خدمات</span>
-                                      </a>
-                                  </li>
-                              @endif
-
                               @if(Auth::guard('admin')->user()->can('services.categories.index'))
                                   <li>
                                       <a href="{{ route('admin.services.categories.index') }}" class="waves-effect">
                                           <i class="fas fa-layer-group"></i>
                                           <span class="IRANYekanRegular">دسته بندی‌ها</span>
+                                      </a>
+                                  </li>
+                              @endif
+
+                              @if(Auth::guard('admin')->user()->can('services.index'))
+                                  <li>
+                                      <a href="{{ route('admin.services.index') }}" class="waves-effect">
+                                          <i class="fab fa-servicestack"></i>
+                                          <span class="IRANYekanRegular">سرگروه خدمات</span>
                                       </a>
                                   </li>
                               @endif
@@ -555,6 +567,16 @@
                                       </a>
                                   </li>
                               @endif
+
+{{--                              @if(Auth::guard('admin')->user()->can('services.lasers.index'))--}}
+                                  <li>
+                                      <a href="{{ route('admin.services.lasers.index') }}" class="waves-effect">
+                                          <i class="fas fa-deaf"></i>
+                                          <span class="IRANYekanRegular">خدمات لیزر</span>
+                                      </a>
+                                  </li>
+{{--                              @endif--}}
+
 
                               @if(Auth::guard('admin')->user()->can('analysis.index'))
                                   <li>

@@ -431,6 +431,36 @@ class PermissionSeeder extends Seeder
         ]);
 
         DB::table('permissions')->insert([
+            'name' => 'services.lasers.index',
+            'description' => 'لیست سرویسهای لیزر',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'services.lasers.create',
+            'description' => 'یجاد سرویس لیزر',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'services.lasers.edit',
+            'description' => 'ویرایش سرویس  لیزر',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'services.lasers.delete',
+            'description' => 'حذف سرویس لیزر',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'services.lasers.recycle',
+            'description' => 'بازیابی سرویس لیزر',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
             'name' => 'services.fetch_details',
             'description' => 'فیلتر جزئیات سرویس',
             'status'=> Status::Deactive
@@ -1940,6 +1970,48 @@ class PermissionSeeder extends Seeder
         DB::table('permissions')->insert([
             'name' => 'warehousing.warehouses.orders.delivery',
             'description' => 'تحویل حواله انبار',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'warehousing.lasers.index',
+            'description' => 'لیست دستگاه های لیزر',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'warehousing.lasers.create',
+            'description' => 'ایجاد دستگاه لیزر جدید',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'warehousing.lasers.edit',
+            'description' => 'ویرایش دستگاه لیزر',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'warehousing.lasers.destroy',
+            'description' => 'حذف دستگاه لیزر',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'warehousing.lasers.recycle',
+            'description' => 'بازیابی دستگاه لیزر',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'warehousing.lasers.tube',
+            'description' => 'تعویض تیوب',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'warehousing.lasers.tube.history',
+            'description' => 'تاریخچه تعویض تیوب',
             'status'=> Status::Active
         ]);
 

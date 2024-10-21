@@ -11,6 +11,8 @@ use App\Http\Controllers\Admin\GoodsController;
 use App\Http\Controllers\Admin\WarehouseController;
 use App\Http\Controllers\Admin\WareHouseOrderController;
 use App\Http\Controllers\Admin\ReportController;
+use App\Http\Controllers\Admin\LaserDeviceController;
+use App\Http\Controllers\Admin\ServiceLaserController;
 
 Route::get('/login', 'AuthController@loginPage')->name('loginPage');
 Route::post('/login', 'AuthController@login')->name('login');
@@ -31,6 +33,7 @@ Route::group(['middleware' => 'auth.admin'], function () {
 
     Route::prefix('/reports')->name('reports.')->group(function () {
         Route::get('/consumptions', [ReportController::class,'consumptions'])->name('consumptions');
+        Route::get('/lasers', [ReportController::class,'lasers'])->name('lasers');
     });
 
   Route::POST('/upload', 'HomeController@videoupload')->name('upload.video');
@@ -284,6 +287,16 @@ Route::group(['middleware' => 'auth.admin'], function () {
 
     });
 
+      Route::prefix('lasers')->name('lasers.')->group(function () {
+          Route::get('/', [ServiceLaserController::class,'index'])->name('index');
+          Route::get('/create', [ServiceLaserController::class,'create'])->name('create');
+          Route::post('/store', [ServiceLaserController::class,'store'])->name('store');
+          Route::get('{laser}/edit', [ServiceLaserController::class,'edit'])->name('edit');
+          Route::patch('{laser}/update', [ServiceLaserController::class,'update'])->name('update');
+          Route::delete('/destroy/{laser}', [ServiceLaserController::class,'destroy'])->name('destroy');
+          Route::delete('/recycle/{id}', [ServiceLaserController::class,'recycle'])->name('recycle');
+      });
+
   });
 
   Route::prefix('service_details')->name('details.')->group(function () {
@@ -327,7 +340,10 @@ Route::group(['middleware' => 'auth.admin'], function () {
 
 });
 
-  Route::prefix('comments')->name('comments.')->group(function () {
+
+
+
+    Route::prefix('comments')->name('comments.')->group(function () {
       Route::get('/', 'CommentsController@index')->name('index');
       Route::PATCH('update/{comment}', 'CommentsController@update')->name('update');
       Route::delete('/destroy/{comment}', 'CommentsController@destroy')->name('destroy');
@@ -505,8 +521,17 @@ Route::group(['middleware' => 'auth.admin'], function () {
           Route::get('/', 'ReserveConsumptionController@index')->name('index');
           Route::post('/create', 'ReserveConsumptionController@store')->name('store');
           Route::patch('{consumption}/update', 'ReserveConsumptionController@update')->name('update');
-          Route::delete('/{consumption}/delete', 'ReserveConsumptionController@delete')->name('delete');
+          Route::delete('/{consumption}/delete', 'ReserveConsumptionController@delete')->name('delete');+
+
+          Route::prefix('/lasers')->name('lasers.')->group(function () {
+              Route::get('/', 'ReserveConsumptionLaserController@index')->name('index');
+              Route::post('/create', 'ReserveConsumptionLaserController@store')->name('store');
+              Route::patch('/{consumption}/update', 'ReserveConsumptionLaserController@update')->name('update');
+              Route::delete('/{consumption}/delete', 'ReserveConsumptionLaserController@delete')->name('delete');
+          });
       });
+
+
 
     Route::prefix('{reserve}/complications')->name('complications.')->group(function () {
       Route::get('/show', 'RegisterComplicationController@show')->name('show');
@@ -825,6 +850,18 @@ Route::group(['middleware' => 'auth.admin'], function () {
                 Route::patch('{order}/deliver', [WareHouseOrderController::class,'deliver'])->name('deliver');
                 Route::delete('{order}/destroy', [WareHouseOrderController::class,'destroy'])->name('destroy');
             });
+        });
+
+        Route::prefix('lasers')->name('lasers.')->group(function () {
+            Route::get('/', [LaserDeviceController::class,'index'])->name('index');
+            Route::get('/create', [LaserDeviceController::class,'create'])->name('create');
+            Route::post('/store', [LaserDeviceController::class,'store'])->name('store');
+            Route::get('{laser}/edit', [LaserDeviceController::class,'edit'])->name('edit');
+            Route::patch('{laser}/update', [LaserDeviceController::class,'update'])->name('update');
+            Route::delete('/destroy/{laser}', [LaserDeviceController::class,'destroy'])->name('destroy');
+            Route::delete('/recycle/{laser}', [LaserDeviceController::class,'recycle'])->name('recycle');
+            Route::post('{laser}/tube', [LaserDeviceController::class,'tube'])->name('tube');
+            Route::get('{laser}/tube/history', [LaserDeviceController::class,'history'])->name('tube.history');
         });
 
 

@@ -1008,12 +1008,18 @@
                                                                     </a>
                                                                 @endif
 
-
                                                             @if(Auth::guard('admin')->user()->can('reserves.consumptions.index'))
+                                                                @if($reserve->service->parent_cat->id == 1)
+                                                                    <a class="dropdown-item IR cusrsor" href="{{ route('admin.reserves.consumptions.lasers.index', $reserve) }}" title="مصرفی" target="_blank">
+                                                                        <i class="fas fa-shopping-cart text-info"></i>
+                                                                        <span class="p-1">مصرفی</span>
+                                                                    </a>
+                                                                @else
                                                                 <a class="dropdown-item IR cusrsor" href="{{ route('admin.reserves.consumptions.index', $reserve) }}" title="مصرفی" target="_blank">
                                                                     <i class="fas fa-shopping-cart text-info"></i>
                                                                     <span class="p-1">مصرفی</span>
                                                                 </a>
+                                                                @endif
                                                             @endif
 
                                                         </div>

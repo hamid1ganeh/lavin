@@ -69,7 +69,7 @@
 
                                                 @if(Auth::guard('admin')->user()->can('branchs.edit'))
                                                 <a class="btn  btn-icon" href="{{ route('admin.branchs.edit', $branch) }}" title="ویرایش">
-                                                    <i class="fa fa-edit text-primary font-20"></i>
+                                                    <i class="fa fa-edit text-success font-20"></i>
                                                 </a>
                                                 @endif
 

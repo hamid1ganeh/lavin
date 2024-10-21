@@ -21,6 +21,7 @@
     <link href="{{ url('/') }}/panel/assets/css/jquery.md.bootstrap.datetimepicker.style.css" rel="stylesheet" />
     <link rel="stylesheet" href="{{ url('/') }}/panel/assets/datatables/jquery.dataTables.min.css" />
     <link rel="stylesheet" href="{{ url('/') }}/panel/assets/js/sweetalert.min.js" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     @if(Route::currentRouteName()=='admin.ask.analysis.show')
     <link href="{{ url('/') }}/panel/assets/css/gallery.css" rel="stylesheet" type="text/css" />

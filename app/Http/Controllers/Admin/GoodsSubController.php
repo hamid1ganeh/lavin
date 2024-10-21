@@ -74,6 +74,10 @@ class GoodsSubController extends Controller
 
     public function edit(GoodsMainCategory $main,GoodsSubCategory $sub)
     {
+        if ($sub->id == 1){
+            abort(403);
+        }
+
         //اجازه دسترسی
         config(['auth.defaults.guard' => 'admin']);
         $this->authorize('warehousing.categories.sub.edit');
@@ -84,6 +88,11 @@ class GoodsSubController extends Controller
 
     public function update(GoodsMainCategory $main,GoodsSubCategory $sub,Request $request)
     {
+        if ($sub->id == 1){
+            abort(403);
+        }
+
+
         //اجازه دسترسی
         config(['auth.defaults.guard' => 'admin']);
         $this->authorize('warehousing.categories.sub.edit');
@@ -116,6 +125,11 @@ class GoodsSubController extends Controller
 
     public function destroy(GoodsMainCategory $main, GoodsSubCategory $sub)
     {
+        if ($sub->id == 1){
+            abort(403);
+        }
+
+
         //اجازه دسترسی
         config(['auth.defaults.guard' => 'admin']);
         $this->authorize('warehousing.categories.sub.destroy');

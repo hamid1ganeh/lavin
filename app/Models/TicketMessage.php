@@ -25,7 +25,7 @@ class TicketMessage extends Model
 
     public function date()
     {
-        return CalendarUtils::convertNumbers(CalendarUtils::strftime('l Y/m/d | H:i',strtotime($this->created_at)));
+        return CalendarUtils::convertNumbers(CalendarUtils::strftime('Y/m/d | H:i:s',strtotime($this->created_at)));
     }
 
 }

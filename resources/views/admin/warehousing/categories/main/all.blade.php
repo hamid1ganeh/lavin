@@ -108,13 +108,15 @@
                                                         </a>
                                                     @endif
 
-                                                    @if(Auth::guard('admin')->user()->can('warehousing.categories.main.edit'))
+                                                    @if(Auth::guard('admin')->user()->can('warehousing.categories.main.edit') &&
+                                                        $category->id != 1)
                                                         <a class="btn  btn-icon" href="{{ route('admin.warehousing.categories.main.edit', $category) }}" title="ویرایش">
                                                             <i class="fa fa-edit text-success font-20"></i>
                                                         </a>
                                                     @endif
 
-                                                   @if(Auth::guard('admin')->user()->can('warehousing.categories.main.destroy'))
+                                                   @if(Auth::guard('admin')->user()->can('warehousing.categories.main.destroy')  &&
+                                                        $category->id != 1)
                                                     <a href="#remove{{ $category->id }}" data-toggle="modal" class="btn btn-icon" title="حذف">
                                                         <i class="fa fa-trash text-danger font-20"></i>
                                                     </a>

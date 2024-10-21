@@ -19,6 +19,12 @@ Breadcrumbs::for('reports.consumptions', function ($trail) {
     $trail->push('گزارش مواد مصرفی', route('admin.reports.consumptions'));
 });
 
+// داشبورد > گزارش مواد مصرفی > لیزر
+Breadcrumbs::for('reports.consumptions.lasers', function ($trail) {
+    $trail->parent('reports.consumptions', $trail);
+    $trail->push('لیزر', route('admin.reports.lasers'));
+});
+
 // داشبورد > پرونده پرسنلی
 Breadcrumbs::for('staff.documents', function ($trail) {
     $trail->parent('home', $trail);
@@ -199,6 +205,26 @@ Breadcrumbs::for('services.cat.sub.edit', function ($trail,$parent,$sub) {
     $trail->parent('services.cat.sub', $parent);
     $trail->push('ویرایش زیردسته', route('admin.services.categories.sub.edit',[$parent,$sub]));
 });
+
+
+// داشبورد >  خدمات لیزر
+Breadcrumbs::for('services.lasers.index', function ($trail) {
+    $trail->parent('home', $trail);
+    $trail->push('خدمات لیزر', route('admin.services.lasers.index'));
+});
+
+// داشبورد >  خدمات لیزر > ایجاد سرویس لیزر
+Breadcrumbs::for('services.lasers.create', function ($trail) {
+    $trail->parent('services.lasers.index', $trail);
+    $trail->push('ایجاد سرویس لیزر', route('admin.services.lasers.create'));
+});
+
+// داشبورد >  خدمات لیزر > ویرایش خدمت لیزر
+Breadcrumbs::for('services.lasers.edit', function ($trail,$laser) {
+    $trail->parent('services.lasers.index', $trail);
+    $trail->push('ویرایش سرویس لیزر', route('admin.services.lasers.edit',$laser));
+});
+
 
 
 // داشبورد > رزرو
@@ -1178,5 +1204,31 @@ Breadcrumbs::for('warehousing.warehouses.orders.index', function ($trail,$wareho
     $trail->parent('warehousing.warehouses.stocks', $warehouse);
     $trail->push('حوالات', route('admin.warehousing.warehouses.orders.index',$warehouse));
 });
+
+// داشبورد > لیست دستگاههای لیزر
+Breadcrumbs::for('warehousing.lasers.index', function ($trail) {
+    $trail->parent('home', $trail);
+    $trail->push(' دستگاههای لیزر', route('admin.warehousing.lasers.index'));
+});
+
+// داشبورد > لیست دستگاههای لیزر > تاریخچه تعویض تیوب
+Breadcrumbs::for('warehousing.lasers.tube.history', function ($trail,$laser) {
+    $trail->parent('warehousing.lasers.index', $trail);
+    $trail->push('تاریخچه تعویض تیوب', route('admin.warehousing.lasers.tube.history',$laser));
+});
+
+// داشبورد > لیست دستگاههای لیزر >>ایجاد دستگاه لیزر جدید
+Breadcrumbs::for('warehousing.lasers.create', function ($trail) {
+    $trail->parent('warehousing.lasers.index', $trail);
+    $trail->push('ایجاد دستگاه لیزر جدید', route('admin.warehousing.lasers.create'));
+});
+
+// داشبورد > لیست دستگاههای لیزر >>ویرایش دستگاه لیزر
+Breadcrumbs::for('warehousing.lasers.edit', function ($trail,$laser) {
+    $trail->parent('warehousing.lasers.index', $trail);
+    $trail->push('ویرایش دستگاه لیزر', route('admin.warehousing.lasers.edit',$laser));
+});
+
+
 
 

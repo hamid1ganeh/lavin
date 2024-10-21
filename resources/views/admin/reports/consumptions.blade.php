@@ -67,10 +67,20 @@
                         <div class="card-body">
 
                             <div class="row">
-                                <div class="col-12 col-md-6">
+                                <div class="col-12 col-md-11">
                                     <button class="btn btn-info" type="button" data-toggle="collapse" data-target="#filter" aria-expanded="false" aria-controls="collapseExample" title="فیلتر">
                                         <i class="fas fa-filter"></i>
                                     </button>
+                                </div>
+
+
+                                <div class="col-12 col-md-1 text-right">
+                                    <div class="btn-group" >
+                                        <a href="{{ route('admin.reports.lasers') }}" class="btn btn-sm btn-warning">
+                                            <i class="fas fa-deaf plusiconfont"></i>
+                                            <b class="IRANYekanRegular">لیزر</b>
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
 
@@ -91,7 +101,6 @@
                                         </diV>
 
                                         <div class="row">
-
                                             <div class="form-group justify-content-center col-12 col-md-6">
                                                 <label for="status-filter" class="control-label IRANYekanRegular">کالاها</label>
                                                  <select name="goods[]" id="goods-filter" class="form-control select2 select2-multiple text-right IRANYekanRegular" multiple="multiple" multiple data-placeholder="... کالاها را انتخاب نمایید">
@@ -109,7 +118,6 @@
                                                     @endforeach
                                                 </select>
                                             </div>
-
                                         </diV>
 
                                         <div class="row">
