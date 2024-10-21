@@ -33,6 +33,7 @@ Route::group(['middleware' => 'auth.admin'], function () {
 
     Route::prefix('/reports')->name('reports.')->group(function () {
         Route::get('/consumptions', [ReportController::class,'consumptions'])->name('consumptions');
+        Route::get('/lasers', [ReportController::class,'lasers'])->name('lasers');
     });
 
   Route::POST('/upload', 'HomeController@videoupload')->name('upload.video');
@@ -525,8 +526,8 @@ Route::group(['middleware' => 'auth.admin'], function () {
           Route::prefix('/lasers')->name('lasers.')->group(function () {
               Route::get('/', 'ReserveConsumptionLaserController@index')->name('index');
               Route::post('/create', 'ReserveConsumptionLaserController@store')->name('store');
-              Route::patch('{laser}/update', 'ReserveConsumptionLaserController@update')->name('update');
-              Route::delete('/{laser}/delete', 'ReserveConsumptionLaserController@delete')->name('delete');
+              Route::patch('/{consumption}/update', 'ReserveConsumptionLaserController@update')->name('update');
+              Route::delete('/{consumption}/delete', 'ReserveConsumptionLaserController@delete')->name('delete');
           });
       });
 

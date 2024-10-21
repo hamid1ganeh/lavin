@@ -49,12 +49,12 @@
                     <div class="page-title-box">
                         <div class="page-title-right">
                             <ol class="breadcrumb m-0 IR">
-                              {{ Breadcrumbs::render('reports.consumptions') }}
+                              {{ Breadcrumbs::render('reports.consumptions.lasers') }}
                             </ol>
                         </div>
                         <h4 class="page-title">
                              <i class="fas fa-shopping-cart page-icon"></i>
-                             گزارش مواد مصرفی
+                             گزارش مواد مصرفی لیزر
                         </h4>
                     </div>
                 </div>
@@ -67,20 +67,10 @@
                         <div class="card-body">
 
                             <div class="row">
-                                <div class="col-12 col-md-11">
+                                <div class="col-12 col-md-6">
                                     <button class="btn btn-info" type="button" data-toggle="collapse" data-target="#filter" aria-expanded="false" aria-controls="collapseExample" title="فیلتر">
                                         <i class="fas fa-filter"></i>
                                     </button>
-                                </div>
-
-
-                                <div class="col-12 col-md-1 text-right">
-                                    <div class="btn-group" >
-                                        <a href="{{ route('admin.reports.lasers') }}" class="btn btn-sm btn-warning">
-                                            <i class="fas fa-deaf plusiconfont"></i>
-                                            <b class="IRANYekanRegular">لیزر</b>
-                                        </a>
-                                    </div>
                                 </div>
                             </div>
 
@@ -97,37 +87,37 @@
                                                 <label for="res_code" class="control-label IRANYekanRegular">موبایل</label>
                                                 <input type="text"  class="form-control input" id="mobile-filter" name="mobile" placeholder="موبایل" value="{{ request('mobile') }}">
                                             </div>
-
                                         </diV>
 
                                         <div class="row">
                                             <div class="form-group justify-content-center col-12 col-md-6">
-                                                <label for="status-filter" class="control-label IRANYekanRegular">کالاها</label>
-                                                 <select name="goods[]" id="goods-filter" class="form-control select2 select2-multiple text-right IRANYekanRegular" multiple="multiple" multiple data-placeholder="... کالاها را انتخاب نمایید">
-                                                   @foreach($goods as $good)
-                                                    <option value="{{ $good->id }}" @if(request('goods')!=null) {{ in_array($good->id,request('goods'))?'selected':'' }} @endif>{{ $good->title }}</option>
-                                                   @endforeach
+                                                <label for="status-filter" class="control-label IRANYekanRegular">سرویسهای لیزر</label>
+                                                <select name="services[]" id="services-filter" class="form-control select2 select2-multiple text-right IRANYekanRegular" multiple="multiple" multiple data-placeholder="... سرویسهای لیزر را انتخاب نمایید">
+                                                    @foreach($laserServices as $service)
+                                                        <option value="{{ $service->id }}" @if(request('services')!=null) {{ in_array($service->id,request('services'))?'selected':'' }} @endif>{{ $service->title }}</option>
+                                                    @endforeach
                                                 </select>
                                             </div>
 
                                             <div class="form-group justify-content-center col-12 col-md-6">
-                                                <label for="status-filter" class="control-label IRANYekanRegular">انبارها</label>
-                                                <select name="warehouses[]" id="warehouses-filter" class="form-control select2 select2-multiple text-right IRANYekanRegular" multiple="multiple" multiple data-placeholder="... انبارها را انتخاب نمایید">
-                                                    @foreach($warehouses as $warehouse)
-                                                        <option value="{{ $warehouse->id }}" @if(request('warehouses')!=null) {{ in_array($warehouse->id,request('warehouses'))?'selected':'' }} @endif>{{ $warehouse->name }}</option>
+                                                <label for="status-filter" class="control-label IRANYekanRegular">دستگاه های لیزر</label>
+                                                <select name="lasers[]" id="lasers-filter" class="form-control select2 select2-multiple text-right IRANYekanRegular" multiple="multiple" multiple data-placeholder="... دستگاهای لیزر را انتخاب نمایید">
+                                                    @foreach($lasers as $laser)
+                                                        <option value="{{ $laser->id }}" @if(request('lasers')!=null) {{ in_array($laser->id,request('lasers'))?'selected':'' }} @endif>{{ $laser->device() }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
                                         </diV>
 
+
                                         <div class="row">
                                             <div class="form-group justify-content-center col-12 col-md-6">
-                                                <label for="since-order" class="control-label IRANYekanRegular">زمان مصرف از تاریخ</label>
+                                                <label for="since-order" class="control-label IRANYekanRegular">زمان شروع</label>
                                                 <input type="text"   class="form-control text-center" id="since-filter" name="since" value="{{ request('since') }}" readonly>
                                             </div>
 
                                             <div class="form-group justify-content-center col-12 col-md-6">
-                                                <label for="since-order" class="control-label IRANYekanRegular">زمان مصرف تا تاریخ</label>
+                                                <label for="since-order" class="control-label IRANYekanRegular">زمان پایان </label>
                                                 <input type="text"   class="form-control text-center" id="until-filter" name="until" value="{{ request('until') }}" readonly>
                                             </div>
                                         </div>
@@ -155,8 +145,8 @@
                                                     document.getElementById("mobile-filter").value = "";
                                                     document.getElementById("since-filter").value = "";
                                                     document.getElementById("until-filter").value = "";
-                                                    $("#goods-filter").val(null).trigger("change");
-                                                    $("#warehouses-filter").val(null).trigger("change");
+                                                    $("#services-filter").val(null).trigger("change");
+                                                    $("#lasers-filter").val(null).trigger("change");
                                                 }
                                             </script>
 
@@ -172,12 +162,13 @@
                                         <tr>
                                             <th><b class="IRANYekanRegular">ردیف</b></th>
                                             <th><b class="IRANYekanRegular">کاربر</b></th>
-                                            <th><b class="IRANYekanRegular">کالا</b></th>
-                                            <th><b class="IRANYekanRegular">انبار</b></th>
-                                            <th><b class="IRANYekanRegular">مقدار مصرفی</b></th>
-                                            <th><b class="IRANYekanRegular">مبلغ واحد (تومان)</b></th>
-                                            <th><b class="IRANYekanRegular">مبلغ کل (تومان)</b></th>
-                                            <th><b class="IRANYekanRegular">زمان مصرف</b></th>
+                                            <th><b class="IRANYekanRegular">دستگاه</b></th>
+                                            <th><b class="IRANYekanRegular">سرویس</b></th>
+                                            <th><b class="IRANYekanRegular">شماره شات قبل از مصرف</b></th>
+                                            <th><b class="IRANYekanRegular">شماره شات بعد از مصرف</b></th>
+                                            <th><b class="IRANYekanRegular">شات مصرفی</b></th>
+                                            <th><b class="IRANYekanRegular">زمان شروع</b></th>
+                                            <th><b class="IRANYekanRegular">زمان پایان</b></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -185,12 +176,13 @@
                                         <tr>
                                             <td><strong class="IRANYekanRegular">{{ ++$index }}</strong></td>
                                             <td><strong class="IRANYekanRegular">{{ $consumption->reserve->user->getFullName().' ('.$consumption->reserve->user->mobile.')' }}</strong></td>
-                                            <td><strong class="IRANYekanRegular">{{ $consumption->good->title }}</strong></td>
-                                            <td><strong class="IRANYekanRegular">{{ $consumption->warehouse->name }}</strong></td>
-                                            <td><strong class="IRANYekanRegular">{{ $consumption->value.' '.$consumption->unit }}</strong></td>
-                                            <td><strong class="IRANYekanRegular">{{ number_format($consumption->price_per_unit)  }}</strong></td>
-                                            <td><strong class="IRANYekanRegular">{{ number_format($consumption->total_price)  }}</strong></td>
-                                            <td><strong class="IRANYekanRegular">{{ $consumption->createdAt() }}</strong></td>
+                                            <td><strong class="IRANYekanRegular">{{ $consumption->device->device() ?? '' }}</strong></td>
+                                            <td><strong class="IRANYekanRegular">{{ $consumption->service->title ?? '' }}</strong></td>
+                                            <td><strong class="IRANYekanRegular">{{ $consumption->recent_shot_number ?? '' }}</strong></td>
+                                            <td><strong class="IRANYekanRegular">{{ $consumption->shot_number ?? '' }}</strong></td>
+                                            <td><strong class="IRANYekanRegular">{{ $consumption->shot ?? '' }}</strong></td>
+                                            <td><strong class="IRANYekanRegular">{{ $consumption->startedAt() ?? '' }}</strong></td>
+                                            <td><strong class="IRANYekanRegular">{{ $consumption->finishedAt() ?? '' }}</strong></td>
                                          </tr>
                                         @endforeach
                                     </tbody>

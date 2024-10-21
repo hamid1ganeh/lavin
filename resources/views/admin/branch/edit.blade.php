@@ -19,7 +19,7 @@
                         </div>
                         <h4 class="page-title">
                             <i class="fas fa-layer-group page-icon"></i>
-                              ویرایش برنچ
+                              ویرایش شعبه
                         </h4>
                     </div>
                 </div>

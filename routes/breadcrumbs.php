@@ -19,6 +19,12 @@ Breadcrumbs::for('reports.consumptions', function ($trail) {
     $trail->push('گزارش مواد مصرفی', route('admin.reports.consumptions'));
 });
 
+// داشبورد > گزارش مواد مصرفی > لیزر
+Breadcrumbs::for('reports.consumptions.lasers', function ($trail) {
+    $trail->parent('reports.consumptions', $trail);
+    $trail->push('لیزر', route('admin.reports.lasers'));
+});
+
 // داشبورد > پرونده پرسنلی
 Breadcrumbs::for('staff.documents', function ($trail) {
     $trail->parent('home', $trail);

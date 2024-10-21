@@ -199,11 +199,10 @@
                                                             <p class="IRANYekanRegular">آیا مطمئن هستید که میخواهید این مواد مصرفی را حذف کنید؟</p>
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <form action="{{ route('admin.reserves.consumptions.delete',[$reserve,$consumption]) }}"  method="POST" class="d-inline">
+                                                            <form action="{{ route('admin.reserves.consumptions.lasers.delete',[$reserve,$consumption]) }}"  method="POST" class="d-inline">
                                                                 @csrf
                                                                 @method('DELETE')
                                                                 <button type="submit" class="btn btn-danger px-8" title="حذف">حذف</button>
-                                                                &nbsp;&nbsp;
                                                             </form>
                                                             <button type="button" class="btn btn-secondary" title="انصراف" data-dismiss="modal">انصراف</button>
                                                         </div>
@@ -211,65 +210,77 @@
                                                 </div>
                                             </div>
 
-{{--                                            <!-- Edit Modal -->--}}
-{{--                                            <div class="modal fade" id="edit{{ $consumption->id }}" tabindex="-1" aria-labelledby="reviewLabel" aria-hidden="true">--}}
-{{--                                                <div class="modal-dialog modal-xs">--}}
-{{--                                                    <div class="modal-content">--}}
-{{--                                                        <div class="modal-header py-3">--}}
-{{--                                                            <h5 class="modal-title IRANYekanRegular" id="newReviewLabel">ویرایش مواد مصرفی</h5>--}}
-{{--                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">--}}
-{{--                                                                <span aria-hidden="true">&times;</span>--}}
-{{--                                                            </button>--}}
-{{--                                                        </div>--}}
-{{--                                                        <div class="modal-body text-left">--}}
-{{--                                                            <form action="{{ route('admin.reserves.consumptions.update',[$reserve,$consumption]) }}"  method="POST" class="d-inline" id="update{{$consumption->id}}">--}}
-{{--                                                                @csrf--}}
-{{--                                                                @method('PATCH')--}}
-{{--                                                                <div class="form-group row">--}}
-{{--                                                                    <div class="col-12">--}}
-{{--                                                                        <label for="warehouse" class="col-form-label IRANYekanRegular">انبار</label>--}}
-{{--                                                                        <select name="warehouse" id="warehouse"  class="width-100 form-control IRANYekanRegular" onchange="goods(this.value,'goods_div{{$consumption->id}}')" required>--}}
-{{--                                                                            <option value="">انبار مورد نظر را انتخاب کنید</option>--}}
-{{--                                                                            @foreach($warehouses as $ws)--}}
-{{--                                                                                <option value="{{ $ws->id }}" {{$ws->id == old('warehouse') || $ws->id == $consumption->warehouse_id ?'selected':'' }}>{{ $ws->name }}</option>--}}
-{{--                                                                            @endforeach--}}
-{{--                                                                        </select>--}}
-{{--                                                                        <span class="form-text text-danger erroralarm"> {{ $errors->first('warehouse') }} </span>--}}
-{{--                                                                    </div>--}}
-{{--                                                                </div>--}}
+                                            <!-- Edit Modal -->
+                                            <div class="modal fade" id="edit{{ $consumption->id }}" tabindex="-1" aria-labelledby="reviewLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-xs">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header py-3">
+                                                            <h5 class="modal-title IRANYekanRegular" id="newReviewLabel">ویرایش مواد مصرفی</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body text-left">
+                                                            <form action="{{ route('admin.reserves.consumptions.lasers.update',[$reserve,$consumption]) }}"  method="POST" class="d-inline" id="update-form{{$consumption->id}}">
+                                                                @csrf
+                                                                @method('PATCH')
+                                                                <div class="form-group row">
+                                                                    <div class="col-12">
+                                                                        <label for="good" class="col-form-label IRANYekanRegular">دستگاه لیزر</label>
+                                                                        <select name="laser" id="laser"  class="width-100 form-control IRANYekanRegular" required>
+                                                                            <option value="">دستگاه لیزر مورد نظر را انتخاب کنید</option>
+                                                                            @foreach($lasers as $laser)
+                                                                                <option value="{{ $laser->id }}" {{ $laser->id == $consumption->laser_device_id?'selected':'' }}>{{ $laser->device()  }}</option>
+                                                                            @endforeach
+                                                                        </select>
+                                                                        <span class="form-text text-danger erroralarm"> {{ $errors->first('laser') }} </span>
+                                                                    </div>
+                                                                </div>
 
-{{--                                                                <div class="form-group row">--}}
-{{--                                                                    <div class="col-12">--}}
-{{--                                                                        <label for="good" class="col-form-label IRANYekanRegular">کالا</label>--}}
-{{--                                                                        <div id="goods_div{{$consumption->id}}">--}}
-{{--                                                                            <select name="good" id="good"  class="width-100 form-control IRANYekanRegular" required>--}}
-{{--                                                                                <option value="">کالا مورد نظر را انتخاب کنید</option>--}}
-{{--                                                                                @foreach($consumption->warehouse->stocks->pluck('good') as $good)--}}
-{{--                                                                                    <option value="{{ $good->id }}" {{$good->id == old('good') || $good->id == $consumption->goods_id  ?'selected':'' }}>{{ $good->title.' ('.$good->brand.' )' }}</option>--}}
-{{--                                                                                @endforeach--}}
-{{--                                                                            </select>--}}
-{{--                                                                        </div>--}}
-{{--                                                                        <span class="form-text text-danger erroralarm"> {{ $errors->first('good') }} </span>--}}
-{{--                                                                    </div>--}}
-{{--                                                                </div>--}}
+                                                                <div class="form-group row">
+                                                                    <div class="col-12">
+                                                                        <label for="service" class="col-form-label IRANYekanRegular">سرویس لیزر</label>
+                                                                        <select name="service" id="laser"  class="width-100 form-control IRANYekanRegular" required>
+                                                                            <option value="">سرویس لیزر مورد نظر را انتخاب کنید</option>
+                                                                            @foreach($laserServices as $service)
+                                                                                <option value="{{ $service->id }}" {{ $service->id == $consumption->service_laser_id?'selected':'' }}>{{ $service->title  }}</option>
+                                                                            @endforeach
+                                                                        </select>
+                                                                        <span class="form-text text-danger erroralarm"> {{ $errors->first('service') }} </span>
+                                                                    </div>
+                                                                </div>
 
-{{--                                                                <div class="form-group row">--}}
-{{--                                                                    <div class="col-12 col-md-6">--}}
-{{--                                                                        <label for="value" class="control-label IRANYekanRegular">واحد مصرفی</label>--}}
-{{--                                                                        <input type="number" class="form-control input text-center" name="value" id="value" min="1" placeholder=" حجم واحد مورد نظر را وارد کنید" value="{{ old('value') ?? $consumption->value }}" required>--}}
-{{--                                                                        <span class="form-text text-danger erroralarm"> {{ $errors->first('value') }} </span>--}}
-{{--                                                                    </div>--}}
-{{--                                                                </div>--}}
-{{--                                                            </form>--}}
-{{--                                                        </div>--}}
-{{--                                                        <div class="modal-footer">--}}
-{{--                                                            <button type="submit" class="btn btn-success px-8" title="بروزرسانی"  form="update{{$consumption->id}}">بروزرسانی</button>--}}
-{{--                                                            &nbsp;&nbsp;--}}
-{{--                                                            <button type="button" class="btn btn-secondary" title="انصراف" data-dismiss="modal">انصراف</button>--}}
-{{--                                                        </div>--}}
-{{--                                                    </div>--}}
-{{--                                                </div>--}}
-{{--                                            </div>--}}
+                                                                <div class="form-group row">
+                                                                    <div class="col-md-6">
+                                                                        <label for="start" class="col-form-label IRANYekanRegular">زمان شروع</label>
+                                                                        <input type="text"   class="form-control text-center" id="start" name="start"  readonly placeholder="زمان شروع" required value="{{ $consumption->getStart() }}">
+                                                                        <span class="form-text text-danger erroralarm"> {{ $errors->first('start') }} </span>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <label for="end" class="col-form-label IRANYekanRegular">زمان پایان</label>
+                                                                        <input type="text"   class="form-control text-center" id="end" name="end"  readonly placeholder="زمان پایان" required value="{{ $consumption->getEnd() }}">
+                                                                        <span class="form-text text-danger erroralarm"> {{ $errors->first('end') }} </span>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="form-group row">
+                                                                    <div class="col-12 col-md-6">
+                                                                        <label for="shot_number" class="control-label IRANYekanRegular">شماره شات بعد از مصرف</label>
+                                                                        <input type="number" class="form-control input text-center" name="shot_number" id="shot_number" min="1" placeholder=" شماره شات بعد از مصرف وارد کنید" value="{{ $consumption->shot_number  }}" required>
+                                                                        <span class="form-text text-danger erroralarm"> {{ $errors->first('shot_number') }} </span>
+                                                                    </div>
+                                                                </div>
+
+                                                            </form>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="submit" class="btn btn-success px-8" title="بروزرسانی"  form="update-form{{$consumption->id}}">بروزرسانی</button>
+                                                            &nbsp;&nbsp;
+                                                            <button type="button" class="btn btn-secondary" title="انصراف" data-dismiss="modal">انصراف</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
 
                                             <div class="input-group">
                                                 <div class="input-group-append">
