@@ -60,8 +60,7 @@ class WarehouseController extends Controller
            $warehouse = Warehouse::create([
                             'name'=>$request->name,
                             'description'=>$request->description,
-                            'status'=>$request->status,
-                        ]);
+                            'status'=>$request->status]);
 
            $warehouse->admins()->sync($request->admins);
 

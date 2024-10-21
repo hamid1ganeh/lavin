@@ -6,6 +6,7 @@ use App\Enums\Status;
 use App\Http\Controllers\Controller;
 use App\Models\Goods;
 use App\Models\LaserTubeHistory;
+use App\Models\Warehouse;
 use App\Models\WarehouseStock;
 use Illuminate\Http\Request;
 use App\Models\LaserDevice;
@@ -188,11 +189,20 @@ class LaserDeviceController extends Controller
             }
 
             if($waste && is_null($request->description)){
-                alert()->error('تویپ فعلی به اتمام نرسیده است. لطفا توضیحاتی برای آن ثبت کنید.');
+                alert()->error('تیوب فعلی به اتمام نرسیده است. لطفا توضیحاتی برای آن ثبت کنید.');
                 return back();
             }
 
             $good = Goods::find($request->good);
+
+            $warehouseStock = WarehouseStock::where('warehouse_id',1)->where('goods_id',$good->id)->first();
+            if ( $warehouseStock->count==0){
+                alert()->error('تیوب انتخاب شده در انبار لیزر موجود نمی باشد.');
+                return back();
+            }
+            $warehouseStock->count -=1;
+            $warehouseStock->stock  = $warehouseStock->count*$good->value_per_count;
+
 
             $history = new LaserTubeHistory();
             $history->laser_device_id =  $laser->id;
@@ -206,9 +216,10 @@ class LaserDeviceController extends Controller
              $laser->tube_id =  $good->id;
              $laser->shot =  $good->value_per_count;
 
-            DB::transaction(function() use ($history,$laser) {
+            DB::transaction(function() use ($history,$laser,$warehouseStock) {
                 $history->save();
                 $laser->save();
+                $warehouseStock->save();
             });
 
             toast('تویب لیزر تعوض شد.', 'error')->position('bottom-end');

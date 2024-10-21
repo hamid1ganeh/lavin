@@ -29,6 +29,37 @@
                 console.log(param1);
             }
         });
+
+
+        @foreach($consumptions as $index=>$consumption)
+            $("#start{{$consumption->id}}").MdPersianDateTimePicker({
+            targetDateSelector: "#showDate_class",
+            targetTextSelector: "#start{{$consumption->id}}",
+            textFormat: "yyyy/MM/dd HH:mm:ss",
+            isGregorian: false,
+            modalMode: false,
+            englishNumber: false,
+            enableTimePicker: true,
+            selectedDateToShow: new Date(),
+            calendarViewOnChange: function(param1){
+            console.log(param1);
+        }
+        });
+            $("#end{{$consumption->id}}").MdPersianDateTimePicker({
+            targetDateSelector: "#showDate_class",
+            targetTextSelector: "#end{{$consumption->id}}",
+            textFormat: "yyyy/MM/dd HH:mm:ss",
+            isGregorian: false,
+            modalMode: false,
+            englishNumber: false,
+            enableTimePicker: true,
+            selectedDateToShow: new Date(),
+            calendarViewOnChange: function(param1){
+            console.log(param1);
+        }
+        });
+     @endforeach
+
     </script>
 
 @endsection
@@ -252,13 +283,13 @@
 
                                                                 <div class="form-group row">
                                                                     <div class="col-md-6">
-                                                                        <label for="start" class="col-form-label IRANYekanRegular">زمان شروع</label>
-                                                                        <input type="text"   class="form-control text-center" id="start" name="start"  readonly placeholder="زمان شروع" required value="{{ $consumption->getStart() }}">
+                                                                        <label for="start{{$consumption->id}}" class="col-form-label IRANYekanRegular">زمان شروع</label>
+                                                                        <input type="text"   class="form-control text-center" id="start{{$consumption->id}}" name="start"  readonly placeholder="زمان شروع" required value="{{ $consumption->getStart() }}">
                                                                         <span class="form-text text-danger erroralarm"> {{ $errors->first('start') }} </span>
                                                                     </div>
                                                                     <div class="col-md-6">
-                                                                        <label for="end" class="col-form-label IRANYekanRegular">زمان پایان</label>
-                                                                        <input type="text"   class="form-control text-center" id="end" name="end"  readonly placeholder="زمان پایان" required value="{{ $consumption->getEnd() }}">
+                                                                        <label for="end{{$consumption->id}}" class="col-form-label IRANYekanRegular">زمان پایان</label>
+                                                                        <input type="text"   class="form-control text-center" id="end{{$consumption->id}}" name="end"  readonly placeholder="زمان پایان" required value="{{ $consumption->getEnd() }}">
                                                                         <span class="form-text text-danger erroralarm"> {{ $errors->first('end') }} </span>
                                                                     </div>
                                                                 </div>
@@ -281,7 +312,6 @@
                                                     </div>
                                                 </div>
                                             </div>
-
                                             <div class="input-group">
                                                 <div class="input-group-append">
                                                     <i class=" ti-align-justify" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
