@@ -167,6 +167,9 @@ class Number extends Model
             case NumberType::call:
                 $res = "تماس های ورودی";
                 break;
+            case NumberType::football:
+                $res = "آکادمی فوتبال صبوری";
+                break;
         }
         return  $res;
     }

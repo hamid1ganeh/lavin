@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Website;
 
 use App\Enums\genderType;
+use App\Enums\NumberType;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Product;
@@ -125,7 +126,7 @@ class HomeController extends Controller
              'lastname'=> 'required|max:255',
              'mobile'=> 'nullable|min:11|max:11|regex:/^[0-9]+$/|unique:numbers|unique:users',
              'nationcode'=>'required|min:10|max:10|regex:/^[0-9]+$/|unique:users',
-             'g-recaptcha-response' => 'required|recaptcha'
+//             'g-recaptcha-response' => 'required|recaptcha'
          ],
          [
              'firstname.required'=>'نام و نام خانوادگی را وارد نمایید.',
@@ -157,6 +158,7 @@ class HomeController extends Controller
              $number->firstname = $request->firstname;
              $number->lastname = $request->lastname;
              $number->mobile = $request->mobile;
+             $number->type = NumberType::football;
              $number->festival_id = 8;
              $user = new User();
              $user->firstname = $number->firstname;

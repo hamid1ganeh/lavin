@@ -14,5 +14,7 @@ class NumberType
     const   tehran  = '5';
     const   hozoori  = '6';
     const   call  = '7';
+    const   football  = '8';
+
 
 }

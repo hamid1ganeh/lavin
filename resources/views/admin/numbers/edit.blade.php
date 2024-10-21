@@ -64,7 +64,9 @@
                                             <option value="{{ App\Enums\NumberType::sms }}" {{ App\Enums\NumberType::sms==old('type')||App\Enums\NumberType::sms==$number->type?'selected':'' }}>پیامک</option>
                                             <option value="{{ App\Enums\NumberType::lahijan }}" {{ App\Enums\NumberType::lahijan==old('type')||App\Enums\NumberType::lahijan==$number->type?'selected':'' }}>شعبه لاهیجان</option>
                                             <option value="{{ App\Enums\NumberType::tehran }}" {{ App\Enums\NumberType::tehran==old('type')||App\Enums\NumberType::tehran==$number->type?'selected':'' }}>شعبه تهران</option>
+                                            <option value="{{ App\Enums\NumberType::hozoori }}" {{ App\Enums\NumberType::call==old('type')||App\Enums\NumberType::hozoori==$number->type?'selected':'' }}>حضوری</option>
                                             <option value="{{ App\Enums\NumberType::call }}" {{ App\Enums\NumberType::call==old('type')||App\Enums\NumberType::call==$number->type?'selected':'' }}>تماس های ورودی</option>
+                                            <option value="{{ App\Enums\NumberType::football }}" {{ App\Enums\NumberType::football==old('type')||App\Enums\NumberType::football==$number->type?'selected':'' }}>آکادمی فوتبال صبوری</option>
                                         </select>
                                         <span class="form-text text-danger erroralarm"> {{ $errors->first('status') }} </span>
                                     </div>
