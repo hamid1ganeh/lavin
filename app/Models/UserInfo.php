@@ -24,6 +24,9 @@ class UserInfo extends Model
 
     public function birth_date()
     {
+        if(is_null($this->birthDate)){
+            return null;
+        }
        return CalendarUtils::convertNumbers(CalendarUtils::strftime('Y/m/d',strtotime($this->birthDate)));
     }
 
