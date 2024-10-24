@@ -345,11 +345,12 @@
                                                 <td><a class="IRANYekanRegular" href="{{ route('admin.receptions.index',['mobile'=>$number->mobile]) }}" target="_blank">{{ $number->mobile }}</a></td>
                                                 <td>
                                                     @if($number->club())
-                                                        <a  href="{{ route('admin.numbers.info.show',$number)  }}" class="dropdown-item IR cusrsor"  title="اطلاعات تکمیلی کاربر" target="_blank">
-                                                            <i class="fa fa-info  cursor-pointer @if($number->completeInfo())  text-primary @endif"></i>
+                                                        @php $info = $number->completeInfo()  @endphp
+                                                        <a  href="{{ route('admin.numbers.info.show',$number)  }}" class="dropdown-item IR  cursor-pointer"  title="{{ $info['title'] }}" target="_blank">
+                                                            <i class="fa fa-info  cursor-pointer  {{ $info['color'] }}"></i>
                                                         </a>
                                                     @elseif(Auth::guard('admin')->user()->can('numbers.add2club'))
-                                                        <a  href="#register{{ $number->id }}" class="dropdown-item IR cusrsor" data-toggle="modal" title="افزودن به باشگاه مشتریان">
+                                                        <a  href="#register{{ $number->id }}" class="dropdown-item IR cursor-pointer" data-toggle="modal" title="افزودن به باشگاه مشتریان">
                                                             <i class="fa fa-plus cursor-pointer"></i>
                                                         </a>
                                                     @endif

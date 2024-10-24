@@ -240,11 +240,15 @@
                                             </div>
                                         </div>
 
+
                                         <div class="form-group row">
-                                            <div class="col-sm-7">
-                                                <input type="checkbox" id="maried" name="maried" value="maried" onclick="marriage()" @if(old('checkbox') || ($info!=null && $info->married)) {{ 'checked' }} @endif>
-                                                <label for="maried" class="col-form-label IRANYekanRegular">متاهل</label>
-                                                <br>
+                                            <label for="gender" class="col-sm-3 col-form-label IRANYekanRegular">وضعیت تاهل</label>
+                                            <div class="col-sm-9">
+                                                <select name="married" id="married" class="form-control dropdown text-center IRANYekanRegular"  data-placeholder="وضعیت تاهل">
+                                                    <option value="0" @if(old('gender')==0|| (!is_null($info) && $info->married==0)) selected @endif>مجرد</option>
+                                                    <option value="1" @if(old('gender')==1 || (!is_null($info) && $info->married==1)) selected @endif>متاهل</option>
+                                                </select>
+                                                <span class="form-text text-danger erroralarm"> {{ $errors->first('married') }} </span>
                                             </div>
                                         </div>
 

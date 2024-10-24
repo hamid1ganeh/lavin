@@ -634,7 +634,6 @@ class NumberController extends Controller
              alert()->warning("این شماره عضو باشگاه مشتریان نیست.");
             return back();
         }
-        $user =$number->getUserByMobile();
         $provinces = Province::where('status',Status::Active)->orderBy('name','asc')->get();
         $jobs = Job::where('status',Status::Active)->orderBy('title','asc')->get();
         $address = UserAddress::where('user_id',$user->id)->first();
@@ -654,19 +653,21 @@ class NumberController extends Controller
         }
 
 
+
       return view('admin.numbers.info',compact('number','user','provinces','address','jobs','info','parts','areas'));
     }
 
     public function updateInfo(Number $number,Request $request)
     {
-        if(isset($request->maried))
+        if($request->married=='1')
         {
-            $maried= true;
+            $married= true;
         }
         else
         {
-            $maried= false;
+            $married= false;
         }
+
 
         $request->validate([
                 'firstname'=> 'required|max:255',
@@ -706,7 +707,7 @@ class NumberController extends Controller
         }
 
         $marriageDate =null;
-        if($maried && isset($request->marriageDate))
+        if($married && isset($request->marriageDate))
         {
             $marriageDate =  $this->functionService->faToEn($request->marriageDate);
             $marriageDate = Jalalian::fromFormat('Y/m/d', $marriageDate)->toCarbon("Y-m-d");
@@ -737,7 +738,7 @@ class NumberController extends Controller
             $info->job_id  = $request->job_id;
             $info->email = $request->email;
             $info->birthDate = $birthDate;
-            $info->married = $maried;
+            $info->married = $married;
             $info->marriageDate = $marriageDate;
             $info->save();
 
@@ -747,7 +748,7 @@ class NumberController extends Controller
             $info->job_id  = $request->job_id;
             $info->email = $request->email;
             $info->birthDate = $birthDate;
-            $info->married = $maried;
+            $info->married = $married;
             $info->marriageDate = $marriageDate;
             $info->save();
         }

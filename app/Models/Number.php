@@ -85,13 +85,15 @@ class Number extends Model
     public function completeInfo ()
     {
         $user = $this->getUserByMobile();
-        if(!is_null($user) &&
-            UserInfo::where('user_id',$user->id)->exists() &&
-            UserAddress::where('user_id',$user->id)->exists()){
-            return  true;
-        }
+        $info =   UserInfo::where('user_id',$user->id)->first();
+        $address = UserAddress::where('user_id',$user->id)->first();
 
-        return false;
+        if(is_null($info) || is_null($address) ||
+           is_null($info->job_id) || is_null($info->email)  || is_null($info->birthDate) || ($info->married && is_null($info->marriageDate)) ||
+           is_null($address->province_id) || is_null($address->city_id) || is_null($address->part_id) || is_null($address->area_id) || is_null($address->address) || is_null($address->postalcode)){
+            return ['color'=>'text-danger','title'=>'اطلاعات کامل نشده است'];
+        }
+        return ['color'=>'text-primary','title'=>'اطلاعات کامل است'];
     }
 
     public function getStatus()
