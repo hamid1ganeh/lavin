@@ -947,6 +947,12 @@ class PermissionSeeder extends Seeder
         ]);
 
         DB::table('permissions')->insert([
+            'name' => 'reception.medical.document',
+            'description' => 'پرونده پزشکی',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
             'name' => 'reception.index',
             'description' => 'پذیرش',
             'status'=> Status::Active

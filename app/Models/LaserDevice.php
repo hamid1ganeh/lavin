@@ -27,6 +27,6 @@ class LaserDevice extends Model
 
      public function device()
      {
-         return $this->name.' '.$this->brand.' '.$this->model;
+         return $this->name.' '.$this->brand.' '.$this->model .' (شات موجود '.$this->shot.' )';
      }
 }

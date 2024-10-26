@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Services\CodeService;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
+use Auth;
 
 class UserController extends Controller
 {
@@ -30,91 +31,96 @@ class UserController extends Controller
   public function index()
   {
       //اجازه دسترسی
-      config(['auth.defaults.guard' => 'admin']);
-      $this->authorize('users.index');
-      $levels = Level::orderBy('point','asc')->get();
+      if (Auth::guard('admin')->user()->can('users.index') ||
+          Auth::guard('admin')->user()->can('reception.medical.document') ) {
 
-      $users = User::with('level','address.province','address.city','address.part','bank','info.job')
-      ->withTrashed()
-      ->filter()
-      ->orderBy('created_at','desc')
-      ->paginate(10)
-      ->withQueryString();
+          $levels = Level::orderBy('point','asc')->get();
 
-      $jobs = Job::where('status',Status::Active)->orderBy('title','asc')->get();
-      $provinces = Province::where('status',Status::Active)->orderBy('name','asc')->get();
-      $cities = City::where('status',Status::Active)->orderBy('name','asc')->get();
+          $users = User::with('level','address.province','address.city','address.part','bank','info.job')
+          ->withTrashed()
+          ->filter()
+          ->orderBy('created_at','desc')
+          ->paginate(10)
+          ->withQueryString();
 
+          $jobs = Job::where('status',Status::Active)->orderBy('title','asc')->get();
+          $provinces = Province::where('status',Status::Active)->orderBy('name','asc')->get();
+          $cities = City::where('status',Status::Active)->orderBy('name','asc')->get();
+          return view('admin.users.all',compact('users','levels','jobs','provinces','cities'));
+      }
 
-      return view('admin.users.all',compact('users','levels','jobs','provinces','cities'));
+    abort(403);
   }
 
 
   public function create()
   {
-    //اجازه دسترسی
-    config(['auth.defaults.guard' => 'admin']);
-    $this->authorize('users.create');
-    $levels = Level::orderBy('point','asc')->get();
-    return view('admin.users.create',compact('levels'));
+      if (Auth::guard('admin')->user()->can('users.create') ||
+          Auth::guard('admin')->user()->can('reception.medical.document') ) {
+          $levels = Level::orderBy('point', 'asc')->get();
+          return view('admin.users.create', compact('levels'));
+
+      }
+      abort(403);
   }
 
   public function store(Request $request)
   {
       //اجازه دسترسی
-      config(['auth.defaults.guard' => 'admin']);
-      $this->authorize('users.create');
+      if (Auth::guard('admin')->user()->can('users.create') ||
+          Auth::guard('admin')->user()->can('reception.medical.document') ) {
 
-      $request->validate([
-        'firstname'=>'required|max:255',
-        'lastname'=>'required|max:255',
-        'mobile'=>'required|min:11|max:11|regex:/^[0-9]+$/|unique:users',
-        'nationcode'=>'required|min:10|max:10|regex:/^[0-9]+$/|unique:users',
-        'gender'=>'required',
-        'introduced'=>'nullable|exists:users,code',
-      ]
-      ,
-      [
-        'firstname.required'=>' * الزامی است.',
-        'firstname.max' => '  *حداکثر 255 کارکتر ',
-        'lastname.required'=>' * الزامی است.',
-        'lastname.max' => '  *حداکثر 255 کارکتر ',
-        'mobile.required'=>'* شماره موبایل الزامی است.',
-        'mobile.min'=>' فرمت صحیح موبایل  ********091 ',
-        'mobile.max'=>' فرمت صحیح موبایل  ********091 ',
-        'mobile.regex'=>' فرمت صحیح موبایل  ********091 ',
-        'mobile.unique'=>' شماره موبایل قبلا ثبت شده است',
-        'nationcode.required'=> "* کد ملی 10 رقمی را وارد کنید.",
-        'nationcode.min'=>  "* کد ملی 10 رقمی را وارد کنید.",
-        'nationcode.max'=> "* کد ملی 10 رقمی را وارد کنید.",
-        'nationcode.regex'=> "* کد ملی 10 رقمی را وارد کنید.",
-        'nationcode.unique'=> "* این کدملی قبلا ثبت شده است .",
-        'gender.required'=>' تعیین جنسیت الزامی است.',
-        'introduced.exists'=>'* کد معرف صحیح نمی باشد.',
-      ]);
+          $request->validate([
+                  'firstname' => 'required|max:255',
+                  'lastname' => 'required|max:255',
+                  'mobile' => 'required|min:11|max:11|regex:/^[0-9]+$/|unique:users',
+                  'nationcode' => 'required|min:10|max:10|regex:/^[0-9]+$/|unique:users',
+                  'gender' => 'required',
+                  'introduced' => 'nullable|exists:users,code',
+              ]
+              ,
+              [
+                  'firstname.required' => ' * الزامی است.',
+                  'firstname.max' => '  *حداکثر 255 کارکتر ',
+                  'lastname.required' => ' * الزامی است.',
+                  'lastname.max' => '  *حداکثر 255 کارکتر ',
+                  'mobile.required' => '* شماره موبایل الزامی است.',
+                  'mobile.min' => ' فرمت صحیح موبایل  ********091 ',
+                  'mobile.max' => ' فرمت صحیح موبایل  ********091 ',
+                  'mobile.regex' => ' فرمت صحیح موبایل  ********091 ',
+                  'mobile.unique' => ' شماره موبایل قبلا ثبت شده است',
+                  'nationcode.required' => "* کد ملی 10 رقمی را وارد کنید.",
+                  'nationcode.min' => "* کد ملی 10 رقمی را وارد کنید.",
+                  'nationcode.max' => "* کد ملی 10 رقمی را وارد کنید.",
+                  'nationcode.regex' => "* کد ملی 10 رقمی را وارد کنید.",
+                  'nationcode.unique' => "* این کدملی قبلا ثبت شده است .",
+                  'gender.required' => ' تعیین جنسیت الزامی است.',
+                  'introduced.exists' => '* کد معرف صحیح نمی باشد.',
+              ]);
 
-      if($request->gender==genderType::female || $request->gender==genderType::male|| $request->gender==genderType::LGBTQ)
-      {
-        $verify_code = rand(1000,9999);
-        $verify_expire = Carbon::now()->addMinute(5)->format('Y-m-d H:i:s');
+          if ($request->gender == genderType::female || $request->gender == genderType::male || $request->gender == genderType::LGBTQ) {
+              $verify_code = rand(1000, 9999);
+              $verify_expire = Carbon::now()->addMinute(5)->format('Y-m-d H:i:s');
 
-        $user = new User;
-        $user->firstname = $request->firstname;
-        $user->lastname = $request->lastname;
-        $user->mobile = $request->mobile;
-        $user->nationcode = $request->nationcode;
-        $user->verify_code = $verify_code;
-        $user->verify_expire = $verify_expire;
-        $user->gender = $request->gender;
-        $user->code  = $this->code->create($user,10);
-        $user->introduced = $request->introduced;
-        $user->password = Hash::make(Str::random(10));
-        $user->save();
+              $user = new User;
+              $user->firstname = $request->firstname;
+              $user->lastname = $request->lastname;
+              $user->mobile = $request->mobile;
+              $user->nationcode = $request->nationcode;
+              $user->verify_code = $verify_code;
+              $user->verify_expire = $verify_expire;
+              $user->gender = $request->gender;
+              $user->code = $this->code->create($user, 10);
+              $user->introduced = $request->introduced;
+              $user->password = Hash::make(Str::random(10));
+              $user->save();
 
-        toast('کاربر جدید افزوده شد.','success')->position('bottom-end');
+              toast('کاربر جدید افزوده شد.', 'success')->position('bottom-end');
+          }
+
+          return redirect(route('admin.users.index'));
       }
-
-      return redirect(route('admin.users.index'));
+      abort(403);
   }
 
   public function edit(User $user)

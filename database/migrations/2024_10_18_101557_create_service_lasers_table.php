@@ -18,7 +18,7 @@ class CreateServiceLasersTable extends Migration
             $table->string('title');
             $table->string('skin');
             $table->string('weight');
-            $table->unsignedTinyInteger('shot');
+            $table->unsignedBigInteger('shot');
             $table->softDeletes();
             $table->timestamps();
         });

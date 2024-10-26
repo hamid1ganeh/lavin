@@ -39,6 +39,16 @@
                         </a>
                         <ul class="nav-second-level" aria-expanded="false">
 
+
+{{--                            @if(Auth::guard('admin')->user()->can('users.index'))--}}
+                                <li>
+                                    <a href="{{ route('admin.users.index') }}" class="waves-effect">
+                                        <i class="fas fa-user"></i>
+                                        <span class="IRANYekanRegular">پرونده پزشکی</span>
+                                    </a>
+                                </li>
+{{--                            @endif--}}
+
                             @if(Auth::guard('admin')->user()->can('reception.index'))
                                 <li>
                                     <a href="{{ route('admin.receptions.index') }}" class="waves-effect">
@@ -160,7 +170,7 @@
                                         <ul class="nav-second-level" aria-expanded="false">
                                             <li class="IRANYekanRegular">
                                                 <a href="{{ route('admin.notifications.users.index') }}" class="waves-effect">
-                                                    <i class="fa fa-user"></i>
+                                                    <i class="fas fa-user"></i>
                                                     <span class="IRANYekanRegular">کاربران</span>
                                                 </a>
                                             </li>
@@ -171,7 +181,7 @@
                                         <ul class="nav-second-level" aria-expanded="false">
                                             <li class="IRANYekanRegular">
                                                 <a href="{{ route('admin.notifications.admins.index') }}" class="waves-effect">
-                                                    <i class="fa fa-user"></i>
+                                                    <i class="fas fa-user"></i>
                                                     <span class="IRANYekanRegular">ادمین ها</span>
                                                 </a>
                                             </li>
@@ -568,14 +578,14 @@
                                   </li>
                               @endif
 
-{{--                              @if(Auth::guard('admin')->user()->can('services.lasers.index'))--}}
+                              @if(Auth::guard('admin')->user()->can('services.lasers.index'))
                                   <li>
                                       <a href="{{ route('admin.services.lasers.index') }}" class="waves-effect">
                                           <i class="fas fa-deaf"></i>
                                           <span class="IRANYekanRegular">خدمات لیزر</span>
                                       </a>
                                   </li>
-{{--                              @endif--}}
+                              @endif
 
 
                               @if(Auth::guard('admin')->user()->can('analysis.index'))
