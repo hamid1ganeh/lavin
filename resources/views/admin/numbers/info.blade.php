@@ -87,7 +87,7 @@
                                         <div class="form-group row">
                                             <label for="province" class="col-sm-3 col-form-label IRANYekanRegular">استان</label>
                                             <div class="col-sm-9">
-                                                <select class="form-control dropdopwn IR text-center"  name="province_id" id="province_id  @error('province') is-invalid @enderror" onchange="cities(this.value)">
+                                                <select class="form-control dropdown IR text-center"  name="province_id" id="province_id  @error('province') is-invalid @enderror" onchange="cities(this.value)">
                                                     <option value=""> استان محل سکونت خود را انتخاب نمایید...</option>
                                                     @foreach($provinces as $province)
                                                         <option value="{{ $province->id }}" class="dropdopwn" @if($province->id==old('province_id')) selected @elseif($address!=null && $province->id==$address->province_id) selected @endif>{{ $province->name }}</option>
@@ -102,7 +102,7 @@
                                             <div class="col-sm-9">
                                                 @if(old('province_id')!=null)
                                                     <div id="city_list">
-                                                        <select class="form-control dropdopwn IR text-center"  name="city_id" id="city_id  @error('city') is-invalid @enderror" onchange='parts(this.value)'>
+                                                        <select class="form-control dropdown IR text-center"  name="city_id" id="city_id  @error('city') is-invalid @enderror" onchange='parts(this.value)'>
                                                             <option value=""> شهر محل سکونت خود را انتخاب نمایید...</option>
                                                             @foreach(App\Models\City::where('province_id',old('province_id'))->where('status',App\Enums\Status::Active)->orderBy('name','asc')->get() as $city)
                                                                 <option value="{{ $city->id }}" @if($city->id==old('city_id')) selected @elseif($address!=null && $city->id==$address->city_id) selected @endif>{{ $city->name }}</option>
@@ -111,7 +111,7 @@
                                                     </div>
                                                 @elseif($address!=null)
                                                     <div id="city_list">
-                                                        <select class="form-control dropdopwn IR text-center"  name="city_id" id="city_id  @error('city') is-invalid @enderror" onchange='parts(this.value)'>
+                                                        <select class="form-control dropdown IR text-center"  name="city_id" id="city_id  @error('city') is-invalid @enderror" onchange='parts(this.value)'>
                                                             <option value=""> شهر محل سکونت خود را انتخاب نمایید...</option>
                                                             @foreach(App\Models\City::where('province_id',$address->province_id)->where('status',App\Enums\Status::Active)->orderBy('name','asc')->get() as $city)
                                                                 <option value="{{ $city->id }}" {{ $city->id==$address->city_id?'selected':'' }}>{{ $city->name }}</option>
@@ -120,7 +120,7 @@
                                                     </div>
                                                 @else
                                                     <div id="city_list">
-                                                        <select class="form-control dropdopwn IR text-center"  name="city_id" id="city_id  @error('city') is-invalid @enderror" onchange='parts(this.value)'>
+                                                        <select class="form-control dropdown IR text-center"  name="city_id" id="city_id  @error('city') is-invalid @enderror" onchange='parts(this.value)'>
                                                             <option value=""> شهر محل سکونت خود را انتخاب نمایید...</option>
                                                         </select>
                                                     </div>
@@ -134,7 +134,7 @@
                                             <div class="col-sm-9">
                                                 @if(old('city_id')!=null)
                                                     <div id="part_list">
-                                                        <select class="form-control dropdopwn IR text-center"  name="part_id" id="part_id  @error('city') is-invalid @enderror" onchange='areas(this.value)'>
+                                                        <select class="form-control dropdown IR text-center"  name="part_id" id="part_id  @error('city') is-invalid @enderror" onchange='areas(this.value)'>
                                                             <option value=""> منطقه محل سکونت خود را انتخاب نمایید...</option>
                                                             @foreach($parts as $part)
                                                                 <option value="{{ $part->id }}" {{ $part->id==old('part_id')?'selected':'' }}>{{ $part->name }}</option>
@@ -143,7 +143,7 @@
                                                     </div>
                                                 @elseif($address!=null)
                                                     <div id="part_list">
-                                                        <select class="form-control dropdopwn IR text-center"  name="part_id" id="part_id  @error('city') is-invalid @enderror" onchange='areas(this.value)'>
+                                                        <select class="form-control dropdown IR text-center"  name="part_id" id="part_id  @error('city') is-invalid @enderror" onchange='areas(this.value)'>
                                                             <option value=""> منطقه محل سکونت خود را انتخاب نمایید...</option>
                                                             @foreach($parts as $part)
                                                                 <option value="{{ $part->id }}" {{ $part->id==$address->part_id?'selected':'' }}>{{ $part->name }}</option>
@@ -152,7 +152,7 @@
                                                     </div>
                                                 @else
                                                     <div id="part_list">
-                                                        <select class="form-control dropdopwn IR text-center"  name="part_id" id="part_id  @error('part') is-invalid @enderror" onchange='areas(this.value)'>
+                                                        <select class="form-control dropdown IR text-center"  name="part_id" id="part_id  @error('part') is-invalid @enderror" onchange='areas(this.value)'>
                                                             <option value=""> منطقه محل سکونت خود را انتخاب نمایید...</option>
                                                         </select>
                                                     </div>
@@ -166,7 +166,7 @@
                                             <div class="col-sm-9">
                                                 @if(old('part_id')!=null)
                                                     <div id="part_list">
-                                                        <select class="form-control dropdopwn IR text-center"  name="area_id" id="area_id  @error('city') is-invalid @enderror">
+                                                        <select class="form-control dropdown IR text-center"  name="area_id" id="area_id  @error('city') is-invalid @enderror">
                                                             <option value=""> محله سکونت خود را انتخاب نمایید...</option>
                                                             @foreach($areas as $area)
                                                                 <option value="{{ $area->id }}" {{ $area->id==old('area_id')?'selected':'' }}>{{ $area->name }}</option>
@@ -175,7 +175,7 @@
                                                     </div>
                                                 @elseif($address!=null)
                                                     <div id="area_list">
-                                                        <select class="form-control dropdopwn IR text-center"  name="area_id" id="area_id  @error('city') is-invalid @enderror">
+                                                        <select class="form-control dropdown IR text-center"  name="area_id" id="area_id  @error('city') is-invalid @enderror">
                                                             <option value=""> محله سکونت خود را انتخاب نمایید...</option>
                                                             @foreach($areas as $area)
                                                                 <option value="{{ $area->id }}" {{ $area->id==$address->area_id?'selected':'' }}>{{ $area->name }}</option>
@@ -184,7 +184,7 @@
                                                     </div>
                                                 @else
                                                     <div id="area_list">
-                                                        <select class="form-control dropdopwn IR text-center"  name="area_id" id="area_id  @error('part') is-invalid @enderror">
+                                                        <select class="form-control dropdown IR text-center"  name="area_id" id="area_id  @error('part') is-invalid @enderror">
                                                             <option value="">محله سکونت خود را انتخاب نمایید...</option>
                                                         </select>
                                                     </div>
@@ -213,7 +213,7 @@
                                         <div class="form-group row">
                                             <label for="postalcode" class="col-sm-3 col-form-label IRANYekanRegular">شغل</label>
                                             <div class="col-sm-9">
-                                                <select class="form-control dropdopwn IR text-center"  name="job_id" id="job_id  @error('job_id') is-invalid @enderror">
+                                                <select class="form-control dropdown IR text-center"  name="job_id" id="job_id  @error('job_id') is-invalid @enderror">
                                                     <option value="">شغل خود را انتخاب نمایید...</option>
                                                     @foreach($jobs as $job)
                                                         <option value="{{ $job->id }}" class="dropdopwn" @if($job->id==old('job_id')) selected @elseif($info !=null && $job->id==$info->job_id) selected @endif>{{ $job->title }}</option>
@@ -255,7 +255,7 @@
                                         <div class="form-group row">
                                             <label for="marriageDate" class="col-sm-3 col-form-label IRANYekanRegular">تاریخ ازدواج</label>
                                             <div class="col-sm-9">
-                                                <input type="text" class="form-control IRANYekanRegular text-center" id="marriageDate" name="marriageDate" placeholder="تایخ ازدواج" value="@if(old('birthDate')!=null) {{ old('birthDate') }} @elseIf($info!=null && $info->marriageDate!=null) {{ $info->marriage_date() ?? '' }}  @endif">
+                                                <input type="text" class="form-control IRANYekanRegular text-center" id="marriageDate" name="marriageDate" placeholder="تاریخ ازدواج" value="@if(old('birthDate')!=null) {{ old('birthDate') }} @elseIf($info!=null && $info->marriageDate!=null) {{ $info->marriage_date() ?? '' }}  @endif">
                                                 <span class="form-text text-danger erroralarm"> {{ $errors->first('marriageDate') }} </span>
                                             </div>
                                         </div>

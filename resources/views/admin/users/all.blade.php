@@ -87,9 +87,9 @@
                                                 <label for="name" class="control-label IRANYekanRegular">سطوح</label>
                                                  <select name="levels[]" id="levels-filter" class="form-control select2 select2-multiple text-right IRANYekanRegular" multiple="multiple" multiple data-placeholder="... سطوح مورد نظر را انتخاب نمایید">
                                                     @foreach($levels as $level)
-                                                    <option value="{{ $level->id }}" @if(request('levels')!=null) {{ in_array($levels->id,request('levels'))?'selected':'' }} @endif>{{ $level->title }}</option>
+                                                    <option value="{{ $level->id }}" @if(request('levels')!=null) {{ in_array($level->id,request('levels'))?'selected':'' }} @endif>{{ $level->title }}</option>
                                                     @endforeach
-                                                </select>
+                                                 </select>
                                             </div>
 
                                             <div class="form-group justify-content-center col-6">

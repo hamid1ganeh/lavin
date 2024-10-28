@@ -712,7 +712,7 @@ class NumberController extends Controller
             $marriageDate =  $this->functionService->faToEn($request->marriageDate);
             $marriageDate = Jalalian::fromFormat('Y/m/d', $marriageDate)->toCarbon("Y-m-d");
         }
-        if($request->gender==genderType::female || $request->gender==genderType::male || $request->gender==genderType::LGBTQ)
+        if (in_array($request->gender,[genderType::female,genderType::male,genderType::LGBTQ ]))
         {
             $gender = $request->gender;
         }
@@ -727,7 +727,7 @@ class NumberController extends Controller
         $user->firstname = $request->firstname;
         $user->lastname = $request->lastname;
         $user->nationcode = $request->nationcode;
-        $user->gender = $request->gender;
+        $user->gender = $gender;
         $user->save();
 
 
