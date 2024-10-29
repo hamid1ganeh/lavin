@@ -18,19 +18,19 @@
                 @if(Auth::guard('admin')->user()->can('reception.index') ||
                     Auth::guard('admin')->user()->can('reserves.index') ||
                     Auth::guard('admin')->user()->can('article.index') ||
-                   Auth::guard('admin')->user()->can('article.categorys.index') ||
-                   Auth::guard('admin')->user()->can('analysis.ask.index') ||
-                   Auth::guard('admin')->user()->can('tickets.index') ||
-                   Auth::guard('admin')->user()->can('departments.index') ||
-                   Auth::guard('admin')->user()->can('socialmedia.index') ||
-                   Auth::guard('admin')->user()->can('phones.index') ||
-                   Auth::guard('admin')->user()->can('messages.index') ||
-                   Auth::guard('admin')->user()->can('admins.index') ||
-                   Auth::guard('admin')->user()->can('users.index') ||
-                   Auth::guard('admin')->user()->can('levels.index') ||
-                   Auth::guard('admin')->user()->can('roles.index') ||
-                   Auth::guard('admin')->user()->can('numbers.index') ||
-                   Auth::guard('admin')->user()->can('numbers.advisers'))
+                    Auth::guard('admin')->user()->can('article.categorys.index') ||
+                    Auth::guard('admin')->user()->can('analysis.ask.index') ||
+                    Auth::guard('admin')->user()->can('tickets.index') ||
+                    Auth::guard('admin')->user()->can('departments.index') ||
+                    Auth::guard('admin')->user()->can('socialmedia.index') ||
+                    Auth::guard('admin')->user()->can('phones.index') ||
+                    Auth::guard('admin')->user()->can('messages.index') ||
+                    Auth::guard('admin')->user()->can('admins.index') ||
+                    Auth::guard('admin')->user()->can('users.index') ||
+                    Auth::guard('admin')->user()->can('levels.index') ||
+                    Auth::guard('admin')->user()->can('roles.index') ||
+                    Auth::guard('admin')->user()->can('numbers.index') ||
+                    Auth::guard('admin')->user()->can('numbers.advisers'))
                     <li>
                         <a href="javascript: void(0);" class="waves-effect">
                             <i class="ti-align-left"></i>
@@ -38,16 +38,6 @@
                             <span class="menu-arrow"></span>
                         </a>
                         <ul class="nav-second-level" aria-expanded="false">
-
-
-{{--                            @if(Auth::guard('admin')->user()->can('users.index'))--}}
-                                <li>
-                                    <a href="{{ route('admin.users.index') }}" class="waves-effect">
-                                        <i class="fas fa-user"></i>
-                                        <span class="IRANYekanRegular">پرونده پزشکی</span>
-                                    </a>
-                                </li>
-{{--                            @endif--}}
 
                             @if(Auth::guard('admin')->user()->can('reception.index'))
                                 <li>

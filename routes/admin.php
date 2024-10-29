@@ -486,6 +486,7 @@ Route::group(['middleware' => 'auth.admin'], function () {
 
     Route::prefix('/receptions')->name('receptions.')->group(function () {
         Route::get('/', 'ReceptionController@index')->name('index');
+        Route::post('/store', 'ReceptionController@store')->name('store');
         Route::patch('{reception}/end', 'ReceptionController@end')->name('end');
         Route::patch('{reception}/start', 'ReceptionController@start')->name('start');
     });

@@ -8,6 +8,7 @@ use App\Models\City;
 use App\Models\Job;
 use App\Models\Number;
 use App\Models\Province;
+use App\Services\SMS;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Level;
@@ -31,8 +32,7 @@ class UserController extends Controller
   public function index()
   {
       //اجازه دسترسی
-      if (Auth::guard('admin')->user()->can('users.index') ||
-          Auth::guard('admin')->user()->can('reception.medical.document') ) {
+      if (Auth::guard('admin')->user()->can('users.index')) {
 
           $levels = Level::orderBy('point','asc')->get();
 
@@ -67,8 +67,7 @@ class UserController extends Controller
   public function store(Request $request)
   {
       //اجازه دسترسی
-      if (Auth::guard('admin')->user()->can('users.create') ||
-          Auth::guard('admin')->user()->can('reception.medical.document') ) {
+      if (Auth::guard('admin')->user()->can('users.create')) {
 
           $request->validate([
                   'firstname' => 'required|max:255',
@@ -98,10 +97,10 @@ class UserController extends Controller
                   'introduced.exists' => '* کد معرف صحیح نمی باشد.',
               ]);
 
-          if ($request->gender == genderType::female || $request->gender == genderType::male || $request->gender == genderType::LGBTQ) {
+          if(in_array($request->gender,[genderType::female,genderType::male,genderType::LGBTQ])) {
               $verify_code = rand(1000, 9999);
               $verify_expire = Carbon::now()->addMinute(5)->format('Y-m-d H:i:s');
-
+              $password = Str::random(6);
               $user = new User;
               $user->firstname = $request->firstname;
               $user->lastname = $request->lastname;
@@ -112,8 +111,19 @@ class UserController extends Controller
               $user->gender = $request->gender;
               $user->code = $this->code->create($user, 10);
               $user->introduced = $request->introduced;
-              $user->password = Hash::make(Str::random(10));
+              $user->password = $password;
               $user->save();
+
+
+              $sms = new SMS;
+              $msg = $user->firstname.' '.$user->lastname." عزیز \n".
+                  "ثبت نام شما در وبسایت کلینیک لاوین انجام شد.مشخصات ورود شما به صورت زیر است:\n".
+                  "وبسایت: ".env("APP_URL")."\n".
+                  "نام کاربری:".$user->mobile."\n".
+                  "رمز عبور:".$password."\n".
+                  "\nکلینیک لاوین رشت";
+
+              $sms->send(array($user->mobile),$msg);
 
               toast('کاربر جدید افزوده شد.', 'success')->position('bottom-end');
           }
