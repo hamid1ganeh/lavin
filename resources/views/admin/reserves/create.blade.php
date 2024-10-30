@@ -39,7 +39,11 @@
                                     <div class="form-group row mt-1">
                                         <div class="col-12">
                                         <label for="user" class="control-label IRANYekanRegular">کاربر</label>
-                                            <select class="widht-100 form-control select2" name="user" id="user"></select>
+                                            <select class="widht-100 form-control select2" name="user" id="user">
+                                                @if(!is_null($user))
+                                                <option value="{{ $user->id }}" selected>{{ $user->getFullname().'  شماره موبایل ( '.$user->mobile.") شماره ملی (".$user->nationcode.")" }}</option>
+                                                @endif
+                                            </select>
                                             <span class="form-text text-danger erroralarm"> {{ $errors->first('user') }} </span>
                                         </div>
                                     </div>

@@ -154,10 +154,18 @@
 
                                     @if(Auth::guard('admin')->user()->can('reserves.create'))
                                     <div class="btn-group" >
-                                        <a href="{{ route('admin.reserves.create') }}" class="btn btn-sm btn-primary">
-                                            <i class="fa fa-plus plusiconfont"></i>
-                                            <b class="IRANYekanRegular">ایجاد رزرو جدید</b>
-                                        </a>
+                                        @if(!is_null(request('code')))
+                                            <a href="{{ route('admin.reserves.create',['code'=>request('code')]) }}" class="btn btn-sm btn-primary">
+                                                <i class="fa fa-plus plusiconfont"></i>
+                                                <b class="IRANYekanRegular">ایجاد رزرو جدید</b>
+                                            </a>
+                                        @else
+                                            <a href="{{ route('admin.reserves.create') }}" class="btn btn-sm btn-primary">
+                                                <i class="fa fa-plus plusiconfont"></i>
+                                                <b class="IRANYekanRegular">ایجاد رزرو جدید</b>
+                                            </a>
+                                        @endif
+
                                     </div>
                                     @endif
                                 </div>

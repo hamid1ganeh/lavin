@@ -136,14 +136,24 @@ class ReserveServiceController extends Controller
         return view('admin.reserves.all',compact('reserves','serviceDetails','doctors','secretaries','asistants','branches','receptions'));
     }
 
-    public function create()
+    public function create(Request $request)
     {
         //اجازه دسترسی
         config(['auth.defaults.guard' => 'admin']);
         $this->authorize('reserves.create');
 
+        $user =null;
+        if(isset($request->user_id)){
+            $user = User::find($request->user_id);
+        }elseif ($request->code){
+            $reception = Reception::with('user')->where('code',$request->code)->first();
+            if (!is_null($reception)){
+                $user = $reception->user;
+            }
+        }
+
         $services = Service::where('status',Status::Active)->whereHas('details')->orderBy('name','asc')->get();
-        return view('admin.reserves.create',compact('services'));
+        return view('admin.reserves.create',compact('services','user'));
     }
 
     public function store(Request $request)

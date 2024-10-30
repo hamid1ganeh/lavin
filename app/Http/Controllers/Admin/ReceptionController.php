@@ -98,7 +98,7 @@ class ReceptionController extends Controller
             $sms->send(array($user->mobile),$msg);
 
             toast('کاربر جدید افزوده شد.', 'success')->position('bottom-end');
-            return redirect(route('admin.reserves.create'));
+            return redirect(route('admin.reserves.create',['user_id'=>$user->id]));
         }
 
         return back();
