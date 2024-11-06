@@ -504,7 +504,7 @@
 
                         </li>
 
-                        @endif
+                   @endif
 
                     @if(Auth::guard('admin')->user()->can('complications.index'))
                     <li>
@@ -513,6 +513,7 @@
                           <span class="IRANYekanRegular">لیست عوارض</span>
                       </a>
                     </li>
+                   @endif
 
                     @if(Auth::guard('admin')->user()->can('jobs.index'))
                       <li>
@@ -617,7 +618,7 @@
                           </a>
                       </li>
                     @endif
-               @endif
+
             </ul>
         </li>
         @endif
