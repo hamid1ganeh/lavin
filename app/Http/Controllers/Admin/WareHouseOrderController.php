@@ -226,6 +226,14 @@ class WareHouseOrderController extends Controller
                 $good->unit_stock -= $order->remainderStock();
 
 
+                if ($good->count_stock < 0 || $good->unit_stock < 0){
+                    alert()->error('خطا','مقدار درخواستی شما در انبار مرکزی موجود نمی باشد.');
+                    return back();
+                }
+
+
+
+
                 $stock->warehouse_id = $order->warehouse_id;
                 $stock->goods_id = $order->goods_id;
 

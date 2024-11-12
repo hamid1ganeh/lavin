@@ -74,7 +74,7 @@
 
 
                                     <div class="form-group row">
-                                        <div class="col-12 col-md-1">
+                                        <div class="col-12 col-md-2">
                                             <label for="year" class="control-label IRANYekanRegular">سال ساخت</label>
                                             <input type="text"   class="form-control text-center" id="year" name="year"  value="{{ old('year')  }}" placeholder="سال " maxlength="4" minlength="4" required>
                                             <span class="form-text text-danger erroralarm"> {{ $errors->first('year') }} </span>
