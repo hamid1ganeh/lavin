@@ -66,7 +66,7 @@
                                             <select class='form-control dropdopwn' name='parent' id='parent' onchange="subcat(this.value)">
                                                 <option value='' class='dropdopwn'>دسته اصلی را وارد نمایید...</option>
                                                 @foreach($parents as $parent)
-                                                    <option value="{{ $parent->id }}" class="dropdopwn" {{ $parent->id==old('parent') || $service->parnet==old('parent') ?'selected':'' }}>{{ $parent->name }}</option>
+                                                    <option value="{{ $parent->id }}" class="dropdopwn" {{ ($parent->id==old('parent') || $service->parent==$parent->id) ?'selected':'' }}>{{ $parent->name }}</option>
                                                 @endforeach
                                             </select>
                                             <span class="form-text text-danger erroralarm"> {{ $errors->first('parent') }} </span>
