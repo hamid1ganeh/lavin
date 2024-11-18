@@ -146,20 +146,35 @@ class ServiceReserve extends Model
     public function getStatus()
     {
         switch ($this->status) {
-            case AnaliseStatus::pending:
-                $res = "در انتظار";
+            case ReserveStatus::waiting:
+                $res = "در انتظار رزرو";
                 break;
-            case AnaliseStatus::doctor:
-                $res = "ارجاع به پزشک";
+            case ReserveStatus::confirm:
+                $res = "تایید";
                 break;
-            case AnaliseStatus::response:
-                $res = "پاسخ پزشک";
+            case ReserveStatus::cancel:
+                $res = "لغو";
                 break;
-            case AnaliseStatus::reject:
-                $res = "رد شده";
+            case ReserveStatus::accept:
+                $res = "پذیرش";
                 break;
-            case AnaliseStatus::accept:
-                $res = "تایید شده";
+            case ReserveStatus::secratry:
+                $res = "ارجاع به منشی";
+                break;
+            case ReserveStatus::done:
+                $res = "انجام شده";
+                break;
+            case ReserveStatus::paid:
+                $res = "پرداخت شده";
+                break;
+            case ReserveStatus::end:
+                $res = "پایان کار";
+                break;
+            case ReserveStatus::wittingForAdviser:
+                $res = "در انتظار مشاور";
+                break;
+            case ReserveStatus::Adviser:
+                $res = "مشاور";
                 break;
         }
         return  $res;

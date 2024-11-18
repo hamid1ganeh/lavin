@@ -68,7 +68,7 @@ class ReserveServiceController extends Controller
             $setData = '';
             $rowData = '';
             foreach ($reserves as $reserve) {
-                $fullname = $reserve->user->getFullName()??'';
+                $fullname = !is_null($reserve->user)?$reserve->user->getFullName():'';
                 $branch = $reserve->branch->name??'';
                 $mobile = $reserve->user->mobile??'';
                 $serviceName = $reserve->service_name??'';
