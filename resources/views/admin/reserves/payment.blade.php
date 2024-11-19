@@ -47,7 +47,7 @@
                                               </p>
 
                                               <p class="IR">
-                                               مبلغ قابل پرداخت:{{ number_format($payment->price) }} تومان
+                                               مبلغ قابل پرداخت:{{ number_format($payment->total_price) }} تومان
                                               </p>
 
                                               <strong class="IRANYekanRegular">
