@@ -454,6 +454,9 @@ class NumberController extends Controller
                     }
                     $history = PhoneOperatorHistory::where('admin_id',Auth::guard('admin')->id())->where('number_id',$number->id)->orderBy('created_at','desc')->first();
                     $history->description = $request->operator_description;
+                    if ($request->status != NumberStatus::NoAnswer){
+                        $history->until = Carbon::now("+3:30");
+                    }
 
                     DB::transaction(function() use ($number, $history) {
                         $number->save();

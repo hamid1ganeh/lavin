@@ -387,17 +387,19 @@ class ReserveServiceController extends Controller
 
          $payment = ReservePayment::with('reserve.service')->where('reserve_id',$reserve->id)->first();
 
-
          if($payment==null)
          {
-             $detail = ServiceDetail::find($reserve->detail_id);
-            $payement = ReservePayment::with('reserve.service')->create([
+             $payment = ReservePayment::with('reserve.service')->create([
                 'reserve_id' => $reserve->id,
                 'user_id' => $reserve->user_id,
                 'price' => $reserve->total_price,
+                'total_price' => $reserve->total_price,
+
             ]);
+
          }else{
              $payment->price = $reserve->total_price;
+             $payment->total_price = $reserve->total_price;
              $payment->save();
          }
 

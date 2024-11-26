@@ -95,7 +95,6 @@ class ServiceDetail extends Model
         ];
     }
 
-
     public function scopeFilter($query)
     {
          //فیلتر عنوان
@@ -113,5 +112,22 @@ class ServiceDetail extends Model
         }
 
         return $query;
+    }
+
+   public function getStatus()
+    {
+        switch ($this->status) {
+            case Status::Active:
+                $res = "فعال";
+                break;
+            case Status::Deactive:
+                $res = "غیرفعال";
+                break;
+            case Status::Pending:
+                $res = "درانتظار";
+                break;
+        }
+        return  $res;
+
     }
 }

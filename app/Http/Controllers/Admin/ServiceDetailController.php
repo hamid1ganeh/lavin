@@ -11,6 +11,8 @@ use App\Models\Luck;
 use App\Models\Image;
 use App\Models\Admin;
 use App\Enums\Status;
+use App\Models\ServiceReserve;
+use App\Services\ExportService;
 use Illuminate\Http\Request;
 use  Validator;
 use App\Services\FunctionService;
@@ -49,6 +51,48 @@ class ServiceDetailController extends Controller
        ->filter()
        ->paginate(10)
        ->withQueryString();
+
+        $exel = request('exel');
+        if(isset($exel) && $exel='on') {
+            $reserves = ServiceReserve::with('user','doctor','adviser.operator','adviser.adviser','adviser.arrangement','adviser.management')
+                ->filter()
+                ->orderBy('created_at','desc')
+                ->get();
+
+            $details =  ServiceDetail::with('service')
+                        ->withTrashed()
+                        ->orderBy('name','asc')
+                        ->filter()
+                        ->get();
+
+            $titles = "نام خدمت" . "\t" ."سرگروه" . "\t" ."قیمت" . "\t" . "پورسانت". "\t" . "امتیاز" . "\t"."توضیحات". "\t"."وضعیت";
+
+            $setData = '';
+            $rowData = '';
+            foreach ($details as $detail) {
+                $name = $detail->name??'';
+                $parent = $detail->service->name??'';
+                $price = $detail->price??'';
+                $porsant = $detail->porsant??'';
+                $point = $detail->point??'';
+                $breif  = $detail->breif??'';
+                $status = $detail->getStatus()??'';
+
+                $rowData .=  $name."\t";
+                $rowData .=  $parent."\t";
+                $rowData .=  $price."\t";
+                $rowData .=  $porsant."\t";
+                $rowData .=  $point."\t";
+                $rowData .=  $breif."\t";
+                $rowData .=  $status."\t"."\n";
+            }
+            $setData .= $rowData. "\n";
+
+            $filename = 'export_services_'.date('YmdHis') . ".xls";
+
+            $export = new ExportService();
+            $export->exel($titles,$setData,$filename);
+        }
 
        $services =  Service::orderBy('name','asc')->withTrashed()->get();
        return view('admin.details.all',compact('details','services'));

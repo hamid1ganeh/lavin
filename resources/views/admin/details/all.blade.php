@@ -54,12 +54,10 @@
                                 <div class="card card-body filter">
                                     <form id="filter-form">
                                         <div class="row">
-
                                             <div class="form-group justify-content-center col-6">
                                                 <label for="name" class="control-label IRANYekanRegular">عنوان </label>
                                                 <input type="text"  class="form-control input" id="name-filter" name="name" placeholder="عنوان را وارد کنید" value="{{ request('name') }}">
                                             </div>
-
                                             <div class="form-group justify-content-center  col-6">
                                                 <label for="status-filter" class="control-label IRANYekanRegular">سرگروه خدمات</label>
                                                  <select name="services[]" id="service-filter" class="form-control select2 select2-multiple text-right IRANYekanRegular" multiple="multiple" multiple data-placeholder="... سرگروه خدمات را انتخاب نمایید">
@@ -68,8 +66,17 @@
                                                   @endforeach
                                                 </select>
                                             </div>
-
                                         </diV>
+                                        <div class="row">
+                                            <div class="form-group justify-content-center col-6">
+                                                <div class="form-check  pr-5 mr-2">
+                                                    <input class="form-check-input cursor-pointer" type="checkbox" value="on" name="exel" id="exel" {{ request('exel')=='on'?'checked':'' }}>
+                                                    <label class="form-check-label IRANYekanRegular" style="margin-right: 19px !important;" for="exel">
+                                                        خروجی اکسل
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
 
                                         <div class="form-group col-12 d-flex justify-content-center mt-3">
 
@@ -133,44 +140,70 @@
                                                 </strong>
                                             </td>
                                             <td>
-                                                @if($detail->trashed())
-                                                    @if(Auth::guard('admin')->user()->can('services.details.delete'))
-                                                        <a class="font18 m-1" href="#recycle{{ $detail->id }}" data-toggle="modal" title="بازیابی">
-                                                            <i class="fa fa-recycle text-danger"></i>
-                                                        </a>
 
-                                                        <!-- Recycle Modal -->
-                                                        <div class="modal fade" id="recycle{{ $detail->id }}" tabindex="-1" aria-labelledby="reviewLabel" aria-hidden="true">
-                                                            <div class="modal-dialog modal-xs">
-                                                                <div class="modal-content">
-                                                                    <div class="modal-header py-3">
-                                                                        <h5 class="modal-title IR" id="newReviewLabel">بازیابی سرویس</h5>
-                                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                            <span aria-hidden="true">&times;</span>
-                                                                        </button>
-                                                                    </div>
-                                                                    <div class="modal-body">
-                                                                        <h5 class="IRANYekanRegular">آیا مطمئن هستید که می‌خواهید جزئیات  {{ $detail->name }} را بازیابی نمایید؟</h5>
-                                                                    </div>
-                                                                    <div class="modal-footer">
-                                                                        <form action="{{ route('admin.details.recycle',$detail) }}" method="POST" class="d-inline">
-                                                                            @csrf
-                                                                            @method('patch')
-                                                                            <button type="submit"  title="بازیابی" class="btn btn-info px-8">بازیابی</button>
-                                                                        </form>
-                                                                        <button type="button" class="btn btn-secondary" title="انصراف" data-dismiss="modal">انصراف</button>
-                                                                    </div>
-                                                                </div>
+                                                <!-- Recycle Modal -->
+                                                <div class="modal fade" id="recycle{{ $detail->id }}" tabindex="-1" aria-labelledby="reviewLabel" aria-hidden="true">
+                                                    <div class="modal-dialog modal-xs">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header py-3">
+                                                                <h5 class="modal-title IR" id="newReviewLabel">بازیابی سرویس</h5>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <h5 class="IRANYekanRegular">آیا مطمئن هستید که می‌خواهید جزئیات  {{ $detail->name }} را بازیابی نمایید؟</h5>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <form action="{{ route('admin.details.recycle',$detail) }}" method="POST" class="d-inline">
+                                                                    @csrf
+                                                                    @method('patch')
+                                                                    <button type="submit"  title="بازیابی" class="btn btn-info px-8">بازیابی</button>
+                                                                </form>
+                                                                <button type="button" class="btn btn-secondary" title="انصراف" data-dismiss="modal">انصراف</button>
                                                             </div>
                                                         </div>
-                                                     @endif
-                                                @else
+                                                    </div>
+                                                </div>
 
-                                                <div class="input-group" style="position:absolute !important;width:150px;margin:-25px auto;">                                                     <div class="input-group-append">
-                                                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                            <i class=" ti-align-justify"></i>
-                                                        </button>
+                                                <!-- Remove Modal -->
+                                                <div class="modal fade" id="remove{{ $detail->id }}" tabindex="-1" aria-labelledby="reviewLabel" aria-hidden="true">
+                                                    <div class="modal-dialog modal-xs">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header py-3">
+                                                                <h5 class="modal-title IRANYekanRegular" id="newReviewLabel">حذف نظر</h5>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <h5 class="IRANYekanRegular">آیا مطمئن هستید که میخواهید جزئیات {{ $detail->name }} را حذف کنید؟</h5>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <form action="{{ route('admin.details.delete',$detail) }}"  method="POST" class="d-inline">
+                                                                    @csrf
+                                                                    @method('DELETE')
+                                                                    <button type="submit" title="حذف" class="btn btn-danger px-8">حذف</button>
+                                                                </form>
+                                                                <button type="button" class="btn btn-secondary" title="انصراف" data-dismiss="modal">انصراف</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="input-group">
+                                                    <div class="input-group-append">
+                                                        <i class=" ti-align-justify" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
                                                         <div class="dropdown-menu">
+
+                                                            @if($detail->trashed())
+                                                            @if(Auth::guard('admin')->user()->can('services.details.delete'))
+                                                                <a class="font18 m-1" href="#recycle{{ $detail->id }}" data-toggle="modal" title="بازیابی">
+                                                                    <i class="fa fa-recycle text-danger"></i>
+                                                                </a>
+                                                             @endif
+                                                            @else
+
                                                             @if(Auth::guard('admin')->user()->can('services.details.luck.create'))
                                                             <a class="dropdown-item IR cusrsor" href="{{ route('admin.details.luck.create', $detail) }}"  title="افزودن به گردونه شانس">
                                                                 <i class="fas fa-hockey-puck text-success"></i>
@@ -212,32 +245,7 @@
                                                                 <span class="p-1">حذف</span>
                                                             </a>
                                                             @endif
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                @endif
-
-                                                  <!-- Remove Modal -->
-                                                  <div class="modal fade" id="remove{{ $detail->id }}" tabindex="-1" aria-labelledby="reviewLabel" aria-hidden="true">
-                                                    <div class="modal-dialog modal-xs">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header py-3">
-                                                                <h5 class="modal-title IRANYekanRegular" id="newReviewLabel">حذف نظر</h5>
-                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                    <span aria-hidden="true">&times;</span>
-                                                                </button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                <h5 class="IRANYekanRegular">آیا مطمئن هستید که میخواهید جزئیات {{ $detail->name }} را حذف کنید؟</h5>
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <form action="{{ route('admin.details.delete',$detail) }}"  method="POST" class="d-inline">
-                                                                    @csrf
-                                                                    @method('DELETE')
-                                                                    <button type="submit" title="حذف" class="btn btn-danger px-8">حذف</button>
-                                                                </form>
-                                                                <button type="button" class="btn btn-secondary" title="انصراف" data-dismiss="modal">انصراف</button>
-                                                            </div>
+                                                            @endif
                                                         </div>
                                                     </div>
                                                 </div>
