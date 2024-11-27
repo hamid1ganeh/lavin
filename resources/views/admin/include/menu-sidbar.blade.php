@@ -389,7 +389,12 @@
                 Auth::guard('admin')->user()->can('doctors.index') ||
                 Auth::guard('admin')->user()->can('employments.jobs.index')||
                 Auth::guard('admin')->user()->can('employments.categories.main.index')||
-                Auth::guard('admin')->user()->can('discounts.index'))
+                Auth::guard('admin')->user()->can('discounts.index') ||
+                Auth::guard('admin')->user()->can('warehousing.categories.main.index')||
+                Auth::guard('admin')->user()->can('warehousing.categories.sub.index') ||
+                Auth::guard('admin')->user()->can('warehousing.goods.index') ||
+                Auth::guard('admin')->user()->can('warehousing.warehouses.index') ||
+                Auth::guard('admin')->user()->can('warehousing.lasers.index'))
                 <li>
                     <a href="javascript: void(0);" class="waves-effect">
                         <i class="ti-write"></i>

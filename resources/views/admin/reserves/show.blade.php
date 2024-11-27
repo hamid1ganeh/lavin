@@ -55,6 +55,14 @@
                                         </div>
                                     </div>
 
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <label for="reception-desc" class="control-label IRANYekanRegular">توضیحات پذیرش</label>
+                                            <input type="text" class="form-control input" name="reception_desc" id="reception-desc" placeholder="توضیحات پذیرش را وارد کنید..." value="{{ old('reception_desc') ??  $reserve->reception_desc }}">
+                                            <span class="form-text text-danger erroralarm"> {{ $errors->first('reception_desc') }} </span>
+                                        </div>
+                                    </div>
+
                                     <div class="row mt-3">
                                         <div class="col-12">
                                             <button type="submit" class="btn btn-success">بروزرسانی</button>

@@ -170,7 +170,6 @@ class ReserveServiceController extends Controller
             'branch'=>'required|numeric|exists:branchs,id',
             'doctor'=>'required|numeric|exists:admins,id',
             'adviser'=>'nullable|numeric',
-            'reception_desc'=>'nullable|max:500'
         ],
         [
             'user.required'=>'* الزامی است.',
@@ -184,7 +183,6 @@ class ReserveServiceController extends Controller
             'doctor.required'=>'* الزامی است.',
             'doctor.numric'=>'* معتبر نیست.',
             'numeric.numric'=>'* معتبر نیست.',
-            'reception_desc.max'=>'* متن طولانی است.',
         ]);
 
         $adviser =null;
@@ -232,7 +230,7 @@ class ReserveServiceController extends Controller
                                        $request->detail,
                                        $request->doctor,
                                         $adviser->id??$adviser,
-                                       $request->reception_desc,
+                                       null,
                                        $status,
                                         null);
 
@@ -271,6 +269,8 @@ class ReserveServiceController extends Controller
         config(['auth.defaults.guard' => 'admin']);
         $this->authorize('reserves.determining');
 
+        $request->validate(['reception_desc'=>'nullable|max:500'],[ 'reception_desc.max'=>'* متن طولانی است.']);
+
         if(in_array($request->status,ReserveStatus::getReseveStatus))
         {
             if($reserve->adviser_id != null){
@@ -301,6 +301,7 @@ class ReserveServiceController extends Controller
 
             $reserve->time = $time;
             $reserve->status = $request->status;
+            $reserve->reception_desc = $request->reception_desc;
             if($request->status == ReserveStatus::accept){
                 $last = Reception::where('user_id',$reserve->user_id)
                     ->where('end',false)

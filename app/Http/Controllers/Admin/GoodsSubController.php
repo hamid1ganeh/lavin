@@ -7,7 +7,7 @@ use App\Models\EmploymentSubCategory;
 use Illuminate\Http\Request;
 use App\Models\GoodsSubCategory;
 use App\Models\GoodsMainCategory;
-use App\Enums\status;
+use App\Enums\Status;
 
 class GoodsSubController extends Controller
 {
@@ -57,7 +57,7 @@ class GoodsSubController extends Controller
             return back()->withInput();
         }
 
-        if(in_array($request->status ,status::getStatusList))
+        if(in_array($request->status ,Status::getStatusList))
         {
             GoodsSubCategory::create([
                 'main_id'=> $main->id,

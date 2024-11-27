@@ -15,7 +15,7 @@
                         <div class="page-title-right">
                            <ol class="breadcrumb m-0 IR">
                             {{ Breadcrumbs::render('reserves.upgrade.create',$reserve) }}
-                            </ol>    
+                            </ol>
                         </div>
                         <h4 class="page-title">
                         <i class="fas fa-level-up-alt page-icon"></i>
@@ -35,7 +35,7 @@
 
                                 <form class="form-horizontal" action="{{ route('admin.reserves.upgrade.store',$reserve) }}" method="post">
                                    @csrf
-                                    
+
                                     <div class="form-group row mt-1">
                                         <div class="col-12">
                                             <label for="service" class="control-label IRANYekanRegular">سرگروه سرویس</label>
@@ -120,20 +120,20 @@
         <script type="text/javascript">
             function details(id)
             {
+
                 $.ajax({
                 type:'GET',
                 url: "{{ route('admin.detailsfetch') }}",
                 data:'service='+id+'&&_token = <?php echo csrf_token() ?>',
                 success:function(response) {
-
                         var len = 0;
                         $('#detail_div').empty();
                         if(response['details'] != null)
                         {
                             len = response['details'].length;
                         }
-
-                        var tr_str ="<select class='widht-100 form-control select2' name='detail' id='details'>"+
+                        var tr_str = '';
+                        tr_str +="<select class='widht-100 form-control select2' name='detail' id='detail'>"+
                         "<option value=''>  جزئیات سرویس را انتخاب کنید...</option>";
                         for(var i=0; i<len; i++)
                         {
@@ -149,7 +149,7 @@
 
         function seprate(val , id)
         {
-           
+
             if(val!='')
             {
                 val = parseInt(val);
@@ -157,7 +157,7 @@
                 {
                     var formatter = new Intl.NumberFormat('ar-EG');
                     var number = formatter.format(val);
-                  
+
                     if(number=='٠')
                     {
                         document.getElementById("show-pirce").innerText = '';
@@ -166,13 +166,13 @@
                     {
                         document.getElementById("show-pirce").innerText = number;
                     }
-                    
+
                 }
-              
+
             }
             else
             {
-               
+
                 document.getElementById("show-pirce").innerText = '';
             }
         }
