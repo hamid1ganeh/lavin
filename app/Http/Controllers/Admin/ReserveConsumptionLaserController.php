@@ -36,10 +36,6 @@ class ReserveConsumptionLaserController extends Controller
         config(['auth.defaults.guard' => 'admin']);
         $this->authorize('reserves.consumptions.create');
 
-        if ( $reserve->status ==  ReserveStatus::done){
-            return abort(403);
-        }
-
         $request->validate(
             [
                 'laser' => ['required','exists:laser_devices,id'],

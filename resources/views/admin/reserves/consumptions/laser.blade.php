@@ -106,8 +106,7 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-12 text-right">
-                                    @if(Auth::guard('admin')->user()->can('reserves.consumptions.create') &&
-                                        $reserve->status != \App\Enums\ReserveStatus::done)
+                                    @if(Auth::guard('admin')->user()->can('reserves.consumptions.create'))
                                         <div class="btn-group" >
                                             <a href="#create" data-toggle="modal" class="btn btn-primary" title="ایجاد مصرفی جدید">
                                                 <i class="fa fa-plus plusiconfont"></i>
