@@ -18,9 +18,9 @@ class CreateUserInfosTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('job_id')->nullable();
             $table->string('email',255)->nullable();
-            $table->date('birthDate')->nullable();
+            $table->dateTime('birthDate')->nullable();
             $table->boolean('married')->default(0);
-            $table->date('marriageDate')->nullable();
+            $table->dateTime('marriageDate')->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')

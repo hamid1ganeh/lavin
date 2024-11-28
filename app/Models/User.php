@@ -226,6 +226,57 @@ class User extends Authenticatable
             $quary->where('created_at','<=',$until);
         }
 
+        //فیلتر تاریخ تولد از
+        $sinceBirthday = request('since_birthday');
+        if(isset($sinceBirthday) &&  $sinceBirthday!='')
+        {
+            $sinceBirthday =  faToEn($sinceBirthday);
+            $sinceBirthday = Jalalian::fromFormat('Y/m/d', $sinceBirthday)->toCarbon("Y-m-d");
+
+            $quary->whereHas('info',function($q) use($sinceBirthday){
+                   $q->whereNotNull('birthDate')->where('birthDate','>=', $sinceBirthday);
+               });
+        }
+        //فیلتر تاریخ تولد تا
+        $untilBirthday = request('until_birthday');
+        if(isset($untilBirthday) &&  $untilBirthday!='')
+        {
+            $untilBirthday =  faToEn($untilBirthday);
+            $untilBirthday = Jalalian::fromFormat('Y/m/d', $sinceBirthday)->toCarbon("Y-m-d");
+            $quary->whereHas('info',function($q) use($untilBirthday){
+                $q->whereNotNull('birthDate')->where('birthDate','<=', $untilBirthday);
+            });
+        }
+
+        //فیلتر تاریخ ازدواج از
+        $sinceMarriageDate = request('since_marriage_date');
+        if(isset($sinceMarriageDate) &&  $sinceMarriageDate!='')
+        {
+            $sinceMarriageDate =  faToEn($sinceMarriageDate);
+            $sinceMarriageDate = Jalalian::fromFormat('Y/m/d', $sinceMarriageDate)->toCarbon("Y-m-d");
+            $quary->whereHas('info',function($q) use($sinceMarriageDate){
+                $q->whereNotNull('marriageDate')->where('marriageDate','>=', $sinceMarriageDate);
+            });
+        }
+        //فیلتر تاریخ ازدواج تا
+        $untilMarriageDate = request('until_marriage_date');
+        if(isset($untilMarriageDate) &&  $untilMarriageDate!='')
+        {
+            $untilMarriageDate =  faToEn($untilMarriageDate);
+            $untilMarriageDate = Jalalian::fromFormat('Y/m/d', $untilMarriageDate)->toCarbon("Y-m-d");
+            $quary->whereHas('info',function($q) use($untilMarriageDate){
+                $q->whereNotNull('marriageDate')->where('marriageDate','<=', $untilMarriageDate);
+            });
+        }
+
+        //فیلتر زمان رزرو تا
+        $until = request('until');
+        if(isset($until) &&  $until!='')
+        {
+            $until =  faToEn($until);
+            $until = Jalalian::fromFormat('Y/m/d', $until)->toCarbon("Y-m-d");
+            $query->where('created_at','<=', $until);
+        }
 
         //فیلتر براساس مشاغل
         $jobs = request('jobs');

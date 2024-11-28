@@ -1,5 +1,63 @@
 @extends('admin.master')
+@section('script')
+    <script type="text/javascript">
+        $("#since-birthday-filter").MdPersianDateTimePicker({
+            targetDateSelector: "#showDate_class",
+            targetTextSelector: "#since-birthday-filter",
+            textFormat: "yyyy/MM/dd",
+            isGregorian: false,
+            modalMode: false,
+            englishNumber: false,
+            enableTimePicker: false,
+            selectedDateToShow: new Date(),
+            calendarViewOnChange: function(param1){
+                console.log(param1);
+            }
+        });
 
+        $("#since-marriage-date-filter").MdPersianDateTimePicker({
+            targetDateSelector: "#showDate_class",
+            targetTextSelector: "#since-marriage-date-filter",
+            textFormat: "yyyy/MM/dd",
+            isGregorian: false,
+            modalMode: false,
+            englishNumber: false,
+            enableTimePicker: false,
+            selectedDateToShow: new Date(),
+            calendarViewOnChange: function(param1){
+                console.log(param1);
+            }
+        });
+
+        $("#until-marriage-date-filter").MdPersianDateTimePicker({
+            targetDateSelector: "#showDate_class",
+            targetTextSelector: "#until-marriage-date-filter",
+            textFormat: "yyyy/MM/dd",
+            isGregorian: false,
+            modalMode: false,
+            englishNumber: false,
+            enableTimePicker: false,
+            selectedDateToShow: new Date(),
+            calendarViewOnChange: function(param1){
+                console.log(param1);
+            }
+        });
+
+        $("#until-birthday-filter").MdPersianDateTimePicker({
+            targetDateSelector: "#showDate_class",
+            targetTextSelector: "#until-birthday-filter",
+            textFormat: "yyyy/MM/dd",
+            isGregorian: false,
+            modalMode: false,
+            englishNumber: false,
+            enableTimePicker: false,
+            selectedDateToShow: new Date(),
+            calendarViewOnChange: function(param1){
+                console.log(param1);
+            }
+        });
+    </script>
+@endsection
 @section('content')
 
 <div class="content-page">
@@ -129,6 +187,29 @@
                                                 </select>
                                             </div>
                                         </div>
+                                        <div class="row">
+                                            <div class="form-group justify-content-center col-6">
+                                                <label for="since-birthday-filter" class="control-label IRANYekanRegular">تاریخ تولد از</label>
+                                                <input type="text"   class="form-control text-center" id="since-birthday-filter" name="since_birthday" value="{{ request('since_birthday') }}" readonly>
+                                            </div>
+
+                                            <div class="form-group justify-content-center col-6">
+                                                <label for="until-birthday-filter" class="control-label IRANYekanRegular">تاریخ تولد تا</label>
+                                                <input type="text"   class="form-control text-center" id="until-birthday-filter" name="until_birthday" value="{{ request('until_birthday') }}" readonly>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="form-group justify-content-center col-6">
+                                                <label for="since-marriage-date-filter" class="control-label IRANYekanRegular">تاریخ ازدواج از</label>
+                                                <input type="text"   class="form-control text-center" id="since-marriage-date-filter" name="since_marriage_date" value="{{ request('since_marriage_date') }}" readonly>
+                                            </div>
+
+                                            <div class="form-group justify-content-center col-6">
+                                                <label for="until-marriage-dater-filter" class="control-label IRANYekanRegular">تاریخ ازدواج تا</label>
+                                                <input type="text"   class="form-control text-center" id="until-marriage-date-filter" name="until_marriage_date" value="{{ request('until_marriage_date') }}" readonly>
+                                            </div>
+                                        </div>
 
                                         <div class="row">
                                             <div class="form-group justify-content-center col-6">
@@ -165,6 +246,10 @@
                                                     document.getElementById("code-filter").value = "";
                                                     document.getElementById("introduced-filter").value = "";
                                                     document.getElementById("nationcode-filter").value = "";
+                                                    document.getElementById("since-birthday-filter").value = "";
+                                                    document.getElementById("until-birthday-filter").value = "";
+                                                    document.getElementById("since-marriage-date-filter").value = "";
+                                                    document.getElementById("until-marriage-date-filter").value = "";
                                                     $("#gender-filter").val(null).trigger("change");
                                                     $("#levels-filter").val(null).trigger("change");
                                                     $("#jobs-filter").val(null).trigger("change");
