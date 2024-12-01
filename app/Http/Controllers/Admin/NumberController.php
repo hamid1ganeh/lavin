@@ -292,7 +292,6 @@ class NumberController extends Controller
 
       public function operator(Number $number,Request $request)
       {
-
         //اجازه دسترسی
         config(['auth.defaults.guard' => 'admin']);
         $this->authorize('numbers.definition-operator');
@@ -328,12 +327,10 @@ class NumberController extends Controller
             $last_operator->save();
           }
 
-
           if($request->operator !== null)
          {
             PhoneOperatorHistory::create(['admin_id'=>$request->operator,'number_id'=>$number->id,'festival_id'=> $request->festival]);
          }
-
 
          $number->suggestions()->sync($request->suggestion);
 
@@ -378,7 +375,6 @@ class NumberController extends Controller
             'operator_date_time' => $now,
             'festival_id' => $festival
          ]);
-
 
         foreach ($request->numbers as $number)
         {
@@ -454,9 +450,13 @@ class NumberController extends Controller
                     }
                     $history = PhoneOperatorHistory::where('admin_id',Auth::guard('admin')->id())->where('number_id',$number->id)->orderBy('created_at','desc')->first();
                     $history->description = $request->operator_description;
+                    if(!is_null($request->operator_description)){
+                        $history->answered_at = Carbon::now("+3:30");
+                    }
                     if ($request->status != NumberStatus::NoAnswer){
                         $history->until = Carbon::now("+3:30");
                     }
+
 
                     DB::transaction(function() use ($number, $history) {
                         $number->save();

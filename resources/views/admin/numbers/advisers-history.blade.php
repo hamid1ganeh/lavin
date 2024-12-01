@@ -212,10 +212,7 @@
                                             <td><strong class="IRANYekanRegular">{{ $history->adviser->number->mobile ?? "" }}</strong></td>
                                             <td><strong class="IRANYekanRegular">{{ $history->since() }}</strong></td>
                                             <td><strong class="IRANYekanRegular">{{ $history->until() }}</strong></td>
-                                            <td>
-                                                @if(!is_null($history->description))
-                                                <strong class="IRANYekanRegular">{{ $history->updatedAt() }}</strong>
-                                                @endif
+                                            <td><strong class="IRANYekanRegular">{{ $history->answeredAt() }}</strong>
                                             </td>
                                          </tr>
                                         @endforeach

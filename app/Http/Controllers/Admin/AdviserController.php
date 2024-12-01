@@ -106,6 +106,9 @@ class AdviserController extends Controller
 
            $history = AdviserHistory::where('admin_id',Auth::guard('admin')->id())->where('adviser_id',$adviser->id)->orderBy('created_at','desc')->first();
            $history->description = $request->adviser_description;
+           if(!is_null($request->operator_description)){
+               $history->answered_at = Carbon::now("+3:30");
+           }
            if ($request->status != NumberStatus::NoAnswer){
                $history->until = Carbon::now("+3:30");
            }

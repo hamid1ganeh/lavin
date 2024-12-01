@@ -316,9 +316,11 @@
                                     <table id="tech-companies-1" class="table table-striped">
                                         <thead>
                                         <tr>
-                                            <th><b class="IRANYekanRegular">ردیف
+                                            <th>
+                                                <b class="IRANYekanRegular">ردیف
                                                     <input type="checkbox" name="selectall" id="selectall" class="pointer" title="انتخاب همه">
-                                                </b></th>
+                                                </b>
+                                            </th>
                                             <th><b class="IRANYekanRegular">نام </b></th>
                                             <th><b class="IRANYekanRegular"> نام خانوادگی</b></th>
                                             <th><b class="IRANYekanRegular">شماره موبایل</b></th>
@@ -355,7 +357,6 @@
                                                         </a>
                                                     @endif
                                                 </td>
-
                                                 <td>
                                                     <strong class="IRANYekanRegular">
                                                         @if($number->user != null)
@@ -575,11 +576,7 @@
                                                                                         <td>{{ $operator->until() }}</td>
                                                                                         <td>{{ $operator->festival->title ?? '' }}</td>
                                                                                         <td>{{ $operator->description }}</td>
-                                                                                        <td>
-                                                                                            @if(!is_null($operator->description))
-                                                                                                {{  $operator->updatedAt() }}
-                                                                                            @endif
-                                                                                        </td>
+                                                                                        <td>{{  $operator->answeredAt() }}</td>
                                                                                     </tr>
                                                                                 @endforeach
                                                                                 </tbody>
@@ -674,11 +671,7 @@
                                                                                         <td>{{ $operator->until() }}</td>
                                                                                         <td>{{ $operator->festival->title ?? '' }}</td>
                                                                                         <td>{{ $operator->description }}</td>
-                                                                                        <td>
-                                                                                            @if(!is_null($operator->descriptio))
-                                                                                                {{  $history->updatedAt() }}
-                                                                                            @endif
-                                                                                        </td>
+                                                                                        <td>{{  $operator->answeredAt() }}</td>
                                                                                     </tr>
                                                                                 @endforeach
                                                                                 </tbody>

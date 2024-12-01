@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class AdviserHistory extends Model
 {
     protected $table = "adviser_histories";
-    protected $fillable=['adviser_id','admin_id','until','description','festival_id'];
+    protected $fillable=['adviser_id','admin_id','until','description','festival_id','answered_at'];
 
     public function admin()
     {
@@ -29,9 +29,12 @@ class AdviserHistory extends Model
       return Jalalian::forge($this->created_at)->format('d %B Y H:i:s');
     }
 
-    public function updatedAt()
+    public function answeredAt()
     {
-        return Jalalian::forge($this->updated_at)->format('d %B Y H:i:s');
+        if(is_null($this->answered_at)){
+            return null;
+        }
+        return Jalalian::forge($this->nswered_at)->format('d %B Y H:i:s');
     }
 
     public function until()
