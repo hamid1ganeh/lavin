@@ -20,6 +20,7 @@ class CreatePhoneOperatorHistoriesTable extends Migration
             $table->dateTime('until')->nullable();
             $table->text('description')->nullable();
             $table->unsignedBigInteger('festival_id')->nullable();
+            $table->dateTime('answered_at')->nullable();
             $table->timestamps();
 
             $table->foreign('number_id')

@@ -209,12 +209,8 @@
                                             <td><strong class="IRANYekanRegular">{{ $history->number->mobile ?? "" }}</strong></td>
                                             <td><strong class="IRANYekanRegular">{{ $history->since() }}</strong></td>
                                             <td><strong class="IRANYekanRegular">{{ $history->until() }}</strong></td>
-                                            <td>
-                                                @if(!is_null($history->description))
-                                                <strong class="IRANYekanRegular">{{ $history->updatedAt() }}</strong>
-                                                @endif
-                                            </td>
-                                         </tr>
+                                            <td><strong class="IRANYekanRegular">{{ $history->answeredAt() }}</strong>
+                                        </tr>
                                         @endforeach
                                     </tbody>
                                 </table>

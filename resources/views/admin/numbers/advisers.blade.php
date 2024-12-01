@@ -344,11 +344,7 @@
                                                                                     <td>{{ $history->until() }}</td>
                                                                                     <td>{{ $history->festival->title ?? '' }}</td>
                                                                                     <td>{{ $history->description }}</td>
-                                                                                    <td>
-                                                                                        @if(!is_null($history->description))
-                                                                                        {{  $history->updatedAt() }}
-                                                                                        @endif
-                                                                                    </td>
+                                                                                    <td>{{  $history->answeredAt() }}</td>
                                                                                 </tr>
                                                                                 @endforeach
                                                                                 </tbody>
