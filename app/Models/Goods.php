@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Morilog\Jalali\CalendarUtils;
+use Morilog\Jalali\Jalalian;
 
 class Goods extends Model
 {
@@ -13,6 +14,7 @@ class Goods extends Model
     protected $fillable=['title',
                         'main_cat_id',
                         'sub_cat_id',
+                        'factor_number',
                         'code',
                         'unit',
                         'consumption_unit',
@@ -49,6 +51,33 @@ class Goods extends Model
         return ($this->count_stock*$this->value_per_count)+$this->unit_stock;
     }
 
-
+    public function scopeFilter($query)
+    {
+        //فیلتر نام کالا
+        $name = request('name');
+        if(isset($name) &&  $name!='')
+        {
+            $query->where('title',$name);
+        }
+        //فیلتر برند کالا
+        $brand = request('brand');
+        if(isset($brand) &&  $brand!='')
+        {
+            $query->where('brand',$brand);
+        }
+        //فیلتر نام کالا
+        $code = request('code');
+        if(isset($code) &&  $code!='')
+        {
+            $query->where('code',$code);
+        }
+        //فیلتر شماره فاکتور کالا
+        $factorNumber = request('factor_number');
+        if(isset($factorNumber) &&  $factorNumber!='')
+        {
+            $query->where('factor_number',$factorNumber);
+        }
+        return  $query;
+    }
 
 }

@@ -22,6 +22,7 @@ class GoodsController extends Controller
 
          $goods = Goods::orderBy('title','asc')
              ->withTrashed()
+             ->filter()
              ->paginate(10)
              ->withQueryString();
 
@@ -53,6 +54,7 @@ class GoodsController extends Controller
             [
                 'title' => ['required','max:255'],
                 'brand' => ['required','max:255'],
+                'factor_number' => ['nullable','max:255'],
                 'code' => ['nullable','max:255','unique:goods'],
                 'unit' => ['required'],
                 'value_per_count' => ['required','integer'],
@@ -67,6 +69,7 @@ class GoodsController extends Controller
                 'title.max' => 'حداکثر  طول مجاز عنوان کالا 255 کارکتر می باشد.',
                 'brand.required' => 'برند  کالا الزامی است.',
                 'brand.max' => 'حداکثر  طول مجاز برند کالا 255 کارکتر می باشد.',
+                'factor_number.max' => 'حداکثر  طول مجاز کد کالا 255 کارکتر می باشد.',
                 'code.max' => 'حداکثر  طول مجاز کد کالا 255 کارکتر می باشد.',
                 'code.unique' => 'این کد قبلا ثبت شده است.',
                 'unit.required' => 'واحد کالا الزامی است.',
@@ -94,6 +97,7 @@ class GoodsController extends Controller
             Goods::create([
                 'title' => $request->title,
                 'brand' => $request->brand,
+                'factor_number' => $request->factor_number,
                 'code' => $request->code,
                 'main_cat_id' => $request->main_cat_id,
                 'sub_cat_id' => $request->sub_cat_id,
@@ -137,11 +141,11 @@ class GoodsController extends Controller
             [
                 'title' => ['required','max:255'],
                 'brand' => ['required','max:255'],
+                'factor_number' => ['nullable','max:255'],
                 'code' => ['nullable','max:255','unique:goods,code,'.$good->id],
                 'unit' => ['required'],
                 'value_per_count' => ['required','integer'],
                 'count_stock' => ['required','integer'],
-                'unit_stock' => ['required','integer'],
                 'price' => ['required','integer'],
                 'description' => ['nullable','max:255'],
                 'main_cat_id' => ['required','exists:goods_main_categories,id'],
@@ -151,6 +155,7 @@ class GoodsController extends Controller
                 'title.max' => 'حداکثر  طول مجاز عنوان کالا 255 کارکتر می باشد.',
                 'brand.required' => 'برند  کالا الزامی است.',
                 'brand.max' => 'حداکثر  طول مجاز برند کالا 255 کارکتر می باشد.',
+                'factor_number.max' => 'حداکثر  طول مجاز کد کالا 255 کارکتر می باشد.',
                 'code.max' => 'حداکثر  طول مجاز کد کالا 255 کارکتر می باشد.',
                 'code.unique' => 'این کد قبلا ثبت شده است.',
                 'unit.required' => 'واحد کالا الزامی است.',
@@ -158,8 +163,6 @@ class GoodsController extends Controller
                 'value_per_count.numeric' => 'حجم واحد در هر عدد میبایست یک عدد مثبت باشد.',
                 'count_stock.required' => '  موجودی تعداد در انبار الزامی است.',
                 'count_stock.numeric' => 'موجودی تعداد در انبار میبایست یک عدد مثبت باشد.',
-                'unit_stock.required' => 'موجودی واحد در انبار الزامی است.',
-                'unit_stock.numeric' => ' موجودی واحد در انبار میبایست یک عدد مثبت باشد.',
                 'price.required' => 'قیمت  کالا الزامی است.',
                 'description.max' => 'حداکثر  طول مجاز توضیحات کالا 255 کارکتر می باشد.',
                 'price.numeric' => 'قیمت کالا میبایست یک عدد مثبت باشد.',
@@ -174,16 +177,18 @@ class GoodsController extends Controller
         }
 
         if(in_array($request->status,[Status::Active,Status::Deactive])){
+            $unitStock = $request->value_per_count*$request->count_stock;
             $good->update([
                 'title' => $request->title,
                 'brand' => $request->brand,
+                'factor_number' => $request->factor_number,
                 'code' => $request->code,
                 'main_cat_id' => $request->main_cat_id,
                 'sub_cat_id' => $request->sub_cat_id,
                 'unit' => $request->unit,
                 'value_per_count' => $request->value_per_count,
                 'count_stock' => $request->count_stock,
-                'unit_stock' => $request->unit_stock,
+                'unit_stock' => $unitStock,
                 'price' => $request->price,
                 'description' => $request->description,
                 'expire_date' =>$expireDate,
@@ -192,7 +197,6 @@ class GoodsController extends Controller
 
             toast('بروزرسانی انجام شد.','success')->position('bottom-end');
         }
-
         return redirect(route('admin.warehousing.goods.index'));
     }
 

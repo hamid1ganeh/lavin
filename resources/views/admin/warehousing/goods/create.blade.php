@@ -46,22 +46,29 @@
 
                                 <form class="form-horizontal" action="{{ route('admin.warehousing.goods.store') }}" method="post">
                                      @csrf
+                                    <div class="form-group row">
+                                        <div class="col-12 col-md-6">
+                                            <label for="factor_number" class="control-label IRANYekanRegular">شماره فاکتور</label>
+                                            <input type="text" class="form-control input text-right" name="factor_number" id="factor_number" placeholder="شماره فاکتور را وارد کنید" value="{{ old('factor_number') }}">
+                                            <span class="form-text text-danger erroralarm"> {{ $errors->first('factor_number') }} </span>
+                                        </div>
+                                        <div class="col-12 col-md-6">
+                                            <label for="code" class="control-label IRANYekanRegular">کد کالا</label>
+                                            <input type="text" class="form-control input text-right" name="code" id="code" placeholder="کد کالا را وارد کنید" value="{{ old('code')  }}">
+                                            <span class="form-text text-danger erroralarm"> {{ $errors->first('code') }} </span>
+                                        </div>
+                                    </div>
 
                                     <div class="form-group row">
-                                        <div class="col-12 col-md-4">
+                                        <div class="col-12 col-md-6">
                                             <label for="title" class="control-label IRANYekanRegular">عنوان</label>
                                             <input type="text" class="form-control input" name="title" id="title" placeholder="عنوان کالا را وارد کنید" value="{{ old('title')  }}">
                                             <span class="form-text text-danger erroralarm"> {{ $errors->first('title') }} </span>
                                         </div>
-                                        <div class="col-12 col-md-4">
+                                        <div class="col-12 col-md-6">
                                             <label for="brand" class="control-label IRANYekanRegular">برند</label>
                                             <input type="text" class="form-control input" name="brand" id="brand" placeholder="برند کالا را وارد کنید" value="{{ old('brand')  }}">
                                             <span class="form-text text-danger erroralarm"> {{ $errors->first('brand') }} </span>
-                                        </div>
-                                        <div class="col-12 col-md-4">
-                                            <label for="code" class="control-label IRANYekanRegular">کد کالا</label>
-                                            <input type="text" class="form-control input text-right" name="code" id="code" placeholder="کد کالا را وارد کنید" value="{{ old('code')  }}">
-                                            <span class="form-text text-danger erroralarm"> {{ $errors->first('code') }} </span>
                                         </div>
                                     </div>
 

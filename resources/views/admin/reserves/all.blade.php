@@ -562,11 +562,7 @@
                                                                                         <td>{{ $operator->since() }}</td>
                                                                                         <td>{{ $operator->until() }}</td>
                                                                                         <td>{{ $operator->description }}</td>
-                                                                                        <td>
-                                                                                            @if(!is_null($operator->description))
-                                                                                                {{  $operator->updatedAt() }}
-                                                                                            @endif
-                                                                                        </td>
+                                                                                        <td>{{  $operator->answeredAt() }}</td>
                                                                                     </tr>
                                                                                 @endforeach
                                                                                 </tbody>
@@ -600,11 +596,7 @@
                                                                                          <td>{{ $history->since() }}</td>
                                                                                          <td>{{ $history->until() }}</td>
                                                                                          <td>{{ $history->description }}</td>
-                                                                                         <td>
-                                                                                             @if(!is_null($history->description))
-                                                                                                 {{  $history->updatedAt() }}
-                                                                                             @endif
-                                                                                         </td>
+                                                                                         <td>{{  $history->answeredAt() }}</td>
                                                                                      </tr>
                                                                                  @endforeach
                                                                                  </tbody>

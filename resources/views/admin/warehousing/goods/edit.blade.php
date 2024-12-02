@@ -47,22 +47,29 @@
                                 <form class="form-horizontal" action="{{ route('admin.warehousing.goods.update',$good) }}" method="post">
                                      @csrf
                                     @method('patch')
+                                    <div class="form-group row">
+                                        <div class="col-12 col-md-6">
+                                            <label for="factor_number" class="control-label IRANYekanRegular">شماره فاکتور</label>
+                                            <input type="text" class="form-control input text-right" name="factor_number" id="factor_number" placeholder=" شماره فاکتور را وارد کنید" value="{{ old('factor_number') ?? $good->factor_number  }}">
+                                            <span class="form-text text-danger erroralarm"> {{ $errors->first('factor_number') }} </span>
+                                        </div>
+                                        <div class="col-12 col-md-6">
+                                            <label for="code" class="control-label IRANYekanRegular">کد کالا</label>
+                                            <input type="text" class="form-control input text-right" name="code" id="code" placeholder="کد کالا را وارد کنید" value="{{ old('code') ?? $good->code  }}">
+                                            <span class="form-text text-danger erroralarm"> {{ $errors->first('code') }} </span>
+                                        </div>
+                                    </div>
 
                                     <div class="form-group row">
-                                        <div class="col-12 col-md-4">
+                                        <div class="col-12 col-md-6">
                                             <label for="title" class="control-label IRANYekanRegular">عنوان</label>
                                             <input type="text" class="form-control input" name="title" id="title" placeholder="عنوان کالا را وارد کنید" value="{{ old('title') ?? $good->title  }}">
                                             <span class="form-text text-danger erroralarm"> {{ $errors->first('title') }} </span>
                                         </div>
-                                        <div class="col-12 col-md-4">
+                                        <div class="col-12 col-md-6">
                                             <label for="brand" class="control-label IRANYekanRegular">برند</label>
                                             <input type="text" class="form-control input" name="brand" id="brand" placeholder="برند کالا را وارد کنید" value="{{ old('brand') ?? $good->brand  }}">
                                             <span class="form-text text-danger erroralarm"> {{ $errors->first('brand') }} </span>
-                                        </div>
-                                        <div class="col-12 col-md-4">
-                                            <label for="code" class="control-label IRANYekanRegular">کد کالا</label>
-                                            <input type="text" class="form-control input text-right" name="code" id="code" placeholder="کد کالا را وارد کنید" value="{{ old('code') ?? $good->code  }}">
-                                            <span class="form-text text-danger erroralarm"> {{ $errors->first('code') }} </span>
                                         </div>
                                     </div>
 
@@ -127,9 +134,9 @@
                                         </div>
 
                                         <div class="col-12 col-md-3">
-                                            <label for="unit_stock" class="control-label IRANYekanRegular">موجودی واحد در انبار</label>
-                                            <input type="text" class="form-control input text-right" name="unit_stock" id="unit_stock" placeholder="موجودی واحد در انبار را وارد کنید" value="{{ old('unit_stock')  ?? $good->unit_stock }}">
-                                            <span class="form-text text-danger erroralarm"> {{ $errors->first('unit_stock') }} </span>
+                                            <label for="price" class="control-label IRANYekanRegular">قیمت واحد مصرفی</label>
+                                            <input type="text" class="form-control input text-left" name="price" id=price" placeholder="قیمت واحد مصرفی کالا را وارد کنید" value="{{ old('price') ?? $good->price }}">
+                                            <span class="form-text text-danger erroralarm"> {{ $errors->first('price') }} </span>
                                         </div>
 
                                     </div>
@@ -137,17 +144,12 @@
 
                                     <div class="form-group row">
                                         <div class="col-12 col-md-2">
-                                            <label for="price" class="control-label IRANYekanRegular">قیمت واحد مصرفی</label>
-                                            <input type="text" class="form-control input text-left" name="price" id=price" placeholder="قیمت واحد مصرفی کالا را وارد کنید" value="{{ old('price') ?? $good->price }}">
-                                            <span class="form-text text-danger erroralarm"> {{ $errors->first('price') }} </span>
-                                        </div>
-                                        <div class="col-12 col-md-2">
                                             <label for="expireDate" class="control-label IRANYekanRegular">تاریخ انقضاء</label>
                                             <input type="text"   class="form-control text-center" id="expireDate" name="expireDate" readonly value="{{ old('expireDate') ?? $good->expireDate()  }}">
                                             <span class="form-text text-danger erroralarm"> {{ $errors->first('expireDate') }} </span>
                                             <i class="mdi mdi-replay text-danger font-20 cursor-pointer" title="پاک کردن" onclick="reset('expireDate')"></i>
                                         </div>
-                                        <div class="col-12 col-md-8">
+                                        <div class="col-12 col-md-10">
                                             <label for="description" class="control-label IRANYekanRegular">توضیحات</label>
                                             <input type="text" class="form-control input text-left" name="description" id=description" placeholder="توضیحات کالا را وارد کنید" value="{{ old('description')  ?? $good->description   }}">
                                             <span class="form-text text-danger erroralarm"> {{ $errors->first('description') ?? $good->description  }} </span>
