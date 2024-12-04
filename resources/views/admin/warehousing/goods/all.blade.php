@@ -45,6 +45,13 @@
                                             </a>
                                         </div>
                                     @endif
+
+                                        <div class="btn-group" >
+                                            <a href="{{ route('admin.warehousing.receipt.create') }}" class="btn btn-sm btn-warning">
+                                                <i class="fa fa-file plusiconfont"></i>
+                                                <b class="IRANYekanRegular">رسید انبار</b>
+                                            </a>
+                                        </div>
                                 </div>
                             </div>
 

@@ -19,7 +19,6 @@ class CreateGoodsTable extends Migration
             $table->id();
             $table->string('title');
             $table->string('brand');
-            $table->string('factor_number')->nullable();
             $table->string('code')->nullable();
             $table->unsignedBigInteger('main_cat_id');
             $table->unsignedBigInteger('sub_cat_id')->nullable();

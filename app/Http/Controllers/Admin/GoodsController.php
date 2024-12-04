@@ -58,7 +58,6 @@ class GoodsController extends Controller
                 'code' => ['nullable','max:255','unique:goods'],
                 'unit' => ['required'],
                 'value_per_count' => ['required','integer'],
-                'count_stock' => ['required','integer'],
                 'price' => ['required','integer'],
                 'description' => ['nullable','max:255'],
                 'main_cat_id' => ['required','exists:goods_main_categories,id'],
@@ -83,7 +82,6 @@ class GoodsController extends Controller
                 'main_cat_id.required' => ' دسته بندی اصلی الزامی است.',
             ]);
 
-
         $expireDate=null;
         $fuctionService = new FunctionService();
         if(isset($request->expireDate)){
@@ -92,8 +90,6 @@ class GoodsController extends Controller
         }
 
         if(in_array($request->status,[Status::Active,Status::Deactive])){
-            $unitStock = $request->value_per_count*$request->count_stock;
-
             Goods::create([
                 'title' => $request->title,
                 'brand' => $request->brand,
@@ -103,8 +99,6 @@ class GoodsController extends Controller
                 'sub_cat_id' => $request->sub_cat_id,
                 'unit' => $request->unit,
                 'value_per_count' => $request->value_per_count,
-                'count_stock' => $request->count_stock,
-                'unit_stock' => $unitStock,
                 'price' => $request->price,
                 'description' => $request->description,
                 'expire_date' =>$expireDate,
@@ -145,7 +139,6 @@ class GoodsController extends Controller
                 'code' => ['nullable','max:255','unique:goods,code,'.$good->id],
                 'unit' => ['required'],
                 'value_per_count' => ['required','integer'],
-                'count_stock' => ['required','integer'],
                 'price' => ['required','integer'],
                 'description' => ['nullable','max:255'],
                 'main_cat_id' => ['required','exists:goods_main_categories,id'],
@@ -161,8 +154,6 @@ class GoodsController extends Controller
                 'unit.required' => 'واحد کالا الزامی است.',
                 'value_per_count.required' => 'حجم واحد در هر عدد  الزامی است.',
                 'value_per_count.numeric' => 'حجم واحد در هر عدد میبایست یک عدد مثبت باشد.',
-                'count_stock.required' => '  موجودی تعداد در انبار الزامی است.',
-                'count_stock.numeric' => 'موجودی تعداد در انبار میبایست یک عدد مثبت باشد.',
                 'price.required' => 'قیمت  کالا الزامی است.',
                 'description.max' => 'حداکثر  طول مجاز توضیحات کالا 255 کارکتر می باشد.',
                 'price.numeric' => 'قیمت کالا میبایست یک عدد مثبت باشد.',
@@ -177,7 +168,6 @@ class GoodsController extends Controller
         }
 
         if(in_array($request->status,[Status::Active,Status::Deactive])){
-            $unitStock = $request->value_per_count*$request->count_stock;
             $good->update([
                 'title' => $request->title,
                 'brand' => $request->brand,
@@ -187,8 +177,6 @@ class GoodsController extends Controller
                 'sub_cat_id' => $request->sub_cat_id,
                 'unit' => $request->unit,
                 'value_per_count' => $request->value_per_count,
-                'count_stock' => $request->count_stock,
-                'unit_stock' => $unitStock,
                 'price' => $request->price,
                 'description' => $request->description,
                 'expire_date' =>$expireDate,

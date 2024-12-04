@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\WareHouseOrderController;
 use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\LaserDeviceController;
 use App\Http\Controllers\Admin\ServiceLaserController;
+use App\Http\Controllers\Admin\WarehouseReceiptController;
 
 Route::get('/login', 'AuthController@loginPage')->name('loginPage');
 Route::post('/login', 'AuthController@login')->name('login');
@@ -799,10 +800,7 @@ Route::group(['middleware' => 'auth.admin'], function () {
         });
 
     });
-
-
     Route::prefix('warehousing')->name('warehousing.')->group(function () {
-
         Route::prefix('categories')->name('categories.')->group(function () {
             Route::get('/', [GoodsMainController::class,'index'])->name('main.index');
             Route::get('/create', [GoodsMainController::class,'create'])->name('main.create');
@@ -822,6 +820,14 @@ Route::group(['middleware' => 'auth.admin'], function () {
                 Route::delete('/destroy/{sub}', [GoodsSubController::class,'destroy'])->name('destroy');
                 Route::patch('/recycle/{sub}', [GoodsSubController::class,'recycle'])->name('recycle');
             });
+        });
+
+        Route::prefix('receipt')->name('receipt.')->group(function () {
+            Route::get('/', [WarehouseReceiptController::class,'index'])->name('index');
+            Route::get('/create', [WarehouseReceiptController::class,'create'])->name('create');
+            Route::post('/store', [WarehouseReceiptController::class,'store'])->name('store');
+            Route::get('{receipt}/edit', [WarehouseReceiptController::class,'edit'])->name('edit');
+            Route::patch('{receipt}/update', [WarehouseReceiptController::class,'update'])->name('update');
         });
 
         Route::prefix('goods')->name('goods.')->group(function () {

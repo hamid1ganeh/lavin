@@ -47,25 +47,17 @@
                                 <form class="form-horizontal" action="{{ route('admin.warehousing.goods.store') }}" method="post">
                                      @csrf
                                     <div class="form-group row">
-                                        <div class="col-12 col-md-6">
-                                            <label for="factor_number" class="control-label IRANYekanRegular">شماره فاکتور</label>
-                                            <input type="text" class="form-control input text-right" name="factor_number" id="factor_number" placeholder="شماره فاکتور را وارد کنید" value="{{ old('factor_number') }}">
-                                            <span class="form-text text-danger erroralarm"> {{ $errors->first('factor_number') }} </span>
-                                        </div>
-                                        <div class="col-12 col-md-6">
-                                            <label for="code" class="control-label IRANYekanRegular">کد کالا</label>
-                                            <input type="text" class="form-control input text-right" name="code" id="code" placeholder="کد کالا را وارد کنید" value="{{ old('code')  }}">
-                                            <span class="form-text text-danger erroralarm"> {{ $errors->first('code') }} </span>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group row">
-                                        <div class="col-12 col-md-6">
+                                        <div class="col-12 col-md-4">
                                             <label for="title" class="control-label IRANYekanRegular">عنوان</label>
                                             <input type="text" class="form-control input" name="title" id="title" placeholder="عنوان کالا را وارد کنید" value="{{ old('title')  }}">
                                             <span class="form-text text-danger erroralarm"> {{ $errors->first('title') }} </span>
                                         </div>
-                                        <div class="col-12 col-md-6">
+                                        <div class="col-12 col-md-4">
+                                            <label for="code" class="control-label IRANYekanRegular">کد کالا</label>
+                                            <input type="text" class="form-control input text-right" name="code" id="code" placeholder="کد کالا را وارد کنید" value="{{ old('code')  }}">
+                                            <span class="form-text text-danger erroralarm"> {{ $errors->first('code') }} </span>
+                                        </div>
+                                        <div class="col-12 col-md-4">
                                             <label for="brand" class="control-label IRANYekanRegular">برند</label>
                                             <input type="text" class="form-control input" name="brand" id="brand" placeholder="برند کالا را وارد کنید" value="{{ old('brand')  }}">
                                             <span class="form-text text-danger erroralarm"> {{ $errors->first('brand') }} </span>
@@ -98,9 +90,8 @@
                                         </div>
                                     </div>
 
-
                                     <div class="form-group row">
-                                        <div class="col-12 col-md-3">
+                                        <div class="col-12 col-md-4">
                                             <label for="unit" class="control-label IRANYekanRegular">واحد مصرفی</label>
                                             <select name="unit" id="unit"  class="form-control  IRANYekanRegular" >
                                                 <option value="{{ App\Enums\Unit::cc }}" {{ App\Enums\Unit::cc== old('unit')?'selected':'' }}>{{ App\Enums\Unit::cc }}</option>
@@ -120,19 +111,13 @@
                                             </select>
                                             <span class="form-text text-danger erroralarm"> {{ $errors->first('consumption_unit') }} </span>
                                         </div>
-                                        <div class="col-12 col-md-3">
+                                        <div class="col-12 col-md-4">
                                             <label for="value_per_count" class="control-label IRANYekanRegular">حجم واحد در هر عدد</label>
                                             <input type="text" class="form-control input text-right" name="value_per_count" id=value_per_count" placeholder="حجم واحد هر حدد را وارد کنید" value="{{ old('value_per_count')  }}">
                                             <span class="form-text text-danger erroralarm"> {{ $errors->first('value_per_count') }} </span>
                                         </div>
 
-                                        <div class="col-12 col-md-3">
-                                            <label for="count_stock" class="control-label IRANYekanRegular">موجودی تعداد در انبار</label>
-                                            <input type="text" class="form-control input text-right" name="count_stock" id="count_stock" placeholder="موجودی جبعه در انبار را وارد کنید" value="{{ old('count_stock')  }}">
-                                            <span class="form-text text-danger erroralarm"> {{ $errors->first('count_stock') }} </span>
-                                        </div>
-
-                                        <div class="col-12 col-md-3">
+                                        <div class="col-12 col-md-4">
                                             <label for="price" class="control-label IRANYekanRegular">قیمت واحد مصرفی</label>
                                             <input type="text" class="form-control input text-left" name="price" id=price" placeholder="قیمت واحد مصرفی کالا را وارد کنید" value="{{ old('price')  }}">
                                             <span class="form-text text-danger erroralarm"> {{ $errors->first('price') }} </span>

@@ -76,7 +76,7 @@
 
 
                                 <div class="form-group row mt-2">
-                                    <div class="col-12 col-md-6">
+                                    <div class="col-12 col-md-4">
                                         <label for="gender" class="IRANYekanRegular">جنسیت:</label>
                                         <select name="gender" id="gender" class="dropdown text-center IRANYekanRegular"  data-placeholder="انتخاب جنسیت...">
                                             <option value="{{ App\Enums\genderType::female }}" {{ App\Enums\genderType::female==$user->gender?'selected':'' }}>زن</option>
@@ -86,7 +86,7 @@
                                         <span class="form-text text-danger erroralarm"> {{ $errors->first('gender') }} </span>
                                     </div>
 
-                                    <div class="col-12 col-md-6">
+                                    <div class="col-12 col-md-4">
                                         <label for="level" class="IRANYekanRegular">سطح:</label>
                                         <select name="level" id="level" class="dropdown text-center IRANYekanRegular">
                                             @foreach($levels as $level)
@@ -94,6 +94,13 @@
                                             @endforeach
                                         </select>
                                         <span class="form-text text-danger erroralarm"> {{ $errors->first('level') }} </span>
+                                    </div>
+
+                                    <div class="col-12 col-md-4 mt-2">
+                                        <input class="form-check-input cursor-pointer" type="checkbox" name="seller" value="seller" id="seller" @if($user->seller) checked @endif>
+                                        <label class="form-check-label IR" for="seller" style="margin-right: 20px !important;">
+                                            فروشنده
+                                        </label>
                                     </div>
                                 </div>
 
@@ -103,7 +110,6 @@
                                         <div id="changepass" class="changepass" onclick="changepassword()">تغییر رمز عبور</div>
                                     </div>
                                 </div>
-
 
                                 <div class="form-group row">
                                     <label for="password" id="label-password" class="col-md-4 col-form-label text-md-right IRANYekanRegular" style="display:none">رمز عبور:</label>
@@ -115,7 +121,6 @@
 
                                 <div class="form-group row">
                                     <label for="confirm_password"  id="label-confirm_password" class="col-md-4 col-form-label text-md-right IRANYekanRegular" style="display:none">تکرار رمز عبور:</label>
-
                                     <div class="col-md-6">
                                         <input id="confirm_password" type="password" class="form-control text-right" name="password_confirmation" value="{{ old('password_confirmation') }}"  autocomplete="new-password" placeholder="تکرار رمز عبور" style="display:none">
                                     </div>

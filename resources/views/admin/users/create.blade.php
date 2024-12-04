@@ -66,9 +66,7 @@
                                     </div>
                                 </div>
 
-
                                 <div class="form-group row">
-
                                     <div class="col-12 col-md-6">
                                         <label for="introduced" class="IRANYekanRegular">کد معرف:</label>
                                         <input id="introduced" type="text" class="form-control @error('introduced') is-invalid @enderror ltr"  name="introduced" value="{{ old('introduced') ?? request('introduced') ?? '' }}"   placeholder="کد معرف">
@@ -83,6 +81,13 @@
                                             <option value="{{ App\Enums\genderType::LGBTQ }}">LGBTQ</option>
                                         </select>
                                         <span class="form-text text-danger erroralarm"> {{ $errors->first('gender') }} </span>
+                                    </div>
+
+                                    <div class="col-12 col-md-2 mt-3">
+                                        <input class="form-check-input cursor-pointer" type="checkbox" name="seller" value="seller" id="seller">
+                                        <label class="form-check-label IR" for="seller" style="margin-right: 20px !important;">
+                                             فروشنده
+                                        </label>
                                     </div>
 
                                 </div>

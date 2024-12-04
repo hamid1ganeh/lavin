@@ -23,6 +23,7 @@ class CreateUsersTable extends Migration
             $table->string('code')->unique();
             $table->string('introduced')->nullable();
             $table->tinyInteger('point')->default(5);
+            $table->tinyInteger('seller')->default(0);
             $table->unsignedBigInteger('level_id')->default(1);
             $table->string('password');
             $table->string('verify_code');

@@ -68,7 +68,6 @@ class UserController extends Controller
   {
       //اجازه دسترسی
       if (Auth::guard('admin')->user()->can('users.create')) {
-
           $request->validate([
                   'firstname' => 'required|max:255',
                   'lastname' => 'required|max:255',
@@ -111,6 +110,7 @@ class UserController extends Controller
               $user->gender = $request->gender;
               $user->code = $this->code->create($user, 10);
               $user->introduced = $request->introduced;
+              $user->seller = isset($request->seller)?true:false;
               $user->password = $password;
               $user->save();
 
@@ -207,6 +207,7 @@ class UserController extends Controller
         }
 
         $user->gender = $request->gender;
+        $user->seller = isset($request->seller)?true:false;
 
         if($user->introduced != $request->introduced)
         {
@@ -252,8 +253,6 @@ class UserController extends Controller
       toast('کاربر مورد نظر بازیابی  شد.','error')->position('bottom-end');
       return back();
   }
-
-
   public function fetch()
   {
     $keyword = request('term');
