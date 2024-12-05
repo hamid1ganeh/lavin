@@ -97,7 +97,7 @@
                                     </div>
 
                                     <div class="col-12 col-md-4 mt-2">
-                                        <input class="form-check-input cursor-pointer" type="checkbox" name="seller" value="seller" id="seller" @if($user->seller) checked @endif>
+                                        <input class="form-check-input cursor-pointer" type="checkbox" name="seller" value="seller" id="seller" @if(old('seller') || $user->seller) checked @endif>
                                         <label class="form-check-label IR" for="seller" style="margin-right: 20px !important;">
                                             فروشنده
                                         </label>

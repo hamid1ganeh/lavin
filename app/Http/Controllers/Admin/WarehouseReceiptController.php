@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\Goods;
 
@@ -18,7 +19,9 @@ class WarehouseReceiptController extends Controller
     public function create()
     {
         $goods = Goods::orderBy('title','asc')->get();
-         return view('admin.warehousing.receipt.create',compact('goods'));
+        $sellers = User::where('seller',true)->orderBy('firstname','desc')->orderBy('lastname','desc')->get();
+
+         return view('admin.warehousing.receipt.create',compact('goods','sellers'));
     }
 
 
