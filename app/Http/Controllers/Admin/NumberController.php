@@ -450,11 +450,12 @@ class NumberController extends Controller
                     }
                     $history = PhoneOperatorHistory::where('admin_id',Auth::guard('admin')->id())->where('number_id',$number->id)->orderBy('created_at','desc')->first();
                     $history->description = $request->operator_description;
+                   $now = Carbon::now("+3:30")->format('Y-m-d H:i:s');
                     if(!is_null($request->operator_description)){
-                        $history->answered_at = Carbon::now("+3:30");
+                        $history->answered_at = $now;
                     }
                     if ($request->status != NumberStatus::NoAnswer){
-                        $history->until = Carbon::now("+3:30");
+                        $history->until = $now;
                     }
 
 

@@ -46,7 +46,7 @@ class PhoneOperatorHistory extends Model
         if(is_null($this->answered_at)){
             return null;
         }
-        return Jalalian::forge($this->nswered_at)->format('d %B Y H:i:s');
+        return Jalalian::forge($this->answered_at)->format('d %B Y H:i:s');
     }
 
     public function scopeFilter($query)
@@ -78,7 +78,7 @@ class PhoneOperatorHistory extends Model
         {
             $since_response =  faToEn($since_response);
             $since_response = Jalalian::fromFormat('Y/m/d H:i', $since_response)->toCarbon("Y-m-d H:i");
-            $query->where('updated_at','>=', $since_response)->whereNotNull('description');
+            $query->where('answered_at','>=', $since_response)->whereNotNull('description');
         }
 
         $until_response = request('until_response');
@@ -86,7 +86,7 @@ class PhoneOperatorHistory extends Model
         {
             $until_response =  faToEn($until_response);
             $until_response = Jalalian::fromFormat('Y/m/d H:i', $until_response)->toCarbon("Y-m-d H:i");
-            $query->where('updated_at','<=', $until_response)->whereNotNull('description');
+            $query->where('answered_at','<=', $until_response)->whereNotNull('description');
         }
     }
 }

@@ -106,13 +106,13 @@ class AdviserController extends Controller
 
            $history = AdviserHistory::where('admin_id',Auth::guard('admin')->id())->where('adviser_id',$adviser->id)->orderBy('created_at','desc')->first();
            $history->description = $request->adviser_description;
+           $now = Carbon::now("+3:30")->format('Y-m-d H:i:s');
            if(!is_null($request->operator_description)){
-               $history->answered_at = Carbon::now("+3:30");
+               $history->answered_at = $now;
            }
            if ($request->status != NumberStatus::NoAnswer){
-               $history->until = Carbon::now("+3:30");
+               $history->until = $now;
            }
-
 
            If($request->status == NumberStatus::Reservicd)
            {
@@ -164,7 +164,6 @@ class AdviserController extends Controller
                        $history->save();
                    });
                }
-
                toast('رزرو جدید ثبت شد.','success')->position('bottom-end');
                return back();
            }
@@ -177,7 +176,6 @@ class AdviserController extends Controller
            });
 
        }
-
        return back();
   }
 
