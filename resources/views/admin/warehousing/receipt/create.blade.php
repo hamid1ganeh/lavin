@@ -46,7 +46,7 @@
                                     <div id="goods-div">
                                         <div class="row">
                                             <div class="form-group col-md-3">
-                                                <label for="priority" class="control-label IRANYekanRegular">نوع رسید</label>
+                                                <label for="type" class="control-label IRANYekanRegular">نوع رسید</label>
                                                 <select class="form-control dropdown"  name="type" id="type" required>
                                                     <option value="{{ App\Enums\ReceiptType::received }}" {{ App\Enums\ReceiptType::received==old('type')?'selected':'' }}>دریافتی</option>
                                                     <option value="{{ App\Enums\ReceiptType::returned }}" {{ App\Enums\ReceiptType::returned==old('type')?'selected':'' }}>مرجوعی</option>
