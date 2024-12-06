@@ -51,6 +51,10 @@ class Goods extends Model
         return ($this->count_stock*$this->value_per_count)+$this->unit_stock;
     }
 
+    public function getGoodInfo()
+    {
+        return $this->title.' - برند ('.$this->brand.') - کد ('.$this->code.')';
+    }
     public function scopeFilter($query)
     {
         //فیلتر نام کالا

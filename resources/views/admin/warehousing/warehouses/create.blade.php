@@ -40,12 +40,9 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">
-
                             <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" style="margin:auto">
-
                                 <form class="form-horizontal" action="{{ route('admin.warehousing.warehouses.store') }}" method="post">
                                     {{ csrf_field() }}
-
                                     <div class="form-group">
                                         <div class="col-12">
                                             <label for="name" class="control-label IRANYekanRegular">عنوان</label>
@@ -53,7 +50,6 @@
                                             <span class="form-text text-danger erroralarm"> {{ $errors->first('name') }} </span>
                                         </div>
                                     </div>
-
                                     <div class="form-group">
                                         <div class="col-12">
                                             <label for="description" class="control-label IRANYekanRegular">توضیحات</label>
@@ -61,7 +57,6 @@
                                             <span class="form-text text-danger erroralarm"> {{ $errors->first('description') }} </span>
                                         </div>
                                     </div>
-
                                     <div class="form-group">
                                         <div class="col-12">
                                             <label for="admins" class="control-label IRANYekanRegular">مسئولین:</label>
@@ -73,7 +68,6 @@
                                             <span class="form-text text-danger erroralarm"> {{ $errors->first('admins') }} </span>
                                         </div>
                                     </div>
-
 
                                     <div class="row mt-2 p-2">
                                         <div class="col-12" style="display:inherit;">

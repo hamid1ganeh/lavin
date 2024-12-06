@@ -20,8 +20,10 @@ class CreateWarehouseReceiptsTable extends Migration
             $table->string('number');
             $table->string('seller')->nullable();
             $table->unsignedBigInteger('seller_id')->nullable();
-            $table->dateTime('receipt_date');
             $table->unsignedBigInteger('exporter_id')->nullable();
+            $table->unsignedDouble('price')->default(0);
+            $table->unsignedDouble('discount')->default(0);
+            $table->unsignedDouble('total_cost')->default(0);
             $table->timestamps();
 
             $table->foreign('seller_id')

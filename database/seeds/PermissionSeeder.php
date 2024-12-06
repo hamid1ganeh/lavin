@@ -1877,6 +1877,24 @@ class PermissionSeeder extends Seeder
         ]);
 
         DB::table('permissions')->insert([
+            'name' => 'warehousing.goods.receipts.index',
+            'description' => 'لیست رسید کالاها',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'warehousing.goods.receipts.create',
+            'description' => 'ایجاد رسید کالاها',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'warehousing.goods.receipts.edit',
+            'description' => 'ویرایش رسید کالاها',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
             'name' => 'warehousing.goods.index',
             'description' => 'لیست کالاها',
             'status'=> Status::Active

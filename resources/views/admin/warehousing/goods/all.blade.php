@@ -45,13 +45,14 @@
                                             </a>
                                         </div>
                                     @endif
-
+                                    @if(Auth::guard('admin')->user()->can('warehousing.goods.receipts.index'))
                                         <div class="btn-group" >
-                                            <a href="{{ route('admin.warehousing.receipt.create') }}" class="btn btn-sm btn-warning">
+                                            <a href="{{ route('admin.warehousing.receipts.index') }}" class="btn btn-sm btn-warning">
                                                 <i class="fa fa-file plusiconfont"></i>
                                                 <b class="IRANYekanRegular">رسید انبار</b>
                                             </a>
                                         </div>
+                                    @endif
                                 </div>
                             </div>
 
@@ -61,7 +62,7 @@
                                         <div class="row">
                                             <div class="form-group justify-content-center col-12 col-md-6">
                                                 <label for="name-filter" class="control-label IRANYekanRegular">نام کالا</label>
-                                                <input type="text"  class="form-control input" id="name-filter" name="name" placeholder="نام کالا را وارد کنید" value="{{ request('name') }}">
+                                                <input type="text" class="form-control input" id="name-filter" name="name" placeholder="نام کالا را وارد کنید" value="{{ request('name') }}">
                                             </div>
 
                                             <div class="form-group justify-content-center col-12 col-md-6">

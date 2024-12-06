@@ -934,13 +934,13 @@
                                                         <i class=" ti-align-justify" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
                                                         <div class="dropdown-menu">
 
-                                                            <a href="#info{{ $reserve->id }}" data-toggle="modal" class="dropdown-item IR cusrsor" title="اطلاعات">
+                                                            <a href="#info{{ $reserve->id }}" data-toggle="modal" class="dropdown-item IR cursor-pointer" title="اطلاعات">
                                                                 <i class="fa fa-info text-dark font-16 cursor-pointer"></i>
                                                                 <span class="p-1">اطلاعات</span>
                                                             </a>
 
                                                              @if(Auth::guard('admin')->user()->can('reserves.determining'))
-                                                              <a class="dropdown-item IR cusrsor" href="{{ route('admin.reserves.show', $reserve) }}" title="تعیین وضعیت رزرو">
+                                                              <a class="dropdown-item IR cursor-pointer" href="{{ route('admin.reserves.show', $reserve) }}" title="تعیین وضعیت رزرو">
                                                                 <i class="fas fa-thumbs-up text-primary cursor-pointer"></i>
                                                                 <span class="p-1">تعیین وضعیت رزرو</span>
                                                               </a>
@@ -948,19 +948,19 @@
 
                                                               @if(Auth::guard('admin')->user()->can('reserves.review') &&
                                                                    $reserve->status == App\Enums\ReserveStatus::done)
-                                                                <a class="dropdown-item IR cusrsor" href="#review{{ $reserve->id }}" data-toggle="modal" title="نظرسنجی">
+                                                                <a class="dropdown-item IR cursor-pointer" href="#review{{ $reserve->id }}" data-toggle="modal" title="نظرسنجی">
                                                                     <i class="fa fa-comment text-danger cursor-pointer"></i>
                                                                     <span class="p-1">نظرسنجی عمومی</span>
                                                                 </a>
 
-                                                                <a class="dropdown-item IR cusrsor" href="#poll{{ $reserve->id }}" data-toggle="modal" title="نظرسنجی اختصاصی">
+                                                                <a class="dropdown-item IR cursor-pointer" href="#poll{{ $reserve->id }}" data-toggle="modal" title="نظرسنجی اختصاصی">
                                                                     <i class="fa fa-comment text-info cursor-pointer"></i>
                                                                     <span class="p-1">نظرسنجی اختصاصی</span>
                                                                 </a>
                                                               @endif
 
                                                                @if(Auth::guard('admin')->user()->can('reserves.payment'))
-                                                                <a href="{{ route('admin.reserves.payment',$reserve) }}" class="dropdown-item IR cusrsor" title="پرداخت" target="_blank">
+                                                                <a href="{{ route('admin.reserves.payment',$reserve) }}" class="dropdown-item IR cursor-pointer" title="پرداخت" target="_blank">
                                                                     <i class="fas fa-dollar-sign text-primary cursor-pointer"></i>
                                                                     <span class="p-1">پرداخت</span>
                                                                 </a>
@@ -968,7 +968,7 @@
 
                                                                 @if(Auth::guard('admin')->user()->can('reserves.price')  &&
                                                                     App\Enums\reserveStatus::done != $reserve->status)
-                                                                <a href="#price{{ $reserve->id }}" data-toggle="modal" class="dropdown-item IR cusrsor" title="تغییر قیمت">
+                                                                <a href="#price{{ $reserve->id }}" data-toggle="modal" class="dropdown-item IR cursor-pointer" title="تغییر قیمت">
                                                                     <i class="fas fa-dollar-sign text-success cursor-pointer"></i>
                                                                     <span class="p-1">تغییر قیمت</span>
                                                                 </a>

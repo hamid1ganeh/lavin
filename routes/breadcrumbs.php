@@ -1154,7 +1154,6 @@ Breadcrumbs::for('warehousing.categories.sub.edit', function ($trail,$main,$sub)
     $trail->push('ویرایش زیردسته', route('admin.warehousing.categories.sub.edit',[$main,$sub]));
 });
 
-
 // داشبورد > لیست کالاهای انبار اصلی
 Breadcrumbs::for('warehousing.goods.index', function ($trail) {
     $trail->parent('home', $trail);
@@ -1171,6 +1170,24 @@ Breadcrumbs::for('warehousing.goods.create', function ($trail) {
 Breadcrumbs::for('warehousing.goods.edit', function ($trail,$good) {
     $trail->parent('warehousing.goods.index', $trail);
     $trail->push('ویرایش کالا', route('admin.warehousing.goods.edit',$good));
+});
+
+// داشبورد >  لیست کالاهای انبار اصلی > لیست رسید کالاها
+Breadcrumbs::for('warehousing.receipts.index', function ($trail) {
+    $trail->parent('warehousing.goods.index', $trail);
+    $trail->push('لیست رسید کالاها', route('admin.warehousing.receipts.index'));
+});
+
+// داشبورد >  لیست کالاهای انبار اصلی >لیست رسید کالاها > ایجاد رسید کالا
+Breadcrumbs::for('warehousing.receipts.create', function ($trail) {
+    $trail->parent('warehousing.receipts.index', $trail);
+    $trail->push('ایجاد رسید کالاها', route('admin.warehousing.receipts.create'));
+});
+
+// داشبورد>  لیست کالاهای انبار اصلی > لیست رسید کالاها > ویرایش رسید کالا
+Breadcrumbs::for('warehousing.receipts.edit', function ($trail,$receipt) {
+    $trail->parent('warehousing.receipts.index', $trail);
+    $trail->push('ویرایش رسید کالاها', route('admin.warehousing.receipts.edit',$receipt));
 });
 
 // داشبورد > لیست انبارها

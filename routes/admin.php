@@ -822,7 +822,7 @@ Route::group(['middleware' => 'auth.admin'], function () {
             });
         });
 
-        Route::prefix('receipt')->name('receipt.')->group(function () {
+        Route::prefix('receipts')->name('receipts.')->group(function () {
             Route::get('/', [WarehouseReceiptController::class,'index'])->name('index');
             Route::get('/create', [WarehouseReceiptController::class,'create'])->name('create');
             Route::post('/store', [WarehouseReceiptController::class,'store'])->name('store');
