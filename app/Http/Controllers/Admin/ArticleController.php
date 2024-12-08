@@ -63,7 +63,6 @@ class ArticleController extends Controller
         config(['auth.defaults.guard' => 'admin']);
         $this->authorize('article.create');
 
-
        $request->validate(
             [
                 'title' => ['required','max:255'],

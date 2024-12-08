@@ -2039,5 +2039,35 @@ class PermissionSeeder extends Seeder
             'status'=> Status::Active
         ]);
 
+        DB::table('permissions')->insert([
+            'name' => 'accounting.accounts.list',
+            'description' => 'لیست حسابهای مالی',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'accounting.accounts.create',
+            'description' => 'ایجاد حساب مالی جدید',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'accounting.accounts.edit',
+            'description' => 'ویرایش حساب مالی',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'accounting.accounts.delete',
+            'description' => 'حذف حساب مالی',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'accounting.accounts.recycle',
+            'description' => 'بازیابی حساب مالی',
+            'status'=> Status::Active
+        ]);
+
     }
 }

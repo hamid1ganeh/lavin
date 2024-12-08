@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\LaserDeviceController;
 use App\Http\Controllers\Admin\ServiceLaserController;
 use App\Http\Controllers\Admin\WarehouseReceiptController;
+use App\Http\Controllers\Admin\AccountController;
 
 Route::get('/login', 'AuthController@loginPage')->name('loginPage');
 Route::post('/login', 'AuthController@login')->name('login');
@@ -840,7 +841,8 @@ Route::group(['middleware' => 'auth.admin'], function () {
             Route::patch('/recycle/{good}', [GoodsController::class,'recycle'])->name('recycle');
         });
 
-        Route::prefix('warehouses')->name('warehouses.')->group(function () {
+
+            Route::prefix('warehouses')->name('warehouses.')->group(function () {
             Route::get('/', [WarehouseController::class,'index'])->name('index');
             Route::get('/create', [WarehouseController::class,'create'])->name('create');
             Route::post('/store', [WarehouseController::class,'store'])->name('store');
@@ -874,6 +876,17 @@ Route::group(['middleware' => 'auth.admin'], function () {
 
     });
 
+    Route::prefix('accounting')->name('accounting.')->group(function () {
+        Route::prefix('accounts')->name('accounts.')->group(function () {
+            Route::get('/', [AccountController::class,'index'])->name('index');
+            Route::get('/create', [AccountController::class,'create'])->name('create');
+            Route::post('/store', [AccountController::class,'store'])->name('store');
+            Route::get('{account}/edit', [AccountController::class,'edit'])->name('edit');
+            Route::patch('{account}/update', [AccountController::class,'update'])->name('update');
+            Route::delete('{account}/destroy', [AccountController::class,'destroy'])->name('destroy');
+            Route::patch('{account}/recycle', [AccountController::class,'recycle'])->name('recycle');
+        });
+    });
 
     Route::prefix('complications')->name('complications.')->group(function () {
         Route::get('/', 'ComplicationController@index')->name('index');

@@ -1116,7 +1116,6 @@ Breadcrumbs::for('employments.jobs.edit', function ($trail,$job) {
     $trail->push('ویرایش شغل استخدام', route('admin.employments.jobs.edit',$job));
 });
 
-
 // داشبورد >  دسته بندی ها اصلی کالاها
 Breadcrumbs::for('warehousing.categories.main.index', function ($trail) {
     $trail->parent('home', $trail);
@@ -1244,6 +1243,24 @@ Breadcrumbs::for('warehousing.lasers.create', function ($trail) {
 Breadcrumbs::for('warehousing.lasers.edit', function ($trail,$laser) {
     $trail->parent('warehousing.lasers.index', $trail);
     $trail->push('ویرایش دستگاه لیزر', route('admin.warehousing.lasers.edit',$laser));
+});
+
+// داشبورد >  حسابداری > لیست حسابهای مالی
+Breadcrumbs::for('accounting.accounts.index', function ($trail) {
+    $trail->parent('home', $trail);
+    $trail->push('لیست حسابهای مالی', route('admin.accounting.accounts.index'));
+});
+
+// داشبورد >  حسابداری > لیست حسابهای مالی >ایجاد حساب مالی
+Breadcrumbs::for('accounting.accounts.create', function ($trail) {
+    $trail->parent('accounting.accounts.index', $trail);
+    $trail->push('ایجاد حساب مالی', route('admin.accounting.accounts.create'));
+});
+
+// داشبورد >  حسابداری > لیست حسابهای مالی >ویرایش حساب مالی
+Breadcrumbs::for('accounting.accounts.edit', function ($trail,$account) {
+    $trail->parent('accounting.accounts.index', $trail);
+    $trail->push('ایجاد حساب مالی', route('admin.accounting.accounts.edit',compact('account')));
 });
 
 
