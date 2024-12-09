@@ -105,9 +105,14 @@ class AdviserController extends Controller
             }
 
            $history = AdviserHistory::where('admin_id',Auth::guard('admin')->id())->where('adviser_id',$adviser->id)->orderBy('created_at','desc')->first();
+            if (is_null($history)){
+                $history = new AdviserHistory();
+                $history->admin_id = Auth::guard('admin')->id();
+                $history->adviser_id = $adviser->id;
+            }
            $history->description = $request->adviser_description;
            $now = Carbon::now("+3:30")->format('Y-m-d H:i:s');
-           if(!is_null($request->operator_description)){
+           if(!is_null($request->adviser_description)){
                $history->answered_at = $now;
            }
            if ($request->status != NumberStatus::NoAnswer){

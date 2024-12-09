@@ -449,6 +449,11 @@ class NumberController extends Controller
                         $number->status = NumberStatus::WaitingForAdviser ;
                     }
                     $history = PhoneOperatorHistory::where('admin_id',Auth::guard('admin')->id())->where('number_id',$number->id)->orderBy('created_at','desc')->first();
+                    if (is_null( $history)){
+                        $history = new PhoneOperatorHistory();
+                        $history->admin_id = Auth::guard('admin')->id();
+                        $history->number_id = $number->id;
+                    }
                     $history->description = $request->operator_description;
                    $now = Carbon::now("+3:30")->format('Y-m-d H:i:s');
                     if(!is_null($request->operator_description)){
