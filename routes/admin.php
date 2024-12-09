@@ -15,6 +15,7 @@ use App\Http\Controllers\Admin\LaserDeviceController;
 use App\Http\Controllers\Admin\ServiceLaserController;
 use App\Http\Controllers\Admin\WarehouseReceiptController;
 use App\Http\Controllers\Admin\AccountController;
+use App\Http\Controllers\Admin\CashierController;
 
 Route::get('/login', 'AuthController@loginPage')->name('loginPage');
 Route::post('/login', 'AuthController@login')->name('login');
@@ -875,7 +876,6 @@ Route::group(['middleware' => 'auth.admin'], function () {
 
 
     });
-
     Route::prefix('accounting')->name('accounting.')->group(function () {
         Route::prefix('accounts')->name('accounts.')->group(function () {
             Route::get('/', [AccountController::class,'index'])->name('index');
@@ -885,6 +885,16 @@ Route::group(['middleware' => 'auth.admin'], function () {
             Route::patch('{account}/update', [AccountController::class,'update'])->name('update');
             Route::delete('{account}/destroy', [AccountController::class,'destroy'])->name('destroy');
             Route::patch('{account}/recycle', [AccountController::class,'recycle'])->name('recycle');
+        });
+
+        Route::prefix('cashiers')->name('cashiers.')->group(function () {
+            Route::get('/', [CashierController::class,'index'])->name('index');
+//            Route::get('/create', [CashierController::class,'create'])->name('create');
+//            Route::post('/store', [CashierController::class,'store'])->name('store');
+//            Route::get('{account}/edit', [CashierController::class,'edit'])->name('edit');
+//            Route::patch('{account}/update', [CashierController::class,'update'])->name('update');
+//            Route::delete('{account}/destroy', [CashierController::class,'destroy'])->name('destroy');
+//            Route::patch('{account}/recycle', [CashierController::class,'recycle'])->name('recycle');
         });
     });
 

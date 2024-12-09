@@ -524,6 +524,15 @@
                                     </a>
                                 </li>
                             </ul>
+
+                            <ul class="nav-second-level" aria-expanded="false">
+                                <li class="IRANYekanRegular">
+                                    <a href="{{ route('admin.accounting.cashiers.index') }}">
+                                        <i class="fas fa-cash-register"></i>
+                                        <span>صندوقدارها</span>
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
 
                     @if(Auth::guard('admin')->user()->can('complications.index'))

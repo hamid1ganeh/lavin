@@ -117,7 +117,7 @@ class RoleController extends Controller
             ]);
 
 
-            $staticRols= array('superadmin','doctor','secretary','asistant1','asistant2','reception','adviser-operator','adviser','adviser-arrangement','adviser-manegment');
+            $staticRols= array('superadmin','doctor','secretary','asistant1','asistant2','reception','adviser-operator','adviser','adviser-arrangement','adviser-manegment','cashier');
 
             if(in_array($role->name,$staticRols) && ($request->name != $role->name))
             {
@@ -143,6 +143,14 @@ class RoleController extends Controller
         //اجازه دسترسی
         config(['auth.defaults.guard' => 'admin']);
         $this->authorize('roles.destroy');
+
+        $staticRols= array('superadmin','doctor','secretary','asistant1','asistant2','reception','adviser-operator','adviser','adviser-arrangement','adviser-manegment','cashier');
+
+        if(in_array($role->name,$staticRols))
+        {
+            alert()->warning('نقش های اصلی سیستم قابل حذف نمی باشد.');
+            return back();
+        }
 
 
         if(!$role->admins->isEmpty())

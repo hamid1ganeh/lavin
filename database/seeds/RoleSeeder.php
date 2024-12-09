@@ -23,7 +23,7 @@ class RoleSeeder extends Seeder
             'name' => 'doctor',
             'description' => 'پزشک',
         ]);
-  
+
         DB::table('roles')->insert([
             'name' => 'secretary',
             'description' => 'منشی',
@@ -38,7 +38,7 @@ class RoleSeeder extends Seeder
             'name' => 'asistant2',
             'description' => 'دستیار دوم',
         ]);
-  
+
         DB::table('roles')->insert([
             'name' => 'reception',
             'description' => 'پذیرش',
@@ -49,7 +49,7 @@ class RoleSeeder extends Seeder
             'description' => 'اپراتور تلفنی',
         ]);
 
-        
+
         DB::table('roles')->insert([
             'name' => 'adviser',
             'description' => 'مشاور',
@@ -60,6 +60,11 @@ class RoleSeeder extends Seeder
             'description' => 'تنظیم نوبت',
         ]);
 
+        DB::table('roles')->insert([
+            'name' => 'cashier',
+            'description' => 'صندوقدار',
+        ]);
+
         foreach(Permission::all() as $permition)
         {
             DB::table('permission_role')->insert([
@@ -67,7 +72,7 @@ class RoleSeeder extends Seeder
                 'permission_id' => $permition->id,
             ]);
         }
-  
-        
+
+
     }
 }
