@@ -509,31 +509,22 @@
 
                         </li>
                    @endif
-                        <li>
-                            <a href="javascript: void(0);" class="waves-effect">
-                                <i class="mdi mdi-calculator"></i>
-                                <span class="IRANYekanRegular">حسابداری</span>
-                                <span class="menu-arrow"></span>
-                            </a>
+                    <li>
+                        <a href="javascript: void(0);" class="waves-effect">
+                            <i class="mdi mdi-calculator"></i>
+                            <span class="IRANYekanRegular">حسابداری</span>
+                            <span class="menu-arrow"></span>
+                        </a>
 
-                            <ul class="nav-second-level" aria-expanded="false">
-                                <li class="IRANYekanRegular">
-                                    <a href="{{ route('admin.accounting.accounts.index') }}">
-                                        <i class="mdi mdi-file-document-box"></i>
-                                        <span>حسابهای مالی</span>
-                                    </a>
-                                </li>
-                            </ul>
-
-                            <ul class="nav-second-level" aria-expanded="false">
-                                <li class="IRANYekanRegular">
-                                    <a href="{{ route('admin.accounting.cashiers.index') }}">
-                                        <i class="fas fa-cash-register"></i>
-                                        <span>صندوقدارها</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
+                        <ul class="nav-second-level" aria-expanded="false">
+                            <li class="IRANYekanRegular">
+                                <a href="{{ route('admin.accounting.accounts.index') }}">
+                                    <i class="mdi mdi-file-document-box"></i>
+                                    <span>حسابهای مالی</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
 
                     @if(Auth::guard('admin')->user()->can('complications.index'))
                     <li>

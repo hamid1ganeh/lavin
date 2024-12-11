@@ -6,130 +6,79 @@
 
     <div class="content">
         <!-- Start Content-->
-        <div class="container-fluid">
-
-        <!-- start page title -->
+            <!-- start page title -->
             <div class="row">
                 <div class="col-12">
                     <div class="page-title-box">
                         <div class="page-title-right">
-                            <ol class="breadcrumb m-0">
-
+                            <ol class="breadcrumb m-0 IR">
+                                {{--                            {{ Breadcrumbs::render('reserves.create') }}--}}
                             </ol>
                         </div>
                         <h4 class="page-title">
-                             <i class="fas fa-dollar-sign page-icon"></i>
-                             پرداخت
+                            <i class="fas fa-dollar-sign page-icon"></i>
+                            پرداخت
                         </h4>
                     </div>
                 </div>
             </div>
-            <!-- end page title -->
 
             <div class="row">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-body">
-
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="card-box">
-
-                                    <div class="row">
-                                        <div class="col-6">
-                                            <address>
-                                              <p class="IR">
-                                                عنوان سرویس:{{ $payment->reserve->service_name ?? ''}}
-                                              </p>
-
-                                              <p class="IR">
-                                                جزئیات سرویس:{{ $payment->reserve->detail_name ??'' }}
-                                              </p>
-
-                                              <p class="IR">
-                                               مبلغ قابل پرداخت:{{ number_format($payment->total_price) }} تومان
-                                              </p>
-
-                                              <strong class="IRANYekanRegular">
-                                                    @switch($payment->status)
-                                                        @case(App\Enums\PaymentStatus::unpaid)
-                                                        <span class="badge badge-warning IR p-1">پرداخت نشده</span>
-                                                        @break
-                                                        @case(App\Enums\PaymentStatus::payding)
-                                                        <span class="badge badge-success IR p-1">درحال پرداخت</span>
-                                                        @break
-                                                        @case(App\Enums\PaymentStatus::paid)
-                                                        <span class="badge badge-primary IR p-1">پرداخت موفق</span>
-                                                        @break
-                                                        @case(App\Enums\PaymentStatus::feild)
-                                                        <span class="badge badge-danger IR p-1">پرداخت ناموفق</span>
-                                                        @break
-                                                    @endswitch
-                                                </strong>
-                                            </address>
-                                        </div>
-
-                                        @if($payment->status == App\Enums\PaymentStatus::paid)
-                                        <div class="col-6">
-                                            <address>
-
-                                                <strong class="IRANYekanRegular">
-                                                    @switch($payment->payway)
-                                                        @case(App\Enums\PayWay::online)
-                                                        <span class="badge badge-primary IR p-1">پرداخت آنلاین</span>
-                                                        @break
-                                                        @case(App\Enums\PayWay::cash)
-                                                        <span class="badge badge-success IR p-1">پرداخت نقدی</span>
-                                                        @break
-                                                    @endswitch
-                                                </strong>
-
-                                                <p class="IR mt-2">
-                                                    شماره قبض:{{ $payment->res_code }}
-                                                </p>
-
-                                                @if($payment->payway == App\Enums\PayWay::online)
-                                                <p class="IR mt-2">
-                                                    درگاه پرداخت:
-                                                    @switch($payment->getway)
-                                                        @case('zarinpal')
-                                                         زرین پال
-                                                        @break
-                                                    @endswitch
-                                                </p>
-                                                @endif
-
-
-                                            </address>
-                                        </div>
-                                        @endif
-
-                                    </div>
-
-
-                                        <div class="col-6">
-                                            <form action="{{ route('admin.reserves.pay',$payment) }}" method="post">
-                                                @csrf
-                                                <label for="title" class="control-label IRANYekanRegular">شماره قبض</label>
-                                                <input type="text" class="form-control input text-right" name="res_code" id="res_code" placeholder="شماره قبض را وارد کنید" value="{{ old('code')  }}">
-                                                <input type="hidden" name="model"  value="{{ $payment->reserve->id  }}">
-                                                <span class="form-text text-danger erroralarm"> {{ $errors->first('res_code') }} </span>
-                                                 <button class="btn btn-primary" type="submite">پرداخت</button>
-                                            </form>
-                                        </div>
-                                    </div>
-
-
-                                </div>
-                            </div>
-                        </div>
-                     </div>
-                  </div>
+                <div class="card w-100" Style="height: 150px">
+                    <div class="card-body">
+                        <h5 class="card-title IRANYekanRegular">مشخصات سرویس</h5>
+                        <p class="card-text IRANYekanRegular"> عنوان سرویس:&nbsp; {{ $reserve->detail_name ?? ''}}</p>
+                        <p class="card-text IRANYekanRegular">مبلغ:&nbsp; {{ number_format($reserve->total_price ?? 0) }}&nbsp;تومان</p>
+                    </div>
                 </div>
             </div>
 
-        </div>
+        <form class="form-horizontal" action="" method="post">
+                @if((count($discounts)))
+                <div class="row">
+                    <div class="card w-100" Style="height: 220px">
+                        <div class="card-body">
+                            <h5 class="card-title IRANYekanRegular">تخفیف</h5>
+                            <div class="mt-1">
+                                <input type="radio" class="form-check-input cursor-pointer" id="code0" name="discount_code" value="0" onclick="discount(0);">
+                                <label class="form-check-label ml-3" for="code0">تخفیف ویژه</label>
+                                <input class="text-center" type="number" name="discount_price" placeholder="مبلغ (تومان)">
+                                <input class="text-left" Style="width:250px" type="text" name="discount_description" placeholder="توضیحات">
+                            </div>
+                            @foreach($discounts as $index=>$discount)
+                            <div class="mt-1">
+                                <input type="radio" class="form-check-input cursor-pointer" id="code{{ $discount->id }}" name="discount_code" value="{{ $discount->id }}" onclick="discount({{ $discount->id }});">
+                                <label class="form-check-label ml-3" for="code{{ $discount->id }}">
+                                    {{ $discount->code }}
+                                    @if($discount->unit==App\Enums\DiscountType::percet)
+                                       {{ ' ('.$discount->value.'درصد)'  }}
+                                    @elseif($discount->unit==App\Enums\DiscountType::toman)
+                                        {{ ' ('.$discount->value.' تومان)'  }}
+                                    @endif
+                                </label>
+                            </div>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+                @endif
+                <div class="row mt-2">
+                    <div class="col-sm-12">
+                        <button type="submit" title="بروزرسانی" class="btn btn-info">بروزرسانی</button>
+                    </div>
+                </div>
+       </form>
+
+
+
     </div>
+</div>
 
 
+<script>
+    function discount(id)
+    {
+        alert(id)
+    }
+</script>
 @endsection

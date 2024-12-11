@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Adviser;
 use App\Models\AdviserHistory;
 use App\Models\Branch;
+use App\Models\Discount;
 use App\Models\Number;
 use App\Models\Poll;
 use App\Models\Reception;
@@ -387,24 +388,34 @@ class ReserveServiceController extends Controller
         $this->authorize('reserves.payment');
 
          $payment = ReservePayment::with('reserve.service')->where('reserve_id',$reserve->id)->first();
+         $discounts = Discount::where('status',Status::Active)
+                                ->where(function ($q){
+                                         $q->where('expire','>',Carbon::now('+3:30')->format('Y-m-d H:i:s'))
+                                          ->orWhereNull('expire');})
+                                ->whereHas('users',function ($q) use ($reserve){
+                                    $q->where('user_id',$reserve->user_id);
+                                })
+                                ->whereHas('services',function ($q) use ($reserve){
+                                    $q->where('service_detail_id',$reserve->detail_id);
+                                })->get();
 
-         if($payment==null)
-         {
-             $payment = ReservePayment::with('reserve.service')->create([
-                'reserve_id' => $reserve->id,
-                'user_id' => $reserve->user_id,
-                'price' => $reserve->total_price,
-                'total_price' => $reserve->total_price,
+//         if($payment==null)
+//         {
+//             $payment = ReservePayment::with('reserve.service')->create([
+//                'reserve_id' => $reserve->id,
+//                'user_id' => $reserve->user_id,
+//                'price' => $reserve->total_price,
+//                'total_price' => $reserve->total_price,
+//
+//            ]);
+//
+//         }else{
+//             $payment->price = $reserve->total_price;
+//             $payment->total_price = $reserve->total_price;
+//             $payment->save();
+//         }
 
-            ]);
-
-         }else{
-             $payment->price = $reserve->total_price;
-             $payment->total_price = $reserve->total_price;
-             $payment->save();
-         }
-
-        return view('admin.reserves.payment',compact('payment'));
+        return view('admin.reserves.payment',compact('discounts','reserve'));
     }
 
      public function pay(ReservePayment $payment,Request $request)

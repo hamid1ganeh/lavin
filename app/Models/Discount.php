@@ -18,25 +18,18 @@ class Discount extends Model
     {
         return $this->belongsToMany(User::class)->withTrashed();
     }
-
     public function services()
     {
         return $this->belongsToMany(ServiceDetail::class);
     }
-
     public function products()
     {
         return $this->belongsToMany(Product::class);
     }
-
-
     public function festivals()
     {
         return $this->belongsToMany(Festival::class);
     }
-
-
-
     public function usedDiscount()
     {
         return $this->hasMany(UsedDiscount::class);
@@ -46,7 +39,6 @@ class Discount extends Model
     {
         return   UsedDiscount::where('discount_id',$this->id)->where('user_id',Auth::id())->exists();
     }
-
     public function expired()
     {
         if($this->expire!=null && $this->expire < Carbon::now()->format('Y-m-d H:i:s'))
@@ -58,9 +50,6 @@ class Discount extends Model
             return false;
         }
     }
-
-
-
     public function scopeFilter($query)
     {
         //فیلتر کد تخفیف
