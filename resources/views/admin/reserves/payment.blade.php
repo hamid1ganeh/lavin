@@ -40,10 +40,14 @@
                         <div class="card-body">
                             <h5 class="card-title IRANYekanRegular">تخفیف</h5>
                             <div class="mt-1">
+                                <input type="radio" class="form-check-input cursor-pointer" id="code-1" name="discount_code" value="-1" onclick="discount(-1);" checked>
+                                <label class="form-check-label ml-3" for="code-1">هیچکدام</label>
+                            </div>
+                            <div class="mt-1">
                                 <input type="radio" class="form-check-input cursor-pointer" id="code0" name="discount_code" value="0" onclick="discount(0);">
                                 <label class="form-check-label ml-3" for="code0">تخفیف ویژه</label>
-                                <input class="text-center" type="number" name="discount_price" placeholder="مبلغ (تومان)">
-                                <input class="text-left" Style="width:250px" type="text" name="discount_description" placeholder="توضیحات">
+                                <input class="text-center" type="number"  id="discount_price"  name="discount_price" placeholder="مبلغ (تومان)" disabled>
+                                <input class="text-left" Style="width:250px" type="text" id="discount_description" name="discount_description" placeholder="توضیحات" disabled>
                             </div>
                             @foreach($discounts as $index=>$discount)
                             <div class="mt-1">
@@ -78,7 +82,19 @@
 <script>
     function discount(id)
     {
-        alert(id)
+        if(id==0){
+            document.getElementById("discount_price").required = true;
+            document.getElementById("discount_description").required = true;
+            document.getElementById("discount_price").disabled= false;
+            document.getElementById("discount_description").disabled = false;
+        }else{
+            document.getElementById("discount_price").required = false;
+            document.getElementById("discount_description").required = false;
+            document.getElementById("discount_price").disabled= true;
+            document.getElementById("discount_description").disabled = true;
+            document.getElementById("discount_price").value = '';
+            document.getElementById("discount_description").value  = '';
+        }
     }
 </script>
 @endsection
