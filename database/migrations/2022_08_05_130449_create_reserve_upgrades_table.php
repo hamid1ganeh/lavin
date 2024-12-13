@@ -26,7 +26,6 @@ class CreateReserveUpgradesTable extends Migration
             $table->text('desc')->nullable();
             $table->tinyInteger('status')->default(0);
             $table->DateTime('doneTime')->nullable();
-            $table->string('payment_code',20)->nullable();
             $table->softDeletes();
             $table->timestamps();
 

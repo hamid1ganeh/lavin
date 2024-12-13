@@ -23,6 +23,7 @@ class ReserveUpgradeController extends Controller
          $this->authorize('reserves.upgrade.index');
 
         $upgrades = ReserveUpgrade::with('reserve.reception')->where('reserve_id',$reserve->id)->get();
+
         return view('admin.reserves.upgrade.all',compact('upgrades','reserve'));
      }
 
@@ -31,6 +32,10 @@ class ReserveUpgradeController extends Controller
          //اجازه دسترسی
          config(['auth.defaults.guard' => 'admin']);
          $this->authorize('reserves.upgrade.create');
+
+         if (is_null($reserve->asistant_id)){
+             abort(403);
+         }
 
          $asistants2 = Admin::whereHas('roles', function($q){$q->where('name', 'asistant2');})->orderBy('fullname','asc')->get();
          $services = Service::orderBy('name','asc')->get();
@@ -86,9 +91,7 @@ class ReserveUpgradeController extends Controller
             "desc"=>$request->desc
          ]);
 
-
          toastr()->success('ارتقاء جدید افزوده شد.');
-
          return redirect(route('admin.reserves.upgrade.index',$reserve));
      }
 
@@ -159,20 +162,11 @@ class ReserveUpgradeController extends Controller
          if($request->status == ReserveStatus::confirm || $request->status == ReserveStatus::cancel)
          {
              if($request->status == ReserveStatus::confirm){
-                 if(is_null($request->payment)){
-                     alert()->error('شماره قبض پرداخت را وارد کنید.');
-                     return back();
-                 }
-
-                 $upgrade->payment_code = $request->payment;
                  $upgrade->doneTime = Carbon::now('+3:30')->format('Y-m-d H:i:s');
-
              }
 
              if($request->status == ReserveStatus::cancel){
-
                  $upgrade->doneTime = null;
-
              }
              $upgrade->status =$request->status;
              $upgrade->save();

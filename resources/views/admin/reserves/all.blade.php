@@ -960,7 +960,7 @@
                                                               @endif
 
                                                                @if(Auth::guard('admin')->user()->can('reserves.payment'))
-                                                                <a href="{{ route('admin.reserves.payment',$reserve) }}" class="dropdown-item IR cursor-pointer" title="پرداخت" target="_blank">
+                                                                <a href="{{ route('admin.reserves.payment.show',$reserve) }}" class="dropdown-item IR cursor-pointer" title="پرداخت" target="_blank">
                                                                     <i class="fas fa-dollar-sign text-primary cursor-pointer"></i>
                                                                     <span class="p-1">پرداخت</span>
                                                                 </a>
@@ -975,7 +975,7 @@
                                                                @endif
 
 
-                                                                @if(App\Enums\reserveStatus::done != $reserve->status && Auth::guard('admin')->user()->can('reserves.secratry') && $reserve->paid())
+                                                                @if(in_array($reserve->status,[App\Enums\reserveStatus::accept,App\Enums\reserveStatus::secratry]) && Auth::guard('admin')->user()->can('reserves.secratry'))
                                                                 <a class="dropdown-item IR cusrsor" href="#secratry{{ $reserve->id }}" data-toggle="modal" title="تعیین منشی">
                                                                     <i class="fa fa-user text-dark cusrsor"></i>
                                                                     <span class="p-1">تعیین منشی</span>

@@ -10,7 +10,7 @@ use Morilog\Jalali\Jalalian;
 class ReserveUpgrade extends Model
 {
     protected $fillable=['reserve_id','service_id','service_name','detail_id','detail_name',
-    'price','asistant1_id','asistant2_id','desc','status','doneTime','payment_code'];
+    'price','asistant1_id','asistant2_id','desc','status','doneTime'];
 
     public function service()
     {
