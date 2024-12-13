@@ -15,7 +15,7 @@ use App\Http\Controllers\Admin\LaserDeviceController;
 use App\Http\Controllers\Admin\ServiceLaserController;
 use App\Http\Controllers\Admin\WarehouseReceiptController;
 use App\Http\Controllers\Admin\AccountController;
-use App\Http\Controllers\Admin\CashierController;
+use App\Http\Controllers\Admin\ReserveInvoiceController;
 
 Route::get('/login', 'AuthController@loginPage')->name('loginPage');
 Route::post('/login', 'AuthController@login')->name('login');
@@ -505,11 +505,9 @@ Route::group(['middleware' => 'auth.admin'], function () {
     Route::patch('{reserve}/determining', 'ReserveServiceController@determining')->name('determining');
     Route::delete('/destroy/{reserve}', 'ReserveServiceController@destroy')->name('destroy');
     Route::patch('{reserve}/secratry', 'ReserveServiceController@secratry')->name('secratry');
-    Route::patch('{reserve}/done', 'ReserveServiceController@done')->name('done');
-    Route::get('{reserve}/payment', 'ReserveServiceController@payment')->name('payment');
-    Route::post('{payment}/pay', 'ReserveServiceController@pay')->name('pay');
     Route::post('{reserve}/poll', 'ReserveServiceController@poll')->name('poll');
     Route::patch('{reserve}/price', 'ReserveServiceController@price')->name('price');
+    Route::patch('{reserve}/done', 'ReserveServiceController@done')->name('done');
 
     Route::prefix('{reserve}/upgrade')->name('upgrade.')->group(function () {
       Route::get('/', 'ReserveUpgradeController@index')->name('index');
@@ -536,6 +534,16 @@ Route::group(['middleware' => 'auth.admin'], function () {
       });
 
 
+//      Route::get('{reserve}/payment', 'ReserveServiceController@payment')->name('payment');
+//      Route::post('{payment}/pay', 'ReserveServiceController@pay')->name('pay');
+
+      Route::prefix('{reserve}/payment')->name('payment.')->group(function () {
+          Route::get('/show', 'ReserveInvoiceController@show')->name('show');
+          Route::post('/create', 'ReserveInvoiceController@create')->name('create');
+          Route::get('/invoice', 'ReserveInvoiceController@invoice')->name('invoice');
+//          Route::delete('/{complication}/delete', 'RegisterComplicationController@delete')->name('delete');
+//          Route::post('/{complication}/reserve', 'RegisterComplicationController@reserve')->name('reserve');
+      });
 
     Route::prefix('{reserve}/complications')->name('complications.')->group(function () {
       Route::get('/show', 'RegisterComplicationController@show')->name('show');

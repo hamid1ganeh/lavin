@@ -122,6 +122,7 @@ class ReserveServiceController extends Controller
         if(count($roles)==1 && in_array('secretary',$roles)) {
             $reserves = ServiceReserve::with('user','branch', 'doctor', 'review','adviser.number.operators.admin','adviser.advisers.admin','reception')
                 ->where('secratry_id',Auth::guard('admin')->id())
+                ->whereIn('status',[ReserveStatus::secratry,ReserveStatus::done])
                 ->filter()
                 ->orderBy('created_at', 'desc')
                 ->paginate(30)
@@ -266,7 +267,7 @@ class ReserveServiceController extends Controller
 
     public function determining(ServiceReserve $reserve,Request $request)
     {
-         //اجازه دسترسی
+       //اجازه دسترسی
         config(['auth.defaults.guard' => 'admin']);
         $this->authorize('reserves.determining');
 

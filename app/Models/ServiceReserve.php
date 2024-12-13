@@ -96,6 +96,11 @@ class ServiceReserve extends Model
         return $this->hasMany(ReserveUpgrade::class,'reserve_id','id');
     }
 
+    public  function confirmedUpgrades()
+    {
+        return $this->hasMany(ReserveUpgrade::class,'reserve_id','id')->where('status',ReserveStatus::confirm);
+    }
+
     public function reserve_time()
     {
         if(is_null($this->created_at)){

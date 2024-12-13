@@ -20,6 +20,7 @@ class CreateReserveInvoicesTable extends Migration
             $table->unsignedBigInteger('discount_id')->nullable();
             $table->unsignedBigInteger('discount_price')->default(0);
             $table->string('discount_description')->nullable();
+            $table->unsignedBigInteger('sum_upgrades_price')->default(0);
             $table->unsignedBigInteger('final_price');
             $table->boolean('settlement')->default(false);
             $table->timestamps();

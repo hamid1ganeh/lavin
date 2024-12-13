@@ -70,7 +70,6 @@
                                             <th><b class="IRANYekanRegular">توضیحات</b></th>
                                             <th><b class="IRANYekanRegular">زمان انجام</b></th>
                                             <th><b class="IRANYekanRegular">مدت زمان(ساعت)</b></th>
-                                            <th><b class="IRANYekanRegular">شماره قبض</b></th>
                                             <th><b class="IRANYekanRegular">وضعیت</b></th>
                                             <th><b class="IRANYekanRegular">اقدامات</b></th>
                                         </tr>
@@ -87,7 +86,6 @@
                                             <td><strong class="IRANYekanRegular">{{ $upgrade->desc ?? '' }}</strong></td>
                                             <td><strong class="IRANYekanRegular">{{ $upgrade->done_time()  }}</strong></td>
                                             <td><strong class="IRANYekanRegular">{{ $upgrade->duration()  }}</strong></td>
-                                            <td><strong class="IRANYekanRegular">{{ $upgrade->payment_code ?? '' }}</strong></td>
                                             <td>
                                                 <strong class="IRANYekanRegular">
                                                     @switch($upgrade->status)
@@ -141,15 +139,13 @@
                                                                 </button>
                                                             </div>
                                                             <div class="modal-body text-center">
-                                                                <h5 class="IRANYekanRegular">شماره قبض پرداخت را وارد کنید</h5>
-                                                                <input name="payment" type="text" value="{{ $upgrade->payment_code  }}"  placeholder="شماره قبض پرداخت" class="text-center p-1" required form="confirm-form-id{{ $upgrade->id }}">
+                                                                <h5 class="IRANYekanRegular">آیا شما این ارتقاء را تایید میکنید؟</h5>
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <form action="{{ route('admin.reserves.upgrade.confirm',[$reserve,$upgrade]) }}"  method="POST" class="d-inline" id="confirm-form-id{{ $upgrade->id }}">
                                                                     @csrf
                                                                     @method('PATCH')
                                                                     <input name="status" type="hidden" value="{{ App\Enums\ReserveStatus::confirm }}">
-
                                                                     <button type="submit" title="تایید" class="btn btn-primary px-8">تایید</button>
                                                                 </form>
                                                                 <button type="button" class="btn btn-secondary" title="انصراف" data-dismiss="modal">انصراف</button>

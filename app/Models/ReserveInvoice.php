@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class ReserveInvoice extends Model
 {
-    protected $fillable=['reserve_id','price','discount_id','discount_price','discount_description','final_price','settlement'];
+    protected $fillable=['reserve_id','price','discount_id','discount_price','discount_description','sum_upgrades_price','final_price','settlement'];
 
     public function reserve()
     {
