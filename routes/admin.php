@@ -19,6 +19,7 @@ use App\Http\Controllers\Admin\ReserveInvoiceController;
 use App\Http\Controllers\Admin\ReservePosPaymentContoller;
 use App\Http\Controllers\Admin\ReserveCashPaymentContoller;
 use App\Http\Controllers\Admin\ReserveCardToCardPaymentContoller;
+use App\Http\Controllers\Admin\ReserveChequePaymentContoller;
 
 Route::get('/login', 'AuthController@loginPage')->name('loginPage');
 Route::post('/login', 'AuthController@login')->name('login');
@@ -571,6 +572,16 @@ Route::group(['middleware' => 'auth.admin'], function () {
               Route::put('/{card}/update', 'ReserveCardToCardPaymentContoller@update')->name('update');
               Route::delete('/{card}/destroy', 'ReserveCardToCardPaymentContoller@destroy')->name('destroy');
           });
+
+          Route::prefix('{invoice}/cheque')->name('cheque.')->group(function () {
+              Route::get('/', 'ReserveChequePaymentContoller@index')->name('index');
+              Route::get('/create', 'ReserveChequePaymentContoller@create')->name('create');
+              Route::post('/store', 'ReserveChequePaymentContoller@store')->name('store');
+              Route::get('/{cheque}/edit', 'ReserveChequePaymentContoller@edit')->name('edit');
+              Route::put('/{cheque}/update', 'ReserveChequePaymentContoller@update')->name('update');
+              Route::delete('/{cheque}/destroy', 'ReserveChequePaymentContoller@destroy')->name('destroy');
+          });
+
 
       });
 

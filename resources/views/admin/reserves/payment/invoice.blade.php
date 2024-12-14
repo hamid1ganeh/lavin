@@ -46,9 +46,9 @@
                             </div>
                             <div class="col-12 col-md-6 text-right">
                                 <a href="{{ route('admin.reserves.payment.pos.index',[$reserve,$invoice]) }}"  class="btn btn-danger cursor-pointer text-white" title="دستگاه پویز">دستگاه پویز</a>
-                                <a href="{{ route('admin.reserves.payment.card.index',[$reserve,$invoice]) }}#"  class="btn btn-primary cursor-pointer text-white" title="کارت به کارت">کارت به کارت</a>
+                                <a href="{{ route('admin.reserves.payment.card.index',[$reserve,$invoice]) }}"  class="btn btn-primary cursor-pointer text-white" title="کارت به کارت">کارت به کارت</a>
                                 <a href="{{ route('admin.reserves.payment.cash.index',[$reserve,$invoice]) }}"  class="btn btn-success cursor-pointer text-white" title="نقدی">نقدی</a>
-                                <a href="#"  class="btn btn-warning cursor-pointer text-white" title="چک">چک</a>
+                                <a href="{{ route('admin.reserves.payment.cheque.index',[$reserve,$invoice]) }}"  class="btn btn-warning cursor-pointer text-white" title="چک">چک</a>
                             </div>
                         </div>
                         @if(count($reserve->confirmedUpgrades))
