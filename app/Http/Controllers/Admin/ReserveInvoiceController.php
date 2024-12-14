@@ -147,11 +147,15 @@ class ReserveInvoiceController extends Controller
           if (is_null($invoice)){
               return redirect(route('admin.reserves.payment.show',$reserve));
           }
-        $sumUpgradesPrice = ReserveUpgrade::where('reserve_id',$reserve->id)->where('status',ReserveStatus::confirm)->sum('price');
-        $finalPrice =  $invoice->price+$sumUpgradesPrice-$invoice->discount_price;
-        $invoice->sum_upgrades_price= $sumUpgradesPrice;
-        $invoice->final_price= $finalPrice;
-        $invoice->save();
+
+          if (!is_null($reserve->reception) && !$reserve->reception->end){
+              $sumUpgradesPrice = ReserveUpgrade::where('reserve_id',$reserve->id)->where('status',ReserveStatus::confirm)->sum('price');
+              $finalPrice =  $invoice->price+$sumUpgradesPrice-$invoice->discount_price;
+              $invoice->sum_upgrades_price= $sumUpgradesPrice;
+              $invoice->final_price= $finalPrice;
+              $invoice->save();
+          }
+
         return view('admin.reserves.payment.invoice',compact('invoice','reserve'));
     }
 }

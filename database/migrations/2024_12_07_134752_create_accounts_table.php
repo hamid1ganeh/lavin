@@ -23,6 +23,7 @@ class CreateAccountsTable extends Migration
             $table->string('account_number');
             $table->string('cart_number');
             $table->string('shaba_number');
+            $table->unsignedSmallInteger('pos')->default(false);
             $table->unsignedSmallInteger('status')->default(Status::Active);
             $table->softDeletes();
             $table->timestamps();

@@ -103,6 +103,14 @@
                                             <input type="text" class="form-control input text-right" name="shaba_number" id="shaba_number" placeholder="شماره شبا را وارد کنید" value="{{ old('shaba_number') ?? $account->shaba_number }}" required>
                                             <span class="form-text text-danger erroralarm"> {{ $errors->first('shaba_number') }} </span>
                                         </div>
+                                        <div class="form-group justify-content-center col-6">
+                                            <div class="form-check mt-4 pr-5 mr-2">
+                                                <input class="form-check-input cursor-pointer" type="checkbox" value="on" name="pos" id="pos" {{ old('pos')=='on' || $account->pos?'checked':'' }}>
+                                                <label class="form-check-label IRANYekanRegular" style="margin-right: 19px !important;" for="pos">
+                                                    دستگاه پوز
+                                                </label>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="row mt-2 p-2">
                                         <div class="col-12" style="display:inherit;">

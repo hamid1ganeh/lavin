@@ -36,11 +36,21 @@
             <div class="row">
                 <div class="card w-100">
                     <div class="card-body">
-                        <h5 class="card-title IRANYekanRegular">مشخصات</h5>
-                        <p class="card-text IRANYekanRegular"> نام و نام خانوادگی:&nbsp; {{ $invoice->reserve->user->getFullName() ?? '' }}</p>
-                        <p class="card-text IRANYekanRegular"> شماره تماس:&nbsp; {{ $invoice->reserve->user->mobile ?? '' }}</p>
-                        <p class="card-text IRANYekanRegular"> عنوان سرویس:&nbsp; {{ $invoice->reserve->detail_name ?? ''}}</p>
-                        <p class="card-text IRANYekanRegular">مبلغ:&nbsp; {{ number_format($invoice->price ?? 0) }}&nbsp;تومان</p>
+                        <div class="row">
+                            <div class="col-12 col-md-6">
+                                <h5 class="card-title IRANYekanRegular">مشخصات</h5>
+                                <p class="card-text IRANYekanRegular"> نام و نام خانوادگی:&nbsp; {{ $invoice->reserve->user->getFullName() ?? '' }}</p>
+                                <p class="card-text IRANYekanRegular"> شماره تماس:&nbsp; {{ $invoice->reserve->user->mobile ?? '' }}</p>
+                                <p class="card-text IRANYekanRegular"> عنوان سرویس:&nbsp; {{ $invoice->reserve->detail_name ?? ''}}</p>
+                                <p class="card-text IRANYekanRegular">مبلغ:&nbsp; {{ number_format($invoice->price ?? 0) }}&nbsp;تومان</p>
+                            </div>
+                            <div class="col-12 col-md-6 text-right">
+                                <a href="#"  class="btn btn-danger cursor-pointer text-white">پویز</a>
+                                <a href="#"  class="btn btn-primary cursor-pointer text-white">کارت به کارت</a>
+                                <a href="#"  class="btn btn-success cursor-pointer text-white">نقدی</a>
+                                <a href="#"  class="btn btn-warning cursor-pointer text-white">چک</a>
+                            </div>
+                        </div>
                         @if(count($reserve->confirmedUpgrades))
                             <div class="row mt-2 mb-2">
                                 <div class="col-12 text-center">
@@ -69,61 +79,20 @@
                                             </tbody>
                                         </table>
                                     </div>
-                                </div>
-                                <div class="col-12">
-                                    <h3 class="card-text IRANYekanRegular">مبلغ کل ارتقاء:&nbsp; {{ number_format($invoice->sum_upgrades_price) }}&nbsp;تومان</h3>
+                                    <div class="col-12">
+                                        <h3 class="card-text IRANYekanRegular">مبلغ کل ارتقاء:&nbsp; {{ number_format($invoice->sum_upgrades_price) }}&nbsp;تومان</h3>
+                                    </div>
                                 </div>
                             </div>
                         @endif
-                        <p class="card-text IRANYekanRegular">تخفیف:&nbsp; {{ number_format($invoice->discount_price ?? 0) }}&nbsp;تومان</p>
-                        <p class="card-text IRANYekanRegular"> توضیحات تخفیف:&nbsp; {{ $invoice->discount_description ?? ''}}</p>
-                        <h3 class="card-text IRANYekanRegular">مبلغ قابل پرداخت:&nbsp; {{ number_format($invoice->final_price ?? 0) }}&nbsp;تومان</h3>
+                        <div class="col-12">
+                            <p class="card-text IRANYekanRegular">تخفیف:&nbsp; {{ number_format($invoice->discount_price ?? 0) }}&nbsp;تومان</p>
+                            <p class="card-text IRANYekanRegular"> توضیحات تخفیف:&nbsp; {{ $invoice->discount_description ?? ''}}</p>
+                            <h3 class="card-text IRANYekanRegular text-danger">مبلغ قابل پرداخت:&nbsp; {{ number_format($invoice->final_price ?? 0) }}&nbsp;تومان</h3>
+                        </div>
                     </div>
                 </div>
             </div>
-
-{{--        <form class="form-horizontal" action="{{ route('admin.reserves.payment.create',$reserve) }}" method="post">--}}
-{{--            @csrf--}}
-{{--                @if((count($discounts)))--}}
-{{--                <div class="row">--}}
-{{--                    <div class="card w-100" Style="height: 220px">--}}
-{{--                        <div class="card-body">--}}
-{{--                            <h5 class="card-title IRANYekanRegular">تخفیف</h5>--}}
-{{--                            <div class="mt-1">--}}
-{{--                                <input type="radio" class="form-check-input cursor-pointer" id="code-1" name="discount_code" value="-1" onclick="discount(-1);" checked>--}}
-{{--                                <label class="form-check-label ml-3" for="code-1">هیچکدام</label>--}}
-{{--                            </div>--}}
-{{--                            <div class="mt-1">--}}
-{{--                                <input type="radio" class="form-check-input cursor-pointer" id="code0" name="discount_code" value="0" onclick="discount(0);">--}}
-{{--                                <label class="form-check-label ml-3" for="code0">تخفیف ویژه</label>--}}
-{{--                                <input class="text-center" type="number"  id="discount_price"  name="discount_price" placeholder="مبلغ (تومان)" disabled>--}}
-{{--                                <input class="text-left" Style="width:250px" type="text" id="discount_description" name="discount_description" placeholder="توضیحات" disabled>--}}
-{{--                            </div>--}}
-{{--                            @foreach($discounts as $index=>$discount)--}}
-{{--                            <div class="mt-1">--}}
-{{--                                <input type="radio" class="form-check-input cursor-pointer" id="code{{ $discount->id }}" name="discount_code" value="{{ $discount->id }}" onclick="discount({{ $discount->id }});">--}}
-{{--                                <label class="form-check-label ml-3" for="code{{ $discount->id }}">--}}
-{{--                                    {{ $discount->code }}--}}
-{{--                                    @if($discount->unit==App\Enums\DiscountType::percet)--}}
-{{--                                       {{ ' ('.$discount->value.'درصد)'  }}--}}
-{{--                                    @elseif($discount->unit==App\Enums\DiscountType::toman)--}}
-{{--                                        {{ ' ('.$discount->value.' تومان)'  }}--}}
-{{--                                    @endif--}}
-{{--                                </label>--}}
-{{--                            </div>--}}
-{{--                            @endforeach--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--                @endif--}}
-{{--                <div class="row mt-2">--}}
-{{--                    <div class="col-sm-12">--}}
-{{--                        <button type="submit" title="ثبت" class="btn btn-primary"> ثبت</button>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--       </form>--}}
-
-
 
     </div>
 </div>

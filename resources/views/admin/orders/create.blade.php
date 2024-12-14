@@ -81,8 +81,6 @@
                                         </div>
                                     </div>
 
-
-
                                     <div class="row mt-3">
                                         <div class="col-12">
                                             <button type="submit" class="btn btn-primary">ثبت</button>

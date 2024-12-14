@@ -55,6 +55,7 @@
                                         <th><b class="IRANYekanRegular">شماره حساب</b></th>
                                         <th><b class="IRANYekanRegular">شماره کارت</b></th>
                                         <th><b class="IRANYekanRegular">شماره شبا</b></th>
+                                        <th><b class="IRANYekanRegular">دستگاه پوز</b></th>
                                         <th><b class="IRANYekanRegular">اقدامات</b></th>
                                     </tr>
                                     </thead>
@@ -69,6 +70,12 @@
                                             <td><strong class="IRANYekanRegular">{{ $account->account_number }}</strong></td>
                                             <td><strong class="IRANYekanRegular">{{ $account->cart_number }}</strong></td>
                                             <td><strong class="IRANYekanRegular">{{ $account->shaba_number }}</strong></td>
+                                            <td>
+                                                @if($account->pos)
+                                                <i class="fa fa-check-circle text-primary"></i> </td>
+                                                @else
+                                                <i class="fa fa-times-circle text-danger"></i> </td>
+                                                @endif
                                             <td>
                                                 <strong class="IRANYekanRegular">
                                                     @if($account->status == App\Enums\Status::Active)

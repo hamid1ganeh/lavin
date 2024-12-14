@@ -63,6 +63,7 @@ class AccountController extends Controller
 
         $opened_at =   faToEn($request->opened_at);
         $opened_at = Jalalian::fromFormat('Y/m/d', $opened_at)->toCarbon("Y-m-d");
+        $pos = isset($request->pos)?true:false;
         Account::create(['full_name'=> $request->full_name,
                         'bank_name'=> $request->bank_name,
                         'account_type'=> $request->account_type,
@@ -70,6 +71,7 @@ class AccountController extends Controller
                         'account_number'=> $request->account_number,
                         'cart_number'=> $request->cart_number,
                         'shaba_number'=> $request->shaba_number,
+                        'pos'=>$pos,
                         'status'=> $request->status]);
 
         toast('حساب مالی جدید ثبت شد.','success')->position('bottom-end');
@@ -120,14 +122,16 @@ class AccountController extends Controller
 
         $opened_at =   faToEn($request->opened_at);
         $opened_at = Jalalian::fromFormat('Y/m/d', $opened_at)->toCarbon("Y-m-d");
+        $pos = isset($request->pos)?true:false;
         $account->update(['full_name'=> $request->full_name,
-                            'bank_name'=> $request->bank_name,
-                            'account_type'=> $request->account_type,
-                            'opened_at'=> $opened_at,
-                            'account_number'=> $request->account_number,
-                            'cart_number'=> $request->cart_number,
-                            'shaba_number'=> $request->shaba_number,
-                            'status'=> $request->status]);
+                          'bank_name'=> $request->bank_name,
+                          'account_type'=> $request->account_type,
+                          'opened_at'=> $opened_at,
+                          'account_number'=> $request->account_number,
+                          'cart_number'=> $request->cart_number,
+                          'shaba_number'=> $request->shaba_number,
+                          'pos'=> $pos,
+                          'status'=> $request->status]);
 
         toast('حساب مالی جدید ثبت شد.','success')->position('bottom-end');
         return redirect(route('admin.accounting.accounts.index'));

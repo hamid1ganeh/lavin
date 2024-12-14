@@ -9,7 +9,7 @@ use Morilog\Jalali\CalendarUtils;
 class Account extends Model
 {
     use SoftDeletes;
-    protected $fillable=['full_name','bank_name','account_type','opened_at','account_number','cart_number','shaba_number','status'];
+    protected $fillable=['full_name','bank_name','account_type','opened_at','account_number','cart_number','shaba_number','status','pos'];
 
     public function openedAt()
     {

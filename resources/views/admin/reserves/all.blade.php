@@ -962,7 +962,7 @@
                                                                @if(Auth::guard('admin')->user()->can('reserves.payment'))
                                                                 <a href="{{ route('admin.reserves.payment.show',$reserve) }}" class="dropdown-item IR cursor-pointer" title="پرداخت" target="_blank">
                                                                     <i class="fas fa-dollar-sign text-primary cursor-pointer"></i>
-                                                                    <span class="p-1">پرداخت</span>
+                                                                    <span class="p-1">صورتحساب</span>
                                                                 </a>
                                                                @endif
 
@@ -980,7 +980,6 @@
                                                                     <span class="p-1">تعیین منشی</span>
                                                                 </a>
                                                                 @endif
-
 
                                                                 @if(Auth::guard('admin')->user()->can('reserves.done') &&
                                                                 (App\Enums\reserveStatus::done == $reserve->status ||
