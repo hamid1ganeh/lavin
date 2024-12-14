@@ -16,6 +16,7 @@ use App\Http\Controllers\Admin\ServiceLaserController;
 use App\Http\Controllers\Admin\WarehouseReceiptController;
 use App\Http\Controllers\Admin\AccountController;
 use App\Http\Controllers\Admin\ReserveInvoiceController;
+use App\Http\Controllers\Admin\ReservePosPaymentContoller;
 
 Route::get('/login', 'AuthController@loginPage')->name('loginPage');
 Route::post('/login', 'AuthController@login')->name('login');
@@ -541,8 +542,16 @@ Route::group(['middleware' => 'auth.admin'], function () {
           Route::get('/show', 'ReserveInvoiceController@show')->name('show');
           Route::post('/create', 'ReserveInvoiceController@create')->name('create');
           Route::get('/invoice', 'ReserveInvoiceController@invoice')->name('invoice');
-//          Route::delete('/{complication}/delete', 'RegisterComplicationController@delete')->name('delete');
-//          Route::post('/{complication}/reserve', 'RegisterComplicationController@reserve')->name('reserve');
+
+          Route::prefix('{invoice}/pos')->name('pos.')->group(function () {
+              Route::get('/', 'ReservePosPaymentContoller@index')->name('index');
+              Route::get('/create', 'ReservePosPaymentContoller@create')->name('create');
+              Route::post('/store', 'ReservePosPaymentContoller@store')->name('store');
+              Route::get('/{pos}/edit', 'ReservePosPaymentContoller@edit')->name('edit');
+              Route::put('/{pos}/update', 'ReservePosPaymentContoller@update')->name('update');
+              Route::delete('/{pos}/destroy', 'ReservePosPaymentContoller@destroy')->name('destroy');
+          });
+
       });
 
     Route::prefix('{reserve}/complications')->name('complications.')->group(function () {
