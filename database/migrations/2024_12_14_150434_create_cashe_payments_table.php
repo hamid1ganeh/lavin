@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use \App\Enums\PaymentType;
+use App\Enums\PaymentType;
 
 class CreateCashePaymentsTable extends Migration
 {
@@ -24,6 +24,12 @@ class CreateCashePaymentsTable extends Migration
             $table->unsignedBigInteger('cashier_id');
             $table->string('type',1)->default(PaymentType::income);
             $table->timestamps();
+
+            $table->foreign('cashier_id')
+                ->references('id')
+                ->on('admins')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
         });
     }
 

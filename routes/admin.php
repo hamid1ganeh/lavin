@@ -18,6 +18,7 @@ use App\Http\Controllers\Admin\AccountController;
 use App\Http\Controllers\Admin\ReserveInvoiceController;
 use App\Http\Controllers\Admin\ReservePosPaymentContoller;
 use App\Http\Controllers\Admin\ReserveCashPaymentContoller;
+use App\Http\Controllers\Admin\ReserveCardToCardPaymentContoller;
 
 Route::get('/login', 'AuthController@loginPage')->name('loginPage');
 Route::post('/login', 'AuthController@login')->name('login');
@@ -560,6 +561,15 @@ Route::group(['middleware' => 'auth.admin'], function () {
               Route::get('/{cash}/edit', 'ReserveCashPaymentContoller@edit')->name('edit');
               Route::put('/{cash}/update', 'ReserveCashPaymentContoller@update')->name('update');
               Route::delete('/{cash}/destroy', 'ReserveCashPaymentContoller@destroy')->name('destroy');
+          });
+
+          Route::prefix('{invoice}/card_to_card')->name('card.')->group(function () {
+              Route::get('/', 'ReserveCardToCardPaymentContoller@index')->name('index');
+              Route::get('/create', 'ReserveCardToCardPaymentContoller@create')->name('create');
+              Route::post('/store', 'ReserveCardToCardPaymentContoller@store')->name('store');
+              Route::get('/{card}/edit', 'ReserveCardToCardPaymentContoller@edit')->name('edit');
+              Route::put('/{card}/update', 'ReserveCardToCardPaymentContoller@update')->name('update');
+              Route::delete('/{card}/destroy', 'ReserveCardToCardPaymentContoller@destroy')->name('destroy');
           });
 
       });
