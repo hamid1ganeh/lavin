@@ -19,7 +19,7 @@
                         </div>
                         <h4 class="page-title">
                             <i class="fas fa-dollar-sign page-icon"></i>
-                             پرداختی های دستگاه پوز
+                             پرداختی های نقدی
                         </h4>
                     </div>
                 </div>
@@ -34,7 +34,7 @@
                                 <div class="col-12 text-right">
 {{--                                    @if(Auth::guard('admin')->user()->can('accounting.accounts.create'))--}}
                                     <div class="btn-group" >
-                                            <a href="{{ route('admin.reserves.payment.pos.create',[$reserve,$invoice]) }}" class="btn btn-sm btn-primary">
+                                            <a href="{{ route('admin.reserves.payment.cash.create',[$reserve,$invoice]) }}" class="btn btn-sm btn-primary">
                                             <i class="fa fa-plus plusiconfont"></i>
                                             <b class="IRANYekanRegular">ایجاد پرداخت جدید</b>
                                         </a>
@@ -48,8 +48,6 @@
                                     <thead>
                                     <tr>
                                         <th><b class="IRANYekanRegular">ردیف</b></th>
-                                        <th><b class="IRANYekanRegular">شماره تراکنش</b></th>
-                                        <th><b class="IRANYekanRegular">دستگاه پوز</b></th>
                                         <th><b class="IRANYekanRegular">مبلغ(تومان)</b></th>
                                         <th><b class="IRANYekanRegular">تاریخ پرداخت</b></th>
                                         <th><b class="IRANYekanRegular">صندوقدار</b></th>
@@ -58,29 +56,27 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    @foreach($payments as $index=>$pos)
+                                    @foreach($payments as $index=>$cash)
                                         <tr>
                                             <td><strong class="IRANYekanRegular">{{ ++$index }}</strong></td>
-                                            <td><strong class="IRANYekanRegular">{{ $pos->transaction_number }}</strong></td>
-                                            <td><strong class="IRANYekanRegular">{{ $pos->account->bank_name.' ('.$pos->account->full_name.')' }}</strong></td>
-                                            <td><strong class="IRANYekanRegular">{{ number_format($pos->price) }}</strong></td>
-                                            <td><strong class="IRANYekanRegular">{{ $pos->paidAt() }}</strong></td>
-                                            <td><strong class="IRANYekanRegular">{{ $pos->cashier->fullname??'' }}</strong></td>
-                                            <td><strong class="IRANYekanRegular">{{ $pos->description }}</strong></td>
+                                            <td><strong class="IRANYekanRegular">{{ number_format($cash->price) }}</strong></td>
+                                            <td><strong class="IRANYekanRegular">{{ $cash->paidAt() }}</strong></td>
+                                            <td><strong class="IRANYekanRegular">{{ $cash->cashier->fullname??'' }}</strong></td>
+                                            <td><strong class="IRANYekanRegular">{{ $cash->description }}</strong></td>
                                             <td>
 
 {{--                                                @if(Auth::guard('admin')->user()->can('accounting.accounts.edit'))--}}
-                                                    <a class="btn  btn-icon" href="{{ route('admin.reserves.payment.pos.edit', [$reserve,$invoice,$pos]) }}" title="ویرایش">
+                                                    <a class="btn  btn-icon" href="{{ route('admin.reserves.payment.cash.edit', [$reserve,$invoice,$cash]) }}" title="ویرایش">
                                                         <i class="fa fa-edit text-success font-20"></i>
                                                     </a>
 {{--                                                @endif--}}
 
 {{--                                                    @if(Auth::guard('admin')->user()->can('accounting.accounts.delete'))--}}
-                                                    <a href="#remove{{ $pos->id }}" data-toggle="modal" class="btn btn-icon" title="حذف">
+                                                    <a href="#remove{{ $cash->id }}" data-toggle="modal" class="btn btn-icon" title="حذف">
                                                         <i class="fa fa-trash text-danger font-20"></i>
                                                     </a>
                                                     <!-- Remove Modal -->
-                                                    <div class="modal fade" id="remove{{ $pos->id }}" tabindex="-1" aria-labelledby="reviewLabel" aria-hidden="true">
+                                                    <div class="modal fade" id="remove{{ $cash->id }}" tabindex="-1" aria-labelledby="reviewLabel" aria-hidden="true">
                                                         <div class="modal-dialog modal-xs">
                                                             <div class="modal-content">
                                                                 <div class="modal-header py-3">
@@ -93,7 +89,7 @@
                                                                     <h5 class="IRANYekanRegular">آیا مطمئن هستید که مخواهید این  پرداختی را حذف کنید؟</h5>
                                                                 </div>
                                                                 <div class="modal-footer">
-                                                                    <form action="{{ route('admin.reserves.payment.pos.destroy', [$reserve,$invoice,$pos]) }}"  method="POST" class="d-inline">
+                                                                    <form action="{{ route('admin.reserves.payment.cash.destroy', [$reserve,$invoice,$cash]) }}"  method="POST" class="d-inline">
                                                                         @csrf
                                                                         @method('DELETE')
                                                                         <button type="submit" class="btn btn-danger px-8" title="حذف" >حذف</button>
@@ -104,8 +100,6 @@
                                                         </div>
                                                     </div>
 {{--                                                    @endif--}}
-
-
                                             </td>
                                         </tr>
                                     @endforeach

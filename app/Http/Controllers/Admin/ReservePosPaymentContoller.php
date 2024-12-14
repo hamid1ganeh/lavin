@@ -9,6 +9,7 @@ use App\Models\ReserveInvoice;
 use App\Models\ReservePayment;
 use App\Models\ServiceReserve;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Morilog\Jalali\Jalalian;
 
 class ReservePosPaymentContoller extends Controller
@@ -16,13 +17,13 @@ class ReservePosPaymentContoller extends Controller
 
     public function index(ServiceReserve $reserve,ReserveInvoice $invoice)
     {
-         $posPayments = PosPayment::with('account')
+         $payments = PosPayment::with('account')
                                     ->where('payable_type',get_class($invoice))
                                     ->where('payable_id',$invoice->id)
-                                    ->orderBy('paid_at','asc')
+                                    ->orderBy('paid_at','desc')
                                     ->get();
 
-         return  view('admin.reserves.payment.pos.all',compact('reserve','invoice','posPayments'));
+         return  view('admin.reserves.payment.pos.all',compact('reserve','invoice','payments'));
     }
 
     public function create(ServiceReserve $reserve,ReserveInvoice $invoice)
@@ -30,7 +31,6 @@ class ReservePosPaymentContoller extends Controller
         $accounts = Account::where('pos',true)->orderBy('bank_name')->get();
         return  view('admin.reserves.payment.pos.create',compact('reserve','invoice','accounts'));
     }
-
 
     public function store(ServiceReserve $reserve,ReserveInvoice $invoice,Request $request)
     {
@@ -57,7 +57,8 @@ class ReservePosPaymentContoller extends Controller
                              'price'=>$request->price,
                              'transaction_number'=> $request->transaction_number,
                              'paid_at'=> $paidAt,
-                             'description'=> $request->description]);
+                             'description'=> $request->description,
+                             'cashier_id'=>Auth::guard('admin')->id()]);
 
         toast('پرداختی شما ثبت شد.','success')->position('bottom-end');
 
@@ -94,7 +95,8 @@ class ReservePosPaymentContoller extends Controller
                       'price'=>$request->price,
                       'transaction_number'=> $request->transaction_number,
                       'paid_at'=> $paidAt,
-                      'description'=> $request->description]);
+                      'description'=> $request->description,
+                      'cashier_id'=>Auth::guard('admin')->id()]);
 
         toast('بروزرسانی انجام شد.','success')->position('bottom-end');
 
