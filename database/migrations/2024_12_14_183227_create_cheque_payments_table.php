@@ -28,6 +28,7 @@ class CreateChequePaymentsTable extends Migration
             $table->unsignedBigInteger('cashier_id');
             $table->boolean('passed')->default(false);
             $table->dateTime('passed_date')->nullable();
+            $table->string('description')->nullable();
             $table->string('type',1)->default(PaymentType::income);
             $table->timestamps();
 

@@ -8,7 +8,7 @@ use Morilog\Jalali\CalendarUtils;
 class ChequePayment extends Model
 {
      protected $fillable=['payable_type','payable_id','passed_by_account_id','serial_number','sender_full_name','sender_nation_code',
-                            'sender_account_number','price','date_of_issue','due_date','cashier_id','passed','passed_date'];
+                            'sender_account_number','price','date_of_issue','due_date','cashier_id','passed','passed_date','description'];
 
     public function payable()
     {
