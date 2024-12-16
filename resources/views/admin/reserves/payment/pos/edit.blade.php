@@ -30,7 +30,7 @@
                     <div class="page-title-box">
                         <div class="page-title-right">
                             <ol class="breadcrumb m-0 IR">
-{{--                                {{ Breadcrumbs::render('accounting.accounts.create') }}--}}
+                           {{ Breadcrumbs::render('reserves.payment.invoice.pos.edit',$reserve,$invoice,$pos) }}
                             </ol>
                         </div>
                         <h4 class="page-title">
@@ -63,14 +63,14 @@
                                     @method('PUT')
                                     <div class="row">
                                         <div class="form-group col-12 col-md-6">
-                                            <label for="account" class="control-label IRANYekanRegular">حساب بانکی</label>
-                                            <select name="account" id="account" class="form-control dropdown IR" required>
+                                            <label for="receiver_account_id" class="control-label IRANYekanRegular">حساب بانکی</label>
+                                            <select name="receiver_account_id" id="receiver_account_id" class="form-control dropdown IR" required>
                                                 <option value="">حساب بانکی را انتخاب کنید.</option>
                                                  @foreach($accounts as $account)
-                                                    <option value="{{ $account->id }}" @if($account->id==old('account') || $account->id==$pos->account_id) selected @endif>{{ $account->bank_name.' ('.$account->full_name.')' }}</option>
+                                                    <option value="{{ $account->id }}" @if($account->id==old('receiver_account_id') || $account->id==$pos->receiver_account_id) selected @endif>{{ $account->bank_name.' ('.$account->full_name.')' }}</option>
                                                   @endforeach
                                             </select>
-                                            <span class="form-text text-danger erroralarm"> {{ $errors->first('account') }} </span>
+                                            <span class="form-text text-danger erroralarm"> {{ $errors->first('receiver_account_id') }} </span>
                                         </div>
                                         <div class="form-group col-12 col-md-6">
                                             <label for="price" class="control-label IRANYekanRegular">مبلغ (تومان)</label>

@@ -12,7 +12,7 @@
                     <div class="page-title-box">
                         <div class="page-title-right">
                             <ol class="breadcrumb m-0 IR">
-<!--                                {{--                            {{ Breadcrumbs::render('reserves.create') }}--}}-->
+                            {{ Breadcrumbs::render('reserves.payment.invoice',$reserve) }}
                             </ol>
                         </div>
                         <h4 class="page-title">
@@ -88,7 +88,13 @@
                         <div class="col-12">
                             <p class="card-text IRANYekanRegular">تخفیف:&nbsp; {{ number_format($invoice->discount_price ?? 0) }}&nbsp;تومان</p>
                             <p class="card-text IRANYekanRegular"> توضیحات تخفیف:&nbsp; {{ $invoice->discount_description ?? ''}}</p>
-                            <h3 class="card-text IRANYekanRegular text-danger">مبلغ قابل پرداخت:&nbsp; {{ number_format($invoice->final_price ?? 0) }}&nbsp;تومان</h3>
+                            <h3 class="card-text IRANYekanRegular">مبلغ قابل پرداخت:&nbsp; {{ number_format($invoice->final_price ?? 0) }}&nbsp;تومان</h3>
+                            <h3 class="card-text IRANYekanRegular text-primary">مبلغ پرداخت شده:&nbsp; {{ number_format($sumPaid ?? 0) }}&nbsp;تومان</h3>
+                            @if($remained >= 0)
+                                <h3 class="card-text IRANYekanRegular text-danger">بدهکار:&nbsp; {{ number_format($remained ?? 0) }}&nbsp;تومان</h3>
+                            @else
+                                <h3 class="card-text IRANYekanRegular text-success">بستانکار:&nbsp; {{ number_format($remained ?? 0) }}&nbsp;تومان</h3>
+                            @endif
                         </div>
                     </div>
                 </div>

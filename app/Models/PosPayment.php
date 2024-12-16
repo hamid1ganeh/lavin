@@ -7,16 +7,21 @@ use Morilog\Jalali\CalendarUtils;
 
 class PosPayment extends Model
 {
-     protected $fillable=['payable_id','payable_type','account_id','transaction_number','price','paid_at','description','cashier_id'];
+     protected $fillable=['payable_id','payable_type','receiver_account_id','sender_account_id','transaction_number','price','paid_at','description','cashier_id'];
 
     public function payable()
     {
         return $this->morphTo();
     }
 
-    public function account()
+    public function receiverAccount()
     {
-        return $this->belongsTo(Account::class);
+        return $this->belongsTo(Account::class,'receiver_account_id','id');
+    }
+
+    public function senderAccount()
+    {
+        return $this->belongsTo(Account::class,'sender_account_id','id');
     }
 
     public function cashier()

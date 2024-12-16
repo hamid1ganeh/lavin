@@ -14,7 +14,7 @@
                     <div class="page-title-box">
                         <div class="page-title-right">
                             <ol class="breadcrumb m-0 IR">
-{{--                             {{ Breadcrumbs::render('accounting.accounts.index') }}--}}
+                             {{ Breadcrumbs::render('reserves.payment.invoice.pos',$reserve,$invoice) }}
                             </ol>
                         </div>
                         <h4 class="page-title">
@@ -62,7 +62,7 @@
                                         <tr>
                                             <td><strong class="IRANYekanRegular">{{ ++$index }}</strong></td>
                                             <td><strong class="IRANYekanRegular">{{ $pos->transaction_number }}</strong></td>
-                                            <td><strong class="IRANYekanRegular">{{ $pos->account->bank_name.' ('.$pos->account->full_name.')' }}</strong></td>
+                                            <td><strong class="IRANYekanRegular">{{ $pos->receiverAccount->bank_name.' ('.$pos->receiverAccount->full_name.')' }}</strong></td>
                                             <td><strong class="IRANYekanRegular">{{ number_format($pos->price) }}</strong></td>
                                             <td><strong class="IRANYekanRegular">{{ $pos->paidAt() }}</strong></td>
                                             <td><strong class="IRANYekanRegular">{{ $pos->cashier->fullname??'' }}</strong></td>

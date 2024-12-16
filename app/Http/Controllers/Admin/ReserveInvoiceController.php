@@ -2,10 +2,15 @@
 
 namespace App\Http\Controllers\admin;
 
+use App\Enums\PaymentType;
 use App\Enums\ReserveStatus;
 use App\Enums\Status;
 use App\Http\Controllers\Controller;
+use App\Models\CardToCardPayment;
+use App\Models\CashPayment;
+use App\Models\ChequePayment;
 use App\Models\Discount;
+use App\Models\PosPayment;
 use App\Models\ReserveInvoice;
 use App\Models\ReservePayment;
 use App\Models\ReserveUpgrade;
@@ -156,6 +161,33 @@ class ReserveInvoiceController extends Controller
               $invoice->save();
           }
 
-        return view('admin.reserves.payment.invoice',compact('invoice','reserve'));
+            $sumCash = CashPayment::where('payable_type',get_class($invoice))
+                ->where('payable_id',$invoice->id)
+                ->where('type',PaymentType::income)
+                ->sum('price');
+
+            $sumCard = CardToCardPayment::where('payable_type',get_class($invoice))
+                ->where('payable_id',$invoice->id)
+                ->where('type',PaymentType::income)
+                ->sum('price');
+
+
+        $sumPos = PosPayment::where('payable_type',get_class($invoice))
+                                ->where('payable_id',$invoice->id)
+                                ->where('type',PaymentType::income)
+                                ->sum('price');
+
+
+        $sumCheque = ChequePayment::where('payable_type',get_class($invoice))
+                                    ->where('payable_id',$invoice->id)
+                                    ->where('type',PaymentType::income)
+                                    ->where('passed',true)
+                                    ->sum('price');
+
+        $sumPaid = $sumPos+$sumCard+$sumCash+$sumCheque;
+        $remained =  $invoice->final_price - $sumPaid;
+
+
+        return view('admin.reserves.payment.invoice',compact('invoice','reserve','sumPaid','remained'));
     }
 }

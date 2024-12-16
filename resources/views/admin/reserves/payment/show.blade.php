@@ -12,7 +12,7 @@
                     <div class="page-title-box">
                         <div class="page-title-right">
                             <ol class="breadcrumb m-0 IR">
-                                {{--                            {{ Breadcrumbs::render('reserves.create') }}--}}
+                           {{ Breadcrumbs::render('reserves.payment.show',$reserve) }}
                             </ol>
                         </div>
                         <h4 class="page-title">

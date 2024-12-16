@@ -292,7 +292,89 @@ Breadcrumbs::for('reserves.upgrade.edit', function ($trail,$reserve,$upgrade) {
     $trail->push('ویرایش ارتقاء', route('admin.reserves.upgrade.edit',[$reserve,$upgrade]));
 });
 
+// داشبورد > رزرو > پیش نمایش صورتحساب
+Breadcrumbs::for('reserves.payment.show', function ($trail,$reserve) {
+    $trail->parent('reserves', $trail);
+    $trail->push('پیش نمایش صورتحساب', route('admin.reserves.payment.show',$reserve));
+});
 
+// داشبورد > رزرو >  صورتحساب
+Breadcrumbs::for('reserves.payment.invoice', function ($trail,$reserve) {
+    $trail->parent('reserves', $trail);
+    $trail->push('صورتحساب', route('admin.reserves.payment.invoice',$reserve));
+});
+
+// داشبورد > رزرو > صورتحساب > پرداختی های دستگاه پوز
+Breadcrumbs::for('reserves.payment.invoice.pos', function ($trail,$reserve,$invoice) {
+    $trail->parent('reserves.payment.invoice',$reserve);
+    $trail->push('پرداختی های دستگاه پوز', route('admin.reserves.payment.pos.index',[$reserve,$invoice]));
+});
+
+// داشبورد > رزرو > صورتحساب > پرداختی های دستگاه پوز > ایجاد پرداختی جدید
+Breadcrumbs::for('reserves.payment.invoice.pos.create', function ($trail,$reserve,$invoice) {
+    $trail->parent('reserves.payment.invoice.pos',$reserve,$invoice);
+    $trail->push('ایجاد پرداختی جدید', route('admin.reserves.payment.pos.create',[$reserve,$invoice]));
+});
+
+// داشبورد > رزرو > صورتحساب > پرداختی های دستگاه پوز > ویرایش پرداختی
+Breadcrumbs::for('reserves.payment.invoice.pos.edit', function ($trail,$reserve,$invoice,$pos) {
+    $trail->parent('reserves.payment.invoice.pos',$reserve,$invoice);
+    $trail->push('ویرایش پرداختی', route('admin.reserves.payment.pos.edit',[$reserve,$invoice,$pos]));
+});
+
+// داشبورد > رزرو > صورتحساب > پرداختی های کارت به کارت
+Breadcrumbs::for('reserves.payment.invoice.card', function ($trail,$reserve,$invoice) {
+    $trail->parent('reserves.payment.invoice',$reserve);
+    $trail->push('پرداختی های کارت به کارت', route('admin.reserves.payment.card.index',[$reserve,$invoice]));
+});
+
+// داشبورد > رزرو > صورتحساب > پرداختی های کارت به کارت > ایجاد پرداختی جدید
+Breadcrumbs::for('reserves.payment.invoice.card.create', function ($trail,$reserve,$invoice) {
+    $trail->parent('reserves.payment.invoice.card',$reserve,$invoice);
+    $trail->push('ایجاد پرداختی جدید', route('admin.reserves.payment.card.create',[$reserve,$invoice]));
+});
+
+// داشبورد > رزرو > صورتحساب > پرداختی های کارت به کارت > ویرایش پرداختی
+Breadcrumbs::for('reserves.payment.invoice.card.edit', function ($trail,$reserve,$invoice,$card) {
+    $trail->parent('reserves.payment.invoice.card',$reserve,$invoice);
+    $trail->push('ویرایش پرداختی', route('admin.reserves.payment.card.edit',[$reserve,$invoice,$card]));
+});
+
+// داشبورد > رزرو > صورتحساب > پرداختی های نقدی
+Breadcrumbs::for('reserves.payment.invoice.cash', function ($trail,$reserve,$invoice) {
+    $trail->parent('reserves.payment.invoice',$reserve);
+    $trail->push('پرداختی های نقدی', route('admin.reserves.payment.cash.index',[$reserve,$invoice]));
+});
+
+// داشبورد > رزرو > صورتحساب > پرداختی های نقدی > ایجاد پرداختی جدید
+Breadcrumbs::for('reserves.payment.invoice.cash.create', function ($trail,$reserve,$invoice) {
+    $trail->parent('reserves.payment.invoice.cash',$reserve,$invoice);
+    $trail->push('ایجاد پرداختی جدید', route('admin.reserves.payment.cash.create',[$reserve,$invoice]));
+});
+
+// داشبورد > رزرو > صورتحساب > پرداختی های نقدی > ویرایش پرداختی
+Breadcrumbs::for('reserves.payment.invoice.cash.edit', function ($trail,$reserve,$invoice,$cash) {
+    $trail->parent('reserves.payment.invoice.cash',$reserve,$invoice);
+    $trail->push('ویرایش پرداختی', route('admin.reserves.payment.cash.edit',[$reserve,$invoice,$cash]));
+});
+
+// داشبورد > رزرو > صورتحساب > چکهای پرداختی
+Breadcrumbs::for('reserves.payment.invoice.cheque', function ($trail,$reserve,$invoice) {
+    $trail->parent('reserves.payment.invoice',$reserve);
+    $trail->push('چکهای پرداختی', route('admin.reserves.payment.cheque.index',[$reserve,$invoice]));
+});
+
+// داشبورد > رزرو > صورتحساب > چکهای پرداختی > ایجاد پرداختی جدید
+Breadcrumbs::for('reserves.payment.invoice.cheque.create', function ($trail,$reserve,$invoice) {
+    $trail->parent('reserves.payment.invoice.cheque',$reserve,$invoice);
+    $trail->push('ایجاد پرداختی جدید', route('admin.reserves.payment.cheque.create',[$reserve,$invoice]));
+});
+
+// داشبورد > رزرو > صورتحساب > چکهای پرداختی > ویرایش پرداختی
+Breadcrumbs::for('reserves.payment.invoice.cheque.edit', function ($trail,$reserve,$invoice,$cheque) {
+    $trail->parent('reserves.payment.invoice.cheque',$reserve,$invoice);
+    $trail->push('ویرایش پرداختی', route('admin.reserves.payment.cheque.edit',[$reserve,$invoice,$cheque]));
+});
 
 
 // داشبورد > شعبه ها

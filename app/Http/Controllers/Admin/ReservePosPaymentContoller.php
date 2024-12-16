@@ -17,7 +17,7 @@ class ReservePosPaymentContoller extends Controller
 
     public function index(ServiceReserve $reserve,ReserveInvoice $invoice)
     {
-         $payments = PosPayment::with('account')
+         $payments = PosPayment::with('receiverAccount')
                                     ->where('payable_type',get_class($invoice))
                                     ->where('payable_id',$invoice->id)
                                     ->orderBy('paid_at','desc')
@@ -35,12 +35,12 @@ class ReservePosPaymentContoller extends Controller
     public function store(ServiceReserve $reserve,ReserveInvoice $invoice,Request $request)
     {
         $request->validate([
-            'account'=>'required|exists:accounts,id',
+            'receiver_account_id'=>'required|exists:accounts,id',
             'price'=>'required|integer',
             'transaction_number'=>'nullable|max:255',
             'paid_at'=>'required',
             'description'=>'nullable|max:255',
-        ],[ 'account.required' => 'انتخاب حساب بانکی الزامی است.',
+        ],[ 'receiver_account_id.required' => 'انتخاب حساب بانکی الزامی است.',
             'price.required' => 'مبلغ تراکنش الزامی است.',
             'price.integer' => 'مبلغ تراکنش معتبر نیست.',
             'paid_at.required' => 'تاریخ تراکنش الزامی است.',
@@ -53,7 +53,7 @@ class ReservePosPaymentContoller extends Controller
 
         PosPayment::create(['payable_type'=>get_class($invoice),
                             'payable_id'=> $invoice->id,
-                            'account_id'=>$request->account,
+                            'receiver_account_id'=>$request->receiver_account_id,
                              'price'=>$request->price,
                              'transaction_number'=> $request->transaction_number,
                              'paid_at'=> $paidAt,
@@ -75,12 +75,12 @@ class ReservePosPaymentContoller extends Controller
     public function update(ServiceReserve $reserve,ReserveInvoice $invoice,PosPayment $pos,Request $request)
     {
         $request->validate([
-            'account'=>'required|exists:accounts,id',
+            'receiver_account_id'=>'required|exists:accounts,id',
             'price'=>'required|integer',
             'transaction_number'=>'nullable|max:255',
             'paid_at'=>'required',
             'description'=>'nullable|max:255',
-        ],[ 'account.required' => 'انتخاب حساب بانکی الزامی است.',
+        ],[ 'receiver_account_id.required' => 'انتخاب حساب بانکی الزامی است.',
             'price.required' => 'مبلغ تراکنش الزامی است.',
             'price.integer' => 'مبلغ تراکنش معتبر نیست.',
             'paid_at.required' => 'تاریخ تراکنش الزامی است.',
@@ -91,7 +91,7 @@ class ReservePosPaymentContoller extends Controller
         $paidAt =  faToEn($request->paid_at);
         $paidAt = Jalalian::fromFormat('Y/m/d H:i', $paidAt)->toCarbon("Y-m-d H:i");
 
-        $pos->update(['account_id'=>$request->account,
+        $pos->update(['receiver_account_id'=>$request->receiver_account_id,
                       'price'=>$request->price,
                       'transaction_number'=> $request->transaction_number,
                       'paid_at'=> $paidAt,
