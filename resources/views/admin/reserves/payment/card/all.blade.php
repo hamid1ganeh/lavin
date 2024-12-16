@@ -14,7 +14,7 @@
                     <div class="page-title-box">
                         <div class="page-title-right">
                             <ol class="breadcrumb m-0 IR">
-                                {{ Breadcrumbs::render('reserves.payment.cache.card',$reserve,$invoice) }}
+                                {{ Breadcrumbs::render('reserves.payment.invoice.card',$reserve,$invoice) }}
                             </ol>
                         </div>
                         <h4 class="page-title">
