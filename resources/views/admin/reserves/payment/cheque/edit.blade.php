@@ -74,6 +74,7 @@
                             <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" style="margin:auto">
                                 <form class="form-horizontal" action="{{ route('admin.reserves.payment.cheque.update',[$reserve,$invoice,$cheque]) }}" method="post">
                                     {{ csrf_field() }}
+                                    @method('PUT')
 
                                     <div class="row">
                                         <div class="form-group col-12 col-md-4">

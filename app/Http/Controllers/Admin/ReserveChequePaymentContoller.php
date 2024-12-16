@@ -35,7 +35,6 @@ class ReserveChequePaymentContoller extends Controller
 
     public function store(ServiceReserve $reserve,ReserveInvoice $invoice,Request $request)
     {
-        return "Dfd";
         $request->validate(
             [
                 'sender_full_name' => ['required','max:255'],
@@ -88,7 +87,7 @@ class ReserveChequePaymentContoller extends Controller
 
     public function edit(ServiceReserve $reserve,ReserveInvoice $invoice,ChequePayment $cheque)
     {
-        return redirect(route('admin.reserves.payment.cheque.edit',[$reserve,$invoice,$cheque]));
+        return  view('admin.reserves.payment.cheque.edit',compact('reserve','invoice','cheque'));
     }
 
 
@@ -127,9 +126,7 @@ class ReserveChequePaymentContoller extends Controller
         $dueDate =  faToEn($request->due_date);
         $dueDate = Jalalian::fromFormat('Y/m/d', $dueDate)->toCarbon("Y-m-d");
 
-        $cheque->update(['payable_type'=>get_class($invoice),
-                        'payable_id'=> $invoice->id,
-                        'sender_full_name'=>$request->sender_full_name,
+        $cheque->update(['sender_full_name'=>$request->sender_full_name,
                         'sender_nation_code'=>$request->sender_nation_code,
                         'sender_account_number'=>$request->sender_account_number,
                         'serial_number'=>$request->serial_number,
@@ -137,8 +134,7 @@ class ReserveChequePaymentContoller extends Controller
                         'date_of_issue'=> $dateOfIssue,
                         'due_date'=> $dueDate,
                         'description'=> $request->description,
-                        'cashier_id'=>Auth::guard('admin')->id(),
-                        'type'=>PaymentType::income]);
+                        'cashier_id'=>Auth::guard('admin')->id()]);
 
         toast('بروزرسانی انجام شد.','success')->position('bottom-end');
         return redirect(route('admin.reserves.payment.cheque.index',[$reserve,$invoice]));
