@@ -17,7 +17,7 @@
                         </div>
                         <h4 class="page-title">
                             <i class="fas fa-dollar-sign page-icon"></i>
-                            پرداخت
+                            پیش نمایش صورتحساب
                         </h4>
                     </div>
                 </div>
