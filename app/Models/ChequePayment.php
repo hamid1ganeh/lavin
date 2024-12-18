@@ -16,7 +16,7 @@ class ChequePayment extends Model
     }
     public function passedByAccount()
     {
-        return $this->belongsTo(Account::class,'sender_account_id','id');
+        return $this->belongsTo(Account::class,'passed_by_account_id','id');
     }
     public function cashier()
     {
@@ -34,6 +34,9 @@ class ChequePayment extends Model
 
     public function passedDate()
     {
+        if (is_null($this->passed_date)){
+            return null;
+        }
         return CalendarUtils::convertNumbers(CalendarUtils::strftime('Y/m/d',strtotime($this->passed_date)));
     }
 
@@ -43,7 +46,8 @@ class ChequePayment extends Model
         if (is_null($this->passed_by_account_id)){
             return null;
         }
-        $this->passedByAccount->bank_name.' ('.$this->reciverAccount->full_name.')';
+
+      return  $this->passedByAccount->bank_name.' ('.$this->passedByAccount->full_name.')';
     }
 
 }

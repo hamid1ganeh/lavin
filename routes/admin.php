@@ -580,6 +580,7 @@ Route::group(['middleware' => 'auth.admin'], function () {
               Route::get('/{cheque}/edit', 'ReserveChequePaymentContoller@edit')->name('edit');
               Route::put('/{cheque}/update', 'ReserveChequePaymentContoller@update')->name('update');
               Route::delete('/{cheque}/destroy', 'ReserveChequePaymentContoller@destroy')->name('destroy');
+              Route::patch('/{cheque}/pass', 'ReserveChequePaymentContoller@pass')->name('pass');
           });
 
 

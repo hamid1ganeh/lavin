@@ -20,6 +20,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Enums\DiscountType;
 use Illuminate\Support\Facades\DB;
+use Auth;
 
 class ReserveInvoiceController extends Controller
 {
@@ -27,7 +28,11 @@ class ReserveInvoiceController extends Controller
     {
         //اجازه دسترسی
         config(['auth.defaults.guard' => 'admin']);
-        $this->authorize('reserves.payment');
+        $this->authorize('reserves.payment.show');
+        if (!in_array($reserve->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
+        {
+            abort(403);
+        }
 
         $invoice = ReserveInvoice::where('reserve_id',$reserve->id)->first();
         if (!is_null($invoice)){
@@ -51,6 +56,14 @@ class ReserveInvoiceController extends Controller
 
     public function create(ServiceReserve $reserve,Request $request)
     {
+        //اجازه دسترسی
+        config(['auth.defaults.guard' => 'admin']);
+        $this->authorize('reserves.payment.create');
+        if (!in_array($reserve->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
+        {
+            abort(403);
+        }
+
         $invoice = ReserveInvoice::where('reserve_id',$reserve->id)->firstOrNew();
         $sumUpgradesPrice = ReserveUpgrade::where('reserve_id',$reserve->id)->where('status',ReserveStatus::confirm)->sum('price');
 
@@ -148,6 +161,14 @@ class ReserveInvoiceController extends Controller
 
     public function invoice(ServiceReserve $reserve)
     {
+        //اجازه دسترسی
+        config(['auth.defaults.guard' => 'admin']);
+        $this->authorize('reserves.payment.invoice');
+        if (!in_array($reserve->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
+        {
+            abort(403);
+        }
+
           $invoice = ReserveInvoice::with('reserve.user')->where('reserve_id',$reserve->id)->first();
           if (is_null($invoice)){
               return redirect(route('admin.reserves.payment.show',$reserve));

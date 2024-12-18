@@ -17,6 +17,14 @@ class ReserveCardToCardPaymentContoller extends Controller
 
     public function index(ServiceReserve $reserve,ReserveInvoice $invoice)
     {
+        //اجازه دسترسی
+        config(['auth.defaults.guard' => 'admin']);
+        $this->authorize('reserves.payment.invoice.card.index');
+        if (!in_array($reserve->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
+        {
+            abort(403);
+        }
+
         $payments = CardToCardPayment::with('reciverAccount')
             ->where('payable_type',get_class($invoice))
             ->where('payable_id',$invoice->id)
@@ -29,12 +37,28 @@ class ReserveCardToCardPaymentContoller extends Controller
 
     public function create(ServiceReserve $reserve,ReserveInvoice $invoice)
     {
+        //اجازه دسترسی
+        config(['auth.defaults.guard' => 'admin']);
+        $this->authorize('reserves.payment.invoice.card.create');
+        if (!in_array($reserve->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
+        {
+            abort(403);
+        }
+
         $accounts = Account::orderBy('bank_name')->get();
         return  view('admin.reserves.payment.card.create',compact('reserve','invoice','accounts'));
     }
 
     public function store(ServiceReserve $reserve,ReserveInvoice $invoice,Request $request)
     {
+        //اجازه دسترسی
+        config(['auth.defaults.guard' => 'admin']);
+        $this->authorize('reserves.payment.invoice.card.create');
+        if (!in_array($reserve->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
+        {
+            abort(403);
+        }
+
         $request->validate([
             'sender_full_name'=>'nullable|max:255',
             'sender_cart_number'=>'nullable|max:255|max:16|min:16',
@@ -78,12 +102,28 @@ class ReserveCardToCardPaymentContoller extends Controller
 
     public function edit(ServiceReserve $reserve,ReserveInvoice $invoice,CardToCardPayment $card)
     {
+        //اجازه دسترسی
+        config(['auth.defaults.guard' => 'admin']);
+        $this->authorize('reserves.payment.invoice.card.edit');
+        if (!in_array($reserve->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
+        {
+            abort(403);
+        }
+
         $accounts = Account::orderBy('bank_name')->get();
         return  view('admin.reserves.payment.card.edit',compact('reserve','invoice','accounts','card'));
     }
 
     public function update(ServiceReserve $reserve,ReserveInvoice $invoice,CardToCardPayment $card,Request $request)
     {
+        //اجازه دسترسی
+        config(['auth.defaults.guard' => 'admin']);
+        $this->authorize('reserves.payment.invoice.card.edit');
+        if (!in_array($reserve->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
+        {
+            abort(403);
+        }
+
         $request->validate([
             'sender_full_name'=>'nullable|max:255',
             'sender_cart_number'=>'nullable|max:255|max:16|min:16',
@@ -123,6 +163,14 @@ class ReserveCardToCardPaymentContoller extends Controller
 
     public function destroy(ServiceReserve $reserve,ReserveInvoice $invoice,CardToCardPayment $card)
     {
+        //اجازه دسترسی
+        config(['auth.defaults.guard' => 'admin']);
+        $this->authorize('reserves.payment.invoice.card.delete');
+        if (!in_array($reserve->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
+        {
+            abort(403);
+        }
+
         $card->delete();
         toast('پرداختی مورد نظر حذف شد.','error')->position('bottom-end');
         return back()->withInput();

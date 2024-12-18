@@ -17,6 +17,14 @@ class ReservePosPaymentContoller extends Controller
 
     public function index(ServiceReserve $reserve,ReserveInvoice $invoice)
     {
+        //اجازه دسترسی
+        config(['auth.defaults.guard' => 'admin']);
+        $this->authorize('reserves.payment.invoice.pos.index');
+        if (!in_array($reserve->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
+        {
+            abort(403);
+        }
+
          $payments = PosPayment::with('receiverAccount')
                                     ->where('payable_type',get_class($invoice))
                                     ->where('payable_id',$invoice->id)
@@ -28,12 +36,28 @@ class ReservePosPaymentContoller extends Controller
 
     public function create(ServiceReserve $reserve,ReserveInvoice $invoice)
     {
+        //اجازه دسترسی
+        config(['auth.defaults.guard' => 'admin']);
+        $this->authorize('reserves.payment.invoice.pos.create');
+        if (!in_array($reserve->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
+        {
+            abort(403);
+        }
+
         $accounts = Account::where('pos',true)->orderBy('bank_name')->get();
         return  view('admin.reserves.payment.pos.create',compact('reserve','invoice','accounts'));
     }
 
     public function store(ServiceReserve $reserve,ReserveInvoice $invoice,Request $request)
     {
+        //اجازه دسترسی
+        config(['auth.defaults.guard' => 'admin']);
+        $this->authorize('reserves.payment.invoice.pos.create');
+        if (!in_array($reserve->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
+        {
+            abort(403);
+        }
+
         $request->validate([
             'receiver_account_id'=>'required|exists:accounts,id',
             'price'=>'required|integer',
@@ -68,12 +92,28 @@ class ReservePosPaymentContoller extends Controller
 
     public function edit(ServiceReserve $reserve,ReserveInvoice $invoice,PosPayment $pos)
     {
+        //اجازه دسترسی
+        config(['auth.defaults.guard' => 'admin']);
+        $this->authorize('reserves.payment.invoice.pos.edit');
+        if (!in_array($reserve->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
+        {
+            abort(403);
+        }
+
         $accounts = Account::where('pos',true)->orderBy('bank_name')->get();
         return  view('admin.reserves.payment.pos.edit',compact('reserve','invoice','accounts','pos'));
     }
 
     public function update(ServiceReserve $reserve,ReserveInvoice $invoice,PosPayment $pos,Request $request)
     {
+        //اجازه دسترسی
+        config(['auth.defaults.guard' => 'admin']);
+        $this->authorize('reserves.payment.invoice.pos.edit');
+        if (!in_array($reserve->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
+        {
+            abort(403);
+        }
+
         $request->validate([
             'receiver_account_id'=>'required|exists:accounts,id',
             'price'=>'required|integer',
@@ -106,6 +146,14 @@ class ReservePosPaymentContoller extends Controller
 
     public function destroy(ServiceReserve $reserve,ReserveInvoice $invoice,PosPayment $pos)
     {
+        //اجازه دسترسی
+        config(['auth.defaults.guard' => 'admin']);
+        $this->authorize('reserves.payment.invoice.pos.delete');
+        if (!in_array($reserve->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
+        {
+            abort(403);
+        }
+
         $pos->delete();
         toast('پرداختی مورد نظر حذف شد.','error')->position('bottom-end');
         return back()->withInput();

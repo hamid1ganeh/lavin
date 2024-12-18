@@ -959,7 +959,8 @@
                                                                 </a>
                                                               @endif
 
-                                                               @if(Auth::guard('admin')->user()->can('reserves.payment'))
+                                                               @if(Auth::guard('admin')->user()->can('reserves.payment.show') &&
+                                                                    in_array($reserve->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
                                                                 <a href="{{ route('admin.reserves.payment.show',$reserve) }}" class="dropdown-item IR cursor-pointer" title="پرداخت" target="_blank">
                                                                     <i class="fas fa-dollar-sign text-primary cursor-pointer"></i>
                                                                     <span class="p-1">صورتحساب</span>

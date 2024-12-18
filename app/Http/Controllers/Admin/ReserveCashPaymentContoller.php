@@ -16,6 +16,14 @@ class ReserveCashPaymentContoller extends Controller
 
     public function index(ServiceReserve $reserve,ReserveInvoice $invoice)
     {
+        //اجازه دسترسی
+        config(['auth.defaults.guard' => 'admin']);
+        $this->authorize('reserves.payment.invoice.cash.index');
+        if (!in_array($reserve->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
+        {
+            abort(403);
+        }
+
         $payments = CashPayment::where('payable_type',get_class($invoice))
             ->where('payable_id',$invoice->id)
             ->where('type',PaymentType::income)
@@ -28,11 +36,27 @@ class ReserveCashPaymentContoller extends Controller
 
     public function create(ServiceReserve $reserve,ReserveInvoice $invoice)
     {
+        //اجازه دسترسی
+        config(['auth.defaults.guard' => 'admin']);
+        $this->authorize('reserves.payment.invoice.cash.create');
+        if (!in_array($reserve->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
+        {
+            abort(403);
+        }
+
         return  view('admin.reserves.payment.cash.create',compact('reserve','invoice'));
     }
 
     public function store(ServiceReserve $reserve,ReserveInvoice $invoice,Request $request)
     {
+        //اجازه دسترسی
+        config(['auth.defaults.guard' => 'admin']);
+        $this->authorize('reserves.payment.invoice.cash.create');
+        if (!in_array($reserve->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
+        {
+            abort(403);
+        }
+
         $request->validate([
             'price'=>'required|integer',
             'paid_at'=>'required',
@@ -60,13 +84,26 @@ class ReserveCashPaymentContoller extends Controller
 
     public function edit(ServiceReserve $reserve,ReserveInvoice $invoice,CashPayment $cash)
     {
+        //اجازه دسترسی
+        config(['auth.defaults.guard' => 'admin']);
+        $this->authorize('reserves.payment.invoice.cash.edit');
+        if (!in_array($reserve->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
+        {
+            abort(403);
+        }
         return  view('admin.reserves.payment.cash.edit',compact('reserve','invoice','cash'));
     }
 
-
-
     public function update(ServiceReserve $reserve,ReserveInvoice $invoice,CashPayment $cash,Request $request)
     {
+        //اجازه دسترسی
+        config(['auth.defaults.guard' => 'admin']);
+        $this->authorize('reserves.payment.invoice.cash.edit');
+        if (!in_array($reserve->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
+        {
+            abort(403);
+        }
+
         $request->validate([
             'price'=>'required|integer',
             'paid_at'=>'required',
@@ -92,6 +129,14 @@ class ReserveCashPaymentContoller extends Controller
 
     public function destroy(ServiceReserve $reserve,ReserveInvoice $invoice,CashPayment $cash)
     {
+        //اجازه دسترسی
+        config(['auth.defaults.guard' => 'admin']);
+        $this->authorize('reserves.payment.invoice.cash.delete');
+        if (!in_array($reserve->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
+        {
+            abort(403);
+        }
+
         $cash->delete();
         toast('پرداختی مورد نظر حذف شد.','error')->position('bottom-end');
         return back()->withInput();

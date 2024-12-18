@@ -123,15 +123,16 @@
                     </div>
                 </div>
                 @endif
+
+            @if(Auth::guard('admin')->user()->can('reserves.payment.create') &&
+                in_array($reserve->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
                 <div class="row mt-2">
                     <div class="col-sm-12">
                         <button type="submit" title="ثبت" class="btn btn-primary">صورتحساب پرداخت</button>
                     </div>
                 </div>
+           @endif
        </form>
-
-
-
     </div>
 </div>
 
