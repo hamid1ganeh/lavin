@@ -368,12 +368,14 @@ class NumberController extends Controller
           }
 
          $now = Carbon::now("+3:30");
+
          DB::table('numbers')->whereIn('id',$request->numbers)->update([
             'operator_id'=> $request->operator,
             'management_id'=> $management,
             'status' => $status,
             'operator_date_time' => $now,
-            'festival_id' => $festival
+            'festival_id' => $festival,
+             'updated_at'=>$now
          ]);
 
         foreach ($request->numbers as $number)
