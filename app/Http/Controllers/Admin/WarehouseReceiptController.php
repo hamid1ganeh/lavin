@@ -51,12 +51,14 @@ class WarehouseReceiptController extends Controller
             'seller' => "nullable|max:255",
             'price' => "required|integer",
             'discount' => "required|integer",
+            'description' => "nullable|max:255",
         ],
         [
             "number.max"=>"شماره فاکتور طولانی است.",
             "number.required"=>"شماره فاکتور الزامی است.",
             "number.unique"=>"شماره فاکتور قبلا ثبت شده است.",
             "seller.required"=>"متن طرف حساب طولانی است",
+            "description.required"=>"متن توضیحات طولانی است",
         ]);
 
         if (in_array($request->type,[ReceiptType::received,ReceiptType::returned])){
@@ -74,11 +76,12 @@ class WarehouseReceiptController extends Controller
             $receipt->type = $request->type;
             $receipt->number = $request->number;
             $receipt->seller = $request->seller;
-            $receipt->seller_id  = $request->seller_id ;
+            $receipt->seller_id  = $request->seller_id;
             $receipt->exporter_id  =  Auth::guard('admin')->id();
-            $receipt->price  = $request->price ;
-            $receipt->discount  = $request->discount ;
-            $receipt->total_cost  = $request->price-$request->discount ;
+            $receipt->price  = $request->price;
+            $receipt->discount  = $request->discount;
+            $receipt->total_cost  = $request->price-$request->discount;
+            $receipt->description  = $request->description;
             $receipt->save();
 
             $count = $request->count;
@@ -129,13 +132,15 @@ class WarehouseReceiptController extends Controller
             'number' => "required|max:255|unique:warehouse_receipts,number,".$receipt->id,
             'seller' => "nullable|max:255",
             'price' => "required|integer",
-            'discount' => "required|integer"
+            'discount' => "required|integer",
+            'description' => "nullable|max:255",
         ],
             [
                 "number.max"=>"شماره فاکتور طولانی است.",
                 "number.required"=>"شماره فاکتور الزامی است.",
                 "number.unique"=>"شماره فاکتور قبلا ثبت شده است.",
                 "seller.required"=>"متن طرف حساب طولانی است",
+                "description.required"=>"متن توضیحات طولانی است",
             ]);
 
             if(!isset($request->seller) && !isset($request->seller_id)){
@@ -154,6 +159,7 @@ class WarehouseReceiptController extends Controller
             $receipt->price  = $request->price ;
             $receipt->discount  = $request->discount ;
             $receipt->total_cost  = $request->price-$request->discount ;
+            $receipt->description  = $request->description ;
             $receipt->save();
 
             foreach ($receipt->goods as $good){

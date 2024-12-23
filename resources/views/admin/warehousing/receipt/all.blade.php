@@ -126,6 +126,7 @@
                                         <th><b class="IRANYekanRegular">مبلغ</b></th>
                                         <th><b class="IRANYekanRegular">تخفیف</b></th>
                                         <th><b class="IRANYekanRegular">مبلغ کل</b></th>
+                                        <th><b class="IRANYekanRegular">توضیحات</b></th>
                                         <th><b class="IRANYekanRegular">اقدامات</b></th>
                                     </tr>
                                     </thead>
@@ -150,7 +151,7 @@
                                             <td><strong class="IRANYekanRegular">{{ number_format($receipt->price ?? 0) }}</strong></td>
                                             <td><strong class="IRANYekanRegular">{{ number_format($receipt->discount ?? 0) }}</strong></td>
                                             <td><strong class="IRANYekanRegular">{{ number_format($receipt->total_cost ?? 0) }}</strong></td>
-
+                                            <td><strong class="IRANYekanRegular">{{ $receipt->description }}</strong></td>
                                             <td>
                                                 <!-- Info Modal -->
                                                 <div class="modal fade" id="info{{ $receipt->id }}" tabindex="-1" aria-labelledby="reviewLabel" aria-hidden="true">

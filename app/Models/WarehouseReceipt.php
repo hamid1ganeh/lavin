@@ -7,7 +7,7 @@ use Morilog\Jalali\CalendarUtils;
 
 class WarehouseReceipt extends Model
 {
-    protected $fillable=['type','number','seller','seller_id','exporter_id','price','discount','total_cost'];
+    protected $fillable=['type','number','seller','seller_id','exporter_id','price','discount','total_cost','description'];
     public function user()
     {
         return $this->belongsTo(User::class,'seller_id','id');
@@ -52,7 +52,6 @@ class WarehouseReceipt extends Model
         {
             $query->whereIn('seller_id',$seller_id);
         }
-
     }
 
 }
