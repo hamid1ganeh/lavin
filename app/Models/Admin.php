@@ -163,9 +163,5 @@ class Admin extends Authenticatable
              $until = Jalalian::fromFormat('Y/m/d', $until)->toCarbon("Y-m-d H:i");
              $query->where('created_at','<=',$until);
          }
-
-
-
-
     }
 }

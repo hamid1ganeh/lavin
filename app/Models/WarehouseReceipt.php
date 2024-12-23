@@ -27,4 +27,32 @@ class WarehouseReceipt extends Model
         return $this->hasMany(ReceiptGoods::class,'receipt_id','id');
     }
 
+    public function scopeFilter($query)
+    {
+        $number = request('number');
+        if(isset($number) && $number != '')
+        {
+            $query->where('number','like','%'.$number.'%');
+        }
+
+        $seller = request('seller');
+        if(isset($seller) && $seller != '')
+        {
+            $query->where('seller','like','%'.$seller.'%');
+        }
+
+        $type = request('type');
+        if(isset($type) && $type != '')
+        {
+            $query->whereIn('type',$type);
+        }
+
+        $seller_id = request('seller_id');
+        if(isset($seller_id) && $seller_id != '')
+        {
+            $query->whereIn('seller_id',$seller_id);
+        }
+
+    }
+
 }

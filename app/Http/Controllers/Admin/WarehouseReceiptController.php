@@ -24,7 +24,10 @@ class WarehouseReceiptController extends Controller
 
         $goods = Goods::orderBy('title','asc')->get();
         $sellers = User::where('seller',true)->orderBy('firstname','desc')->orderBy('lastname','desc')->get();
-        $receipts = WarehouseReceipt::orderby('created_at','desc')->paginate(10);
+        $receipts = WarehouseReceipt::orderby('created_at','desc')
+                                    ->filter()
+                                    ->paginate(50)
+                                    ->withQueryString();
         return view('admin.warehousing.receipt.all',compact('goods','sellers','receipts'));
     }
     public function create()
