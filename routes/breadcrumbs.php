@@ -614,40 +614,6 @@ Breadcrumbs::for('orders', function ($trail) {
     $trail->push('لیست فروش', route('admin.shop.sells.index'));
 });
 
-
-//  داشبورد  >  تخفیف ها
-Breadcrumbs::for('discounts', function ($trail) {
-    $trail->parent('home', $trail);
-    $trail->push('تخفیف ها', route('admin.discounts.index'));
-});
-
-
-// داشبورد >  تخفیف ها> ایجاد تخفیف جدید
-Breadcrumbs::for('discounts.create', function ($trail) {
-    $trail->parent('discounts', $trail);
-    $trail->push('تخفیف ها', route('admin.discounts.create'));
-});
-
-// داشبورد >  تخفیف ها> ویرایش تخفیف
-Breadcrumbs::for('discounts.edit', function ($trail,$discount) {
-    $trail->parent('discounts', $trail);
-    $trail->push('ویرایش تخفیف', route('admin.discounts.edit',$discount));
-});
-
-// داشبورد >  تخفیف ها>  کاربر
-Breadcrumbs::for('discounts.users', function ($trail,$discount) {
-    $trail->parent('discounts', $trail);
-    $trail->push('کاربران', route('admin.discounts.users.show',$discount));
-});
-
-
-// داشبورد >  تخفیف ها>  سرویس ها
-Breadcrumbs::for('discounts.services', function ($trail,$services) {
-    $trail->parent('discounts', $trail);
-    $trail->push('سرویس ها', route('admin.discounts.services.show',$services));
-});
-
-
 // داشبورد >   گردونه شانس
 Breadcrumbs::for('luck', function ($trail) {
     $trail->parent('home', $trail);
@@ -1344,6 +1310,39 @@ Breadcrumbs::for('accounting.accounts.edit', function ($trail,$account) {
     $trail->parent('accounting.accounts.index', $trail);
     $trail->push('ایجاد حساب مالی', route('admin.accounting.accounts.edit',compact('account')));
 });
+
+//  داشبورد  >  تخفیف ها
+Breadcrumbs::for('accounting.discounts', function ($trail) {
+    $trail->parent('home', $trail);
+    $trail->push('تخفیف ها', route('admin.accounting.discounts.index'));
+});
+
+
+// داشبورد >  تخفیف ها> ایجاد تخفیف جدید
+Breadcrumbs::for('accounting.discounts.create', function ($trail) {
+    $trail->parent('accounting.discounts', $trail);
+    $trail->push('ایجاد تخفیف جدید', route('admin.accounting.discounts.create'));
+});
+
+// داشبورد >  تخفیف ها> ویرایش تخفیف
+Breadcrumbs::for('accounting.discounts.edit', function ($trail,$discount) {
+    $trail->parent('accounting.discounts', $trail);
+    $trail->push('ویرایش تخفیف', route('admin.accounting.discounts.edit',$discount));
+});
+
+// داشبورد >  تخفیف ها>  کاربر
+Breadcrumbs::for('accounting.discounts.users', function ($trail,$discount) {
+    $trail->parent('accounting.discounts', $trail);
+    $trail->push('کاربران', route('admin.accounting.discounts.users.show',$discount));
+});
+
+
+// داشبورد >  تخفیف ها>  سرویس ها
+Breadcrumbs::for('accounting.discounts.services', function ($trail,$services) {
+    $trail->parent('accounting.discounts', $trail);
+    $trail->push('سرویس ها', route('admin.accounting.discounts.services.show',$services));
+});
+
 
 
 

@@ -667,63 +667,63 @@ class PermissionSeeder extends Seeder
         ]);
 
         DB::table('permissions')->insert([
-            'name' => 'discounts.index',
+            'name' => 'accounting.discounts.index',
             'description' => 'لیست کد تخفیف',
             'status'=> Status::Active
         ]);
 
         DB::table('permissions')->insert([
-            'name' => 'discounts.create',
+            'name' => 'accounting.discounts.create',
             'description' => 'ایجاد کد تخفیف',
             'status'=> Status::Active
         ]);
 
         DB::table('permissions')->insert([
-            'name' => 'discounts.edit',
+            'name' => 'accounting.discounts.edit',
             'description' => 'ویرایش کد تخفیف',
             'status'=> Status::Active
         ]);
 
         DB::table('permissions')->insert([
-            'name' => 'discounts.destroy',
+            'name' => 'accounting.discounts.destroy',
             'description' => 'حذف کد تخفیف',
             'status'=> Status::Active
         ]);
 
 
         DB::table('permissions')->insert([
-            'name' => 'discounts.show',
+            'name' => 'accounting.discounts.show',
             'description' => 'نمایش کد تخفیف',
             'status'=> Status::Active
         ]);
 
 
         DB::table('permissions')->insert([
-            'name' => 'discounts.services.show',
+            'name' => 'accounting.discounts.services.show',
             'description' => 'نمایش سرویس های کد تخفیف',
             'status'=> Status::Deactive
         ]);
 
         DB::table('permissions')->insert([
-            'name' => 'discounts.services.update',
+            'name' => 'accounting.discounts.services.update',
             'description' => 'بروزرسانی سرویس های کد تخفیف',
             'status'=> Status::Deactive
         ]);
 
         DB::table('permissions')->insert([
-            'name' => 'discounts.user.show',
+            'name' => 'accounting.discounts.user.show',
             'description' => 'نمایش کاربران های کد تخفیف',
             'status'=> Status::Deactive
         ]);
 
         DB::table('permissions')->insert([
-            'name' => 'discounts.user.update',
+            'name' => 'accounting.discounts.user.update',
             'description' => 'بروزرسانی کاربران کد تخفیف',
             'status'=> Status::Deactive
         ]);
 
         DB::table('permissions')->insert([
-            'name' => 'discounts.festival.update',
+            'name' => 'accounting.discounts.festival.update',
             'description' => 'بروزرسانی جشنواره های کد تخفیف',
             'status'=> Status::Active
         ]);

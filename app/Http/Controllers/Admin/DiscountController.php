@@ -29,7 +29,7 @@ class DiscountController extends Controller
     {
         //اجازه دسترسی
         config(['auth.defaults.guard' => 'admin']);
-        $this->authorize('discounts.index');
+        $this->authorize('accounting.discounts.index');
 
         $users = User::orderBy('firstname','asc')->orderBy('lastname','asc')->get();
         $levels = Level::orderBy('point','desc')->get();
@@ -43,7 +43,7 @@ class DiscountController extends Controller
 
         $festivals = Festival::where('status',Status::Active)->orderBy('title','asc')->get();
 
-        return view('admin.discount.all',compact('discounts','users','levels','festivals'));
+        return view('admin.accounting.discount.all',compact('discounts','users','levels','festivals'));
     }
 
 
@@ -51,9 +51,9 @@ class DiscountController extends Controller
     {
         //اجازه دسترسی
         config(['auth.defaults.guard' => 'admin']);
-        $this->authorize('discounts.create');
+        $this->authorize('accounting.discounts.create');
 
-        return view('admin.discount.create');
+        return view('admin.accounting.discount.create');
     }
 
 
@@ -61,7 +61,7 @@ class DiscountController extends Controller
     {
         //اجازه دسترسی
         config(['auth.defaults.guard' => 'admin']);
-        $this->authorize('discounts.create');
+        $this->authorize('accounting.discounts.create');
 
         if($request->unit == DiscountType::percet && ($request->value>100 || $request->value<0))
         {
@@ -111,22 +111,16 @@ class DiscountController extends Controller
             toast('کد تخفیف جدید ثبت شد. ','success')->position('bottom-end');
         }
 
-       return redirect(route('admin.discounts.index'));
+       return redirect(route('admin.accounting.discounts.index'));
     }
-
-    public function show($id)
-    {
-        //
-    }
-
 
     public function edit(Discount $discount)
     {
         //اجازه دسترسی
         config(['auth.defaults.guard' => 'admin']);
-        $this->authorize('discounts.edit');
+        $this->authorize('accounting.discounts.edit');
 
-        return view('admin.discount.edit',compact('discount'));
+        return view('admin.accounting.discount.edit',compact('discount'));
     }
 
 
@@ -134,7 +128,7 @@ class DiscountController extends Controller
     {
          //اجازه دسترسی
          config(['auth.defaults.guard' => 'admin']);
-         $this->authorize('discounts.edit');
+         $this->authorize('accounting.discounts.edit');
 
         if($request->unit == DiscountType::percet && ($request->value>100 || $request->value<0))
         {
@@ -184,7 +178,7 @@ class DiscountController extends Controller
             toast('بروزرسانی انجام شد.','success')->position('bottom-end');
         }
 
-        return redirect(route('admin.discounts.index'));
+        return redirect(route('admin.accounting.discounts.index'));
     }
 
 
@@ -192,7 +186,7 @@ class DiscountController extends Controller
     {
          //اجازه دسترسی
          config(['auth.defaults.guard' => 'admin']);
-         $this->authorize('discounts.destroy');
+         $this->authorize('accounting.discounts.destroy');
 
         $discount->delete();
         toast('کد تخفیف مورد نظر حذف شد.','error')->position('bottom-end');
@@ -204,7 +198,7 @@ class DiscountController extends Controller
     {
         //اجازه دسترسی
         config(['auth.defaults.guard' => 'admin']);
-        $this->authorize('discounts.destroy');
+        $this->authorize('accounting.discounts.destroy');
 
         $service = Discount::withTrashed()->find($id);
         $service->restore();
@@ -228,19 +222,19 @@ class DiscountController extends Controller
     {
         //اجازه دسترسی
         config(['auth.defaults.guard' => 'admin']);
-        $this->authorize('discounts.user.update');
+        $this->authorize('accounting.discounts.user.update');
 
         $discount = Discount::with('users')->find($discount->id);
         $users = User::orderBy('firstname','asc')->orderBy('lastname','asc')->get();
         $levels = Level::where('status',Status::Active)->orderBy('point','asc')->get();
-        return view('admin.discount.users',compact('users','levels','discount'));
+        return view('admin.accounting.discount.users',compact('users','levels','discount'));
     }
 
     public function users_update(Request $request,Discount $discount)
     {
         //اجازه دسترسی
         config(['auth.defaults.guard' => 'admin']);
-        $this->authorize('discounts.user.update');
+        $this->authorize('accounting.discounts.user.update');
 
         $request->validate(
         [
@@ -252,14 +246,14 @@ class DiscountController extends Controller
 
         $discount->users()->sync($request->users);
 
-        return redirect(route('admin.discounts.index'));
+        return redirect(route('admin.accounting.discounts.index'));
     }
 
     public function services_show(Discount $discount)
     {
         //اجازه دسترسی
         config(['auth.defaults.guard' => 'admin']);
-        $this->authorize('discounts.services.update');
+        $this->authorize('accounting.discounts.services.update');
 
         $discount = Discount::with('services')->find($discount->id);
         $services = Service::with('details')->whereHas('details',function($q){
@@ -268,14 +262,14 @@ class DiscountController extends Controller
 
         $products = Product::where('status',Status::Active)->orderBy('name','asc')->get();
 
-        return view('admin.discount.services',compact('services','discount','products'));
+        return view('admin.accounting.discount.services',compact('services','discount','products'));
     }
 
     public function services_update(Request $request,Discount $discount)
     {
         //اجازه دسترسی
         config(['auth.defaults.guard' => 'admin']);
-        $this->authorize('discounts.services.update');
+        $this->authorize('accounting.discounts.services.update');
 
         if(isset($request->services))
         {
@@ -288,14 +282,14 @@ class DiscountController extends Controller
         }
 
 
-        return redirect(route('admin.discounts.index'));
+        return redirect(route('admin.accounting.discounts.index'));
     }
 
     public function festival_update(Request $request,Discount $discount)
     {
         //اجازه دسترسی
         config(['auth.defaults.guard' => 'admin']);
-        $this->authorize('discounts.festival.update');
+        $this->authorize('accounting.discounts.festival.update');
 
 
         $discount->festivals()->sync($request->festivals);

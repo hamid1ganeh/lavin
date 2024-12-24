@@ -14,7 +14,7 @@
                     <div class="page-title-box">
                         <div class="page-title-right">
                             <ol class="breadcrumb m-0 IR">
-                              {{ Breadcrumbs::render('discounts.create') }}
+                              {{ Breadcrumbs::render('accounting.discounts.create') }}
                             </ol>
                         </div>
                         <h4 class="page-title">
@@ -33,7 +33,7 @@
 
                             <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" style="margin:auto">
 
-                                <form class="form-horizontal" action="{{ route('admin.discounts.store') }}" method="post">
+                                <form class="form-horizontal" action="{{ route('admin.accounting.discounts.store') }}" method="post">
                                     {{ csrf_field() }}
 
                                     <div class="row">
@@ -161,7 +161,7 @@
         {
             $.ajax({
                 type:'get',
-                url:"{{ route('admin.discounts.code') }}",
+                url:"{{ route('admin.accounting.discounts.code') }}",
                 dataType: 'json',
                 success: function(data){
                     document.getElementById('code').value=data['code'];

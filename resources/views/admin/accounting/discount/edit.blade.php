@@ -14,7 +14,7 @@
                     <div class="page-title-box">
                         <div class="page-title-right">
                             <ol class="breadcrumb m-0 IR">
-                              {{ Breadcrumbs::render('discounts.edit',$discount) }}
+                              {{ Breadcrumbs::render('accounting.discounts.edit',$discount) }}
                             </ol>
                         </div>
                         <h4 class="page-title">
@@ -33,7 +33,7 @@
 
                             <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" style="margin:auto">
 
-                                <form class="form-horizontal" action="{{ route('admin.discounts.update',$discount) }}" method="post">
+                                <form class="form-horizontal" action="{{ route('admin.accounting.discounts.update',$discount) }}" method="post">
                                     {{ csrf_field() }}
                                     @method('PATCH')
 

@@ -371,32 +371,6 @@ Route::group(['middleware' => 'auth.admin'], function () {
       Route::delete('{luck}/delete', 'LuckController@destroy')->name('destroy');
   });
 
-
-  Route::prefix('discounts')->name('discounts.')->group(function () {
-    Route::get('/', 'DiscountController@index')->name('index');
-    Route::get('/create', 'DiscountController@create')->name('create');
-    Route::get('/code', 'DiscountController@code')->name('code');
-    Route::post('/sotre', 'DiscountController@store')->name('store');
-    Route::get('{discount}/edit', 'DiscountController@edit')->name('edit');
-    Route::patch('{discount}/update', 'DiscountController@update')->name('update');
-    Route::delete('/destroy/{discount}', 'DiscountController@destroy')->name('destroy');
-    Route::patch('/recycle/{discount}', 'DiscountController@recycle')->name('recycle');
-    Route::patch('{discount}/festival_update', 'DiscountController@festival_update')->name('festival.update');
-
-    Route::prefix('{discount}/users')->name('users.')->group(function () {
-      Route::get('/', 'DiscountController@users_show')->name('show');
-      Route::patch('/update', 'DiscountController@users_update')->name('update');
-      Route::get('/update', 'LevelController@users')->name('fetch');
-    });
-
-    Route::prefix('{discount}/services')->name('services')->group(function () {
-      Route::get('/', 'DiscountController@services_show')->name('.show');
-      Route::patch('/update', 'DiscountController@services_update')->name('.update');
-    });
-
-  });
-
-
   Route::prefix('shop')->name('shop.')->group(function () {
 
     Route::prefix('/products')->name('products.')->group(function () {
@@ -934,6 +908,30 @@ Route::group(['middleware' => 'auth.admin'], function () {
             Route::patch('{account}/update', [AccountController::class,'update'])->name('update');
             Route::delete('{account}/destroy', [AccountController::class,'destroy'])->name('destroy');
             Route::patch('{account}/recycle', [AccountController::class,'recycle'])->name('recycle');
+        });
+
+        Route::prefix('discounts')->name('discounts.')->group(function () {
+            Route::get('/', 'DiscountController@index')->name('index');
+            Route::get('/create', 'DiscountController@create')->name('create');
+            Route::get('/code', 'DiscountController@code')->name('code');
+            Route::post('/sotre', 'DiscountController@store')->name('store');
+            Route::get('{discount}/edit', 'DiscountController@edit')->name('edit');
+            Route::patch('{discount}/update', 'DiscountController@update')->name('update');
+            Route::delete('/destroy/{discount}', 'DiscountController@destroy')->name('destroy');
+            Route::patch('/recycle/{discount}', 'DiscountController@recycle')->name('recycle');
+            Route::patch('{discount}/festival_update', 'DiscountController@festival_update')->name('festival.update');
+
+            Route::prefix('{discount}/users')->name('users.')->group(function () {
+                Route::get('/', 'DiscountController@users_show')->name('show');
+                Route::patch('/update', 'DiscountController@users_update')->name('update');
+                Route::get('/update', 'LevelController@users')->name('fetch');
+            });
+
+            Route::prefix('{discount}/services')->name('services')->group(function () {
+                Route::get('/', 'DiscountController@services_show')->name('.show');
+                Route::patch('/update', 'DiscountController@services_update')->name('.update');
+            });
+
         });
     });
 

@@ -509,6 +509,9 @@
 
                         </li>
                    @endif
+
+                    @if(Auth::guard('admin')->user()->can('accounting.accounts.list')||
+                        Auth::guard('admin')->user()->can('accounting.discounts.index'))
                     <li>
                         <a href="javascript: void(0);" class="waves-effect">
                             <i class="mdi mdi-calculator"></i>
@@ -516,6 +519,7 @@
                             <span class="menu-arrow"></span>
                         </a>
 
+                        @if(Auth::guard('admin')->user()->can('accounting.accounts.list'))
                         <ul class="nav-second-level" aria-expanded="false">
                             <li class="IRANYekanRegular">
                                 <a href="{{ route('admin.accounting.accounts.index') }}">
@@ -524,7 +528,19 @@
                                 </a>
                             </li>
                         </ul>
+                        @endif
+                        @if(Auth::guard('admin')->user()->can('accounting.discounts.index'))
+                        <ul class="nav-second-level" aria-expanded="false">
+                            <li>
+                                <a href="{{ route('admin.accounting.discounts.index') }}" class="waves-effect">
+                                    <i class="fas fa-percent"></i>
+                                    <span class="IRANYekanRegular">کد‌ تخفیف</span>
+                                </a>
+                            </li>
+                        </ul>
+                        @endif
                     </li>
+                   @endif
 
                     @if(Auth::guard('admin')->user()->can('complications.index'))
                     <li>
@@ -629,16 +645,6 @@
                           </a>
                       </li>
                     @endif
-
-                    @if(Auth::guard('admin')->user()->can('discounts.index'))
-                      <li>
-                          <a href="{{ route('admin.discounts.index') }}" class="waves-effect">
-                              <i class="fas fa-percent"></i>
-                              <span class="IRANYekanRegular">کد‌ تخفیف</span>
-                          </a>
-                      </li>
-                    @endif
-
             </ul>
         </li>
         @endif

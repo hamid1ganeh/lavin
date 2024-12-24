@@ -14,7 +14,7 @@
                     <div class="page-title-box">
                         <div class="page-title-right">
                             <ol class="breadcrumb m-0 IR">
-                              {{ Breadcrumbs::render('discounts') }}
+                              {{ Breadcrumbs::render('accounting.discounts') }}
                             </ol>
                         </div>
                         <h4 class="page-title">
@@ -38,9 +38,9 @@
                                     </button>
                                 </div>
                                 <div class="col-6 text-right">
-                                     @if(Auth::guard('admin')->user()->can('discounts.create'))
+                                     @if(Auth::guard('admin')->user()->can('accounting.discounts.create'))
                                     <div class="btn-group" >
-                                        <a href="{{ route('admin.discounts.create') }}" class="btn btn-sm btn-primary">
+                                        <a href="{{ route('admin.accounting.discounts.create') }}" class="btn btn-sm btn-primary">
                                             <i class="fa fa-plus plusiconfont"></i>
                                             <b class="IRANYekanRegular">ایجاد تخفیف جدید</b>
                                         </a>
@@ -148,7 +148,7 @@
                                                                 <h5 class="IRANYekanRegular">آیا مطمئن هستید که کد تخفیف {{ $discount->code }} را بازیابی نمایید؟</h5>
                                                             </div>
                                                             <div class="modal-footer">
-                                                                <form action="{{ route('admin.discounts.recycle', $discount) }}" method="POST" class="d-inline">
+                                                                <form action="{{ route('admin.accounting.discounts.recycle', $discount) }}" method="POST" class="d-inline">
                                                                     @csrf
                                                                     @method('patch')
                                                                     <button type="submit"  title="بازیابی" class="btn btn-info px-8">بازیابی</button>
@@ -173,7 +173,7 @@
                                                                 <h5 class="IRANYekanRegular">آیا مطمئن هستید که می‌خواهدی کد تخفیف  {{ $discount->code }} را حذف کنید؟</h5>
                                                             </div>
                                                             <div class="modal-footer">
-                                                                <form action="{{ route('admin.discounts.destroy', $discount) }}"  method="POST" class="d-inline">
+                                                                <form action="{{ route('admin.accounting.discounts.destroy', $discount) }}"  method="POST" class="d-inline">
                                                                     @csrf
                                                                     @method('DELETE')
                                                                     <button type="submit" title="حذف" class="btn btn-danger px-8">حذف</button>
@@ -195,7 +195,7 @@
                                                                 </button>
                                                             </div>
                                                             <div class="modal-body  text-left">
-                                                                <form action="{{ route('admin.discounts.festival.update', $discount) }}"  method="POST" class="d-inline" id="festival-form{{ $discount->id  }}">
+                                                                <form action="{{ route('admin.accounting.discounts.festival.update', $discount) }}"  method="POST" class="d-inline" id="festival-form{{ $discount->id  }}">
                                                                     @csrf
                                                                     @method('patch')
                                                                     <label for="festivals{{ $discount->id  }}" class="col-form-label IRANYekanRegular">جشنواره ها:</label>
@@ -220,42 +220,42 @@
                                                         <i class=" ti-align-justify" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
                                                         <div class="dropdown-menu">
                                                             @if($discount->trashed())
-                                                                @if(Auth::guard('admin')->user()->can('discounts.destroy'))
+                                                                @if(Auth::guard('admin')->user()->can('accounting.discounts.destroy'))
                                                                     <a href="#recycle{{ $discount->id }}" data-toggle="modal" title="بازیابی" class="dropdown-item IR cusrsor">
                                                                         <i class="fa fa-recycle text-danger"></i>
                                                                         <span class="p-1">بازیابی</span>
                                                                     </a>
                                                                 @endif
                                                             @else
-                                                                @if(Auth::guard('admin')->user()->can('discounts.user.update'))
-                                                                    <a  href="{{ route('admin.discounts.users.show', $discount) }}" title="کابران" class="dropdown-item IR cusrsor">
+                                                                @if(Auth::guard('admin')->user()->can('accounting.discounts.user.update'))
+                                                                    <a  href="{{ route('admin.accounting.discounts.users.show', $discount) }}" title="کابران" class="dropdown-item IR cusrsor">
                                                                         <i class="fa fa-users text-secondary"></i>
                                                                         <span class="p-1">کابران</span>
                                                                     </a>
                                                                 @endif
 
-                                                                @if(Auth::guard('admin')->user()->can('discounts.services.update'))
-                                                                    <a   href="{{ route('admin.discounts.services.show', $discount) }}" title="سرویس‌ها و محصولات" class="dropdown-item IR cusrsor">
+                                                                @if(Auth::guard('admin')->user()->can('accounting.discounts.services.update'))
+                                                                    <a   href="{{ route('admin.accounting.discounts.services.show', $discount) }}" title="سرویس‌ها و محصولات" class="dropdown-item IR cusrsor">
                                                                         <i class="fab fa-servicestack text-warning"></i>
                                                                         <span class="p-1">سرویس‌ها و محصولات</span>
                                                                     </a>
                                                                 @endif
 
-                                                                @if(Auth::guard('admin')->user()->can('discounts.edit'))
-                                                                    <a   href="{{ route('admin.discounts.edit', $discount) }}" title="ویرایش" class="dropdown-item IR cusrsor">
+                                                                @if(Auth::guard('admin')->user()->can('accounting.discounts.edit'))
+                                                                    <a   href="{{ route('admin.accounting.discounts.edit', $discount) }}" title="ویرایش" class="dropdown-item IR cusrsor">
                                                                         <i class="fa fa-edit text-info"></i>
                                                                         <span class="p-1">ویرایش</span>
                                                                     </a>
                                                                 @endif
 
-                                                                @if(Auth::guard('admin')->user()->can('discounts.destroy'))
+                                                                @if(Auth::guard('admin')->user()->can('accounting.discounts.destroy'))
                                                                     <a href="#remove{{ $discount->id }}" data-toggle="modal"   title="حذف" class="dropdown-item IR cusrsor">
                                                                         <i class="fa fa-trash text-danger"></i>
                                                                         <span class="p-1">حذف</span>
                                                                     </a>
                                                                 @endif
 
-                                                                @if(Auth::guard('admin')->user()->can('discounts.festival.update'))
+                                                                @if(Auth::guard('admin')->user()->can('accounting.discounts.festival.update'))
                                                                     <a href="#festival{{ $discount->id }}" data-toggle="modal"   title="جشنواره ها" class="dropdown-item IR cusrsor">
                                                                         <i class="ti-wand text-success"></i>
                                                                         <span class="p-1">جشنواره ها</span>
@@ -265,7 +265,6 @@
                                                         </div>
                                                     </div>
                                                 </div>
-
 
                                             </td>
                                          </tr>
