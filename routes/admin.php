@@ -900,6 +900,11 @@ Route::group(['middleware' => 'auth.admin'], function () {
 
     });
     Route::prefix('accounting')->name('accounting.')->group(function () {
+
+        Route::prefix('invoices')->name('invoices.')->group(function () {
+            Route::get('/', [ReserveInvoiceController::class,'index'])->name('index');
+        });
+
         Route::prefix('accounts')->name('accounts.')->group(function () {
             Route::get('/', [AccountController::class,'index'])->name('index');
             Route::get('/create', [AccountController::class,'create'])->name('create');

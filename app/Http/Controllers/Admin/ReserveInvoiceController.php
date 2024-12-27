@@ -6,14 +6,15 @@ use App\Enums\PaymentType;
 use App\Enums\ReserveStatus;
 use App\Enums\Status;
 use App\Http\Controllers\Controller;
+use App\Models\Branch;
 use App\Models\CardToCardPayment;
 use App\Models\CashPayment;
 use App\Models\ChequePayment;
 use App\Models\Discount;
 use App\Models\PosPayment;
 use App\Models\ReserveInvoice;
-use App\Models\ReservePayment;
 use App\Models\ReserveUpgrade;
+use App\Models\ServiceDetail;
 use App\Models\ServiceReserve;
 use App\Models\UsedDiscount;
 use Carbon\Carbon;
@@ -22,8 +23,30 @@ use App\Enums\DiscountType;
 use Illuminate\Support\Facades\DB;
 use Auth;
 
+
 class ReserveInvoiceController extends Controller
 {
+    public function index()
+    {
+        //اجازه دسترسی
+        config(['auth.defaults.guard' => 'admin']);
+        $this->authorize('reserves.pay.invoices');
+
+        $branches = Auth::guard('admin')->user()->branches->pluck('id')->toArray();
+        $invoices = ReserveInvoice::with('reserve')
+                                    ->whereHas('reserve',function ($q) use ($branches){
+                                            $q->whereIn('branch_id',$branches);
+                                    })
+                                    ->filter()
+                                    ->orderBy('created_at','desc')
+                                    ->paginate(10)
+                                    ->withQueryString();
+
+        $serviceDetails= ServiceDetail::orderBy('name','asc')->get();
+        $branches= Branch::whereIn('id',$branches)->orderBy('name','asc')->get();
+
+        return view('admin.reserves.invoices.all',compact('invoices','serviceDetails','branches')) ;
+    }
     public function show(ServiceReserve $reserve)
     {
         //اجازه دسترسی

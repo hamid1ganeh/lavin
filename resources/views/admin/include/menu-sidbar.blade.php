@@ -61,6 +61,15 @@
                                 </li>
                             @endif
 
+                           @if(Auth::guard('admin')->user()->can('reserves.pay.invoices'))
+                            <li>
+                                <a href="{{ route('admin.accounting.invoices.index') }}" class="waves-effect">
+                                    <i class="fas fa-cash-register"></i>
+                                    <span class="IRANYekanRegular">صندوق</span>
+                                </a>
+                            </li>
+                             @endif
+
                             @if(Auth::guard('admin')->user()->can('employments.index'))
                                 <li class="IRANYekanRegular">
                                     <a href="{{ route('admin.employments.index') }}">

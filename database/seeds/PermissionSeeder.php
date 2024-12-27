@@ -1051,6 +1051,12 @@ class PermissionSeeder extends Seeder
         ]);
 
         DB::table('permissions')->insert([
+            'name' => 'reserves.pay.invoices',
+            'description' => 'صندوق',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
             'name' => 'reserves.payment.show',
             'description' => 'پیش نمایش صورتحساب رزرو',
             'status'=> Status::Active

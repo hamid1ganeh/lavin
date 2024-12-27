@@ -1299,6 +1299,12 @@ Breadcrumbs::for('accounting.accounts.index', function ($trail) {
     $trail->push('لیست حسابهای مالی', route('admin.accounting.accounts.index'));
 });
 
+// داشبورد >  صندوق
+Breadcrumbs::for('accounting.accounts.invoices', function ($trail) {
+    $trail->parent('home', $trail);
+    $trail->push('صندوق', route('admin.accounting.invoices.index'));
+});
+
 // داشبورد >  حسابداری > لیست حسابهای مالی >ایجاد حساب مالی
 Breadcrumbs::for('accounting.accounts.create', function ($trail) {
     $trail->parent('accounting.accounts.index', $trail);
