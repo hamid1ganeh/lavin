@@ -30,6 +30,7 @@
                     Auth::guard('admin')->user()->can('levels.index') ||
                     Auth::guard('admin')->user()->can('roles.index') ||
                     Auth::guard('admin')->user()->can('numbers.index') ||
+                    Auth::guard('admin')->user()->can('reserves.pay.invoices') ||
                     Auth::guard('admin')->user()->can('numbers.advisers'))
                     <li>
                         <a href="javascript: void(0);" class="waves-effect">

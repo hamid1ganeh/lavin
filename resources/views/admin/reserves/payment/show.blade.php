@@ -91,7 +91,6 @@
 
         <form class="form-horizontal" action="{{ route('admin.reserves.payment.create',$reserve) }}" method="post">
             @csrf
-                @if((count($discounts)))
                 <div class="row">
                     <div class="card w-100" Style="height: 220px">
                         <div class="card-body">
@@ -106,6 +105,7 @@
                                 <input class="text-center" type="number"  id="discount_price"  name="discount_price" placeholder="مبلغ (تومان)" disabled>
                                 <input class="text-left" Style="width:250px" type="text" id="discount_description" name="discount_description" placeholder="توضیحات" disabled>
                             </div>
+                            @if(count($discounts))
                             @foreach($discounts as $index=>$discount)
                             <div class="mt-1">
                                 <input type="radio" class="form-check-input cursor-pointer" id="code{{ $discount->id }}" name="discount_code" value="{{ $discount->id }}" onclick="discount({{ $discount->id }});">
@@ -119,10 +119,10 @@
                                 </label>
                             </div>
                             @endforeach
+                            @endif
                         </div>
                     </div>
                 </div>
-                @endif
 
             @if(Auth::guard('admin')->user()->can('reserves.payment.create') &&
                 in_array($reserve->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))

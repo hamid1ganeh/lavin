@@ -145,7 +145,7 @@
                                                     <div class="input-group-append">
                                                         <i class=" ti-align-justify" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
                                                         <div class="dropdown-menu">
-                                                             @if(Auth::guard('admin')->user()->can('reserves.payment.invoice'))
+                                                             @if(Auth::guard('admin')->user()->can('reserves.payment.invoice.show'))
                                                               <a class="dropdown-item IR cursor-pointer" href="{{ route('admin.reserves.payment.show', $invoice->reserve) }}" title="نمایش صورتحساب" target="_blank">
                                                                   <i class="fas fa-dollar-sign text-dark cursor-pointer"></i>
                                                                 <span class="p-1">صورتحساب</span>

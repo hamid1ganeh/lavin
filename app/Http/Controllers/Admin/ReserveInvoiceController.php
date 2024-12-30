@@ -51,7 +51,7 @@ class ReserveInvoiceController extends Controller
     {
         //اجازه دسترسی
         config(['auth.defaults.guard' => 'admin']);
-        $this->authorize('reserves.payment.show');
+        $this->authorize('reserves.payment.invoice.show');
         if (!in_array($reserve->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
         {
             abort(403);
@@ -186,7 +186,7 @@ class ReserveInvoiceController extends Controller
     {
         //اجازه دسترسی
         config(['auth.defaults.guard' => 'admin']);
-        $this->authorize('reserves.payment.invoice');
+        $this->authorize('reserves.payment.invoice.show');
         if (!in_array($reserve->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
         {
             abort(403);
