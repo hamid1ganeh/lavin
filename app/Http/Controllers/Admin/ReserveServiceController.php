@@ -128,11 +128,12 @@ class ReserveServiceController extends Controller
                 ->paginate(30)
                 ->withQueryString();
         }else {
-            $reserves = ServiceReserve::with('user','branch', 'doctor', 'review','adviser.number.operators.admin','adviser.advisers.admin','reception')
+            $reserves = ServiceReserve::with('user','branch', 'doctor', 'review','adviser.number.operators.admin','adviser.advisers.admin','reception','invoice')
                 ->filter()
                 ->orderBy('created_at', 'desc')
                 ->paginate(30)
                 ->withQueryString();
+
         }
 
         return view('admin.reserves.all',compact('reserves','serviceDetails','doctors','secretaries','asistants','branches','receptions'));
@@ -622,7 +623,7 @@ class ReserveServiceController extends Controller
         config(['auth.defaults.guard' => 'admin']);
         $this->authorize('reserves.price');
 
-        if($reserve->status == ReserveStatus::done){
+       if(!is_null($reserve->invoice)){
             return abort(403);
         }
 

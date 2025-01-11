@@ -49,10 +49,12 @@ class ReserveInvoiceController extends Controller
     }
     public function show(ServiceReserve $reserve)
     {
+
         //اجازه دسترسی
         config(['auth.defaults.guard' => 'admin']);
         $this->authorize('reserves.payment.invoice.show');
-        if (!in_array($reserve->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
+        if (!in_array($reserve->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()) ||
+            in_array($reserve->status,[ReserveStatus::waiting,ReserveStatus::confirm,ReserveStatus::cancel,ReserveStatus::wittingForAdviser,ReserveStatus::Adviser]))
         {
             abort(403);
         }
@@ -79,6 +81,7 @@ class ReserveInvoiceController extends Controller
 
     public function create(ServiceReserve $reserve,Request $request)
     {
+
         //اجازه دسترسی
         config(['auth.defaults.guard' => 'admin']);
         $this->authorize('reserves.payment.create');
@@ -105,6 +108,12 @@ class ReserveInvoiceController extends Controller
                  $discountDescription = $request->get('discount_description');
                  $discountId = null;
                  $finalPrice =  $reserve->total_price+$sumUpgradesPrice-$discountPrice;
+
+                 if ($finalPrice<0){
+                     alert()->error('مبلغ تخفیف نمیتواند از مبلغ پرداختی بیشتر باشد.');
+                     return back()->withInput();
+                 }
+
                  $invoice->price = $reserve->total_price;
                  $invoice->reserve_id = $reserve->id;
                  $invoice->sum_upgrades_price = $sumUpgradesPrice;
@@ -149,6 +158,11 @@ class ReserveInvoiceController extends Controller
                  $usedDiscount->discount_id = $discountId;
 
                  $finalPrice =  $reserve->total_price+$sumUpgradesPrice- $discountPrice;
+
+                 if ($finalPrice<0){
+                     alert()->error('مبلغ تخفیف نمیتواند از مبلغ پرداختی بیشتر باشد.');
+                     return back()->withInput();
+                 }
 
                  $invoice->price = $reserve->total_price;
                  $invoice->reserve_id = $reserve->id;
