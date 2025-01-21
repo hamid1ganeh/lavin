@@ -16,6 +16,7 @@ class CreateReserveInvoicesTable extends Migration
         Schema::create('reserve_invoices', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('reserve_id');
+            $table->string('number',255);
             $table->unsignedBigInteger('price');
             $table->unsignedBigInteger('discount_id')->nullable();
             $table->unsignedBigInteger('discount_price')->default(0);

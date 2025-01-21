@@ -81,7 +81,6 @@ class ReserveInvoiceController extends Controller
 
     public function create(ServiceReserve $reserve,Request $request)
     {
-
         //اجازه دسترسی
         config(['auth.defaults.guard' => 'admin']);
         $this->authorize('reserves.payment.create');
@@ -89,6 +88,16 @@ class ReserveInvoiceController extends Controller
         {
             abort(403);
         }
+
+        $request->validate(
+            [
+                'number' => ['required','max:255','unique:reserve_invoices'],
+            ],
+            [
+                "number.required" => " شماره فاکتور الزامی است.",
+                "number.max" => " شماره فاکتور طولانی است.",
+                "number.unique" => " شماره فاکتور قبلا ثبت شده است.",
+            ]);
 
         $invoice = ReserveInvoice::where('reserve_id',$reserve->id)->firstOrNew();
         $sumUpgradesPrice = ReserveUpgrade::where('reserve_id',$reserve->id)->where('status',ReserveStatus::confirm)->sum('price');
@@ -102,7 +111,7 @@ class ReserveInvoiceController extends Controller
                     [
                         "discount_price.required" => " مبلغ تخفیف ویژه الزامی است.",
                         "discount_description.required" => " توضیحات تخفیف ویژه الزامی است.",
-                        "discount_description.max" => "حداکثر طول مجاز برای توضیحات تخفیف ویژه 255 کارکتر است."
+                        "discount_description.max" => "حداکثر طول مجاز برای توضیحات تخفیف ویژه 255 کارکتر است.",
                     ]);
                  $discountPrice = $request->get('discount_price');
                  $discountDescription = $request->get('discount_description');
@@ -121,6 +130,7 @@ class ReserveInvoiceController extends Controller
                  $invoice->discount_price = $discountPrice;
                  $invoice->discount_description = $discountDescription;
                  $invoice->final_price = $finalPrice>0?$finalPrice:0;
+                 $invoice->number = $request->get('number');
                  $invoice->save();
            }elseIf($request->get('discount_code')>0){
                 $discount = Discount::with('users','services')->find($request->get('discount_code'));
@@ -171,7 +181,7 @@ class ReserveInvoiceController extends Controller
                  $invoice->discount_price = $discountPrice;
                  $invoice->discount_description = $discountDescription;
                  $invoice->final_price = $finalPrice>0?$finalPrice:0;
-
+                 $invoice->number = $request->get('number');
                 DB::transaction(function() use ($invoice, $usedDiscount) {
                     $invoice->save();
                     $usedDiscount->save();
@@ -190,6 +200,7 @@ class ReserveInvoiceController extends Controller
                  $invoice->discount_price = $discountPrice;
                  $invoice->discount_description = $discountDescription;
                  $invoice->final_price = $finalPrice>0?$finalPrice:0;
+                 $invoice->number = $request->get('number');
                  $invoice->save();
             }
 

@@ -1,6 +1,39 @@
 @extends('admin.master')
 
 
+@section('script')
+    <script type="text/javascript">
+        $("#since-filter").MdPersianDateTimePicker({
+            targetDateSelector: "#showDate_class",
+            targetTextSelector: "#since-filter",
+            textFormat: "yyyy/MM/dd",
+            isGregorian: false,
+            modalMode: false,
+            englishNumber: false,
+            enableTimePicker: false,
+            selectedDateToShow: new Date(),
+            calendarViewOnChange: function(param1){
+                console.log(param1);
+            }
+        });
+
+        $("#until-filter").MdPersianDateTimePicker({
+            targetDateSelector: "#showDate_class",
+            targetTextSelector: "#until-filter",
+            textFormat: "yyyy/MM/dd",
+            isGregorian: false,
+            modalMode: false,
+            englishNumber: false,
+            enableTimePicker: false,
+            selectedDateToShow: new Date(),
+            calendarViewOnChange: function(param1){
+                console.log(param1);
+            }
+        });
+
+    </script>
+@endsection
+
 @section('content')
 
 <div class="content-page">
@@ -83,6 +116,24 @@
                                                 </div>
                                             </div>
 
+                                        <div class="row">
+                                            <div class="form-group justify-content-center col-12 col-md-6">
+                                                <label for="since-filter" class="control-label IRANYekanRegular">تاریخ ایجاد فاکتور از</label>
+                                                <input type="text"   class="form-control text-center" id="since-filter" name="since" value="{{ request('since') }}" readonly>
+                                            </div>
+                                            <div class="form-group justify-content-center col-12 col-md-6">
+                                                <label for="until-filter" class="control-label IRANYekanRegular">تاریخ ایجاد فاکتور تا</label>
+                                                <input type="text"   class="form-control text-center" id="until-filter" name="until" value="{{ request('until') }}" readonly>
+                                            </div>
+                                        </diV>
+
+                                        <div class="row">
+                                            <div class="form-group justify-content-center col-12 col-md-6">
+                                                <label for="number-filter" class="control-label IRANYekanRegular">شماره فاکتور</label>
+                                                <input type="text"  class="form-control input" id="number-filter" name="number" placeholder="شماره فاکتور را وارد کنید" value="{{ request('number') }}">
+                                            </div>
+                                        </diV>
+
                                         <div class="form-group col-12 d-flex justify-content-center mt-3">
 
                                             <button type="submit" class="btn btn-info col-lg-2 offset-lg-4 cursor-pointer">
@@ -102,6 +153,9 @@
                                                 {
                                                     document.getElementById("user-filter").value = "";
                                                     document.getElementById("code-filter").value = "";
+                                                    document.getElementById("number-filter").value = "";
+                                                    document.getElementById("since-filter").value = "";
+                                                    document.getElementById("until-filter").value = "";
                                                     $("#service-filter").val(null).trigger("change");
                                                     $("#branches-filter").val(null).trigger("change");
                                                 }
@@ -121,7 +175,9 @@
                                             <th><b class="IRANYekanRegular">کد مراجعه</b></th>
                                             <th><b class="IRANYekanRegular">شعبه</b></th>
                                             <th><b class="IRANYekanRegular">سرویس</b></th>
+                                            <th><b class="IRANYekanRegular">شماره فاکتور</b></th>
                                             <th><b class="IRANYekanRegular">مبلغ قابل پرداخت</b></th>
+                                            <th><b class="IRANYekanRegular">تاریخ ایجاد</b></th>
                                             <th style="width:200px;"><b class="IRANYekanRegular">اقدامات</b></th>
                                         </tr>
                                     </thead>
@@ -138,8 +194,9 @@
                                             <td><strong class="IRANYekanRegular">{{ $invoice->reserve->reception->code ?? '' }}</strong></td>
                                             <td><strong class="IRANYekanRegular">{{ $invoice->reserve->branch->name }}</strong></td>
                                             <td><strong class="IRANYekanRegular">{{ $invoice->reserve->detail_name }}</strong></td>
+                                            <td><strong class="IRANYekanRegular">{{ $invoice->number }}</strong></td>
                                             <td><strong class="IRANYekanRegular">{{ number_format($invoice->final_price ?? 0 ) }}</strong></td>
-
+                                            <td><strong class="IRANYekanRegular">{{ $invoice->createdAt() }}</strong></td>
                                             <td>
                                                 <div class="input-group">
                                                     <div class="input-group-append">

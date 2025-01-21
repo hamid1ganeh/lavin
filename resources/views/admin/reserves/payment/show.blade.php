@@ -126,9 +126,17 @@
 
             @if(Auth::guard('admin')->user()->can('reserves.payment.create') &&
                 in_array($reserve->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
-                <div class="row mt-2">
-                    <div class="col-sm-12">
-                        <button type="submit" title="ثبت" class="btn btn-primary">صورتحساب پرداخت</button>
+                <div class="row">
+                    <div class="card w-100" Style="height: 180px">
+                        <div class="card-body">
+                            <label for="number" class="control-label IRANYekanRegular">شماره فاکتور</label>&nbsp;
+                            <input type="text" class="form-check-input text-right" id="number" name="number" value="{{ old('number') }}" required>
+                            <div class="row mt-2">
+                                <div class="col-sm-12">
+                                    <button type="submit" title="ثبت" class="btn btn-primary">صورتحساب پرداخت</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
            @endif

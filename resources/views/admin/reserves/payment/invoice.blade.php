@@ -39,6 +39,8 @@
                         <div class="row">
                             <div class="col-12 col-md-6">
                                 <h5 class="card-title IRANYekanRegular">مشخصات</h5>
+                                <p class="card-text IRANYekanRegular"> شماره فاکتور:&nbsp; {{ $invoice->number }}</p>
+                                <p class="card-text IRANYekanRegular"> تاریخ ایجاد:&nbsp; {{ $invoice->createdAt() }}</p>
                                 <p class="card-text IRANYekanRegular"> نام و نام خانوادگی:&nbsp; {{ $invoice->reserve->user->getFullName() ?? '' }}</p>
                                 <p class="card-text IRANYekanRegular"> شماره تماس:&nbsp; {{ $invoice->reserve->user->mobile ?? '' }}</p>
                                 <p class="card-text IRANYekanRegular"> عنوان سرویس:&nbsp; {{ $invoice->reserve->detail_name ?? ''}}</p>
@@ -47,7 +49,7 @@
                             <div class="col-12 col-md-6 text-right">
                                 @if(in_array($reserve->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
                                 @if(Auth::guard('admin')->user()->can('reserves.payment.invoice.pos.index'))
-                                <a href="{{ route('admin.reserves.payment.pos.index',[$reserve,$invoice]) }}"  class="btn btn-danger cursor-pointer text-white" title="دستگاه پویز">دستگاه پویز</a>
+                                <a href="{{ route('admin.reserves.payment.pos.index',[$reserve,$invoice]) }}"  class="btn btn-danger cursor-pointer text-white" title="دستگاه پوز">دستگاه پوز</a>
                                 @endif
 
                                 @if(Auth::guard('admin')->user()->can('reserves.payment.invoice.card.index'))
