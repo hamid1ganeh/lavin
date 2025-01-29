@@ -164,6 +164,7 @@
                                                     <th><b class="IRANYekanRegular">کدمراجعه</b></th>
                                                     <th><b class="IRANYekanRegular">مسئول پذیرش</b></th>
                                                     <th><b class="IRANYekanRegular">وضعیت مراجعه</b></th>
+                                                    <th><b class="IRANYekanRegular">وضعیت صندوق</b></th>
                                                     <th style="width:200px;"><b class="IRANYekanRegular">اقدامات</b></th>
                                                 </tr>
                                                 </thead>
@@ -182,7 +183,6 @@
                                                         <td><strong class="IRANYekanRegular">{{ $reception->code }}</strong></td>
                                                         <td><strong class="IRANYekanRegular">{{ $reception->reception->fullname }}</strong></td>
                                                         <td>
-
                                                             @if($reception->end)
                                                                 @if(is_null($reception->hasOpenReferCode()) &&  Auth::guard('admin')->user()->can('reception.start'))
                                                                 <a class="dropdown-item IR cusrsor" href="#start{{ $reception->id }}" data-toggle="modal"  title="باز کردن مراجعه" style="display: contents">
@@ -247,13 +247,56 @@
                                                                     </div>
                                                                 </div>
                                                             @endif
-
-
                                                         </td>
+                                                        <td>
+                                                            <strong class="IRANYekanRegular">
+                                                                @if($reception->found_status ==   App\Enums\FoundStatus::pending)
+                                                                    <span class="badge badge-warning IR p-1">بلاتکلیف</span>
+                                                                @elseif($reception->found_status == App\Enums\FoundStatus::referred)
+                                                                    <span class="badge badge-success IR p-1">ارجاع به صندوق</span>
+                                                                @elseif($reception->found_status == App\Enums\FoundStatus::unobstructed)
+                                                                    <span class="badge badge-primary IR p-1">بلامانع</span>
+                                                                @elseif($reception->found_status == App\Enums\FoundStatus::unpaid)
+                                                                    <span class="badge badge-danger IR p-1">عدم پرداخت</span>
+                                                                @endif
+                                                            </strong>
+                                                        </td>
+
                                                         <td>
                                                             <a href="{{ route('admin.reserves.index',['code'=>$reception->code]) }}"  target="_blank" class="btn btn-icon" title="نمایش روزرها">
                                                                 <i class="fa fa-eye text-success font-16"></i>
                                                             </a>
+
+                                                            @if($reception->found_status ==   App\Enums\FoundStatus::pending)
+                                                            <a class="font18 m-1" href="#found{{ $reception->id }}" data-toggle="modal" title="ارجاع به صندوق">
+                                                                <i class="fas fa-cash-register text-dark font-16"></i>
+                                                            </a>
+
+                                                            <!-- found Modal -->
+                                                            <div class="modal fade" id="found{{ $reception->id }}" tabindex="-1" aria-labelledby="reviewLabel" aria-hidden="true">
+                                                                <div class="modal-dialog modal-xs">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header py-3">
+                                                                            <h5 class="modal-title IR" id="newReviewLabel">ارجاع به صندوق</h5>
+                                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                                <span aria-hidden="true">&times;</span>
+                                                                            </button>
+                                                                        </div>
+                                                                        <div class="modal-body">
+                                                                            <h5 class="IRANYekanRegular"> آیا مطمئن هستید که میخواهید این پذیرش را به صندوق ارجاع دهید؟</h5>
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            <form action="{{ route('admin.receptions.found',$reception) }}" method="POST" class="d-inline">
+                                                                                @csrf
+                                                                                @method('patch')
+                                                                                <button type="submit"  title="بازیابی" class="btn btn-primary px-8">ارجاع</button>
+                                                                            </form>
+                                                                            <button type="button" class="btn btn-secondary" title="انصراف" data-dismiss="modal">انصراف</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            @endif
 
                                                         </td>
                                                     </tr>

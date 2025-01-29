@@ -9,7 +9,7 @@ use Morilog\Jalali\Jalalian;
 
 class Reception extends Model
 {
-    protected  $fillable = ['code','user_id','reception_id','end','endTime'];
+    protected  $fillable = ['code','user_id','reception_id','end','endTime','found_status'];
 
     public function user()
     {

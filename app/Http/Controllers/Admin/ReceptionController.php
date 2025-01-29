@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Enums\FoundStatus;
 use App\Enums\genderType;
 use App\Http\Controllers\Controller;
 
@@ -149,4 +150,14 @@ class ReceptionController extends Controller
         $reception->save();
         return back();
     }
+
+    public function found(Reception $reception)
+    {
+        $reception->found_status = FoundStatus::referred;
+        $reception->save();
+        toast('پذیرش مورد نظر به صندوق ارجاع داده شد.', 'success')->position('bottom-end');
+        return back();
+    }
 }
+
+

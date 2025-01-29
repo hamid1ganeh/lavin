@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Enums\FoundStatus;
 
 class CreateReceptionsTable extends Migration
 {
@@ -20,6 +21,7 @@ class CreateReceptionsTable extends Migration
             $table->unsignedBigInteger('reception_id');
             $table->boolean('end')->default(0);
             $table->DateTime('endTime')->nullable();
+            $table->string('found_status',2)->default(FoundStatus::pending);
             $table->timestamps();
 
             $table->foreign('user_id')

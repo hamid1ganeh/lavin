@@ -470,6 +470,7 @@ Route::group(['middleware' => 'auth.admin'], function () {
         Route::post('/store', 'ReceptionController@store')->name('store');
         Route::patch('{reception}/end', 'ReceptionController@end')->name('end');
         Route::patch('{reception}/start', 'ReceptionController@start')->name('start');
+        Route::patch('{reception}/found', 'ReceptionController@found')->name('found');
     });
 
 
