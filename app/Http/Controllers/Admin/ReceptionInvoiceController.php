@@ -5,6 +5,7 @@ namespace App\Http\Controllers\admin;
 use App\Enums\PaymentType;
 use App\Enums\ReserveStatus;
 use App\Enums\Status;
+use App\Enums\FoundStatus;
 use App\Http\Controllers\Controller;
 use App\Models\Branch;
 use App\Models\CardToCardPayment;
@@ -12,7 +13,8 @@ use App\Models\CashPayment;
 use App\Models\ChequePayment;
 use App\Models\Discount;
 use App\Models\PosPayment;
-use App\Models\ReserveInvoice;
+use App\Models\Reception;
+use App\Models\ReceptionInvoice;
 use App\Models\ReserveUpgrade;
 use App\Models\ServiceDetail;
 use App\Models\ServiceReserve;
@@ -24,7 +26,7 @@ use Illuminate\Support\Facades\DB;
 use Auth;
 
 
-class ReserveInvoiceController extends Controller
+class ReceptionInvoiceController extends Controller
 {
     public function index()
     {
@@ -33,7 +35,7 @@ class ReserveInvoiceController extends Controller
         $this->authorize('reserves.pay.invoices');
 
         $branches = Auth::guard('admin')->user()->branches->pluck('id')->toArray();
-        $invoices = ReserveInvoice::with('reserve')
+        $invoices = ReceptionInvoice::with('reserve')
                                     ->whereHas('reserve',function ($q) use ($branches){
                                             $q->whereIn('branch_id',$branches);
                                     })
@@ -49,7 +51,6 @@ class ReserveInvoiceController extends Controller
     }
     public function show(ServiceReserve $reserve)
     {
-
         //اجازه دسترسی
         config(['auth.defaults.guard' => 'admin']);
         $this->authorize('reserves.payment.invoice.show');
@@ -59,7 +60,7 @@ class ReserveInvoiceController extends Controller
             abort(403);
         }
 
-        $invoice = ReserveInvoice::where('reserve_id',$reserve->id)->first();
+        $invoice = ReceptionInvoice::where('reserve_id',$reserve->id)->first();
         if (!is_null($invoice)){
             return redirect(route('admin.reserves.payment.invoice',$reserve));
         }
@@ -99,7 +100,7 @@ class ReserveInvoiceController extends Controller
                 "number.unique" => " شماره فاکتور قبلا ثبت شده است.",
             ]);
 
-        $invoice = ReserveInvoice::where('reserve_id',$reserve->id)->firstOrNew();
+        $invoice = ReceptionInvoice::where('reserve_id',$reserve->id)->firstOrNew();
         $sumUpgradesPrice = ReserveUpgrade::where('reserve_id',$reserve->id)->where('status',ReserveStatus::confirm)->sum('price');
 
          if($request->get('discount_code')=='0'){
@@ -217,7 +218,7 @@ class ReserveInvoiceController extends Controller
             abort(403);
         }
 
-          $invoice = ReserveInvoice::with('reserve.user')->where('reserve_id',$reserve->id)->first();
+          $invoice = ReceptionInvoice::with('reserve.user')->where('reserve_id',$reserve->id)->first();
           if (is_null($invoice)){
               return redirect(route('admin.reserves.payment.show',$reserve));
           }
@@ -258,5 +259,24 @@ class ReserveInvoiceController extends Controller
 
 
         return view('admin.reserves.payment.invoice',compact('invoice','reserve','sumPaid','remained'));
+    }
+
+    public function found()
+    {
+        //اجازه دسترسی
+        config(['auth.defaults.guard' => 'admin']);
+        $this->authorize('reserves.pay.invoices');
+
+        $receptions = Reception::with('founderBranchesReserves')
+                    ->whereHas('founderBranchesReserves',function ($q){ })
+                    ->where('found_status',FoundStatus::referred)
+                    ->filter()
+                    ->orderBy('created_at','desc')
+                    ->paginate(10)
+                    ->withQueryString();
+
+
+
+        return  view('admin.reception',compact('receptions'));
     }
 }

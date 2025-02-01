@@ -19,6 +19,7 @@ class CreateReceptionsTable extends Migration
             $table->string('code',10);
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('reception_id');
+            $table->unsignedBigInteger('branch_id');
             $table->boolean('end')->default(0);
             $table->DateTime('endTime')->nullable();
             $table->string('found_status',2)->default(FoundStatus::pending);
@@ -26,6 +27,12 @@ class CreateReceptionsTable extends Migration
 
             $table->foreign('user_id')
                 ->on('users')
+                ->references('id')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
+
+            $table->foreign('branch_id')
+                ->on('branches')
                 ->references('id')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');

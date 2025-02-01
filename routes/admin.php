@@ -15,7 +15,7 @@ use App\Http\Controllers\Admin\LaserDeviceController;
 use App\Http\Controllers\Admin\ServiceLaserController;
 use App\Http\Controllers\Admin\WarehouseReceiptController;
 use App\Http\Controllers\Admin\AccountController;
-use App\Http\Controllers\Admin\ReserveInvoiceController;
+use App\Http\Controllers\Admin\ReceptionInvoiceController;
 use App\Http\Controllers\Admin\ReservePosPaymentContoller;
 use App\Http\Controllers\Admin\ReserveCashPaymentContoller;
 use App\Http\Controllers\Admin\ReserveCardToCardPaymentContoller;
@@ -517,9 +517,9 @@ Route::group(['middleware' => 'auth.admin'], function () {
 //      Route::post('{payment}/pay', 'ReserveServiceController@pay')->name('pay');
 
       Route::prefix('{reserve}/payment')->name('payment.')->group(function () {
-          Route::get('/show', 'ReserveInvoiceController@show')->name('show');
-          Route::post('/create', 'ReserveInvoiceController@create')->name('create');
-          Route::get('/invoice', 'ReserveInvoiceController@invoice')->name('invoice');
+          Route::get('/show', 'ReceptionInvoiceController@show')->name('show');
+          Route::post('/create', 'ReceptionInvoiceController@create')->name('create');
+          Route::get('/invoice', 'ReceptionInvoiceController@invoice')->name('invoice');
 
           Route::prefix('{invoice}/pos')->name('pos.')->group(function () {
               Route::get('/', 'ReservePosPaymentContoller@index')->name('index');
@@ -902,8 +902,10 @@ Route::group(['middleware' => 'auth.admin'], function () {
     });
     Route::prefix('accounting')->name('accounting.')->group(function () {
 
+        Route::get('/found', [ReceptionInvoiceController::class,'found'])->name('found');
+
         Route::prefix('invoices')->name('invoices.')->group(function () {
-            Route::get('/', [ReserveInvoiceController::class,'index'])->name('index');
+            Route::get('/', [ReceptionInvoiceController::class,'index'])->name('index');
         });
 
         Route::prefix('accounts')->name('accounts.')->group(function () {
