@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateReserveInvoicesTable extends Migration
+class CreateReceptionInvoicesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,9 @@ class CreateReserveInvoicesTable extends Migration
      */
     public function up()
     {
-        Schema::create('reserve_invoices', function (Blueprint $table) {
+        Schema::create('reception_invoices', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('reserve_id');
+            $table->unsignedBigInteger('reception_id');
             $table->string('number',255);
             $table->unsignedBigInteger('price');
             $table->unsignedBigInteger('discount_id')->nullable();
@@ -26,9 +26,9 @@ class CreateReserveInvoicesTable extends Migration
             $table->boolean('settlement')->default(false);
             $table->timestamps();
 
-            $table->foreign('reserve_id')
+            $table->foreign('reception_id')
                 ->references('id')
-                ->on('service_reserves')
+                ->on('receptions')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
 

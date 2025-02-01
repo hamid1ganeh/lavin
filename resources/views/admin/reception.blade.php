@@ -149,8 +149,6 @@
                                         </script>
                                         </form>
                                     </div>
-
-
                                     <div class="form-group justify-content-center col-12 col-md-8">
 
                                         <div class="table-responsive">
@@ -163,6 +161,7 @@
                                                     <th><b class="IRANYekanRegular">شماره موبایل</b></th>
                                                     <th><b class="IRANYekanRegular">کدمراجعه</b></th>
                                                     <th><b class="IRANYekanRegular">مسئول پذیرش</b></th>
+                                                    <th><b class="IRANYekanRegular">شعبه</b></th>
                                                     <th><b class="IRANYekanRegular">وضعیت مراجعه</b></th>
                                                     <th><b class="IRANYekanRegular">وضعیت صندوق</b></th>
                                                     <th style="width:200px;"><b class="IRANYekanRegular">اقدامات</b></th>
@@ -182,6 +181,7 @@
                                                         <td><strong class="IRANYekanRegular">{{ $reception->user->mobile }}</strong></td>
                                                         <td><strong class="IRANYekanRegular">{{ $reception->code }}</strong></td>
                                                         <td><strong class="IRANYekanRegular">{{ $reception->reception->fullname }}</strong></td>
+                                                        <td><strong class="IRANYekanRegular">{{ $reception->branch->name }}</strong></td>
                                                         <td>
                                                             @if($reception->end)
                                                                 @if(is_null($reception->hasOpenReferCode()) &&  Auth::guard('admin')->user()->can('reception.start'))
