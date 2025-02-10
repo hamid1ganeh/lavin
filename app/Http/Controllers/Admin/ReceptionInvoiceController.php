@@ -49,35 +49,40 @@ class ReceptionInvoiceController extends Controller
 
         return view('admin.reserves.invoices.all',compact('invoices','serviceDetails','branches')) ;
     }
-    public function show(ServiceReserve $reserve)
+    public function show(Reception $reception)
     {
         //اجازه دسترسی
-        config(['auth.defaults.guard' => 'admin']);
-        $this->authorize('reserves.payment.invoice.show');
-        if (!in_array($reserve->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()) ||
-            in_array($reserve->status,[ReserveStatus::waiting,ReserveStatus::confirm,ReserveStatus::cancel,ReserveStatus::wittingForAdviser,ReserveStatus::Adviser]))
-        {
-            abort(403);
-        }
-
-        $invoice = ReceptionInvoice::where('reserve_id',$reserve->id)->first();
-        if (!is_null($invoice)){
-            return redirect(route('admin.reserves.payment.invoice',$reserve));
-        }
-
-        $discounts = Discount::where('status',Status::Active)
-            ->where(function ($q){
-                $q->where('expire','>',Carbon::now('+3:30')->format('Y-m-d H:i:s'))
-                    ->orWhereNull('expire');})
-            ->whereHas('users',function ($q) use ($reserve){
-                $q->where('user_id',$reserve->user_id);
-            })
-            ->whereHas('services',function ($q) use ($reserve){
-                $q->where('service_detail_id',$reserve->detail_id);
-            })->get();
+//        config(['auth.defaults.guard' => 'admin']);
+//        $this->authorize('reserves.payment.invoice.show');
 
 
-        return view('admin.reserves.payment.show',compact('discounts','reserve'));
+        $services = ServiceReserve::with('upgrades')->where('reception_id',$reception->id)->where('status',ReserveStatus::accept)->get();
+        return $services;
+
+//        if (!in_array($reserve->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()) ||
+//            in_array($reserve->status,[ReserveStatus::waiting,ReserveStatus::confirm,ReserveStatus::cancel,ReserveStatus::wittingForAdviser,ReserveStatus::Adviser]))
+//        {
+//            abort(403);
+//        }
+//
+//        $invoice = ReceptionInvoice::where('reserve_id',$reserve->id)->first();
+//        if (!is_null($invoice)){
+//            return redirect(route('admin.reserves.payment.invoice',$reserve));
+//        }
+//
+//        $discounts = Discount::where('status',Status::Active)
+//            ->where(function ($q){
+//                $q->where('expire','>',Carbon::now('+3:30')->format('Y-m-d H:i:s'))
+//                    ->orWhereNull('expire');})
+//            ->whereHas('users',function ($q) use ($reserve){
+//                $q->where('user_id',$reserve->user_id);
+//            })
+//            ->whereHas('services',function ($q) use ($reserve){
+//                $q->where('service_detail_id',$reserve->detail_id);
+//            })->get();
+//
+//
+//        return view('admin.reserves.payment.show',compact('discounts','reserve'));
     }
 
     public function create(ServiceReserve $reserve,Request $request)
@@ -265,18 +270,29 @@ class ReceptionInvoiceController extends Controller
     {
         //اجازه دسترسی
         config(['auth.defaults.guard' => 'admin']);
-        $this->authorize('reserves.pay.invoices');
-
-        $receptions = Reception::with('founderBranchesReserves')
-                    ->whereHas('founderBranchesReserves',function ($q){ })
-                    ->where('found_status',FoundStatus::referred)
-                    ->filter()
-                    ->orderBy('created_at','desc')
-                    ->paginate(10)
-                    ->withQueryString();
+        $this->authorize('accounting.found');
 
 
+        $branches = Auth::guard('admin')->user()->branches->pluck('id')->toArray();
 
-        return  view('admin.reception',compact('receptions'));
+        $mobile = request('mobile');
+        $code = request('code');
+        $nationCode = request('nation_code');
+
+        if((isset($mobile) && $mobile!='') || (isset($nationCode) && $nationCode!='') || (isset($code) && $code!='')){
+            $receptions = Reception::where('found_status','<>',FoundStatus::pending)
+                ->whereIn('branch_id',$branches)
+                ->orderBy('created_at','asc')
+                ->filter()
+                ->get();
+        } else{
+            $receptions = Reception::where('found_status',FoundStatus::referred)
+                ->whereIn('branch_id',$branches)
+                ->orderBy('created_at','asc')
+                ->filter()
+                ->get();
+        }
+
+        return  view('admin.found.found',compact('receptions'));
     }
 }

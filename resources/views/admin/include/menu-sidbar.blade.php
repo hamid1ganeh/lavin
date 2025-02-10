@@ -62,9 +62,9 @@
                                 </li>
                             @endif
 
-                           @if(Auth::guard('admin')->user()->can('reserves.pay.invoices'))
+                           @if(Auth::guard('admin')->user()->can('accounting.found'))
                             <li>
-                                <a href="{{ route('admin.accounting.invoices.index') }}" class="waves-effect">
+                                <a href="{{ route('admin.accounting.found') }}" class="waves-effect">
                                     <i class="fas fa-cash-register"></i>
                                     <span class="IRANYekanRegular">صندوق</span>
                                 </a>

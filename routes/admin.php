@@ -904,6 +904,15 @@ Route::group(['middleware' => 'auth.admin'], function () {
 
         Route::get('/found', [ReceptionInvoiceController::class,'found'])->name('found');
 
+
+        Route::prefix('reception/')->name('reception.')->group(function () {
+            Route::prefix('{reception}/invoices')->name('invoices.')->group(function () {
+                Route::get('/preview', [ReceptionInvoiceController::class,'show'])->name('show');
+//                Route::get('/', [ReceptionInvoiceController::class,'index'])->name('index');
+            });
+
+        });
+
         Route::prefix('invoices')->name('invoices.')->group(function () {
             Route::get('/', [ReceptionInvoiceController::class,'index'])->name('index');
         });
