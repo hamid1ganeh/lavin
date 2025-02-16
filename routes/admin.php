@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\LaserDeviceController;
 use App\Http\Controllers\Admin\ServiceLaserController;
 use App\Http\Controllers\Admin\WarehouseReceiptController;
+use App\Http\Controllers\Admin\ReceiptInvoiceController;
 use App\Http\Controllers\Admin\AccountController;
 use App\Http\Controllers\Admin\ReserveInvoiceController;
 use App\Http\Controllers\Admin\ReservePosPaymentContoller;
@@ -847,13 +848,18 @@ Route::group(['middleware' => 'auth.admin'], function () {
             });
         });
 
-        Route::prefix('receipts')->name('receipts.')->group(function () {
+         Route::prefix('receipts')->name('receipts.')->group(function () {
             Route::get('/', [WarehouseReceiptController::class,'index'])->name('index');
             Route::get('/create', [WarehouseReceiptController::class,'create'])->name('create');
             Route::post('/store', [WarehouseReceiptController::class,'store'])->name('store');
             Route::get('{receipt}/edit', [WarehouseReceiptController::class,'edit'])->name('edit');
             Route::patch('{receipt}/update', [WarehouseReceiptController::class,'update'])->name('update');
-        });
+
+            Route::prefix('{receipt}/invoice')->name('invoice.')->group(function () {
+                Route::get('/', [ReceiptInvoiceController::class,'show'])->name('show');
+                Route::post('/create', [ReceiptInvoiceController::class,'create'])->name('create');
+         });
+      });
 
         Route::prefix('goods')->name('goods.')->group(function () {
             Route::get('/', [GoodsController::class,'index'])->name('index');

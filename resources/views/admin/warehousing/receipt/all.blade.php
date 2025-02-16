@@ -204,14 +204,20 @@
                                                         <div class="dropdown-menu">
                                                             <a href="#info{{ $receipt->id }}" data-toggle="modal" class="dropdown-item IR cusrsor" title="لیست کالاها">
                                                                 <i class="fa fa-info text-dark font-16 cursor-pointer"></i>
-                                                                <span class="p-1">لیست کالاها</span>
+                                                                لیست کالاها
                                                             </a>
-                                                            @if(Auth::guard('admin')->user()->can('warehousing.goods.receipts.edit'))
+                                                            @if(Auth::guard('admin')->user()->can('warehousing.goods.receipts.edit') && is_null($receipt->invoic))
                                                             <a class="dropdown-item IR cursor-pointer" href="{{ route('admin.warehousing.receipts.edit',$receipt) }}" title="ویرایش">
                                                                 <i class="fa fa-edit text-success font-20"></i>
                                                                 ویرایش
                                                             </a>
                                                             @endif
+
+                                                            <a href="{{ route('admin.warehousing.receipts.invoice.show',$receipt) }}" class="dropdown-item IR cursor-pointer" title="صورتحساب" target="_blank">
+                                                                <i class="fas fa-dollar-sign text-primary cursor-pointer"></i>
+                                                                صورتحساب
+                                                            </a>
+
                                                         </div>
                                                     </div>
                                                 </div>

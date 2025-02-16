@@ -27,6 +27,11 @@ class WarehouseReceipt extends Model
         return $this->hasMany(ReceiptGoods::class,'receipt_id','id');
     }
 
+    public function invoic()
+    {
+        return $this->hasOne(ReceiptInvoice::class,'receipt_id','id');
+    }
+
     public function scopeFilter($query)
     {
         $number = request('number');
