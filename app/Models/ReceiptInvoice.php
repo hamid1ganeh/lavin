@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Morilog\Jalali\CalendarUtils;
 
 class ReceiptInvoice extends Model
 {
@@ -12,4 +13,10 @@ class ReceiptInvoice extends Model
     {
         return $this->belongsTo(WarehouseReceipt::class,'receipt_id','id');
     }
+
+    public function createdAt()
+    {
+        return CalendarUtils::convertNumbers(CalendarUtils::strftime('Y/m/d',strtotime($this->created_at)));
+    }
+
 }

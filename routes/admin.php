@@ -858,7 +858,45 @@ Route::group(['middleware' => 'auth.admin'], function () {
             Route::prefix('{receipt}/invoice')->name('invoice.')->group(function () {
                 Route::get('/', [ReceiptInvoiceController::class,'show'])->name('show');
                 Route::post('/create', [ReceiptInvoiceController::class,'create'])->name('create');
-         });
+
+                Route::prefix('{invoice}/pos')->name('pos.')->group(function () {
+                    Route::get('/', 'ReciptPosPaymentContoller@index')->name('index');
+                    Route::get('/create', 'ReciptPosPaymentContoller@create')->name('create');
+                    Route::post('/store', 'ReciptPosPaymentContoller@store')->name('store');
+                    Route::get('/{pos}/edit', 'ReciptPosPaymentContoller@edit')->name('edit');
+                    Route::put('/{pos}/update', 'ReciptPosPaymentContoller@update')->name('update');
+                    Route::delete('/{pos}/destroy', 'ReciptPosPaymentContoller@destroy')->name('destroy');
+                });
+
+                Route::prefix('{invoice}/cash')->name('cash.')->group(function () {
+                    Route::get('/', 'ReciptCashPaymentContoller@index')->name('index');
+                    Route::get('/create', 'ReciptCashPaymentContoller@create')->name('create');
+                    Route::post('/store', 'ReciptCashPaymentContoller@store')->name('store');
+                    Route::get('/{cash}/edit', 'ReciptCashPaymentContoller@edit')->name('edit');
+                    Route::put('/{cash}/update', 'ReciptCashPaymentContoller@update')->name('update');
+                    Route::delete('/{cash}/destroy', 'ReciptCashPaymentContoller@destroy')->name('destroy');
+                });
+
+                Route::prefix('{invoice}/card_to_card')->name('card.')->group(function () {
+                    Route::get('/', 'ReciptCardToCardPaymentContoller@index')->name('index');
+                    Route::get('/create', 'ReciptCardToCardPaymentContoller@create')->name('create');
+                    Route::post('/store', 'ReciptCardToCardPaymentContoller@store')->name('store');
+                    Route::get('/{card}/edit', 'ReciptCardToCardPaymentContoller@edit')->name('edit');
+                    Route::put('/{card}/update', 'ReciptCardToCardPaymentContoller@update')->name('update');
+                    Route::delete('/{card}/destroy', 'ReciptCardToCardPaymentContoller@destroy')->name('destroy');
+                });
+
+                Route::prefix('{invoice}/cheque')->name('cheque.')->group(function () {
+                    Route::get('/', 'ReciptChequePaymentContoller@index')->name('index');
+                    Route::get('/create', 'ReciptChequePaymentContoller@create')->name('create');
+                    Route::post('/store', 'ReciptChequePaymentContoller@store')->name('store');
+                    Route::get('/{cheque}/edit', 'ReciptChequePaymentContoller@edit')->name('edit');
+                    Route::put('/{cheque}/update', 'ReciptChequePaymentContoller@update')->name('update');
+                    Route::delete('/{cheque}/destroy', 'ReciptChequePaymentContoller@destroy')->name('destroy');
+                    Route::patch('/{cheque}/pass', 'ReciptChequePaymentContoller@pass')->name('pass');
+                });
+
+           });
       });
 
         Route::prefix('goods')->name('goods.')->group(function () {
