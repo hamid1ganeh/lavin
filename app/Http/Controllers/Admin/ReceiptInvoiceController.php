@@ -16,7 +16,7 @@ class ReceiptInvoiceController extends Controller
                  return view('admin.warehousing.receipt.invoice.show', compact('receipt'));
              }
 
-         return view('admin.warehousing.receipt.invoice.invoice', compact('invoice'));
+         return view('admin.warehousing.receipt.invoice.invoice', compact('receipt','invoice'));
      }
 
 

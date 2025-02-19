@@ -44,7 +44,7 @@
                     <div class="page-title-box">
                         <div class="page-title-right">
                             <ol class="breadcrumb m-0 IR">
-                                {{ Breadcrumbs::render('reserves.payment.invoice.cheque.create',$reserve,$invoice) }}
+                                {{ Breadcrumbs::render('warehousing.receipts.invoice.cheque.create',$reserve,$invoice) }}
                             </ol>
                         </div>
                         <h4 class="page-title">
@@ -72,7 +72,7 @@
                         <div class="card-body">
 
                             <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" style="margin:auto">
-                                <form class="form-horizontal" action="{{ route('admin.reserves.payment.cheque.store',[$reserve,$invoice]) }}" method="post">
+                                <form class="form-horizontal" action="{{ route('admin.warehousing.receipts.invoice.cheque.store',[$receipt,$invoice]) }}" method="post">
                                     {{ csrf_field() }}
 
                                     <div class="row">

@@ -74,7 +74,7 @@ class ReciptPosPaymentContoller extends Controller
 
         toast('پرداختی شما ثبت شد.','success')->position('bottom-end');
 
-        return redirect(route('admin.warehousing.receipt.invoice.pos.index',[$receipt,$invoice]));
+        return redirect(route('admin.warehousing.receipts.invoice.pos.index',[$receipt,$invoice]));
     }
 
 
@@ -120,7 +120,7 @@ class ReciptPosPaymentContoller extends Controller
 
         toast('بروزرسانی انجام شد.','success')->position('bottom-end');
 
-        return redirect(route('admin.warehousing.receipt.invoice.pos.index',[$receipt,$invoice]));
+        return redirect(route('admin.warehousing.receipts.invoice.pos.index',[$receipt,$invoice]));
     }
 
 

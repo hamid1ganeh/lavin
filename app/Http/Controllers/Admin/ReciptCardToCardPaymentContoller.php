@@ -83,7 +83,7 @@ class ReciptCardToCardPaymentContoller extends Controller
 
         toast('پرداختی شما ثبت شد.','success')->position('bottom-end');
 
-        return redirect(route('admin.warehousing.receipt.invoice.card.index',[$receipt,$invoice]));
+        return redirect(route('admin.warehousing.receipts.invoice.card.index',[$receipt,$invoice]));
     }
 
 
@@ -138,7 +138,7 @@ class ReciptCardToCardPaymentContoller extends Controller
 
         toast('بروزرسانی انجام شد.','success')->position('bottom-end');
 
-        return redirect(route('admin.warehousing.receipt.invoice.card.index',[$receipt,$invoice]));
+        return redirect(route('admin.warehousing.receipts.invoice.card.index',[$receipt,$invoice]));
     }
 
     public function destroy(WarehouseReceipt $receipt,ReceiptInvoice $invoice,CardToCardPayment $card)

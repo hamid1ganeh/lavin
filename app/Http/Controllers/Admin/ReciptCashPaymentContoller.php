@@ -58,15 +58,15 @@ class ReciptCashPaymentContoller extends Controller
         $paidAt = Jalalian::fromFormat('Y/m/d H:i', $paidAt)->toCarbon("Y-m-d H:i");
 
         CashPayment::create(['payable_type'=>get_class($invoice),
-            'payable_id'=> $invoice->id,
-            'price'=>$request->price,
-            'paid_at'=> $paidAt,
-            'description'=> $request->description,
-            'cashier_id'=>Auth::guard('admin')->id()]);
+                            'payable_id'=> $invoice->id,
+                            'price'=>$request->price,
+                            'paid_at'=> $paidAt,
+                            'description'=> $request->description,
+                            'cashier_id'=>Auth::guard('admin')->id()]);
 
         toast('پرداختی شما ثبت شد.','success')->position('bottom-end');
 
-        return redirect(route('admin.warehousing.receipt.invoice.cash.index',[$receipt,$invoice]));
+        return redirect(route('admin.warehousing.receipts.invoice.cash.index',[$receipt,$invoice]));
     }
 
 
@@ -104,7 +104,7 @@ class ReciptCashPaymentContoller extends Controller
 
         toast('بروزرسانی انجام شد.','success')->position('bottom-end');
 
-        return redirect(route('admin.warehousing.receipt.invoice.cash.index',[$receipt,$invoice]));
+        return redirect(route('admin.warehousing.receipts.invoice.cash.index',[$receipt,$invoice]));
     }
 
     public function destroy(WarehouseReceipt $receipt,ReceiptInvoice $invoice,CashPayment $cash)

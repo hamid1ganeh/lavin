@@ -14,7 +14,7 @@
                     <div class="page-title-box">
                         <div class="page-title-right">
                             <ol class="breadcrumb m-0 IR">
-                             {{ Breadcrumbs::render('reserves.payment.invoice.pos',$reserve,$invoice) }}
+{{--                             {{ Breadcrumbs::render('reserves.payment.invoice.pos',$reserve,$invoice) }}--}}
                             </ol>
                         </div>
                         <h4 class="page-title">
@@ -32,14 +32,14 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-12 text-right">
-                                    @if(Auth::guard('admin')->user()->can('reserves.payment.invoice.pos.create'))
+{{--                                    @if(Auth::guard('admin')->user()->can('reserves.payment.invoice.pos.create'))--}}
                                     <div class="btn-group" >
-                                            <a href="{{ route('admin.reserves.payment.pos.create',[$reserve,$invoice]) }}" class="btn btn-sm btn-primary">
+                                            <a href="{{ route('admin.warehousing.receipts.invoice.pos.create',[$receipt,$invoice]) }}" class="btn btn-sm btn-primary">
                                             <i class="fa fa-plus plusiconfont"></i>
                                             <b class="IRANYekanRegular">ایجاد پرداخت جدید</b>
                                         </a>
                                     </div>
-                                   @endif
+{{--                                   @endif--}}
                                 </div>
                             </div>
 
@@ -68,11 +68,11 @@
                                             <td><strong class="IRANYekanRegular">{{ $pos->cashier->fullname??'' }}</strong></td>
                                             <td><strong class="IRANYekanRegular">{{ $pos->description }}</strong></td>
                                             <td>
-                                                @if(Auth::guard('admin')->user()->can('reserves.payment.invoice.pos.edit'))
-                                                    <a class="btn  btn-icon" href="{{ route('admin.reserves.payment.pos.edit', [$reserve,$invoice,$pos]) }}" title="ویرایش">
+{{--                                                @if(Auth::guard('admin')->user()->can('reserves.payment.invoice.pos.edit'))--}}
+                                                    <a class="btn  btn-icon" href="{{ route('admin.warehousing.receipts.invoice.pos.edit', [$receipt,$invoice,$pos]) }}" title="ویرایش">
                                                         <i class="fa fa-edit text-success font-20"></i>
                                                     </a>
-                                                @endif
+{{--                                                @endif--}}
 
                                                 @if(Auth::guard('admin')->user()->can('reserves.payment.invoice.pos.delete'))
                                                 <a href="#remove{{ $pos->id }}" data-toggle="modal" class="btn btn-icon" title="حذف">
@@ -92,7 +92,7 @@
                                                                 <h5 class="IRANYekanRegular">آیا مطمئن هستید که مخواهید این  پرداختی را حذف کنید؟</h5>
                                                             </div>
                                                             <div class="modal-footer">
-                                                                <form action="{{ route('admin.reserves.payment.pos.destroy', [$reserve,$invoice,$pos]) }}"  method="POST" class="d-inline">
+                                                                <form action="{{ route('admin.warehousing.receipts.invoice.pos.destroy', [$receipt,$invoice,$pos]) }}"  method="POST" class="d-inline">
                                                                     @csrf
                                                                     @method('DELETE')
                                                                     <button type="submit" class="btn btn-danger px-8" title="حذف" >حذف</button>

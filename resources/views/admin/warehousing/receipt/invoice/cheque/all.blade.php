@@ -33,7 +33,7 @@
                     <div class="page-title-box">
                         <div class="page-title-right">
                             <ol class="breadcrumb m-0 IR">
-                                {{ Breadcrumbs::render('reserves.payment.invoice.cheque',$reserve,$invoice) }}
+{{--                                {{ Breadcrumbs::render('reserves.payment.invoice.cheque',$receipt,$invoice) }}--}}
                             </ol>
                         </div>
                         <h4 class="page-title">
@@ -63,7 +63,7 @@
                                 <div class="col-12 text-right">
                                     @if(Auth::guard('admin')->user()->can('reserves.payment.invoice.cheque.create'))
                                     <div class="btn-group" >
-                                            <a href="{{ route('admin.reserves.payment.cheque.create',[$reserve,$invoice]) }}" class="btn btn-sm btn-primary">
+                                            <a href="{{ route('admin.warehousing.receipts.invoice.cash.create',[$receipt,$invoice]) }}" class="btn btn-sm btn-primary">
                                             <i class="fa fa-plus plusiconfont"></i>
                                             <b class="IRANYekanRegular">ایجاد پرداخت جدید</b>
                                         </a>
@@ -119,7 +119,7 @@
                                                                 <h5 class="IRANYekanRegular">آیا مطمئن هستید که مخواهید این  پرداختی را حذف کنید؟</h5>
                                                             </div>
                                                             <div class="modal-footer">
-                                                                <form action="{{ route('admin.reserves.payment.cheque.destroy', [$reserve,$invoice,$cheque]) }}"  method="POST" class="d-inline">
+                                                                <form action="{{ route('admin.warehousing.receipts.invoice.cheque.destroy', [$receipt,$invoice,$cheque]) }}"  method="POST" class="d-inline">
                                                                     @csrf
                                                                     @method('DELETE')
                                                                     <button type="submit" class="btn btn-danger px-8" title="حذف" >حذف</button>
@@ -142,7 +142,7 @@
                                                             </div>
                                                             <div class="modal-body">
                                                                 <div class="form-group col-12">
-                                                                    <form action="{{ route('admin.reserves.payment.cheque.pass', [$reserve,$invoice,$cheque]) }}"  method="POST" class="d-inline" id="pass-form{{ $cheque->id  }}">
+                                                                    <form action="{{ route('admin.warehousing.receipts.invoice.cheque.pass', [$receipt,$invoice,$cheque]) }}"  method="POST" class="d-inline" id="pass-form{{ $cheque->id  }}">
                                                                         @csrf
                                                                         @method('patch')
                                                                         <div class="modal-body text-left">
@@ -179,7 +179,7 @@
                                                         <i class=" ti-align-justify" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
                                                         <div class="dropdown-menu">
                                                             @if(Auth::guard('admin')->user()->can('reserves.payment.invoice.cheque.edit'))
-                                                            <a class="dropdown-item IR cursor-pointer" href="{{ route('admin.reserves.payment.cheque.edit', [$reserve,$invoice,$cheque]) }}" title="ویرایش">
+                                                            <a class="dropdown-item IR cursor-pointer" href="{{ route('admin.warehousing.receipts.invoice.cheque.edit', [$receipt,$invoice,$cheque]) }}" title="ویرایش">
                                                                 <i class="fa fa-edit text-success font-16 cursor-pointer"></i>
                                                                 <span class="p-1">ویرایش</span>
                                                             </a>
