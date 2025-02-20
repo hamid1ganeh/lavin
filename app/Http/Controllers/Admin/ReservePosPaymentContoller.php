@@ -19,7 +19,7 @@ class ReservePosPaymentContoller extends Controller
     {
         //اجازه دسترسی
         config(['auth.defaults.guard' => 'admin']);
-        $this->authorize('reserves.payment.invoice.pos.index');
+        $this->authorize('invoice.pos.index');
         if (!in_array($reserve->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
         {
             abort(403);
@@ -38,7 +38,7 @@ class ReservePosPaymentContoller extends Controller
     {
         //اجازه دسترسی
         config(['auth.defaults.guard' => 'admin']);
-        $this->authorize('reserves.payment.invoice.pos.create');
+        $this->authorize('invoice.pos.create');
         if (!in_array($reserve->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
         {
             abort(403);
@@ -52,7 +52,7 @@ class ReservePosPaymentContoller extends Controller
     {
         //اجازه دسترسی
         config(['auth.defaults.guard' => 'admin']);
-        $this->authorize('reserves.payment.invoice.pos.create');
+        $this->authorize('invoice.pos.create');
         if (!in_array($reserve->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
         {
             abort(403);
@@ -94,7 +94,7 @@ class ReservePosPaymentContoller extends Controller
     {
         //اجازه دسترسی
         config(['auth.defaults.guard' => 'admin']);
-        $this->authorize('reserves.payment.invoice.pos.edit');
+        $this->authorize('invoice.pos.edit');
         if (!in_array($reserve->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
         {
             abort(403);
@@ -108,7 +108,7 @@ class ReservePosPaymentContoller extends Controller
     {
         //اجازه دسترسی
         config(['auth.defaults.guard' => 'admin']);
-        $this->authorize('reserves.payment.invoice.pos.edit');
+        $this->authorize('invoice.pos.edit');
         if (!in_array($reserve->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
         {
             abort(403);
@@ -148,7 +148,7 @@ class ReservePosPaymentContoller extends Controller
     {
         //اجازه دسترسی
         config(['auth.defaults.guard' => 'admin']);
-        $this->authorize('reserves.payment.invoice.pos.delete');
+        $this->authorize('invoice.pos.delete');
         if (!in_array($reserve->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
         {
             abort(403);

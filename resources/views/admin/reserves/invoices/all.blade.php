@@ -202,35 +202,35 @@
                                                     <div class="input-group-append">
                                                         <i class=" ti-align-justify" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
                                                         <div class="dropdown-menu">
-                                                             @if(Auth::guard('admin')->user()->can('reserves.payment.invoice.show'))
+                                                             @if(Auth::guard('admin')->user()->can('invoice.show'))
                                                               <a class="dropdown-item IR cursor-pointer" href="{{ route('admin.reserves.payment.show', $invoice->reserve) }}" title="نمایش صورتحساب" target="_blank">
                                                                   <i class="fas fa-dollar-sign text-dark cursor-pointer"></i>
                                                                 <span class="p-1">صورتحساب</span>
                                                               </a>
                                                               @endif
 
-                                                            @if(Auth::guard('admin')->user()->can('reserves.payment.invoice.pos.index'))
+                                                            @if(Auth::guard('admin')->user()->can('invoice.pos.index'))
                                                             <a class="dropdown-item IR cursor-pointer" href="{{ route('admin.reserves.payment.pos.index', [$invoice->reserve,$invoice]) }}" title="دستگاه پوز" target="_blank">
                                                                 <i class="fas fa-dollar-sign text-danger cursor-pointer"></i>
                                                                 <span class="p-1">دستگاه پوز</span>
                                                             </a>
                                                             @endif
 
-                                                           @if(Auth::guard('admin')->user()->can('reserves.payment.invoice.card.index'))
+                                                           @if(Auth::guard('admin')->user()->can('invoice.card.index'))
                                                             <a class="dropdown-item IR cursor-pointer" href="{{ route('admin.reserves.payment.card.index', [$invoice->reserve,$invoice]) }}" title="کارت به کارت" target="_blank">
                                                                 <i class="fas fa-dollar-sign text-primary cursor-pointer"></i>
                                                                 <span class="p-1">کارت به کارت</span>
                                                             </a>
                                                             @endif
 
-                                                           @if(Auth::guard('admin')->user()->can('reserves.payment.invoice.cash.index'))
+                                                           @if(Auth::guard('admin')->user()->can('invoice.cash.index'))
                                                             <a class="dropdown-item IR cursor-pointer" href="{{ route('admin.reserves.payment.cash.index', [$invoice->reserve,$invoice]) }}" title="نقدی" target="_blank">
                                                                 <i class="fas fa-dollar-sign text-success cursor-pointer"></i>
                                                                 <span class="p-1">نقدی</span>
                                                             </a>
                                                             @endif
 
-                                                            @if(Auth::guard('admin')->user()->can('reserves.payment.invoice.cheque.index'))
+                                                            @if(Auth::guard('admin')->user()->can('invoice.cheque.index'))
                                                             <a class="dropdown-item IR cursor-pointer" href="{{ route('admin.reserves.payment.cheque.index', [$invoice->reserve,$invoice]) }}" title="چک" target="_blank">
                                                                 <i class="fas fa-dollar-sign text-warning cursor-pointer"></i>
                                                                 <span class="p-1">چک</span>

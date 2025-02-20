@@ -17,8 +17,8 @@ class ReciptPosPaymentContoller extends Controller
     public function index(WarehouseReceipt $receipt,ReceiptInvoice $invoice)
     {
         //اجازه دسترسی
-//        config(['auth.defaults.guard' => 'admin']);
-//        $this->authorize('reserves.payment.invoice.pos.index');
+        config(['auth.defaults.guard' => 'admin']);
+        $this->authorize('invoice.pos.index');
 
          $payments = PosPayment::with('receiverAccount')
                                     ->where('payable_type',get_class($invoice))
@@ -32,8 +32,8 @@ class ReciptPosPaymentContoller extends Controller
     public function create(WarehouseReceipt $receipt,ReceiptInvoice $invoice)
     {
         //اجازه دسترسی
-//        config(['auth.defaults.guard' => 'admin']);
-//        $this->authorize('reserves.payment.invoice.pos.create');
+        config(['auth.defaults.guard' => 'admin']);
+        $this->authorize('invoice.pos.create');
 
 
         $accounts = Account::where('pos',true)->orderBy('bank_name')->get();
@@ -43,8 +43,8 @@ class ReciptPosPaymentContoller extends Controller
     public function store(WarehouseReceipt $receipt,ReceiptInvoice $invoice,Request $request)
     {
         //اجازه دسترسی
-//        config(['auth.defaults.guard' => 'admin']);
-//        $this->authorize('reserves.payment.invoice.pos.create');
+        config(['auth.defaults.guard' => 'admin']);
+        $this->authorize('invoice.pos.create');
 
         $request->validate([
             'receiver_account_id'=>'required|exists:accounts,id',
@@ -81,8 +81,8 @@ class ReciptPosPaymentContoller extends Controller
     public function edit(WarehouseReceipt $receipt,ReceiptInvoice $invoice,PosPayment $pos)
     {
         //اجازه دسترسی
-//        config(['auth.defaults.guard' => 'admin']);
-//        $this->authorize('reserves.payment.invoice.pos.edit');
+        config(['auth.defaults.guard' => 'admin']);
+        $this->authorize('invoice.pos.edit');
 
         $accounts = Account::where('pos',true)->orderBy('bank_name')->get();
         return  view('admin.warehousing.receipt.invoice.pos.edit',compact('receipt','invoice','accounts','pos'));
@@ -91,8 +91,8 @@ class ReciptPosPaymentContoller extends Controller
     public function update(WarehouseReceipt $receipt,ReceiptInvoice $invoice,PosPayment $pos,Request $request)
     {
         //اجازه دسترسی
-//        config(['auth.defaults.guard' => 'admin']);
-//        $this->authorize('reserves.payment.invoice.pos.edit');
+        config(['auth.defaults.guard' => 'admin']);
+        $this->authorize('invoice.pos.edit');
 
         $request->validate([
             'receiver_account_id'=>'required|exists:accounts,id',
@@ -127,8 +127,8 @@ class ReciptPosPaymentContoller extends Controller
     public function destroy(WarehouseReceipt $receipt,ReceiptInvoice $invoice,PosPayment $pos)
     {
         //اجازه دسترسی
-//        config(['auth.defaults.guard' => 'admin']);
-//        $this->authorize('reserves.payment.invoice.pos.delete');
+        config(['auth.defaults.guard' => 'admin']);
+        $this->authorize('invoice.pos.delete');
 
         $pos->delete();
         toast('پرداختی مورد نظر حذف شد.','error')->position('bottom-end');

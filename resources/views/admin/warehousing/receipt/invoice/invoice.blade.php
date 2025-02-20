@@ -46,23 +46,21 @@
                                 <p class="card-text IRANYekanRegular">مبلغ:&nbsp; {{ number_format($invoice->price ?? 0) }}&nbsp;تومان</p>
                             </div>
                             <div class="col-12 col-md-6 text-right">
-{{--                                @if(in_array($reserve->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))--}}
-{{--                                @if(Auth::guard('admin')->user()->can('reserves.payment.invoice.pos.index'))--}}
+                                @if(Auth::guard('admin')->user()->can('invoice.pos.index'))
                                 <a href="{{ route('admin.warehousing.receipts.invoice.pos.index',[$receipt,$invoice]) }}"  class="btn btn-danger cursor-pointer text-white" title="دستگاه پوز">دستگاه پوز</a>
-{{--                                @endif--}}
+                                @endif
 
-{{--                                @if(Auth::guard('admin')->user()->can('reserves.payment.invoice.card.index'))--}}
+                                @if(Auth::guard('admin')->user()->can('invoice.card.index'))
                                 <a href="{{ route('admin.warehousing.receipts.invoice.card.index',[$receipt,$invoice]) }}"  class="btn btn-primary cursor-pointer text-white" title="کارت به کارت">کارت به کارت</a>
-{{--                                @endif--}}
+                                @endif
 
-{{--                                @if(Auth::guard('admin')->user()->can('reserves.payment.invoice.cash.index'))--}}
+                                @if(Auth::guard('admin')->user()->can('invoice.cash.index'))
                                 <a href="{{ route('admin.warehousing.receipts.invoice.cash.index',[$receipt,$invoice]) }}"  class="btn btn-success cursor-pointer text-white" title="نقدی">نقدی</a>
-{{--                                @endif--}}
+                                @endif
 
-{{--                                @if(Auth::guard('admin')->user()->can('reserves.payment.invoice.cheque.index'))--}}
+                                @if(Auth::guard('admin')->user()->can('invoice.cheque.index'))
                                 <a href="{{ route('admin.warehousing.receipts.invoice.cheque.index',[$receipt,$invoice]) }}"  class="btn btn-warning cursor-pointer text-white" title="چک">چک</a>
-{{--                                 @endif--}}
-{{--                                @endif--}}
+                                @endif
                             </div>
                         </div>
                         <div class="row">

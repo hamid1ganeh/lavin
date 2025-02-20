@@ -48,19 +48,19 @@
                             </div>
                             <div class="col-12 col-md-6 text-right">
                                 @if(in_array($reserve->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
-                                @if(Auth::guard('admin')->user()->can('reserves.payment.invoice.pos.index'))
+                                @if(Auth::guard('admin')->user()->can('invoice.pos.index'))
                                 <a href="{{ route('admin.reserves.payment.pos.index',[$reserve,$invoice]) }}"  class="btn btn-danger cursor-pointer text-white" title="دستگاه پوز">دستگاه پوز</a>
                                 @endif
 
-                                @if(Auth::guard('admin')->user()->can('reserves.payment.invoice.card.index'))
+                                @if(Auth::guard('admin')->user()->can('invoice.card.index'))
                                 <a href="{{ route('admin.reserves.payment.card.index',[$reserve,$invoice]) }}"  class="btn btn-primary cursor-pointer text-white" title="کارت به کارت">کارت به کارت</a>
                                 @endif
 
-                                @if(Auth::guard('admin')->user()->can('reserves.payment.invoice.cash.index'))
+                                @if(Auth::guard('admin')->user()->can('invoice.cash.index'))
                                 <a href="{{ route('admin.reserves.payment.cash.index',[$reserve,$invoice]) }}"  class="btn btn-success cursor-pointer text-white" title="نقدی">نقدی</a>
                                 @endif
 
-                                @if(Auth::guard('admin')->user()->can('reserves.payment.invoice.cheque.index'))
+                                @if(Auth::guard('admin')->user()->can('invoice.cheque.index'))
                                 <a href="{{ route('admin.reserves.payment.cheque.index',[$reserve,$invoice]) }}"  class="btn btn-warning cursor-pointer text-white" title="چک">چک</a>
                                  @endif
                                 @endif

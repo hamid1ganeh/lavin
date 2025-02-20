@@ -124,7 +124,7 @@
                     </div>
                 </div>
 
-            @if(Auth::guard('admin')->user()->can('reserves.payment.create') &&
+            @if(Auth::guard('admin')->user()->can('invoice.create') &&
                 in_array($reserve->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
                 <div class="row">
                     <div class="card w-100" Style="height: 180px">

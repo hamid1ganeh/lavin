@@ -19,7 +19,7 @@ class ReserveCardToCardPaymentContoller extends Controller
     {
         //اجازه دسترسی
         config(['auth.defaults.guard' => 'admin']);
-        $this->authorize('reserves.payment.invoice.card.index');
+        $this->authorize('invoice.card.index');
         if (!in_array($reserve->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
         {
             abort(403);
@@ -39,7 +39,7 @@ class ReserveCardToCardPaymentContoller extends Controller
     {
         //اجازه دسترسی
         config(['auth.defaults.guard' => 'admin']);
-        $this->authorize('reserves.payment.invoice.card.create');
+        $this->authorize('invoice.card.create');
         if (!in_array($reserve->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
         {
             abort(403);
@@ -53,7 +53,7 @@ class ReserveCardToCardPaymentContoller extends Controller
     {
         //اجازه دسترسی
         config(['auth.defaults.guard' => 'admin']);
-        $this->authorize('reserves.payment.invoice.card.create');
+        $this->authorize('invoice.card.create');
         if (!in_array($reserve->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
         {
             abort(403);
@@ -104,7 +104,7 @@ class ReserveCardToCardPaymentContoller extends Controller
     {
         //اجازه دسترسی
         config(['auth.defaults.guard' => 'admin']);
-        $this->authorize('reserves.payment.invoice.card.edit');
+        $this->authorize('invoice.card.edit');
         if (!in_array($reserve->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
         {
             abort(403);
@@ -118,7 +118,7 @@ class ReserveCardToCardPaymentContoller extends Controller
     {
         //اجازه دسترسی
         config(['auth.defaults.guard' => 'admin']);
-        $this->authorize('reserves.payment.invoice.card.edit');
+        $this->authorize('invoice.card.edit');
         if (!in_array($reserve->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
         {
             abort(403);
@@ -165,7 +165,7 @@ class ReserveCardToCardPaymentContoller extends Controller
     {
         //اجازه دسترسی
         config(['auth.defaults.guard' => 'admin']);
-        $this->authorize('reserves.payment.invoice.card.delete');
+        $this->authorize('invoice.card.delete');
         if (!in_array($reserve->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
         {
             abort(403);

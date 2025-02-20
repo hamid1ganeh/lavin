@@ -62,7 +62,7 @@
                                 </li>
                             @endif
 
-                           @if(Auth::guard('admin')->user()->can('reserves.pay.invoices'))
+                           @if(Auth::guard('admin')->user()->can('invoices.pay'))
                             <li>
                                 <a href="{{ route('admin.accounting.invoices.index') }}" class="waves-effect">
                                     <i class="fas fa-cash-register"></i>

@@ -17,8 +17,8 @@ class ReciptCashPaymentContoller extends Controller
     public function index(WarehouseReceipt $receipt,ReceiptInvoice $invoice)
     {
         //اجازه دسترسی
-//        config(['auth.defaults.guard' => 'admin']);
-//        $this->authorize('reserves.payment.invoice.cash.index');
+        config(['auth.defaults.guard' => 'admin']);
+        $this->authorize('invoice.cash.index');
 
         $payments = CashPayment::where('payable_type',get_class($invoice))
             ->where('payable_id',$invoice->id)
@@ -33,8 +33,8 @@ class ReciptCashPaymentContoller extends Controller
     public function create(WarehouseReceipt $receipt,ReceiptInvoice $invoice)
     {
         //اجازه دسترسی
-//        config(['auth.defaults.guard' => 'admin']);
-//        $this->authorize('reserves.payment.invoice.cash.create');
+        config(['auth.defaults.guard' => 'admin']);
+        $this->authorize('invoice.cash.create');
 
         return  view('admin.warehousing.receipt.invoice.cash.create',compact('receipt','invoice'));
     }
@@ -42,8 +42,8 @@ class ReciptCashPaymentContoller extends Controller
     public function store(WarehouseReceipt $receipt,ReceiptInvoice $invoice,Request $request)
     {
         //اجازه دسترسی
-//        config(['auth.defaults.guard' => 'admin']);
-//        $this->authorize('reserves.payment.invoice.cash.create');
+        config(['auth.defaults.guard' => 'admin']);
+        $this->authorize('invoice.cash.create');
 
         $request->validate([
             'price'=>'required|integer',
@@ -73,8 +73,8 @@ class ReciptCashPaymentContoller extends Controller
     public function edit(WarehouseReceipt $receipt,ReceiptInvoice $invoice,CashPayment $cash)
     {
         //اجازه دسترسی
-//        config(['auth.defaults.guard' => 'admin']);
-//        $this->authorize('reserves.payment.invoice.cash.edit');
+        config(['auth.defaults.guard' => 'admin']);
+        $this->authorize('invoice.cash.edit');
 
         return  view('admin.warehousing.receipt.invoice.cash.edit',compact('receipt','invoice','cash'));
     }
@@ -82,8 +82,8 @@ class ReciptCashPaymentContoller extends Controller
     public function update(WarehouseReceipt $receipt,ReceiptInvoice $invoice,CashPayment $cash,Request $request)
     {
         //اجازه دسترسی
-//        config(['auth.defaults.guard' => 'admin']);
-//        $this->authorize('reserves.payment.invoice.cash.edit');
+        config(['auth.defaults.guard' => 'admin']);
+        $this->authorize('invoice.cash.edit');
 
         $request->validate([
             'price'=>'required|integer',
@@ -110,8 +110,8 @@ class ReciptCashPaymentContoller extends Controller
     public function destroy(WarehouseReceipt $receipt,ReceiptInvoice $invoice,CashPayment $cash)
     {
         //اجازه دسترسی
-//        config(['auth.defaults.guard' => 'admin']);
-//        $this->authorize('reserves.payment.invoice.cash.delete');
+        config(['auth.defaults.guard' => 'admin']);
+        $this->authorize('invoice.cash.delete');
 
         $cash->delete();
         toast('پرداختی مورد نظر حذف شد.','error')->position('bottom-end');

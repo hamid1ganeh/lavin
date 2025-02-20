@@ -54,47 +54,29 @@
                             </div>
                         </div>
 
-                        <div class="row">
-                            <form class="form-horizontal" action="{{ route('admin.warehousing.receipts.invoice.create',$receipt)  }}" method="post">
-                                @csrf
-                                <div class="row">
-                                    <div class="card-body">
-                                        <label for="number" class="control-label IRANYekanRegular">شماره فاکتور</label>&nbsp;
-                                        <input type="text" class="form-check-input text-right" id="number" name="number" value="{{ old('number') }}" required>
-                                        <div class="row mt-2">
-                                            <div class="col-sm-12">
-                                                <button type="submit" title="ثبت" class="btn btn-primary">صورتحساب پرداخت</button>
-                                            </div>
+                    @if(Auth::guard('admin')->user()->can('invoice.create'))
+                    <div class="row">
+                        <form class="form-horizontal" action="{{ route('admin.warehousing.receipts.invoice.create',$receipt)  }}" method="post">
+                            @csrf
+                            <div class="row">
+                                <div class="card-body">
+                                    <label for="number" class="control-label IRANYekanRegular">شماره فاکتور</label>&nbsp;
+                                    <input type="text" class="form-check-input text-right" id="number" name="number" value="{{ old('number') }}" required>
+                                    <div class="row mt-2">
+                                        <div class="col-sm-12">
+                                            <button type="submit" title="ثبت" class="btn btn-primary">صورتحساب پرداخت</button>
                                         </div>
                                     </div>
                                 </div>
-                            </form>
-                        </div>
+                            </div>
+                        </form>
                     </div>
-
-                </div>
-            </div>
-
-    </div>
+                   @endif
 </div>
 
+</div>
+</div>
 
-<script>
-    function discount(id)
-    {
-        if(id==0){
-            document.getElementById("discount_price").required = true;
-            document.getElementById("discount_description").required = true;
-            document.getElementById("discount_price").disabled= false;
-            document.getElementById("discount_description").disabled = false;
-        }else{
-            document.getElementById("discount_price").required = false;
-            document.getElementById("discount_description").required = false;
-            document.getElementById("discount_price").disabled= true;
-            document.getElementById("discount_description").disabled = true;
-            document.getElementById("discount_price").value = '';
-            document.getElementById("discount_description").value  = '';
-        }
-    }
-</script>
+</div>
+</div>
 @endsection

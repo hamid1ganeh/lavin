@@ -17,8 +17,8 @@ class ReciptCardToCardPaymentContoller extends Controller
     public function index(WarehouseReceipt $receipt,ReceiptInvoice $invoice)
     {
         //اجازه دسترسی
-//        config(['auth.defaults.guard' => 'admin']);
-//        $this->authorize('reserves.payment.invoice.card.index');
+        config(['auth.defaults.guard' => 'admin']);
+        $this->authorize('invoice.card.index');
 
         $payments = CardToCardPayment::with('reciverAccount')
             ->where('payable_type',get_class($invoice))
@@ -33,8 +33,8 @@ class ReciptCardToCardPaymentContoller extends Controller
     public function create(WarehouseReceipt $receipt,ReceiptInvoice $invoice)
     {
         //اجازه دسترسی
-//        config(['auth.defaults.guard' => 'admin']);
-//        $this->authorize('reserves.payment.invoice.card.create');
+        config(['auth.defaults.guard' => 'admin']);
+        $this->authorize('invoice.card.create');
 
         $accounts = Account::orderBy('bank_name')->get();
         return  view('admin.warehousing.receipt.invoice.card.create',compact('receipt','invoice','accounts'));
@@ -42,9 +42,9 @@ class ReciptCardToCardPaymentContoller extends Controller
 
     public function store(WarehouseReceipt $receipt,ReceiptInvoice $invoice,Request $request)
     {
-//        //اجازه دسترسی
-//        config(['auth.defaults.guard' => 'admin']);
-//        $this->authorize('reserves.payment.invoice.card.create');
+     //اجازه دسترسی
+        config(['auth.defaults.guard' => 'admin']);
+        $this->authorize('invoice.card.create');
 
         $request->validate([
             'sender_full_name'=>'nullable|max:255',
@@ -90,8 +90,8 @@ class ReciptCardToCardPaymentContoller extends Controller
     public function edit(WarehouseReceipt $receipt,ReceiptInvoice $invoice,CardToCardPayment $card)
     {
         //اجازه دسترسی
-//        config(['auth.defaults.guard' => 'admin']);
-//        $this->authorize('reserves.payment.invoice.card.edit');
+        config(['auth.defaults.guard' => 'admin']);
+        $this->authorize('invoice.card.edit');
 
 
         $accounts = Account::orderBy('bank_name')->get();
@@ -100,9 +100,9 @@ class ReciptCardToCardPaymentContoller extends Controller
 
     public function update(WarehouseReceipt $receipt,ReceiptInvoice $invoice,CardToCardPayment $card,Request $request)
     {
-//        //اجازه دسترسی
-//        config(['auth.defaults.guard' => 'admin']);
-//        $this->authorize('reserves.payment.invoice.card.edit');
+       //اجازه دسترسی
+        config(['auth.defaults.guard' => 'admin']);
+        $this->authorize('invoice.card.edit');
 
         $request->validate([
             'sender_full_name'=>'nullable|max:255',
@@ -144,8 +144,8 @@ class ReciptCardToCardPaymentContoller extends Controller
     public function destroy(WarehouseReceipt $receipt,ReceiptInvoice $invoice,CardToCardPayment $card)
     {
         //اجازه دسترسی
-//        config(['auth.defaults.guard' => 'admin']);
-//        $this->authorize('reserves.payment.invoice.card.delete');
+        config(['auth.defaults.guard' => 'admin']);
+        $this->authorize('invoice.card.delete');
         $card->delete();
         toast('پرداختی مورد نظر حذف شد.','error')->position('bottom-end');
         return back()->withInput();

@@ -32,7 +32,7 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-12 text-right">
-                                    @if(Auth::guard('admin')->user()->can('reserves.payment.invoice.card.create'))
+                                    @if(Auth::guard('admin')->user()->can('invoice.card.create'))
                                     <div class="btn-group" >
                                         <a href="{{ route('admin.warehousing.receipts.invoice.card.create',[$receipt,$invoice]) }}" class="btn btn-sm btn-primary">
                                             <i class="fa fa-plus plusiconfont"></i>
@@ -73,13 +73,13 @@
                                             <td><strong class="IRANYekanRegular">{{ $card->description }}</strong></td>
                                             <td>
 
-{{--                                                @if(Auth::guard('admin')->user()->can('admin.warehousing.receipts.invoice.card.edit'))--}}
+                                                @if(Auth::guard('admin')->user()->can('invoice.card.edit'))
                                                     <a class="btn  btn-icon" href="{{ route('admin.warehousing.receipts.invoice.card.edit', [$receipt,$invoice,$card]) }}" title="ویرایش">
                                                         <i class="fa fa-edit text-success font-20"></i>
                                                     </a>
-{{--                                                @endif--}}
+                                                @endif
 
-{{--                                                @if(Auth::guard('admin')->user()->can('admin.warehousing.receipts.invoice.card.delete'))--}}
+                                                @if(Auth::guard('admin')->user()->can('invoice.card.delete'))
                                                 <a href="#remove{{ $card->id }}" data-toggle="modal" class="btn btn-icon" title="حذف">
                                                     <i class="fa fa-trash text-danger font-20"></i>
                                                 </a>
@@ -94,7 +94,7 @@
                                                                 </button>
                                                             </div>
                                                             <div class="modal-body">
-                                                                <h5 class="IRANYekanRegular">آیا مطمئن هستید که مخواهید این  پرداختی را حذف کنید؟</h5>
+                                                                <h5 class="IRANYekanRegular">آیا مطمئن هستید که میخواهید این  پرداختی را حذف کنید؟</h5>
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <form action="{{ route('admin.warehousing.receipts.invoice.card.destroy', [$receipt,$invoice,$card]) }}"  method="POST" class="d-inline">
@@ -107,7 +107,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-{{--                                                @endif--}}
+                                                @endif
                                             </td>
                                         </tr>
                                     @endforeach

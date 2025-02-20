@@ -18,7 +18,7 @@ class ReserveChequePaymentContoller extends Controller
     public function index(ServiceReserve $reserve,ReserveInvoice $invoice)
     {
         config(['auth.defaults.guard' => 'admin']);
-        $this->authorize('reserves.payment.invoice.cheque.index');
+        $this->authorize('invoice.cheque.index');
         if (!in_array($reserve->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
         {
             abort(403);
@@ -38,7 +38,7 @@ class ReserveChequePaymentContoller extends Controller
     public function create(ServiceReserve $reserve,ReserveInvoice $invoice)
     {
         config(['auth.defaults.guard' => 'admin']);
-        $this->authorize('reserves.payment.invoice.cheque.create');
+        $this->authorize('invoice.cheque.create');
         if (!in_array($reserve->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
         {
             abort(403);
@@ -109,7 +109,7 @@ class ReserveChequePaymentContoller extends Controller
     public function edit(ServiceReserve $reserve,ReserveInvoice $invoice,ChequePayment $cheque)
     {
         config(['auth.defaults.guard' => 'admin']);
-        $this->authorize('reserves.payment.invoice.cheque.edit');
+        $this->authorize('invoice.cheque.edit');
         if (!in_array($reserve->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
         {
             abort(403);
@@ -122,7 +122,7 @@ class ReserveChequePaymentContoller extends Controller
     public function update(ServiceReserve $reserve,ReserveInvoice $invoice,ChequePayment $cheque,Request $request)
     {
         config(['auth.defaults.guard' => 'admin']);
-        $this->authorize('reserves.payment.invoice.cheque.edit');
+        $this->authorize('invoice.cheque.edit');
         if (!in_array($reserve->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
         {
             abort(403);
@@ -178,7 +178,7 @@ class ReserveChequePaymentContoller extends Controller
     public function destroy(ServiceReserve $reserve,ReserveInvoice $invoice,ChequePayment $cheque)
     {
         config(['auth.defaults.guard' => 'admin']);
-        $this->authorize('reserves.payment.invoice.cheque.delete');
+        $this->authorize('invoice.cheque.delete');
         if (!in_array($reserve->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
         {
             abort(403);
@@ -191,7 +191,7 @@ class ReserveChequePaymentContoller extends Controller
     public function pass(ServiceReserve $reserve,ReserveInvoice $invoice,ChequePayment $cheque,Request $request)
     {
         config(['auth.defaults.guard' => 'admin']);
-        $this->authorize('reserves.payment.invoice.cheque.pass');
+        $this->authorize('invoice.cheque.pass');
         if (!in_array($reserve->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
         {
             abort(403);

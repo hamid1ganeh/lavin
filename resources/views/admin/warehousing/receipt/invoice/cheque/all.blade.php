@@ -61,9 +61,9 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-12 text-right">
-                                    @if(Auth::guard('admin')->user()->can('reserves.payment.invoice.cheque.create'))
+                                    @if(Auth::guard('admin')->user()->can('invoice.cheque.create'))
                                     <div class="btn-group" >
-                                            <a href="{{ route('admin.warehousing.receipts.invoice.cash.create',[$receipt,$invoice]) }}" class="btn btn-sm btn-primary">
+                                            <a href="{{ route('admin.warehousing.receipts.invoice.cheque.create',[$receipt,$invoice]) }}" class="btn btn-sm btn-primary">
                                             <i class="fa fa-plus plusiconfont"></i>
                                             <b class="IRANYekanRegular">ایجاد پرداخت جدید</b>
                                         </a>
@@ -81,7 +81,7 @@
                                         <th><b class="IRANYekanRegular">کدملی صادرکننده</b></th>
                                         <th><b class="IRANYekanRegular">شماره سریال</b></th>
                                         <th><b class="IRANYekanRegular">مبلغ(تومان)</b></th>
-                                        <th><b class="IRANYekanRegular">تاریخ صدرو</b></th>
+                                        <th><b class="IRANYekanRegular">تاریخ صدور</b></th>
                                         <th><b class="IRANYekanRegular">تاریخ سررسید</b></th>
                                         <th><b class="IRANYekanRegular">تاریخ پاس شدن</b></th>
                                         <th><b class="IRANYekanRegular">پاس در حساب</b></th>
@@ -116,7 +116,7 @@
                                                                 </button>
                                                             </div>
                                                             <div class="modal-body">
-                                                                <h5 class="IRANYekanRegular">آیا مطمئن هستید که مخواهید این  پرداختی را حذف کنید؟</h5>
+                                                                <h5 class="IRANYekanRegular">آیا مطمئن هستید که میخواهید این  پرداختی را حذف کنید؟</h5>
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <form action="{{ route('admin.warehousing.receipts.invoice.cheque.destroy', [$receipt,$invoice,$cheque]) }}"  method="POST" class="d-inline">
@@ -178,20 +178,20 @@
                                                     <div class="input-group-append">
                                                         <i class=" ti-align-justify" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
                                                         <div class="dropdown-menu">
-                                                            @if(Auth::guard('admin')->user()->can('reserves.payment.invoice.cheque.edit'))
+                                                            @if(Auth::guard('admin')->user()->can('invoice.cheque.edit'))
                                                             <a class="dropdown-item IR cursor-pointer" href="{{ route('admin.warehousing.receipts.invoice.cheque.edit', [$receipt,$invoice,$cheque]) }}" title="ویرایش">
                                                                 <i class="fa fa-edit text-success font-16 cursor-pointer"></i>
                                                                 <span class="p-1">ویرایش</span>
                                                             </a>
                                                              @endif
-                                                            @if(Auth::guard('admin')->user()->can('reserves.payment.invoice.cheque.pass'))
+                                                            @if(Auth::guard('admin')->user()->can('invoice.cheque.pass'))
                                                                 <a href="#pass{{ $cheque->id }}" data-toggle="modal" class="dropdown-item IR cursor-pointer" title="پاس کردن">
                                                                     <i class="fa fa-check text-primary font-16 cursor-pointer"></i>
                                                                     <span class="p-1">پاس کردن</span>
                                                                 </a>
                                                             @endif
 
-                                                            @if(Auth::guard('admin')->user()->can('reserves.payment.invoice.cheque.delete'))
+                                                            @if(Auth::guard('admin')->user()->can('invoice.cheque.delete'))
                                                             <a href="#remove{{ $cheque->id }}" data-toggle="modal" class="dropdown-item IR cursor-pointer" title="حذف">
                                                                 <i class="fa fa-edit text-danger font-16 cursor-pointer"></i>
                                                                 <span class="p-1">حذف</span>

@@ -19,9 +19,8 @@ class ReciptChequePaymentContoller extends Controller
 
     public function index(WarehouseReceipt $receipt,ReceiptInvoice $invoice)
     {
-//        config(['auth.defaults.guard' => 'admin']);
-//        $this->authorize('reserves.payment.invoice.cheque.index');
-
+        config(['auth.defaults.guard' => 'admin']);
+        $this->authorize('invoice.cheque.index');
 
             $payments = ChequePayment::where('payable_type',get_class($invoice))
                         ->where('payable_id',$invoice->id)
@@ -36,8 +35,8 @@ class ReciptChequePaymentContoller extends Controller
 
     public function create(WarehouseReceipt $receipt,ReceiptInvoice $invoice)
     {
-//        config(['auth.defaults.guard' => 'admin']);
-//        $this->authorize('reserves.payment.invoice.cheque.create');
+        config(['auth.defaults.guard' => 'admin']);
+        $this->authorize('invoice.cheque.create');
 
         return  view('admin.warehousing.receipt.invoice.cheque.create',compact('receipt','invoice'));
     }
@@ -45,8 +44,8 @@ class ReciptChequePaymentContoller extends Controller
 
     public function store(WarehouseReceipt $receipt,ReceiptInvoice $invoice,Request $request)
     {
-//        config(['auth.defaults.guard' => 'admin']);
-//        $this->authorize('reserves.payment.invoice.cheque.create');
+        config(['auth.defaults.guard' => 'admin']);
+        $this->authorize('invoice.cheque.create');
 
         $request->validate(
             [
@@ -95,13 +94,13 @@ class ReciptChequePaymentContoller extends Controller
                                 'type'=>PaymentType::income]);
 
         toast('چک جدید اضافه شد.','success')->position('bottom-end');
-        return redirect(route('admin.warehousing.receipt.invoice.cheque.index',[$receipt,$invoice]));
+        return redirect(route('admin.warehousing.receipts.invoice.cheque.index',[$receipt,$invoice]));
     }
 
     public function edit(WarehouseReceipt $receipt,ReceiptInvoice $invoice,ChequePayment $cheque)
     {
-//        config(['auth.defaults.guard' => 'admin']);
-//        $this->authorize('reserves.payment.invoice.cheque.edit');
+        config(['auth.defaults.guard' => 'admin']);
+        $this->authorize('invoice.cheque.edit');
 
         return  view('admin.warehousing.receipt.invoice.cheque.edit',compact('receipt','invoice','cheque'));
     }
@@ -109,8 +108,8 @@ class ReciptChequePaymentContoller extends Controller
 
     public function update(WarehouseReceipt $receipt,ReceiptInvoice $invoice,ChequePayment $cheque,Request $request)
     {
-//        config(['auth.defaults.guard' => 'admin']);
-//        $this->authorize('reserves.payment.invoice.cheque.edit');
+        config(['auth.defaults.guard' => 'admin']);
+        $this->authorize('invoice.cheque.edit');
 
         $request->validate(
             [
@@ -156,13 +155,13 @@ class ReciptChequePaymentContoller extends Controller
                         'cashier_id'=>Auth::guard('admin')->id()]);
 
         toast('بروزرسانی انجام شد.','success')->position('bottom-end');
-        return redirect(route('admin.warehousing.receipt.invoice.cheque.index',[$receipt,$invoice]));
+        return redirect(route('admin.warehousing.receipts.invoice.cheque.index',[$receipt,$invoice]));
     }
 
     public function destroy(WarehouseReceipt $receipt,ReceiptInvoice $invoice,ChequePayment $cheque)
     {
-//        config(['auth.defaults.guard' => 'admin']);
-//        $this->authorize('reserves.payment.invoice.cheque.delete');
+        config(['auth.defaults.guard' => 'admin']);
+        $this->authorize('invoice.cheque.delete');
 
         $cheque->delete();
         toast('چک مورد نظر حذف شد.','error')->position('bottom-end');
@@ -171,8 +170,8 @@ class ReciptChequePaymentContoller extends Controller
 
     public function pass(WarehouseReceipt $receipt,ReceiptInvoice $invoice,ChequePayment $cheque,Request $request)
     {
-//        config(['auth.defaults.guard' => 'admin']);
-//        $this->authorize('reserves.payment.invoice.cheque.pass');
+        config(['auth.defaults.guard' => 'admin']);
+        $this->authorize('invoice.cheque.pass');
 
         $request->validate([ 'passed_date' => ['required'],
                             'passed_by_account_id'=>['required','exists:accounts,id']],
