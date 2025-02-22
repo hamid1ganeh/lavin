@@ -1231,11 +1231,94 @@ Breadcrumbs::for('warehousing.receipts.create', function ($trail) {
     $trail->push('ایجاد رسید کالاها', route('admin.warehousing.receipts.create'));
 });
 
-// داشبورد>  لیست کالاهای انبار اصلی > لیست رسید کالاها > ویرایش رسید کالا
+// داشبورد >  لیست کالاهای انبار اصلی > لیست رسید کالاها > ویرایش رسید کالا
 Breadcrumbs::for('warehousing.receipts.edit', function ($trail,$receipt) {
     $trail->parent('warehousing.receipts.index', $trail);
     $trail->push('ویرایش رسید کالاها', route('admin.warehousing.receipts.edit',$receipt));
 });
+
+// داشبورد >  لیست کالاهای انبار اصلی > لیست رسید کالاها > صورتحساب پرداخت
+Breadcrumbs::for('warehousing.receipts.invoice', function ($trail,$receipt,$invoice) {
+    $trail->parent('warehousing.receipts.index',$receipt);
+    $trail->push('صورتحساب پرداخت', route('admin.warehousing.receipts.invoice.show',[$receipt,$invoice]));
+});
+
+
+// داشبورد >  لیست کالاهای انبار اصلی > لیست رسید کالاها > صورتحساب پرداخت > پرداختی های دستگاه پوز
+Breadcrumbs::for('warehousing.receipts.invoice.pos', function ($trail,$receipt,$invoice) {
+    $trail->parent('warehousing.receipts.invoice',$receipt,$invoice);
+    $trail->push('پرداختی های دستگاه پوز', route('admin.warehousing.receipts.invoice.pos.index',[$receipt,$invoice]));
+});
+
+// داشبورد >  لیست کالاهای انبار اصلی > لیست رسید کالاها > صورتحساب پرداخت > پرداختی های دستگاه پوز > ایجاد پرداخت جدید
+Breadcrumbs::for('warehousing.receipts.invoice.pos.create', function ($trail,$receipt,$invoice) {
+    $trail->parent('warehousing.receipts.invoice.pos',$receipt,$invoice);
+    $trail->push('ایجاد پرداخت جدید', route('admin.warehousing.receipts.invoice.pos.create',[$receipt,$invoice]));
+});
+
+// داشبورد >  لیست کالاهای انبار اصلی > لیست رسید کالاها > صورتحساب پرداخت > پرداختی های دستگاه پوز > ویرایش پرداخت
+Breadcrumbs::for('warehousing.receipts.invoice.pos.edit', function ($trail,$receipt,$invoice,$pos) {
+    $trail->parent('warehousing.receipts.invoice.pos',$receipt,$invoice);
+    $trail->push('ویرایش پرداخت', route('admin.warehousing.receipts.invoice.pos.edit',[$receipt,$invoice,$pos]));
+});
+
+// داشبورد >  لیست کالاهای انبار اصلی > لیست رسید کالاها > صورتحساب پرداخت > پرداختی های کارت به کارت
+Breadcrumbs::for('warehousing.receipts.invoice.card', function ($trail,$receipt,$invoice) {
+    $trail->parent('warehousing.receipts.invoice',$receipt,$invoice);
+    $trail->push('پرداختی های کارت به کارت', route('admin.warehousing.receipts.invoice.card.index',[$receipt,$invoice]));
+});
+
+// داشبورد >  لیست کالاهای انبار اصلی > لیست رسید کالاها > صورتحساب پرداخت > پرداختی های کارت به کارت > ایجاد پرداخت جدید
+Breadcrumbs::for('warehousing.receipts.invoice.card.create', function ($trail,$receipt,$invoice) {
+    $trail->parent('warehousing.receipts.invoice.card',$receipt,$invoice);
+    $trail->push('ایجاد پرداخت جدید', route('admin.warehousing.receipts.invoice.card.create',[$receipt,$invoice]));
+});
+//
+// داشبورد >  لیست کالاهای انبار اصلی > لیست رسید کالاها > صورتحساب پرداخت > پرداختی های کارت به کارت > ویرایش پرداخت
+Breadcrumbs::for('warehousing.receipts.invoice.card.edit', function ($trail,$receipt,$invoice,$card) {
+    $trail->parent('warehousing.receipts.invoice.card',$receipt,$invoice);
+    $trail->push('ویرایش پرداخت', route('admin.warehousing.receipts.invoice.card.edit',[$receipt,$invoice,$card]));
+});
+
+
+// داشبورد >  لیست کالاهای انبار اصلی > لیست رسید کالاها > صورتحساب پرداخت > پرداختی های نقدی
+Breadcrumbs::for('warehousing.receipts.invoice.cash', function ($trail,$receipt,$invoice) {
+    $trail->parent('warehousing.receipts.invoice',$receipt,$invoice);
+    $trail->push('پرداختی های نقدی', route('admin.warehousing.receipts.invoice.cash.index',[$receipt,$invoice]));
+});
+
+// داشبورد >  لیست کالاهای انبار اصلی > لیست رسید کالاها > صورتحساب پرداخت > پرداختی های نقدی > ایجاد پرداخت جدید
+Breadcrumbs::for('warehousing.receipts.invoice.cash.create', function ($trail,$receipt,$invoice) {
+    $trail->parent('warehousing.receipts.invoice.cash',$receipt,$invoice);
+    $trail->push('ایجاد پرداخت جدید', route('admin.warehousing.receipts.invoice.cash.create',[$receipt,$invoice]));
+});
+
+// داشبورد >  لیست کالاهای انبار اصلی > لیست رسید کالاها > صورتحساب پرداخت > پرداختی های نقدی > ویرایش پرداخت
+Breadcrumbs::for('warehousing.receipts.invoice.cash.edit', function ($trail,$receipt,$invoice,$cash) {
+    $trail->parent('warehousing.receipts.invoice.cash',$receipt,$invoice);
+    $trail->push('ویرایش پرداخت', route('admin.warehousing.receipts.invoice.cash.edit',[$receipt,$invoice,$cash]));
+});
+
+
+// داشبورد >  لیست کالاهای انبار اصلی > لیست رسید کالاها > صورتحساب پرداخت > چکهای پرداختی
+Breadcrumbs::for('warehousing.receipts.invoice.cheque', function ($trail,$receipt,$invoice) {
+    $trail->parent('warehousing.receipts.invoice',$receipt,$invoice);
+    $trail->push('چکهای پرداختی', route('admin.warehousing.receipts.invoice.cheque.index',[$receipt,$invoice]));
+});
+
+// داشبورد >  لیست کالاهای انبار اصلی > لیست رسید کالاها > صورتحساب پرداخت > چکهای پرداختی > ایجاد پرداخت جدید
+Breadcrumbs::for('warehousing.receipts.invoice.cheque.create', function ($trail,$receipt,$invoice) {
+    $trail->parent('warehousing.receipts.invoice.cheque',$receipt,$invoice);
+    $trail->push('ایجاد پرداخت جدید', route('admin.warehousing.receipts.invoice.cheque.create',[$receipt,$invoice]));
+});
+
+// داشبورد >  لیست کالاهای انبار اصلی > لیست رسید کالاها > صورتحساب پرداخت >  چکهای پرداختی > ویرایش پرداخت
+Breadcrumbs::for('warehousing.receipts.invoice.cheque.edit', function ($trail,$receipt,$invoice,$cash) {
+    $trail->parent('warehousing.receipts.invoice.cash',$receipt,$invoice);
+    $trail->push('ویرایش پرداخت', route('admin.warehousing.receipts.invoice.cheque.edit',[$receipt,$invoice,$cash]));
+});
+
+
 
 // داشبورد > لیست انبارها
 Breadcrumbs::for('warehousing.warehouses.index', function ($trail) {
