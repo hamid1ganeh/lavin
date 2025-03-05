@@ -56,33 +56,16 @@ class ReceptionInvoiceController extends Controller
 //        $this->authorize('reserves.payment.invoice.show');
 
 
-        $services = ServiceReserve::with('upgrades')->where('reception_id',$reception->id)->where('status',ReserveStatus::accept)->get();
-        return $services;
+        $reserves = ServiceReserve::with('upgrades','detail')->where('reception_id',$reception->id)->whereNotIn('status',[ReserveStatus::waiting,ReserveStatus::confirm,ReserveStatus::confirm,ReserveStatus::cancel,ReserveStatus::wittingForAdviser,ReserveStatus::Adviser])->get();
 
-//        if (!in_array($reserve->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()) ||
-//            in_array($reserve->status,[ReserveStatus::waiting,ReserveStatus::confirm,ReserveStatus::cancel,ReserveStatus::wittingForAdviser,ReserveStatus::Adviser]))
-//        {
-//            abort(403);
-//        }
-//
-//        $invoice = ReceptionInvoice::where('reserve_id',$reserve->id)->first();
-//        if (!is_null($invoice)){
-//            return redirect(route('admin.reserves.payment.invoice',$reserve));
-//        }
-//
-//        $discounts = Discount::where('status',Status::Active)
-//            ->where(function ($q){
-//                $q->where('expire','>',Carbon::now('+3:30')->format('Y-m-d H:i:s'))
-//                    ->orWhereNull('expire');})
-//            ->whereHas('users',function ($q) use ($reserve){
-//                $q->where('user_id',$reserve->user_id);
-//            })
-//            ->whereHas('services',function ($q) use ($reserve){
-//                $q->where('service_detail_id',$reserve->detail_id);
-//            })->get();
-//
-//
-//        return view('admin.reserves.payment.show',compact('discounts','reserve'));
+
+        $invoice = ReceptionInvoice::where('reception_id',$reception->id)->first();
+        if (!is_null($invoice)){
+            return redirect(route('admin.receptions.payment.invoice',$reception));
+        }
+
+
+        return view('admin.reserves.payment.show',compact('reserves'));
     }
 
     public function create(ServiceReserve $reserve,Request $request)
@@ -215,6 +198,7 @@ class ReceptionInvoiceController extends Controller
 
     public function invoice(ServiceReserve $reserve)
     {
+        return "ok8";
         //اجازه دسترسی
         config(['auth.defaults.guard' => 'admin']);
         $this->authorize('reserves.payment.invoice.show');
@@ -270,7 +254,7 @@ class ReceptionInvoiceController extends Controller
     {
         //اجازه دسترسی
         config(['auth.defaults.guard' => 'admin']);
-        $this->authorize('accounting.found');
+        $this->authorize('invoices.pay');
 
 
         $branches = Auth::guard('admin')->user()->branches->pluck('id')->toArray();
