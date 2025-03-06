@@ -55,17 +55,13 @@ class ReceptionInvoiceController extends Controller
 //        config(['auth.defaults.guard' => 'admin']);
 //        $this->authorize('reserves.payment.invoice.show');
 
-
         $reserves = ServiceReserve::with('upgrades','detail')->where('reception_id',$reception->id)->whereNotIn('status',[ReserveStatus::waiting,ReserveStatus::confirm,ReserveStatus::confirm,ReserveStatus::cancel,ReserveStatus::wittingForAdviser,ReserveStatus::Adviser])->get();
-
-
         $invoice = ReceptionInvoice::where('reception_id',$reception->id)->first();
         if (!is_null($invoice)){
             return redirect(route('admin.receptions.payment.invoice',$reception));
         }
 
-
-        return view('admin.reserves.payment.show',compact('reserves'));
+        return view('admin.accounting.payment.show',compact('reserves','reception'));
     }
 
     public function create(ServiceReserve $reserve,Request $request)
