@@ -52,7 +52,7 @@ Route::group(['middleware' => 'auth.admin'], function () {
   Route::prefix('admins')->name('admins.')->group(function () {
     Route::get('/', 'AdminController@index')->name('index');
     Route::get('/create', 'AdminController@create')->name('create');
-    Route::post('/sotre', 'AdminController@store')->name('store');
+    Route::post('/store', 'AdminController@store')->name('store');
     Route::get('{admin}/edit', 'AdminController@edit')->name('edit');
     Route::patch('{admin}/update', 'AdminController@update')->name('update');
     Route::delete('/destroy/{admin}', 'AdminController@destroy')->name('destroy');
@@ -102,7 +102,7 @@ Route::group(['middleware' => 'auth.admin'], function () {
     Route::prefix('{admin}/feilds')->name('feilds.')->group(function () {
       Route::get('/', 'AdminFeildController@index')->name('index');
       Route::get('/create', 'AdminFeildController@create')->name('create');
-      Route::post('/sotre', 'AdminFeildController@store')->name('store');
+      Route::post('/store', 'AdminFeildController@store')->name('store');
       Route::get('{feild}/edit', 'AdminFeildController@edit')->name('edit');
       Route::patch('{feild}/update', 'AdminFeildController@update')->name('update');
       Route::delete('/destroy/{feild}', 'AdminFeildController@destroy')->name('destroy');
@@ -111,12 +111,11 @@ Route::group(['middleware' => 'auth.admin'], function () {
     Route::prefix('{admin}/medias')->name('medias.')->group(function () {
       Route::get('/', 'AdminMediaController@index')->name('index');
       Route::get('/create', 'AdminMediaController@create')->name('create');
-      Route::post('/sotre', 'AdminMediaController@store')->name('store');
+      Route::post('/store', 'AdminMediaController@store')->name('store');
       Route::get('{media}/edit', 'AdminMediaController@edit')->name('edit');
       Route::patch('{media}/update', 'AdminMediaController@update')->name('update');
       Route::delete('/destroy/{media}', 'AdminMediaController@destroy')->name('destroy');
     });
-
   });
 
   Route::prefix('users')->name('users.')->group(function () {
@@ -189,7 +188,7 @@ Route::group(['middleware' => 'auth.admin'], function () {
   Route::prefix('roles')->name('roles')->group(function () {
     Route::get('/', 'RoleController@index')->name('.index');
     Route::get('/create', 'RoleController@create')->name('.create');
-    Route::post('/sotre', 'RoleController@store')->name('.store');
+    Route::post('/store', 'RoleController@store')->name('.store');
     Route::get('{role}/edit', 'RoleController@edit')->name('.edit');
     Route::patch('{role}/update', 'RoleController@update')->name('.update');
     Route::delete('/destroy/{role}', 'RoleController@destroy')->name('.destroy');
@@ -198,7 +197,7 @@ Route::group(['middleware' => 'auth.admin'], function () {
   Route::prefix('levels')->name('levels.')->group(function () {
     Route::get('/', 'LevelController@index')->name('index');
     Route::get('/create', 'LevelController@create')->name('create');
-    Route::post('/sotre', 'LevelController@store')->name('store');
+    Route::post('/store', 'LevelController@store')->name('store');
     Route::get('{level}/edit', 'LevelController@edit')->name('edit');
     Route::patch('{level}/update', 'LevelController@update')->name('update');
     Route::delete('/destroy/{level}', 'LevelController@destroy')->name('destroy');
@@ -209,13 +208,13 @@ Route::group(['middleware' => 'auth.admin'], function () {
 
   Route::prefix('galleries')->name('gallery.')->group(function () {
     Route::get('/', 'GalleryController@index')->name('index');
-    Route::post('/sotre', 'GalleryController@store')->name('store');
+    Route::post('/store', 'GalleryController@store')->name('store');
     Route::patch('{gallery}/update', 'GalleryController@update')->name('update');
     Route::delete('/destroy/{gallery}', 'GalleryController@destroy')->name('destroy');
 
     Route::prefix('{gallery}/images')->name('images.')->group(function () {
       Route::get('/', 'ImageGalleryController@index')->name('index');
-      Route::post('/sotre', 'ImageGalleryController@store')->name('store');
+      Route::post('/store', 'ImageGalleryController@store')->name('store');
       Route::patch('{image}/ImageGalleryController', 'GalleryController@update')->name('update');
       Route::delete('/destroy/{image}', 'ImageGalleryController@destroy')->name('destroy');
     });
@@ -224,7 +223,7 @@ Route::group(['middleware' => 'auth.admin'], function () {
   Route::prefix('portfolios')->name('portfolios.')->group(function () {
     Route::get('/', 'PortfolioController@index')->name('index');
     Route::get('/create', 'PortfolioController@create')->name('create');
-    Route::post('/sotre', 'PortfolioController@store')->name('store');
+    Route::post('/store', 'PortfolioController@store')->name('store');
     Route::get('{portfolio}/edit', 'PortfolioController@edit')->name('edit');
     Route::patch('{portfolio}/update', 'PortfolioController@update')->name('update');
     Route::delete('/destroy/{portfolio}', 'PortfolioController@destroy')->name('delete');
@@ -237,7 +236,7 @@ Route::group(['middleware' => 'auth.admin'], function () {
 
     Route::get('/', 'ArticleController@index')->name('.index');
     Route::get('/create', 'ArticleController@create')->name('.create');
-    Route::post('/sotre', 'ArticleController@store')->name('.store');
+    Route::post('/store', 'ArticleController@store')->name('.store');
     Route::get('{article}/edit', 'ArticleController@edit')->name('.edit');
     Route::patch('{article}/update', 'ArticleController@update')->name('.update');
     Route::delete('/destroy/{article}', 'ArticleController@destroy')->name('.destroy');
@@ -264,7 +263,7 @@ Route::group(['middleware' => 'auth.admin'], function () {
 
       Route::get('/', 'ServiceController@index')->name('index');
       Route::get('/create', 'ServiceController@create')->name('create');
-      Route::post('/sotre', 'ServiceController@store')->name('store');
+      Route::post('/store', 'ServiceController@store')->name('store');
       Route::get('{service}/edit', 'ServiceController@edit')->name('edit');
       Route::patch('{service}/update', 'ServiceController@update')->name('update');
       Route::delete('/destroy/{service}', 'ServiceController@destroy')->name('delete');
@@ -347,9 +346,6 @@ Route::group(['middleware' => 'auth.admin'], function () {
 
 });
 
-
-
-
     Route::prefix('comments')->name('comments.')->group(function () {
       Route::get('/', 'CommentsController@index')->name('index');
       Route::PATCH('update/{comment}', 'CommentsController@update')->name('update');
@@ -366,7 +362,7 @@ Route::group(['middleware' => 'auth.admin'], function () {
 
   Route::prefix('luck')->name('luck.')->group(function () {
       Route::get('/', 'LuckController@index')->name('index');
-      Route::post('/sotre', 'LuckController@store')->name('store');
+      Route::post('/store', 'LuckController@store')->name('store');
       Route::PATCH('/{luck}', 'LuckController@update')->name('update');
       Route::delete('{luck}/delete', 'LuckController@destroy')->name('destroy');
   });
@@ -434,7 +430,7 @@ Route::group(['middleware' => 'auth.admin'], function () {
       Route::prefix('users')->name('users.')->group(function () {
             Route::get('/', 'NotificationController@user_index')->name('index');
             Route::get('/create', 'NotificationController@user_create')->name('create');
-            Route::post('/sotre', 'NotificationController@store')->name('store');
+            Route::post('/store', 'NotificationController@store')->name('store');
             Route::patch('{notification}/update', 'NotificationController@update')->name('update');
             Route::delete('/destroy/{notification}', 'NotificationController@destroy')->name('destroy');
             Route::post('/recycle/{id}', 'NotificationController@recycle')->name('recycle');
@@ -443,7 +439,7 @@ Route::group(['middleware' => 'auth.admin'], function () {
       Route::prefix('admins')->name('admins.')->group(function () {
           Route::get('/', 'NotificationController@admin_index')->name('index');
           Route::get('/create', 'NotificationController@admin_create')->name('create');
-          Route::post('/sotre', 'NotificationController@store')->name('store');
+          Route::post('/store', 'NotificationController@store')->name('store');
           Route::patch('{notification}/update', 'NotificationController@update')->name('update');
           Route::delete('/destroy/{notification}', 'NotificationController@destroy')->name('destroy');
           Route::post('/recycle/{id}', 'NotificationController@recycle')->name('recycle');
@@ -908,14 +904,15 @@ Route::group(['middleware' => 'auth.admin'], function () {
         Route::prefix('reception/')->name('reception.')->group(function () {
             Route::prefix('{reception}/invoices')->name('invoices.')->group(function () {
                 Route::get('/preview', [ReceptionInvoiceController::class,'show'])->name('show');
+                Route::post('/store', [ReceptionInvoiceController::class,'store_reserve'])->name('reserve.store');
 //                Route::get('/', [ReceptionInvoiceController::class,'index'])->name('index');
             });
 
         });
 
-        Route::prefix('invoices')->name('invoices.')->group(function () {
-            Route::get('/', [ReceptionInvoiceController::class,'index'])->name('index');
-        });
+//        Route::prefix('invoices')->name('invoices.')->group(function () {
+//            Route::get('/', [ReceptionInvoiceController::class,'index'])->name('index');
+//        });
 
         Route::prefix('accounts')->name('accounts.')->group(function () {
             Route::get('/', [AccountController::class,'index'])->name('index');
@@ -931,7 +928,7 @@ Route::group(['middleware' => 'auth.admin'], function () {
             Route::get('/', 'DiscountController@index')->name('index');
             Route::get('/create', 'DiscountController@create')->name('create');
             Route::get('/code', 'DiscountController@code')->name('code');
-            Route::post('/sotre', 'DiscountController@store')->name('store');
+            Route::post('/store', 'DiscountController@store')->name('store');
             Route::get('{discount}/edit', 'DiscountController@edit')->name('edit');
             Route::patch('{discount}/update', 'DiscountController@update')->name('update');
             Route::delete('/destroy/{discount}', 'DiscountController@destroy')->name('destroy');

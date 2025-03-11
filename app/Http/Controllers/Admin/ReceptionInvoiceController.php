@@ -15,6 +15,7 @@ use App\Models\Discount;
 use App\Models\PosPayment;
 use App\Models\Reception;
 use App\Models\ReceptionInvoice;
+use App\Models\ReserveInvoice;
 use App\Models\ReserveUpgrade;
 use App\Models\ServiceDetail;
 use App\Models\ServiceReserve;
@@ -54,52 +55,68 @@ class ReceptionInvoiceController extends Controller
         //اجازه دسترسی
 //        config(['auth.defaults.guard' => 'admin']);
 //        $this->authorize('reserves.payment.invoice.show');
-
-        $reserves = ServiceReserve::with('upgrades','detail')->where('reception_id',$reception->id)->whereNotIn('status',[ReserveStatus::waiting,ReserveStatus::confirm,ReserveStatus::confirm,ReserveStatus::cancel,ReserveStatus::wittingForAdviser,ReserveStatus::Adviser])->get();
         $invoice = ReceptionInvoice::where('reception_id',$reception->id)->first();
         if (!is_null($invoice)){
             return redirect(route('admin.receptions.payment.invoice',$reception));
         }
 
-        return view('admin.accounting.payment.show',compact('reserves','reception'));
+        $reserves = ServiceReserve::with('upgrades','detail')
+            ->where('reception_id',$reception->id)
+            ->whereNotIn('status',[ReserveStatus::waiting,ReserveStatus::confirm,ReserveStatus::confirm,ReserveStatus::cancel,ReserveStatus::wittingForAdviser,ReserveStatus::Adviser])
+            ->whereDoesntHave('invoice')
+            ->get();
+
+        $reserveInvoices = ReserveInvoice::where('reception_id',$reception->id)
+                            ->orderBy('created_at','desc')->get();
+
+        return view('admin.accounting.payment.show',compact('reserves','reception','reserveInvoices'));
     }
 
-    public function create(ServiceReserve $reserve,Request $request)
+    public function store_reserve(Reception $reception,Request $request)
     {
+
         //اجازه دسترسی
-        config(['auth.defaults.guard' => 'admin']);
-        $this->authorize('reserves.payment.create');
-        if (!in_array($reserve->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
+//        config(['auth.defaults.guard' => 'admin']);
+//        $this->authorize('reserves.payment.create');
+
+        if (!in_array($reception->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
         {
             abort(403);
         }
 
-        $request->validate(
-            [
-                'number' => ['required','max:255','unique:reserve_invoices'],
-            ],
-            [
-                "number.required" => " شماره فاکتور الزامی است.",
-                "number.max" => " شماره فاکتور طولانی است.",
-                "number.unique" => " شماره فاکتور قبلا ثبت شده است.",
-            ]);
+//        $request->validate(
+//            [
+//                'number' => ['required','max:255','unique:receipt_invoices'],
+//            ],
+//            [
+//                "number.required" => " شماره فاکتور الزامی است.",
+//                "number.max" => " شماره فاکتور طولانی است.",
+//                "number.unique" => " شماره فاکتور قبلا ثبت شده است.",
+//            ]);
 
-        $invoice = ReceptionInvoice::where('reserve_id',$reserve->id)->firstOrNew();
-        $sumUpgradesPrice = ReserveUpgrade::where('reserve_id',$reserve->id)->where('status',ReserveStatus::confirm)->sum('price');
-
-         if($request->get('discount_code')=='0'){
+        $reserve = $request->reserve;
+        $reserve = ServiceReserve::find($reserve);
+        if (is_null($reserve)){
+            alert()->error('سرویس رزرو شده معتبر نیست');
+            return back()->withInput();
+        }
+         $invoice = ReserveInvoice::where('reserve_id',$reserve->id)->firstOrNew();
+         $sumUpgradesPrice = ReserveUpgrade::where('reserve_id',$reserve->id)->where('status',ReserveStatus::confirm)->sum('price');
+         $discountCode =  $request->discount_code;
+         if($discountCode=='0'){
                 $request->validate(
                     [
-                        'discount_price' => ['required','integer'],
-                        'discount_description' => ['required','max:255'],
+                       'discount_price' => ['required','integer'],
+                       'discount_description' => ['required','max:255'],
                     ],
                     [
                         "discount_price.required" => " مبلغ تخفیف ویژه الزامی است.",
                         "discount_description.required" => " توضیحات تخفیف ویژه الزامی است.",
                         "discount_description.max" => "حداکثر طول مجاز برای توضیحات تخفیف ویژه 255 کارکتر است.",
                     ]);
-                 $discountPrice = $request->get('discount_price');
-                 $discountDescription = $request->get('discount_description');
+
+                 $discountPrice = $request->discount_price;
+                 $discountDescription = $request->discount_description;
                  $discountId = null;
                  $finalPrice =  $reserve->total_price+$sumUpgradesPrice-$discountPrice;
 
@@ -110,37 +127,39 @@ class ReceptionInvoiceController extends Controller
 
                  $invoice->price = $reserve->total_price;
                  $invoice->reserve_id = $reserve->id;
+                 $invoice->reception_id = $reception->id;
                  $invoice->sum_upgrades_price = $sumUpgradesPrice;
                  $invoice->discount_id = $discountId;
                  $invoice->discount_price = $discountPrice;
                  $invoice->discount_description = $discountDescription;
                  $invoice->final_price = $finalPrice>0?$finalPrice:0;
-                 $invoice->number = $request->get('number');
                  $invoice->save();
-           }elseIf($request->get('discount_code')>0){
-                $discount = Discount::with('users','services')->find($request->get('discount_code'));
+           }elseIf($discountCode>0){
+                $discount = Discount::with('users','services')->find($discountCode);
+
                 if (is_null($discount)){
-                    return back();
+                    return back()->withInput();
                 }
 
+
                 if (!is_null($discount->expire) && $discount->expire < Carbon::now('+3:30')->format('Y-m-d H:i:s')){
-                    alert()->error('این کد تخفیف منقضی شده است');
+                    alert()->error(" کد تخفیف  $discountCode   منقضی شده است ");
                     return back()->withInput();
                 }
 
                 if(UsedDiscount::where('user_id',$reserve->user_id)->where('discount_id',$discount->id)->count()){
-                    alert()->error('این کد تخفیف قبلا توسط این کاربر استفاده شده است');
+                    alert()->error(" کد تخفیف $discountCode قبلا توسط این کاربر استفاده شده است");
                     return back()->withInput();
                 }
 
                  if (!in_array($reserve->user_id,$discount->users->pluck('id')->toArray())){
-                     return back();
+                     return back()->withInput();
                  }
 
                 if (!in_array($reserve->detail_id,$discount->services->pluck('id')->toArray())){
-                    return back();
+                    return back()->withInput();
                 }
-                $discountDescription=null;
+                $discountDescription= " استفاده از کد تخفیف $discount->code";
                 $discountId = $discount->id;
                  if($discount->unit==DiscountType::percet){
                      $discountPrice = $reserve->total_price*$discount->value/100;
@@ -148,9 +167,9 @@ class ReceptionInvoiceController extends Controller
                      $discountPrice = $discount->value;
                  }
 
-                 $usedDiscount = new UsedDiscount();
-                 $usedDiscount->user_id = $reserve->user_id;
-                 $usedDiscount->discount_id = $discountId;
+//                 $usedDiscount = new UsedDiscount();
+//                 $usedDiscount->user_id = $reserve->user_id;
+//                 $usedDiscount->discount_id = $discountId;
 
                  $finalPrice =  $reserve->total_price+$sumUpgradesPrice- $discountPrice;
 
@@ -159,6 +178,7 @@ class ReceptionInvoiceController extends Controller
                      return back()->withInput();
                  }
 
+                 $invoice->reception_id = $reception->id;
                  $invoice->price = $reserve->total_price;
                  $invoice->reserve_id = $reserve->id;
                  $invoice->sum_upgrades_price = $sumUpgradesPrice;
@@ -166,18 +186,18 @@ class ReceptionInvoiceController extends Controller
                  $invoice->discount_price = $discountPrice;
                  $invoice->discount_description = $discountDescription;
                  $invoice->final_price = $finalPrice>0?$finalPrice:0;
-                 $invoice->number = $request->get('number');
-                DB::transaction(function() use ($invoice, $usedDiscount) {
-                    $invoice->save();
-                    $usedDiscount->save();
-                });
+                 $invoice->save();
+//                DB::transaction(function() use ($invoice, $usedDiscount) {
+//
+//                    $usedDiscount->save();
+//                });
 
            }else{
-                $discountPrice = 0;
-                $discountDescription=null;
-                $discountId = null;
-                $finalPrice =  $reserve->total_price+$sumUpgradesPrice;
-
+                 $discountPrice = 0;
+                 $discountDescription=null;
+                 $discountId = null;
+                 $finalPrice =  $reserve->total_price+$sumUpgradesPrice;
+                 $invoice->reception_id = $reception->id;
                  $invoice->price = $reserve->total_price;
                  $invoice->reserve_id = $reserve->id;
                  $invoice->sum_upgrades_price = $sumUpgradesPrice;
@@ -185,11 +205,12 @@ class ReceptionInvoiceController extends Controller
                  $invoice->discount_price = $discountPrice;
                  $invoice->discount_description = $discountDescription;
                  $invoice->final_price = $finalPrice>0?$finalPrice:0;
-                 $invoice->number = $request->get('number');
                  $invoice->save();
             }
 
-        return redirect(route('admin.reserves.payment.invoice',$reserve));
+        return back()->withInput();
+//
+//        return redirect(route('admin.reserves.payment.invoice',$reserve));
     }
 
     public function invoice(ServiceReserve $reserve)

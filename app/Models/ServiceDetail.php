@@ -40,16 +40,17 @@ class ServiceDetail extends Model
 
     public function validUserDiscounts($userId)
     {
-        $discounts = Discount::where(function ($query){
+        return Discount::where(function ($query){
                                     $query->where('expire','>', Carbon::now('+3:30')->format('Y-m-d H:i:s'))->orWhereNull('expire');
                                     })
-                                ->whereHas('services', function ($query) {
-                                    $query->where('service_detail_id',$this->id);
-                                })
-                                ->whereHas('users', function ($q) use ($userId) {
-                                    $q->where('user_id',$userId);
-                                }) ->get();
-        return $discounts;
+                                    ->whereHas('services', function ($query) {
+                                        $query->where('service_detail_id',$this->id);
+                                    })
+                                    ->whereHas('users', function ($q) use ($userId) {
+                                        $q->where('user_id',$userId);
+                                    })
+                                    ->whereDoesntHave('serviceInvoice')
+                                ->get();
     }
 
     public function comments()

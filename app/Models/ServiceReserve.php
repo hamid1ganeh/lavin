@@ -100,6 +100,12 @@ class ServiceReserve extends Model
         return $this->hasMany(ReserveUpgrade::class,'reserve_id','id')->where('status',ReserveStatus::confirm);
     }
 
+    public function invoice()
+    {
+        return $this->hasOne(ReserveInvoice::class,'reserve_id','id');
+    }
+
+
     public function reserve_time()
     {
         if(is_null($this->created_at)){

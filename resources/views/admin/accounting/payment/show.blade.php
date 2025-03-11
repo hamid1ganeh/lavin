@@ -36,6 +36,49 @@
             <div class="row">
                 <div class="card w-100">
                     <div class="card-body">
+                        @if(count($reserveInvoices))
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="table-responsive"  style="min-height: 100px !important;">
+                                    <table id="tech-companies-1" class="table table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th><b class="IRANYekanRegular">ردیف</b></th>
+                                            <th><b class="IRANYekanRegular">سرویس</b></th>
+                                            <th><b class="IRANYekanRegular">قیمت</b></th>
+                                            <th><b class="IRANYekanRegular">تخفیف</b></th>
+                                            <th><b class="IRANYekanRegular">توضیحات تخفیف</b></th>
+                                            <th><b class="IRANYekanRegular">مبلغ ارتقاء</b></th>
+                                            <th><b class="IRANYekanRegular">مبلغ کل</b></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        @foreach($reserveInvoices as $index=>$reserveInvoice)
+                                            <tr>
+                                                <td><strong class="IRANYekanRegular">{{ ++$index }}</strong></td>
+                                                <td><strong class="IRANYekanRegular">{{ $reserveInvoice->reserve_id }}</strong></td>
+                                                <td><strong class="IRANYekanRegular">{{ number_format( $reserveInvoice->price??0) }}</strong></td>
+                                                <td><strong class="IRANYekanRegular">{{ number_format( $reserveInvoice->discount_price??0) }}</strong></td>
+                                                <td><strong class="IRANYekanRegular">{{ $reserveInvoice->discount_description ?? '' }}</strong></td>
+                                                <td><strong class="IRANYekanRegular">{{ number_format( $reserveInvoice->sum_upgrades_price??0) }}</strong></td>
+                                                <td><strong class="IRANYekanRegular">{{ number_format( $reserveInvoice->final_price??0) }}</strong></td>
+                                            </tr>
+                                        @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-md-2">
+                                <label for="number" class="control-label IRANYekanRegular">شماره فاکتور</label>&nbsp;
+                                <input type="text" class="form-check-input text-right" id="number" name="number" value="{{ old('number') }}" required>
+                            </div>
+                            <div class="col-12 col-md-10">
+                                <button type="submit" title="ثبت" class="btn btn-primary">صورتحساب پرداخت</button>
+                            </div>
+                        </div>
+                        @endif
                         {{--                        <div class="row">--}}
                         {{--                            <div class="col-12">--}}
                         {{--                                <h5 class="card-title IRANYekanRegular">مشخصات سرویس</h5>--}}
@@ -48,6 +91,7 @@
                         {{--                            </div>--}}
                         {{--                        </div>--}}
                         {{--                        @if(count($reserve->confirmedUpgrades))--}}
+                        @if(count($reserves))
                         <div class="row mt-2">
                             {{--                            <div class="col-12 text-center">--}}
                             {{--                                 <h5 class="card-title IRANYekanRegular">لیست ارتقاءها</h5>--}}
@@ -65,8 +109,6 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-
-
                                         @foreach($reserves as $index=>$reserve)
                                             <tr>
                                                 <td><strong class="IRANYekanRegular">{{ ++$index }}</strong></td>
@@ -74,33 +116,39 @@
                                                 <td><strong class="IRANYekanRegular">{{ number_format( $reserve->total_price??0) }}</strong></td>
                                                 <td><strong class="IRANYekanRegular">{{ $reserve->price_description ?? '' }}</strong></td>
                                                 <td style="text-align: right !important;width: 200px;">
-                                                    @php  $discounts=$reserve->detail->validUserDiscounts($reserve->user_id) @endphp
-                                                        <div class="mt-1">
-                                                            <input type="radio" class="form-check-input cursor-pointer" id="code-0" name="discount_code{{ $reserve->id }}" value="-1" onclick="discount(false,{{ $reserve->id }});" checked>
-                                                            <label class="form-check-label ml-3" for="code-1">هیچکدام</label>
-                                                        </div>
-                                                    @if(count($discounts)>0)
-                                                        @foreach($discounts as $index=>$discount)
+                                                    <form class="form-horizontal" action="{{ route('admin.accounting.reception.invoices.reserve.store',$reception) }}" method="post">
+                                                        @csrf
+                                                        <input name="reserve" type="hidden" value="{{ $reserve->id }}"
+                                                        @php  $discounts=$reserve->detail->validUserDiscounts($reserve->user_id) @endphp
                                                             <div class="mt-1">
-                                                                <input type="radio" class="form-check-input cursor-pointer" id="code{{ $reserve->id }}" name="discount_code{{ $reserve->id }}" value="{{ $reserve->id }}" onclick="discount(false,{{ $reserve->id }});">
-                                                                <label class="form-check-label ml-3" for="code{{ $reserve->id }}">
-                                                                    {{ $discount->code }}
-                                                                    @if($discount->unit==App\Enums\DiscountType::percet)
-                                                                        {{ ' ('.$discount->value.'درصد)'  }}
-                                                                    @elseif($discount->unit==App\Enums\DiscountType::toman)
-                                                                        {{ ' ('.$discount->value.' تومان)'  }}
-                                                                    @endif
-                                                                </label>
+                                                                <input type="radio" class="form-check-input cursor-pointer" id="code-0" name="discount_code" value="-1" onclick="discount(false,{{ $reserve->id }});" checked>
+                                                                <label class="form-check-label ml-3" for="code-1">هیچکدام</label>
                                                             </div>
-                                                        @endforeach
-                                                    @endif
-                                                    <div class="mt-1">
-                                                        <input type="radio" class="form-check-input cursor-pointer" id="code{{ $reserve->id }}" name="discount_code{{ $reserve->id }}" value="0" onclick="discount(true,{{ $reserve->id }});">
-                                                        <label class="form-check-label ml-3" for="code0">تخفیف ویژه</label>
-                                                        <input class="text-center" type="number"  id="discount_price{{ $reserve->id }}"  name="discount_price{{ $reserve->id }}" placeholder="مبلغ (تومان)" disabled>
-                                                        <input class="text-left" Style="width:250px" type="text" id="discount_description{{ $reserve->id }}" name="discount_descriptio{{ $reserve->id }}n" placeholder="توضیحات" disabled>
-                                                    </div>
-
+                                                        @if(count($discounts)>0)
+                                                            @foreach($discounts as $index=>$discount)
+                                                                <div class="mt-1">
+                                                                    <input type="radio" class="form-check-input cursor-pointer" id="code{{ $reserve->id }}" name="discount_code" value="{{ $discount->id }}" onclick="discount(false,{{ $reserve->id }});">
+                                                                    <label class="form-check-label ml-3" for="code{{ $reserve->id }}">
+                                                                        {{ $discount->code }}
+                                                                        @if($discount->unit==App\Enums\DiscountType::percet)
+                                                                            {{ ' ('.$discount->value.'درصد)'  }}
+                                                                        @elseif($discount->unit==App\Enums\DiscountType::toman)
+                                                                            {{ ' ('.$discount->value.' تومان)'  }}
+                                                                        @endif
+                                                                    </label>
+                                                                </div>
+                                                            @endforeach
+                                                        @endif
+                                                        <div class="mt-1">
+                                                            <input type="radio" class="form-check-input cursor-pointer" id="code{{ $reserve->id }}" name="discount_code" value="0" onclick="discount(true,{{ $reserve->id }});">
+                                                            <label class="form-check-label ml-3" for="code0">تخفیف ویژه</label>
+                                                            <input class="text-center" type="number"  id="discount_price{{ $reserve->id }}"  name="discount_price" placeholder="مبلغ (تومان)" disabled>
+                                                            <input class="text-left" Style="width:250px" type="text" id="discount_description{{ $reserve->id }}" name="discount_description" placeholder="توضیحات" disabled>
+                                                        </div>
+                                                        <div class="mt-1">
+                                                            <button type="submit" title="ثبت" class="btn btn-primary">ثبت</button>
+                                                        </div>
+                                                    </form>
                                                 </td>
                                             </tr>
                                             @foreach($reserve->confirmedUpgrades as $key=>$upgrade)
@@ -123,6 +171,7 @@
                                 {{--                                <h3 class="card-text IRANYekanRegular">مبلغ کل ارتقاء:&nbsp; {{ number_format($SumUpgrades) }}&nbsp;تومان</h3>--}}
                             </div>
                         </div>
+                        @endif
                         {{--                        @endif--}}
                     </div>
 
@@ -130,7 +179,7 @@
             </div>
 
 
-            {{--        <form class="form-horizontal" action="{{ route('admin.reserves.payment.create',$reserve) }}" method="post">--}}
+
             {{--            @csrf--}}
             {{--                <div class="row">--}}
             {{--                    <div class="card w-100" Style="height: 220px">--}}
@@ -165,23 +214,10 @@
             {{--                    </div>--}}
             {{--                </div>--}}
 
-            {{--            @if(Auth::guard('admin')->user()->can('reserves.payment.create') &&--}}
-            {{--                in_array($reserve->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))--}}
-            {{--                <div class="row">--}}
-            {{--                    <div class="card w-100" Style="height: 180px">--}}
-            {{--                        <div class="card-body">--}}
-            {{--                            <label for="number" class="control-label IRANYekanRegular">شماره فاکتور</label>&nbsp;--}}
-            {{--                            <input type="text" class="form-check-input text-right" id="number" name="number" value="{{ old('number') }}" required>--}}
-            {{--                            <div class="row mt-2">--}}
-            {{--                                <div class="col-sm-12">--}}
-            {{--                                    <button type="submit" title="ثبت" class="btn btn-primary">صورتحساب پرداخت</button>--}}
-            {{--                                </div>--}}
-            {{--                            </div>--}}
-            {{--                        </div>--}}
-            {{--                    </div>--}}
-            {{--                </div>--}}
-            {{--           @endif--}}
-            {{--       </form>--}}
+{{--                        @if(Auth::guard('admin')->user()->can('reserves.payment.create') &&--}}
+{{--                            in_array($reserve->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))--}}
+
+{{--                       @endif--}}
         </div>
     </div>
 
