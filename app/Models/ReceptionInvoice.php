@@ -8,7 +8,7 @@ use Morilog\Jalali\Jalalian;
 
 class ReceptionInvoice extends Model
 {
-    protected $fillable=['reception_id','number','price','sum_upgrades_price','discount_price','final_price','settlement'];
+    protected $fillable=['reception_id','number','sum_price','sum_discount_price','sum_upgrades_price','final_price','paid_price','amount_paid','amount_debt'];
 
     public function reception()
     {

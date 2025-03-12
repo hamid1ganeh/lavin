@@ -56,9 +56,6 @@ class ReceptionInvoiceController extends Controller
 //        config(['auth.defaults.guard' => 'admin']);
 //        $this->authorize('reserves.payment.invoice.show');
         $invoice = ReceptionInvoice::where('reception_id',$reception->id)->first();
-        if (!is_null($invoice)){
-            return redirect(route('admin.receptions.payment.invoice',$reception));
-        }
 
         $reserves = ServiceReserve::with('upgrades','detail')
             ->where('reception_id',$reception->id)
@@ -66,10 +63,42 @@ class ReceptionInvoiceController extends Controller
             ->whereDoesntHave('invoice')
             ->get();
 
-        $reserveInvoices = ReserveInvoice::where('reception_id',$reception->id)
+
+        $reserveInvoices = ReserveInvoice::with('reserve')->where('reception_id',$reception->id)
                             ->orderBy('created_at','desc')->get();
 
-        return view('admin.accounting.payment.show',compact('reserves','reception','reserveInvoices'));
+
+        $invoiceSumPrice =0;
+        $invoiceSumUpgradesPrice =0;
+        $invoiceSumDiscountPrice =0;
+        $invoiceFinalPrice =0;
+        if (!is_null($reception) && !$reception->end){
+            foreach ($reserveInvoices as $reserveInvoice){
+                $sumUpgradesPrice = ReserveUpgrade::where('reserve_id',$reserveInvoice->reserve_id)->where('status',ReserveStatus::confirm)->sum('price');
+                $finalPrice =  $reserveInvoice->price+$sumUpgradesPrice-$reserveInvoice->discount_price;
+                $reserveInvoice->sum_upgrades_price= (integer)$sumUpgradesPrice;
+                $reserveInvoice->final_price= $finalPrice;
+                $reserveInvoice->save();
+                if(!is_null($invoice)) {
+                    $invoiceSumPrice += $reserveInvoice->price;
+                    $invoiceSumUpgradesPrice += $sumUpgradesPrice;
+                    $invoiceSumDiscountPrice += $reserveInvoice->discount_price;
+                    $invoiceFinalPrice += $finalPrice;
+                }
+            }
+
+            if(!is_null($invoice)){
+              $invoice->sum_price = $invoiceSumPrice;
+              $invoice->sum_upgrades_price = $invoiceSumUpgradesPrice;
+              $invoice->final_price = $invoiceFinalPrice;
+              $invoice->sum_discount_price = $invoiceSumDiscountPrice;
+              $invoice->save();
+            }
+
+        }
+
+
+        return view('admin.accounting.payment.show',compact('reserves','reception','reserveInvoices','invoice'));
     }
 
     public function store_reserve(Reception $reception,Request $request)
@@ -211,6 +240,49 @@ class ReceptionInvoiceController extends Controller
         return back()->withInput();
 //
 //        return redirect(route('admin.reserves.payment.invoice',$reserve));
+    }
+
+    public function store(Reception $reception,Request $request)
+    {
+        $request->validate(
+            [
+                'number' => ['required','max:20','unique:reception_invoices,number'],
+            ],
+            [
+                "number.required" => " شماره فاکتور الزامی است.",
+                "number.max" => "حداکثر طول مجاز برای شماره فاکتور 20 کارکتر است.",
+                "number.unique" => " این شماره فاکتور قبلا ثبت شده است.",
+            ]);
+
+        $reserveInvoices = ReserveInvoice::with('reserve')->where('reception_id',$reception->id)->get();
+        $sumPrice=0;
+        $sumDiscountPrice=0;
+        $sumUpgradesPrice=0;
+        $finalPrice=0;
+        foreach ($reserveInvoices as $reserveInvoice){
+            $sumPrice += $reserveInvoice->price;
+            $sumDiscountPrice += $reserveInvoice->discount_price;
+            $sumUpgradesPrice += $reserveInvoice->sum_upgrades_price;
+            $finalPrice += $reserveInvoice->final_price;
+
+            if (!is_null($reserveInvoice->discount_id)){
+                $usedDiscount = new UsedDiscount();
+                $usedDiscount->user_id = $reception->user_id;
+                $usedDiscount->discount_id = $reserveInvoice->discount_id;
+                $usedDiscount->save();
+            }
+        }
+
+        $invoice = new ReceptionInvoice();
+        $invoice->reception_id = $reception->id;
+        $invoice->number = $request->number;
+        $invoice->sum_price = $sumPrice;
+        $invoice->sum_discount_price = $sumDiscountPrice;
+        $invoice->sum_upgrades_price = $sumUpgradesPrice;
+        $invoice->final_price = $finalPrice;
+        $invoice->save();
+
+        return back();
     }
 
     public function invoice(ServiceReserve $reserve)

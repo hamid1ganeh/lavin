@@ -17,7 +17,7 @@
                         </div>
                         <h4 class="page-title">
                             <i class="fas fa-dollar-sign page-icon"></i>
-                            پیش نمایش صورتحساب
+                           صورتحساب پرداخت
                         </h4>
                     </div>
                 </div>
@@ -56,7 +56,7 @@
                                         @foreach($reserveInvoices as $index=>$reserveInvoice)
                                             <tr>
                                                 <td><strong class="IRANYekanRegular">{{ ++$index }}</strong></td>
-                                                <td><strong class="IRANYekanRegular">{{ $reserveInvoice->reserve_id }}</strong></td>
+                                                <td><strong class="IRANYekanRegular">{{ $reserveInvoice->reserve->service_name}}</strong></td>
                                                 <td><strong class="IRANYekanRegular">{{ number_format( $reserveInvoice->price??0) }}</strong></td>
                                                 <td><strong class="IRANYekanRegular">{{ number_format( $reserveInvoice->discount_price??0) }}</strong></td>
                                                 <td><strong class="IRANYekanRegular">{{ $reserveInvoice->discount_description ?? '' }}</strong></td>
@@ -69,33 +69,25 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-12 col-md-2">
-                                <label for="number" class="control-label IRANYekanRegular">شماره فاکتور</label>&nbsp;
-                                <input type="text" class="form-check-input text-right" id="number" name="number" value="{{ old('number') }}" required>
-                            </div>
-                            <div class="col-12 col-md-10">
-                                <button type="submit" title="ثبت" class="btn btn-primary">صورتحساب پرداخت</button>
-                            </div>
-                        </div>
+
+                            @if(is_null($invoice))
+                            <form class="form-horizontal" action="{{ route('admin.accounting.reception.invoices.store',$reception) }}" method="post">
+                             @csrf
+                            <div class="row">
+                                <div class="col-12 col-md-2">
+                                    <label for="number" class="control-label IRANYekanRegular">شماره فاکتور</label>&nbsp;
+                                    <input type="text" class="form-check-input text-right" id="number" name="number" value="{{ old('number') }}" required>
+                                </div>
+                                <div class="col-12 col-md-10">
+                                    <button type="submit" title="ثبت" class="btn btn-primary">ثبت</button>
+                                </div>
+
+                             </div>
+                            </form>
+                            @endif
                         @endif
-                        {{--                        <div class="row">--}}
-                        {{--                            <div class="col-12">--}}
-                        {{--                                <h5 class="card-title IRANYekanRegular">مشخصات سرویس</h5>--}}
-                        {{--                            </div>--}}
-                        {{--                            <div class="col-12">--}}
-                        {{--                                <p class="card-text IRANYekanRegular"> عنوان سرویس:&nbsp; {{ $reserve->detail_name ?? ''}}</p>--}}
-                        {{--                            </div>--}}
-                        {{--                            <div class="col-12 mt-1">--}}
-                        {{--                                 <h3 class="card-text IRANYekanRegular">مبلغ:&nbsp; {{ number_format($reserve->total_price ?? 0) }}&nbsp;تومان</h3>--}}
-                        {{--                            </div>--}}
-                        {{--                        </div>--}}
-                        {{--                        @if(count($reserve->confirmedUpgrades))--}}
                         @if(count($reserves))
                         <div class="row mt-2">
-                            {{--                            <div class="col-12 text-center">--}}
-                            {{--                                 <h5 class="card-title IRANYekanRegular">لیست ارتقاءها</h5>--}}
-                            {{--                            </div>--}}
                             <div class="col-12">
                                 <div class="table-responsive"  style="min-height: 100px !important;">
                                     <table id="tech-companies-1" class="table table-striped">
@@ -167,12 +159,38 @@
                                     </table>
                                 </div>
                             </div>
-                            <div class="col-12">
-                                {{--                                <h3 class="card-text IRANYekanRegular">مبلغ کل ارتقاء:&nbsp; {{ number_format($SumUpgrades) }}&nbsp;تومان</h3>--}}
-                            </div>
                         </div>
                         @endif
-                        {{--                        @endif--}}
+
+                        @if(!is_null($invoice))
+                            <div class="row">
+                                <div class="col-12">
+                                    <p class="card-text IRANYekanRegular">شماره فاکتور:&nbsp; {{ $invoice->number}}</p>
+                                </div>
+                                <div class="col-12">
+                                    <p class="card-text IRANYekanRegular"> تاریخ ایجاد فاکتور:&nbsp; {{ $invoice->createdAt()}}</p>
+                                </div>
+                                <div class="col-12 mt-1">
+                                    <h3 class="card-text IRANYekanRegular">مبلغ کل سرویس ها:&nbsp; {{ number_format($invoice->sum_price ?? 0) }}&nbsp;تومان</h3>
+                                </div>
+                                <div class="col-12 mt-1">
+                                    <h3 class="card-text IRANYekanRegular"> مبلغ کل ارتقاء:&nbsp; {{ number_format($invoice->sum_upgrades_price ?? 0) }}&nbsp;تومان</h3>
+                                </div>
+                                <div class="col-12 mt-1">
+                                    <h3 class="card-text IRANYekanRegular"> مبلغ کل تخفیف ها:&nbsp; {{ number_format($invoice->sum_discount_price ?? 0) }}&nbsp;تومان</h3>
+                                </div>
+                                <div class="col-12 mt-1">
+                                    <h3 class="card-text IRANYekanRegular  text-success">مبلغ کل قابل پرداخت&nbsp; {{ number_format($invoice->final_price ?? 0) }}&nbsp;تومان</h3>
+                                </div>
+                                <div class="col-12 mt-1">
+                                    <h3 class="card-text IRANYekanRegular  text-primary">مبلغ کل پرداخت شده:&nbsp; {{ number_format($invoice->amount_paid ?? 0) }}&nbsp;تومان</h3>
+                                </div>
+                                <div class="col-12 mt-1">
+                                    <h3 class="card-text IRANYekanRegular text-danger">مبلغ کل نسیه:&nbsp; {{ number_format($invoice->amount_debt ?? 0) }}&nbsp;تومان</h3>
+                                </div>
+                            </div>
+                        @endif
+
                     </div>
 
                 </div>

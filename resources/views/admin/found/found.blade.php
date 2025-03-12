@@ -116,68 +116,9 @@
                                                         <td><strong class="IRANYekanRegular">{{ $reception->branch->name }}</strong></td>
                                                         <td>
                                                             @if($reception->end)
-                                                                @if(is_null($reception->hasOpenReferCode()) &&  Auth::guard('admin')->user()->can('reception.start'))
-                                                                <a class="dropdown-item IR cusrsor" href="#start{{ $reception->id }}" data-toggle="modal"  title="باز کردن مراجعه" style="display: contents">
-                                                                    <i class="ti-arrow-circle-right text-warning"></i>
-                                                                </a>
-                                                                @endif
                                                                 <strong class="IRANYekanRegular">پایان مراجعه</strong>
-                                                                <div class="modal fade" id="start{{ $reception->id }}" tabindex="-1" aria-labelledby="reviewLabel" aria-hidden="true">
-                                                                    <div class="modal-dialog modal-xs">
-                                                                        <div class="modal-content">
-                                                                            <div class="modal-header py-3">
-                                                                                <h5 class="modal-title IRANYekanRegular" id="newReviewLabel">پایان مراجعه</h5>
-                                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                                    <span aria-hidden="true">&times;</span>
-                                                                                </button>
-                                                                            </div>
-                                                                            <div class="modal-body text-center">
-                                                                                <h5 class="IRANYekanRegular">آیا مطمئن هستید که میخواهید این مراجعه را مجداد باز کنید؟</h5>
-                                                                            </div>
-                                                                            <div class="modal-footer">
-                                                                                <form action="{{ route('admin.receptions.start',$reception) }}"  method="POST" class="d-inline">
-                                                                                    @csrf
-                                                                                    @method('PATCH')
-                                                                                    <button type="submit" title="پایان" class="btn btn-info px-8">باز</button>
-                                                                                </form>
-                                                                                &nbsp;
-                                                                                <button type="button" class="btn btn-secondary" title="انصراف" data-dismiss="modal">انصراف</button>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
                                                             @else
-                                                                @if(Auth::guard('admin')->user()->can('reception.end'))
-                                                                <a class="dropdown-item IR cusrsor" href="#end{{ $reception->id }}" data-toggle="modal"  title="پایان مراجعه" style="display: contents">
-                                                                    <i class="mdi mdi-logout text-dark"></i>
-                                                                </a>
-                                                                @endif
                                                                 <strong class="IRANYekanRegular">باز</strong>
-
-                                                                <div class="modal fade" id="end{{ $reception->id }}" tabindex="-1" aria-labelledby="reviewLabel" aria-hidden="true">
-                                                                    <div class="modal-dialog modal-xs">
-                                                                        <div class="modal-content">
-                                                                            <div class="modal-header py-3">
-                                                                                <h5 class="modal-title IRANYekanRegular" id="newReviewLabel">پایان مراجعه</h5>
-                                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                                    <span aria-hidden="true">&times;</span>
-                                                                                </button>
-                                                                            </div>
-                                                                            <div class="modal-body text-center">
-                                                                                <h5 class="IRANYekanRegular">آیا مطمئن هستید که این مراجعه پایان یافته است؟</h5>
-                                                                            </div>
-                                                                            <div class="modal-footer">
-                                                                                <form action="{{ route('admin.receptions.end',$reception) }}"  method="POST" class="d-inline">
-                                                                                    @csrf
-                                                                                    @method('PATCH')
-                                                                                    <button type="submit" title="پایان" class="btn btn-info px-8">پایان</button>
-                                                                                </form>
-                                                                                &nbsp;
-                                                                                <button type="button" class="btn btn-secondary" title="انصراف" data-dismiss="modal">انصراف</button>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
                                                             @endif
                                                         </td>
                                                         <td>
@@ -207,7 +148,7 @@
 
                                                                             <a href="{{ route('admin.accounting.reception.invoices.show',$reception) }}" class="dropdown-item IR cursor-pointer" title="صورتحساب" target="_blank">
                                                                                 <i class="fas fa-dollar-sign text-primary cursor-pointer"></i>
-                                                                                <span class="p-1">صورتحساب</span>
+                                                                                <span class="p-1">صورتحساب پرداخت</span>
                                                                             </a>
 
                                                                             @if($reception->found_status ==   App\Enums\FoundStatus::pending)

@@ -903,9 +903,9 @@ Route::group(['middleware' => 'auth.admin'], function () {
 
         Route::prefix('reception/')->name('reception.')->group(function () {
             Route::prefix('{reception}/invoices')->name('invoices.')->group(function () {
-                Route::get('/preview', [ReceptionInvoiceController::class,'show'])->name('show');
-                Route::post('/store', [ReceptionInvoiceController::class,'store_reserve'])->name('reserve.store');
-//                Route::get('/', [ReceptionInvoiceController::class,'index'])->name('index');
+                Route::get('/show', [ReceptionInvoiceController::class,'show'])->name('show');
+                Route::post('/store_reserve', [ReceptionInvoiceController::class,'store_reserve'])->name('reserve.store');
+                Route::post('/store', [ReceptionInvoiceController::class,'store'])->name('store');
             });
 
         });

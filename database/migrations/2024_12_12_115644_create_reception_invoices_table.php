@@ -17,13 +17,12 @@ class CreateReceptionInvoicesTable extends Migration
             $table->id();
             $table->unsignedBigInteger('reception_id');
             $table->string('number',255);
-            $table->unsignedBigInteger('price');
-            $table->unsignedBigInteger('discount_id')->nullable();
-            $table->unsignedBigInteger('discount_price')->default(0);
-            $table->string('discount_description')->nullable();
+            $table->unsignedBigInteger('sum_price');
+            $table->unsignedBigInteger('sum_discount_price')->default(0);
             $table->unsignedBigInteger('sum_upgrades_price')->default(0);
             $table->unsignedBigInteger('final_price');
-            $table->boolean('settlement')->default(false);
+            $table->unsignedBigInteger('amount_paid')->default(0);
+            $table->unsignedBigInteger('amount_debt')->default(0);
             $table->timestamps();
 
             $table->foreign('reception_id')
@@ -32,11 +31,6 @@ class CreateReceptionInvoicesTable extends Migration
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
 
-            $table->foreign('discount_id')
-                ->references('id')
-                ->on('discounts')
-                ->onDelete('cascade')
-                ->onUpdate('cascade');
         });
     }
 
