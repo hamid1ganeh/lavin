@@ -285,6 +285,16 @@ class ReceptionInvoiceController extends Controller
         return back();
     }
 
+    public function delete_reserve(Reception $reception,reserveInvoice $reserveInvoice)
+    {
+        if (!is_null($reserveInvoice->invoice))
+        {
+            return back()->withInput();
+        }
+        $reserveInvoice->delete();
+        return back();
+    }
+
     public function invoice(ServiceReserve $reserve)
     {
         return "ok8";

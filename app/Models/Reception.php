@@ -43,6 +43,11 @@ class Reception extends Model
         return $this->belongsTo(Branch::class,'branch_id','id');
     }
 
+    public function invoie()
+    {
+        return $this->hasOne(ReceptionInvoice::class,'reception_id','id');
+    }
+
     public function scopeFilter($query)
     {
         $mobile = request('mobile');

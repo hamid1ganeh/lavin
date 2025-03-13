@@ -55,7 +55,18 @@
                                         <tbody>
                                         @foreach($reserveInvoices as $index=>$reserveInvoice)
                                             <tr>
-                                                <td><strong class="IRANYekanRegular">{{ ++$index }}</strong></td>
+                                                <td>
+                                                    <form method="post" action="{{ route('admin.accounting.reception.invoices.reserve.delete',[$reception,$reserveInvoice]) }}">
+                                                        @if(is_null($invoice))
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" title="ویرایش" class="fa fa-edit text-success button-icon btn-light">
+                                                        </button>
+                                                        @endif
+                                                        <strong class="IRANYekanRegular">{{ ++$index }}</strong>
+                                                    </form>
+
+                                                </td>
                                                 <td><strong class="IRANYekanRegular">{{ $reserveInvoice->reserve->service_name}}</strong></td>
                                                 <td><strong class="IRANYekanRegular">{{ number_format( $reserveInvoice->price??0) }}</strong></td>
                                                 <td><strong class="IRANYekanRegular">{{ number_format( $reserveInvoice->discount_price??0) }}</strong></td>
@@ -103,7 +114,9 @@
                                         <tbody>
                                         @foreach($reserves as $index=>$reserve)
                                             <tr>
-                                                <td><strong class="IRANYekanRegular">{{ ++$index }}</strong></td>
+                                                <td>
+                                                    <strong class="IRANYekanRegular">{{ ++$index }}</strong>
+                                                </td>
                                                 <td><strong class="IRANYekanRegular">{{ $reserve->detail_name }}</strong></td>
                                                 <td><strong class="IRANYekanRegular">{{ number_format( $reserve->total_price??0) }}</strong></td>
                                                 <td><strong class="IRANYekanRegular">{{ $reserve->price_description ?? '' }}</strong></td>

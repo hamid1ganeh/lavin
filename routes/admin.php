@@ -905,6 +905,7 @@ Route::group(['middleware' => 'auth.admin'], function () {
             Route::prefix('{reception}/invoices')->name('invoices.')->group(function () {
                 Route::get('/show', [ReceptionInvoiceController::class,'show'])->name('show');
                 Route::post('/store_reserve', [ReceptionInvoiceController::class,'store_reserve'])->name('reserve.store');
+                Route::delete('{reserveInvoice}/delete_reserve', [ReceptionInvoiceController::class,'delete_reserve'])->name('reserve.delete');
                 Route::post('/store', [ReceptionInvoiceController::class,'store'])->name('store');
             });
 
