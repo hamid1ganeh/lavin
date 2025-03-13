@@ -280,6 +280,7 @@ class ReceptionInvoiceController extends Controller
         $invoice->sum_discount_price = $sumDiscountPrice;
         $invoice->sum_upgrades_price = $sumUpgradesPrice;
         $invoice->final_price = $finalPrice;
+        $invoice->amount_debt = $finalPrice;
         $invoice->save();
 
         return back();

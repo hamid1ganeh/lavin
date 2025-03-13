@@ -198,9 +198,15 @@
                                 <div class="col-12 mt-1">
                                     <h3 class="card-text IRANYekanRegular  text-primary">مبلغ کل پرداخت شده:&nbsp; {{ number_format($invoice->amount_paid ?? 0) }}&nbsp;تومان</h3>
                                 </div>
+                                @if($invoice->amount_debt>0)
                                 <div class="col-12 mt-1">
-                                    <h3 class="card-text IRANYekanRegular text-danger">مبلغ کل نسیه:&nbsp; {{ number_format($invoice->amount_debt ?? 0) }}&nbsp;تومان</h3>
+                                    <h3 class="card-text IRANYekanRegular text-danger">مبلغ کل بدهکاری:&nbsp; {{ number_format($invoice->amount_debt ?? 0) }}&nbsp;تومان</h3>
                                 </div>
+                                @else
+                                    <div class="col-12 mt-1">
+                                        <h3 class="card-text IRANYekanRegular text-warning">مبلغ کل بستانکاری:&nbsp; {{ number_format((($invoice->amount_debt)*(-1)) ?? 0) }}&nbsp;تومان</h3>
+                                    </div>
+                                @endif
                             </div>
                         @endif
 

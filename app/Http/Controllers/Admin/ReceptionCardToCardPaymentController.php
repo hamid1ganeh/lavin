@@ -12,7 +12,7 @@ use App\Models\CardToCardPayment;
 use Illuminate\Support\Facades\Auth;
 use Morilog\Jalali\Jalalian;
 
-class ReserveCardToCardPaymentContoller extends Controller
+class ReceptionCardToCardPaymentController extends Controller
 {
 
     public function index(ServiceReserve $reserve,ReserveInvoice $invoice)

@@ -22,7 +22,7 @@ class CreateReceptionInvoicesTable extends Migration
             $table->unsignedBigInteger('sum_upgrades_price')->default(0);
             $table->unsignedBigInteger('final_price');
             $table->unsignedBigInteger('amount_paid')->default(0);
-            $table->unsignedBigInteger('amount_debt')->default(0);
+            $table->BigInteger('amount_debt');
             $table->timestamps();
 
             $table->foreign('reception_id')

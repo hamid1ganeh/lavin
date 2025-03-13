@@ -5,55 +5,54 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Account;
 use App\Models\PosPayment;
-use App\Models\ReserveInvoice;
-use App\Models\ReservePayment;
-use App\Models\ServiceReserve;
+use App\Models\ReceptionInvoice;
+use App\Models\Reception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Morilog\Jalali\Jalalian;
 
-class ReservePosPaymentContoller extends Controller
+class ReceptionPosPaymentController extends Controller
 {
 
-    public function index(ServiceReserve $reserve,ReserveInvoice $invoice)
+    public function index(Reception $reception,ReceptionInvoice $receptionInvoice)
     {
         //اجازه دسترسی
-        config(['auth.defaults.guard' => 'admin']);
-        $this->authorize('reserves.payment.invoice.pos.index');
-        if (!in_array($reserve->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
+//        config(['auth.defaults.guard' => 'admin']);
+//        $this->authorize('reserves.payment.invoice.pos.index');
+        if (!in_array($reception->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
         {
             abort(403);
         }
 
          $payments = PosPayment::with('receiverAccount')
-                                    ->where('payable_type',get_class($invoice))
-                                    ->where('payable_id',$invoice->id)
+                                    ->where('payable_type',get_class($receptionInvoice))
+                                    ->where('payable_id',$receptionInvoice->id)
                                     ->orderBy('paid_at','desc')
                                     ->get();
 
-         return  view('admin.reserves.payment.pos.all',compact('reserve','invoice','payments'));
+         return  view('admin.accounting.payment.pos.all',compact('reception','receptionInvoice','payments'));
     }
 
-    public function create(ServiceReserve $reserve,ReserveInvoice $invoice)
+    public function create(Reception $reception,ReceptionInvoice $receptionInvoice)
     {
-        //اجازه دسترسی
-        config(['auth.defaults.guard' => 'admin']);
-        $this->authorize('reserves.payment.invoice.pos.create');
-        if (!in_array($reserve->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
+//        //اجازه دسترسی
+//        config(['auth.defaults.guard' => 'admin']);
+//        $this->authorize('reserves.payment.invoice.pos.create');
+        if (!in_array($reception->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
         {
             abort(403);
         }
 
         $accounts = Account::where('pos',true)->orderBy('bank_name')->get();
-        return  view('admin.reserves.payment.pos.create',compact('reserve','invoice','accounts'));
+        return  view('admin.accounting.payment.pos.create',compact('reception','receptionInvoice','accounts'));
     }
 
-    public function store(ServiceReserve $reserve,ReserveInvoice $invoice,Request $request)
+    public function store(Reception $reception,ReceptionInvoice $receptionInvoice,Request $request)
     {
-        //اجازه دسترسی
-        config(['auth.defaults.guard' => 'admin']);
-        $this->authorize('reserves.payment.invoice.pos.create');
-        if (!in_array($reserve->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
+//        //اجازه دسترسی
+//        config(['auth.defaults.guard' => 'admin']);
+//        $this->authorize('reserves.payment.invoice.pos.create');
+        if (!in_array($reception->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
         {
             abort(403);
         }
@@ -75,8 +74,8 @@ class ReservePosPaymentContoller extends Controller
         $paidAt =  faToEn($request->paid_at);
         $paidAt = Jalalian::fromFormat('Y/m/d H:i', $paidAt)->toCarbon("Y-m-d H:i");
 
-        PosPayment::create(['payable_type'=>get_class($invoice),
-                            'payable_id'=> $invoice->id,
+        $payment = PosPayment::create(['payable_type'=>get_class($receptionInvoice),
+                            'payable_id'=> $receptionInvoice->id,
                             'receiver_account_id'=>$request->receiver_account_id,
                              'price'=>$request->price,
                              'transaction_number'=> $request->transaction_number,
@@ -84,32 +83,40 @@ class ReservePosPaymentContoller extends Controller
                              'description'=> $request->description,
                              'cashier_id'=>Auth::guard('admin')->id()]);
 
+        $receptionInvoice->amount_paid +=$payment->price;
+        $receptionInvoice->amount_debt = $receptionInvoice->final_price-$receptionInvoice->amount_paid;
+        $receptionInvoice->save();
+
         toast('پرداختی شما ثبت شد.','success')->position('bottom-end');
 
-        return redirect(route('admin.reserves.payment.pos.index',[$reserve,$invoice]));
+        if (!is_null($request->get('invoice')))
+        {
+            return back();
+        }
+        return redirect(route('admin.accounting.reception.invoices.pos.index',[$reception,$receptionInvoice]));
     }
 
 
-    public function edit(ServiceReserve $reserve,ReserveInvoice $invoice,PosPayment $pos)
+    public function edit(Reception $reception,ReceptionInvoice $receptionInvoice,PosPayment $pos)
     {
         //اجازه دسترسی
-        config(['auth.defaults.guard' => 'admin']);
-        $this->authorize('reserves.payment.invoice.pos.edit');
-        if (!in_array($reserve->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
+//        config(['auth.defaults.guard' => 'admin']);
+//        $this->authorize('reserves.payment.invoice.pos.edit');
+        if (!in_array($reception->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
         {
             abort(403);
         }
 
         $accounts = Account::where('pos',true)->orderBy('bank_name')->get();
-        return  view('admin.reserves.payment.pos.edit',compact('reserve','invoice','accounts','pos'));
+        return  view('admin.accounting.payment.pos.edit',compact('reception','receptionInvoice','accounts','pos'));
     }
 
-    public function update(ServiceReserve $reserve,ReserveInvoice $invoice,PosPayment $pos,Request $request)
+    public function update(Reception $reception,ReceptionInvoice $receptionInvoice,PosPayment $pos,Request $request)
     {
         //اجازه دسترسی
-        config(['auth.defaults.guard' => 'admin']);
-        $this->authorize('reserves.payment.invoice.pos.edit');
-        if (!in_array($reserve->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
+//        config(['auth.defaults.guard' => 'admin']);
+//        $this->authorize('reserves.payment.invoice.pos.edit');
+        if (!in_array($reception->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
         {
             abort(403);
         }
@@ -140,16 +147,16 @@ class ReservePosPaymentContoller extends Controller
 
         toast('بروزرسانی انجام شد.','success')->position('bottom-end');
 
-        return redirect(route('admin.reserves.payment.pos.index',[$reserve,$invoice]));
+        return redirect(route('admin.accounting.reception.invoices.pos.index',[$reception,$receptionInvoice]));
     }
 
 
-    public function destroy(ServiceReserve $reserve,ReserveInvoice $invoice,PosPayment $pos)
+    public function destroy(Reception $reception,ReceptionInvoice $receptionInvoice,PosPayment $pos)
     {
         //اجازه دسترسی
-        config(['auth.defaults.guard' => 'admin']);
-        $this->authorize('reserves.payment.invoice.pos.delete');
-        if (!in_array($reserve->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
+//        config(['auth.defaults.guard' => 'admin']);
+//        $this->authorize('reserves.payment.invoice.pos.delete');
+        if (!in_array($reception->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
         {
             abort(403);
         }

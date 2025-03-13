@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Morilog\Jalali\Jalalian;
 
-class ReserveChequePaymentContoller extends Controller
+class ReceptionChequePaymentController extends Controller
 {
 
     public function index(ServiceReserve $reserve,ReserveInvoice $invoice)

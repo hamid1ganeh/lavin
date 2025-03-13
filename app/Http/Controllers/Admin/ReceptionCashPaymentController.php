@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Morilog\Jalali\Jalalian;
 
-class ReserveCashPaymentContoller extends Controller
+class ReceptionCashPaymentController extends Controller
 {
 
     public function index(ServiceReserve $reserve,ReserveInvoice $invoice)
