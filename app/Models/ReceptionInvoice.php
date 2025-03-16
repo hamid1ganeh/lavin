@@ -20,6 +20,19 @@ class ReceptionInvoice extends Model
         return CalendarUtils::convertNumbers(CalendarUtils::strftime('Y/m/d',strtotime($this->created_at)));
     }
 
+    public function updateCalculation()
+    {
+        $cardToCard = CardToCardPayment::where('payable_type',get_class($this))->where('payable_id',$this->id)->sum('price');
+        $cache =  CashPayment::where('payable_type',get_class($this))->where('payable_id',$this->id)->sum('price');
+        $cheque =  ChequePayment::where('payable_type',get_class($this))->where('payable_id',$this->id)->sum('price');
+        $pos =  PosPayment::where('payable_type',get_class($this))->where('payable_id',$this->id)->sum('price');
+        $sumPayment = $cardToCard+$cache+$cheque+$pos;
+
+        $this->amount_paid = $sumPayment;
+        $this->amount_debt = $this->final_price-$sumPayment;
+        $this->save();
+    }
+
     public function scopeFilter($query)
     {
         $user = request('user');

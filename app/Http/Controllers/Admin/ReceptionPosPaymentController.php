@@ -83,10 +83,7 @@ class ReceptionPosPaymentController extends Controller
                              'description'=> $request->description,
                              'cashier_id'=>Auth::guard('admin')->id()]);
 
-        $receptionInvoice->amount_paid +=$payment->price;
-        $receptionInvoice->amount_debt = $receptionInvoice->final_price-$receptionInvoice->amount_paid;
-        $receptionInvoice->save();
-
+        $receptionInvoice->updateCalculation();
         toast('پرداختی شما ثبت شد.','success')->position('bottom-end');
 
         if (!is_null($request->get('invoice')))
@@ -145,6 +142,7 @@ class ReceptionPosPaymentController extends Controller
                       'description'=> $request->description,
                       'cashier_id'=>Auth::guard('admin')->id()]);
 
+        $receptionInvoice->updateCalculation();
         toast('بروزرسانی انجام شد.','success')->position('bottom-end');
 
         return redirect(route('admin.accounting.reception.invoices.pos.index',[$reception,$receptionInvoice]));
@@ -162,6 +160,7 @@ class ReceptionPosPaymentController extends Controller
         }
 
         $pos->delete();
+        $receptionInvoice->updateCalculation();
         toast('پرداختی مورد نظر حذف شد.','error')->position('bottom-end');
         return back()->withInput();
     }
