@@ -9,6 +9,7 @@ use App\Models\ReceptionInvoice;
 use App\Models\Reception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Morilog\Jalali\Jalalian;
 
 class ReceptionPosPaymentController extends Controller
@@ -74,16 +75,21 @@ class ReceptionPosPaymentController extends Controller
         $paidAt =  faToEn($request->paid_at);
         $paidAt = Jalalian::fromFormat('Y/m/d H:i', $paidAt)->toCarbon("Y-m-d H:i");
 
-        $payment = PosPayment::create(['payable_type'=>get_class($receptionInvoice),
-                            'payable_id'=> $receptionInvoice->id,
-                            'receiver_account_id'=>$request->receiver_account_id,
-                             'price'=>$request->price,
-                             'transaction_number'=> $request->transaction_number,
-                             'paid_at'=> $paidAt,
-                             'description'=> $request->description,
-                             'cashier_id'=>Auth::guard('admin')->id()]);
+        $pos = new PosPayment();
+        $pos->payable_type = get_class($receptionInvoice);
+        $pos->payable_id = $receptionInvoice->id;
+        $pos->receiver_account_id = $request->receiver_account_id;
+        $pos->price = $request->price;
+        $pos->transaction_number =  $request->transaction_number;
+        $pos->paid_at = $paidAt;
+        $pos->description = $request->description;
+        $pos->cashier_id = Auth::guard('admin')->id();
 
-        $receptionInvoice->updateCalculation();
+        DB::transaction(function() use ($pos, $receptionInvoice) {
+            $pos->save();
+            $receptionInvoice->updateCalculation();
+        });
+
         toast('پرداختی شما ثبت شد.','success')->position('bottom-end');
 
         if (!is_null($request->get('invoice')))
@@ -135,14 +141,18 @@ class ReceptionPosPaymentController extends Controller
         $paidAt =  faToEn($request->paid_at);
         $paidAt = Jalalian::fromFormat('Y/m/d H:i', $paidAt)->toCarbon("Y-m-d H:i");
 
-        $pos->update(['receiver_account_id'=>$request->receiver_account_id,
-                      'price'=>$request->price,
-                      'transaction_number'=> $request->transaction_number,
-                      'paid_at'=> $paidAt,
-                      'description'=> $request->description,
-                      'cashier_id'=>Auth::guard('admin')->id()]);
+        $pos->receiver_account_id = $request->receiver_account_id;
+        $pos->price = $request->price;
+        $pos->transaction_number = $request->transaction_number;
+        $pos->paid_at = $paidAt;
+        $pos->description = $request->description;
+        $pos->cashier_id = Auth::guard('admin')->id();
 
-        $receptionInvoice->updateCalculation();
+        DB::transaction(function() use ($pos, $receptionInvoice) {
+            $pos->save();
+            $receptionInvoice->updateCalculation();
+        });
+
         toast('بروزرسانی انجام شد.','success')->position('bottom-end');
 
         return redirect(route('admin.accounting.reception.invoices.pos.index',[$reception,$receptionInvoice]));
@@ -159,7 +169,11 @@ class ReceptionPosPaymentController extends Controller
             abort(403);
         }
 
-        $pos->delete();
+        DB::transaction(function() use ($pos, $receptionInvoice) {
+            $pos->delete();
+            $receptionInvoice->updateCalculation();
+        });
+
         $receptionInvoice->updateCalculation();
         toast('پرداختی مورد نظر حذف شد.','error')->position('bottom-end');
         return back()->withInput();

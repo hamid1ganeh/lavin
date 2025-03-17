@@ -5,56 +5,60 @@ namespace App\Http\Controllers\Admin;
 use App\Enums\PaymentType;
 use App\Http\Controllers\Controller;
 use App\Models\Account;
+use App\Models\Reception;
+use App\Models\ReceptionInvoice;
 use App\Models\ReserveInvoice;
 use App\Models\ServiceReserve;
 use Illuminate\Http\Request;
 use App\Models\CardToCardPayment;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Morilog\Jalali\Jalalian;
 
 class ReceptionCardToCardPaymentController extends Controller
 {
 
-    public function index(ServiceReserve $reserve,ReserveInvoice $invoice)
+    public function index(Reception $reception,ReceptionInvoice $receptionInvoice)
     {
         //اجازه دسترسی
-        config(['auth.defaults.guard' => 'admin']);
-        $this->authorize('reserves.payment.invoice.card.index');
-        if (!in_array($reserve->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
+//        config(['auth.defaults.guard' => 'admin']);
+//        $this->authorize('reserves.payment.invoice.card.index');
+        if (!in_array($reception->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
         {
             abort(403);
         }
 
         $payments = CardToCardPayment::with('reciverAccount')
-            ->where('payable_type',get_class($invoice))
-            ->where('payable_id',$invoice->id)
-            ->where('type',PaymentType::income)
-            ->orderBy('paid_at','desc')
-            ->get();
+                    ->where('payable_type',get_class($receptionInvoice))
+                    ->where('payable_id',$receptionInvoice->id)
+                    ->where('type',PaymentType::income)
+                    ->orderBy('paid_at','desc')
+                    ->get();
 
-        return  view('admin.reserves.payment.card.all',compact('reserve','invoice','payments'));
+        return  view('admin.accounting.payment.card.all',compact('reception','receptionInvoice','payments'));
+
     }
 
-    public function create(ServiceReserve $reserve,ReserveInvoice $invoice)
+    public function create(Reception $reception,ReceptionInvoice $receptionInvoice)
     {
-        //اجازه دسترسی
-        config(['auth.defaults.guard' => 'admin']);
-        $this->authorize('reserves.payment.invoice.card.create');
-        if (!in_array($reserve->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
+//        //اجازه دسترسی
+//        config(['auth.defaults.guard' => 'admin']);
+//        $this->authorize('reserves.payment.invoice.card.create');
+        if (!in_array($reception->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
         {
             abort(403);
         }
 
         $accounts = Account::orderBy('bank_name')->get();
-        return  view('admin.reserves.payment.card.create',compact('reserve','invoice','accounts'));
+        return  view('admin.accounting.payment.cash.create',compact('reception','receptionInvoice','accounts'));
     }
 
-    public function store(ServiceReserve $reserve,ReserveInvoice $invoice,Request $request)
+    public function store(Reception $reception,ReceptionInvoice $receptionInvoice,Request $request)
     {
         //اجازه دسترسی
-        config(['auth.defaults.guard' => 'admin']);
-        $this->authorize('reserves.payment.invoice.card.create');
-        if (!in_array($reserve->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
+//        config(['auth.defaults.guard' => 'admin']);
+//        $this->authorize('reserves.payment.invoice.card.create');
+        if (!in_array($reception->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
         {
             abort(403);
         }
@@ -83,43 +87,52 @@ class ReceptionCardToCardPaymentController extends Controller
         $paidAt =  faToEn($request->paid_at);
         $paidAt = Jalalian::fromFormat('Y/m/d H:i', $paidAt)->toCarbon("Y-m-d H:i");
 
-        CardToCardPayment::create(['payable_type'=>get_class($invoice),
-            'payable_id'=> $invoice->id,
-            'receiver_account_id'=>$request->receiver_account_id,
-            'sender_full_name'=>$request->sender_full_name,
-            'sender_cart_number'=>$request->sender_cart_number,
-            'price'=>$request->price,
-            'transaction_number'=> $request->transaction_number,
-            'paid_at'=> $paidAt,
-            'description'=> $request->description,
-            'cashier_id'=>Auth::guard('admin')->id()]);
+        $card = new CardToCardPayment();
+        $card->payable_type = get_class($reception);
+        $card->receiver_account_id = $reception->id;
+        $card->sender_full_name = $request->sender_full_name;
+        $card->sender_cart_number = $request->sender_full_name;
+        $card->price = $request->price;
+        $card->transaction_number = $request->transaction_number;
+        $card->paid_at = $paidAt;
+        $card->description = $request->description;
+        $card->cashier_id =Auth::guard('admin')->id();
+
+
+        DB::transaction(function() use ($card, $receptionInvoice) {
+            $card->save();
+            $receptionInvoice->updateCalculation();
+        });
 
         toast('پرداختی شما ثبت شد.','success')->position('bottom-end');
 
-        return redirect(route('admin.reserves.payment.card.index',[$reserve,$invoice]));
+        if (!is_null($request->get('invoice')))
+        {
+            return back();
+        }
+        return redirect(route('admin.accounting.reception.invoices.card.index',[$reception,$receptionInvoice]));
     }
 
-
-    public function edit(ServiceReserve $reserve,ReserveInvoice $invoice,CardToCardPayment $card)
+    public function edit(Reception $reception,ReceptionInvoice $receptionInvoice,CardToCardPayment $card)
     {
         //اجازه دسترسی
         config(['auth.defaults.guard' => 'admin']);
         $this->authorize('reserves.payment.invoice.card.edit');
-        if (!in_array($reserve->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
+        if (!in_array($reception->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
         {
             abort(403);
         }
 
         $accounts = Account::orderBy('bank_name')->get();
-        return  view('admin.reserves.payment.card.edit',compact('reserve','invoice','accounts','card'));
+        return  view('admin.accounting.payment.cash.edit',compact('reception','receptionInvoice','card','accounts'));
     }
 
-    public function update(ServiceReserve $reserve,ReserveInvoice $invoice,CardToCardPayment $card,Request $request)
+    public function update(Reception $reception,ReceptionInvoice $receptionInvoice,CardToCardPayment $card,Request $request)
     {
         //اجازه دسترسی
-        config(['auth.defaults.guard' => 'admin']);
-        $this->authorize('reserves.payment.invoice.card.edit');
-        if (!in_array($reserve->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
+//        config(['auth.defaults.guard' => 'admin']);
+//        $this->authorize('reserves.payment.invoice.card.edit');
+        if (!in_array($reception->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
         {
             abort(403);
         }
@@ -144,35 +157,50 @@ class ReceptionCardToCardPaymentController extends Controller
             'transaction_number.required' => 'شماره تراکنش الزامی است.',
             'transaction_number.max' => 'حداکثر طول شماره تراکنش 255 کارکتر',
             'description.max' => 'حداکثر طول شماره تراکنش 255 کارکتر']);
-        $paidAt =  faToEn($request->paid_at);
-        $paidAt = Jalalian::fromFormat('Y/m/d H:i', $paidAt)->toCarbon("Y-m-d H:i");
 
-            $card->update([ 'receiver_account_id'=>$request->receiver_account_id,
-            'sender_full_name'=>$request->sender_full_name,
-            'sender_cart_number'=>$request->sender_cart_number,
-            'price'=>$request->price,
-            'transaction_number'=> $request->transaction_number,
-            'paid_at'=> $paidAt,
-            'description'=> $request->description,
-            'cashier_id'=>Auth::guard('admin')->id()]);
+            $paidAt =  faToEn($request->paid_at);
+            $paidAt = Jalalian::fromFormat('Y/m/d H:i', $paidAt)->toCarbon("Y-m-d H:i");
 
-        toast('بروزرسانی انجام شد.','success')->position('bottom-end');
+            $card->receiver_account_id = $request->receiver_account_id;
+            $card->sender_full_name = $request->sender_full_name;
+            $card->sender_cart_number = $request->sender_cart_number;
+            $card->price = $request->price;
+            $card->transaction_number = $request->transaction_number;
+            $card->paid_at = $paidAt;
+            $card->description = $request->description;
+            $card->cashier_id =Auth::guard('admin')->id();
 
-        return redirect(route('admin.reserves.payment.card.index',[$reserve,$invoice]));
-    }
 
-    public function destroy(ServiceReserve $reserve,ReserveInvoice $invoice,CardToCardPayment $card)
-    {
-        //اجازه دسترسی
-        config(['auth.defaults.guard' => 'admin']);
-        $this->authorize('reserves.payment.invoice.card.delete');
-        if (!in_array($reserve->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
+        DB::transaction(function() use ($card, $receptionInvoice) {
+            $card->save();
+            $receptionInvoice->updateCalculation();
+        });
+
+        toast('پرداختی شما ثبت شد.','success')->position('bottom-end');
+
+        if (!is_null($request->get('invoice')))
         {
-            abort(403);
+            return back();
         }
-
-        $card->delete();
-        toast('پرداختی مورد نظر حذف شد.','error')->position('bottom-end');
-        return back()->withInput();
+        return redirect(route('admin.accounting.reception.invoices.card.index',[$reception,$receptionInvoice]));
     }
-}
+
+    public function destroy(Reception $reception,ReceptionInvoice $receptionInvoice,CardToCardPayment $card)
+    {
+            //اجازه دسترسی
+//            config(['auth.defaults.guard' => 'admin']);
+//            $this->authorize('reserves.payment.invoice.card.delete');
+            if (!in_array($reception->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
+            {
+                abort(403);
+            }
+
+            DB::transaction(function() use ($card, $receptionInvoice) {
+                $card->delete();
+                $receptionInvoice->updateCalculation();
+            });
+
+            toast('پرداختی مورد نظر حذف شد.','error')->position('bottom-end');
+            return back()->withInput();
+        }
+    }
