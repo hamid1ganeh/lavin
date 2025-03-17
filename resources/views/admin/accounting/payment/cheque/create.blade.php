@@ -44,7 +44,7 @@
                     <div class="page-title-box">
                         <div class="page-title-right">
                             <ol class="breadcrumb m-0 IR">
-                                {{ Breadcrumbs::render('reserves.payment.invoice.cheque.create',$reserve,$invoice) }}
+{{--                                {{ Breadcrumbs::render('reserves.payment.invoice.cheque.create',$reserve,$invoice) }}--}}
                             </ol>
                         </div>
                         <h4 class="page-title">
@@ -72,9 +72,8 @@
                         <div class="card-body">
 
                             <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" style="margin:auto">
-                                <form class="form-horizontal" action="{{ route('admin.reserves.payment.cheque.store',[$reserve,$invoice]) }}" method="post">
+                                <form class="form-horizontal" action="{{ route('admin.accounting.reception.invoices.cheque.store',[$reception,$receptionInvoice]) }}" method="post">
                                     {{ csrf_field() }}
-
                                     <div class="row">
                                         <div class="form-group col-12 col-md-4">
                                             <label for="sender_full_name" class="control-label IRANYekanRegular">نام و نام خانوادگی صادر کننده چک</label>
@@ -139,7 +138,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 </div>

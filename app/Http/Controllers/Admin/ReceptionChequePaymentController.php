@@ -6,52 +6,52 @@ use App\Enums\PaymentType;
 use App\Http\Controllers\Controller;
 use App\Models\Account;
 use App\Models\ChequePayment;
+use App\Models\Reception;
+use App\Models\ReceptionInvoice;
 use App\Models\ReserveInvoice;
 use App\Models\ServiceReserve;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Morilog\Jalali\Jalalian;
 
 class ReceptionChequePaymentController extends Controller
 {
-
-    public function index(ServiceReserve $reserve,ReserveInvoice $invoice)
+    public function index(Reception $reception,ReceptionInvoice $receptionInvoice)
     {
-        config(['auth.defaults.guard' => 'admin']);
-        $this->authorize('reserves.payment.invoice.cheque.index');
-        if (!in_array($reserve->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
+//        config(['auth.defaults.guard' => 'admin']);
+//        $this->authorize('reserves.payment.invoice.cheque.index');
+        if (!in_array($reception->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
         {
             abort(403);
         }
 
-            $payments = ChequePayment::where('payable_type',get_class($invoice))
-                        ->where('payable_id',$invoice->id)
-                        ->where('type',PaymentType::income)
-                        ->orderBy('date_of_issue','desc')
-                        ->get();
+        $payments = ChequePayment::where('payable_type',get_class($receptionInvoice))
+                    ->where('payable_id',$receptionInvoice->id)
+                    ->where('type',PaymentType::income)
+                    ->orderBy('date_of_issue','desc')
+                    ->get();
 
         $accounts = Account::where('pos',true)->orderBy('bank_name')->get();
-            return  view('admin.reserves.payment.cheque.all',compact('reserve','invoice','payments','accounts'));
+        return  view('admin.accounting.payment.cheque.all',compact('reception','receptionInvoice','payments','accounts'));
     }
 
-
-    public function create(ServiceReserve $reserve,ReserveInvoice $invoice)
+    public function create(Reception $reception,ReceptionInvoice $receptionInvoice)
     {
-        config(['auth.defaults.guard' => 'admin']);
-        $this->authorize('reserves.payment.invoice.cheque.create');
-        if (!in_array($reserve->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
+//        config(['auth.defaults.guard' => 'admin']);
+//        $this->authorize('reserves.payment.invoice.cheque.create');
+        if (!in_array($reception->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
         {
             abort(403);
         }
-        return  view('admin.reserves.payment.cheque.create',compact('reserve','invoice'));
+        return  view('admin.accounting.payment.cheque.create',compact('reception','receptionInvoice'));
     }
 
-
-    public function store(ServiceReserve $reserve,ReserveInvoice $invoice,Request $request)
+    public function store(Reception $reception,ReceptionInvoice $receptionInvoice,Request $request)
     {
-        config(['auth.defaults.guard' => 'admin']);
-        $this->authorize('reserves.payment.invoice.cheque.create');
-        if (!in_array($reserve->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
+//        config(['auth.defaults.guard' => 'admin']);
+//        $this->authorize('reserves.payment.invoice.cheque.create');
+        if (!in_array($reception->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
         {
             abort(403);
         }
@@ -89,41 +89,52 @@ class ReceptionChequePaymentController extends Controller
         $dueDate =  faToEn($request->due_date);
         $dueDate = Jalalian::fromFormat('Y/m/d', $dueDate)->toCarbon("Y-m-d");
 
-        ChequePayment::create(['payable_type'=>get_class($invoice),
-                                'payable_id'=> $invoice->id,
-                                'sender_full_name'=>$request->sender_full_name,
-                                'sender_nation_code'=>$request->sender_nation_code,
-                                'sender_account_number'=>$request->sender_account_number,
-                                'serial_number'=>$request->serial_number,
-                                'price'=>$request->price,
-                                'date_of_issue'=> $dateOfIssue,
-                                'due_date'=> $dueDate,
-                                'description'=> $request->description,
-                                'cashier_id'=>Auth::guard('admin')->id(),
-                                'type'=>PaymentType::income]);
+        $cheque = new ChequePayment();
+        $cheque->payable_type = get_class($receptionInvoice);
+        $cheque->payable_id = $receptionInvoice->id;
+        $cheque->sender_full_name = $request->sender_full_name;
+        $cheque->sender_nation_code = $request->sender_nation_code;
+        $cheque->sender_account_number = $request->sender_account_number;
+        $cheque->serial_number = $request->serial_number;
+        $cheque->price = $request->price;
+        $cheque->date_of_issue = $dateOfIssue;
+        $cheque->due_date = $dueDate;
+        $cheque->description = $request->description;
+        $cheque->cashier_id =Auth::guard('admin')->id();
+        $cheque->type = PaymentType::income;
 
-        toast('چک جدید اضافه شد.','success')->position('bottom-end');
-        return redirect(route('admin.reserves.payment.cheque.index',[$reserve,$invoice]));
+        DB::transaction(function() use ($cheque, $receptionInvoice) {
+            $cheque->save();
+            $receptionInvoice->updateCalculation();
+        });
+
+        toast('پرداختی شما ثبت شد.','success')->position('bottom-end');
+
+        if (!is_null($request->get('invoice')))
+        {
+            return back();
+        }
+        return redirect(route('admin.accounting.reception.invoices.cheque.index',[$reception,$receptionInvoice]));
     }
 
-    public function edit(ServiceReserve $reserve,ReserveInvoice $invoice,ChequePayment $cheque)
+
+    public function edit(Reception $reception,ReceptionInvoice $receptionInvoice,ChequePayment $cheque)
     {
-        config(['auth.defaults.guard' => 'admin']);
-        $this->authorize('reserves.payment.invoice.cheque.edit');
-        if (!in_array($reserve->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
+//        config(['auth.defaults.guard' => 'admin']);
+//        $this->authorize('reserves.payment.invoice.cheque.edit');
+        if (!in_array($reception->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
         {
             abort(403);
         }
-
-        return  view('admin.reserves.payment.cheque.edit',compact('reserve','invoice','cheque'));
+        return  view('admin.accounting.payment.cheque.edit',compact('reception','receptionInvoice','cheque'));
     }
 
 
-    public function update(ServiceReserve $reserve,ReserveInvoice $invoice,ChequePayment $cheque,Request $request)
+    public function update(Reception $reception,ReceptionInvoice $receptionInvoice,ChequePayment $cheque,Request $request)
     {
-        config(['auth.defaults.guard' => 'admin']);
-        $this->authorize('reserves.payment.invoice.cheque.edit');
-        if (!in_array($reserve->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
+//        config(['auth.defaults.guard' => 'admin']);
+//        $this->authorize('reserves.payment.invoice.cheque.edit');
+        if (!in_array($reception->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
         {
             abort(403);
         }
@@ -152,8 +163,7 @@ class ReceptionChequePaymentController extends Controller
                 'price.required' => ' مبلغ چک الزامی است.',
                 'date_of_issue.required' => ' تاریخ صدور چک الزامی است.',
                 'due_date.required' => ' تاریخ سررسید چک الزامی است.',
-                'description.max' => ' حداکثر طول توضیحات چک  255 کارکتر است.',
-            ]);
+                'description.max' => ' حداکثر طول توضیحات چک  255 کارکتر است.']);
 
         $dateOfIssue =  faToEn($request->date_of_issue);
         $dateOfIssue = Jalalian::fromFormat('Y/m/d', $dateOfIssue)->toCarbon("Y-m-d");
@@ -171,27 +181,51 @@ class ReceptionChequePaymentController extends Controller
                         'description'=> $request->description,
                         'cashier_id'=>Auth::guard('admin')->id()]);
 
-        toast('بروزرسانی انجام شد.','success')->position('bottom-end');
-        return redirect(route('admin.reserves.payment.cheque.index',[$reserve,$invoice]));
+        $cheque->sender_full_name = $request->sender_full_name;
+        $cheque->sender_nation_code = $request->sender_nation_code;
+        $cheque->sender_account_number = $request->sender_account_number;
+        $cheque->serial_number = $request->serial_number;
+        $cheque->price = $request->price;
+        $cheque->date_of_issue = $dateOfIssue;
+        $cheque->due_date = $dueDate;
+        $cheque->description = $request->description;
+        $cheque->cashier_id = Auth::guard('admin')->id();
+
+        DB::transaction(function() use ($cheque, $receptionInvoice) {
+            $cheque->save();
+            $receptionInvoice->updateCalculation();
+        });
+
+        toast('پرداختی شما ثبت شد.','success')->position('bottom-end');
+
+        if (!is_null($request->get('invoice')))
+        {
+            return back();
+        }
+        return redirect(route('admin.accounting.reception.invoices.cheque.index',[$reception,$receptionInvoice]));
     }
 
-    public function destroy(ServiceReserve $reserve,ReserveInvoice $invoice,ChequePayment $cheque)
+    public function destroy(Reception $reception,ReceptionInvoice $receptionInvoice,ChequePayment $cheque)
     {
-        config(['auth.defaults.guard' => 'admin']);
-        $this->authorize('reserves.payment.invoice.cheque.delete');
-        if (!in_array($reserve->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
+//        config(['auth.defaults.guard' => 'admin']);
+//        $this->authorize('reserves.payment.invoice.cheque.delete');
+        if (!in_array($reception->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
         {
             abort(403);
         }
-        $cheque->delete();
+
+        DB::transaction(function() use ($cheque, $receptionInvoice) {
+            $cheque->save();
+            $receptionInvoice->updateCalculation();
+        });
         toast('چک مورد نظر حذف شد.','error')->position('bottom-end');
         return back()->withInput();
     }
 
     public function pass(ServiceReserve $reserve,ReserveInvoice $invoice,ChequePayment $cheque,Request $request)
     {
-        config(['auth.defaults.guard' => 'admin']);
-        $this->authorize('reserves.payment.invoice.cheque.pass');
+//        config(['auth.defaults.guard' => 'admin']);
+//        $this->authorize('reserves.payment.invoice.cheque.pass');
         if (!in_array($reserve->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
         {
             abort(403);

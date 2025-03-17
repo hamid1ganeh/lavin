@@ -33,7 +33,7 @@
                     <div class="page-title-box">
                         <div class="page-title-right">
                             <ol class="breadcrumb m-0 IR">
-                                {{ Breadcrumbs::render('reserves.payment.invoice.cheque',$reserve,$invoice) }}
+{{--                                {{ Breadcrumbs::render('reserves.payment.invoice.cheque',$reserve,$invoice) }}--}}
                             </ol>
                         </div>
                         <h4 class="page-title">
@@ -61,14 +61,14 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-12 text-right">
-                                    @if(Auth::guard('admin')->user()->can('reserves.payment.invoice.cheque.create'))
+{{--                                    @if(Auth::guard('admin')->user()->can('reserves.payment.invoice.cheque.create'))--}}
                                     <div class="btn-group" >
-                                            <a href="{{ route('admin.reserves.payment.cheque.create',[$reserve,$invoice]) }}" class="btn btn-sm btn-primary">
+                                        <a href="{{ route('admin.accounting.reception.invoices.cheque.create',[$reception,$receptionInvoice]) }}" class="btn btn-sm btn-primary">
                                             <i class="fa fa-plus plusiconfont"></i>
                                             <b class="IRANYekanRegular">ایجاد پرداخت جدید</b>
                                         </a>
                                     </div>
-                                   @endif
+{{--                                   @endif--}}
                                 </div>
                             </div>
 
@@ -119,7 +119,7 @@
                                                                 <h5 class="IRANYekanRegular">آیا مطمئن هستید که مخواهید این  پرداختی را حذف کنید؟</h5>
                                                             </div>
                                                             <div class="modal-footer">
-                                                                <form action="{{ route('admin.reserves.payment.cheque.destroy', [$reserve,$invoice,$cheque]) }}"  method="POST" class="d-inline">
+                                                                <form action="{{ route('admin.accounting.reception.invoices.cheque.destroy', [$reception,$receptionInvoice,$cheque]) }}"  method="POST" class="d-inline">
                                                                     @csrf
                                                                     @method('DELETE')
                                                                     <button type="submit" class="btn btn-danger px-8" title="حذف" >حذف</button>
@@ -142,7 +142,7 @@
                                                             </div>
                                                             <div class="modal-body">
                                                                 <div class="form-group col-12">
-                                                                    <form action="{{ route('admin.reserves.payment.cheque.pass', [$reserve,$invoice,$cheque]) }}"  method="POST" class="d-inline" id="pass-form{{ $cheque->id  }}">
+                                                                    <form action="{{ route('admin.accounting.reception.invoices.cheque.pass', [$reception,$receptionInvoice,$cheque]) }}"  method="POST" class="d-inline">
                                                                         @csrf
                                                                         @method('patch')
                                                                         <div class="modal-body text-left">
@@ -178,25 +178,25 @@
                                                     <div class="input-group-append">
                                                         <i class=" ti-align-justify" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
                                                         <div class="dropdown-menu">
-                                                            @if(Auth::guard('admin')->user()->can('reserves.payment.invoice.cheque.edit'))
-                                                            <a class="dropdown-item IR cursor-pointer" href="{{ route('admin.reserves.payment.cheque.edit', [$reserve,$invoice,$cheque]) }}" title="ویرایش">
+{{--                                                            @if(Auth::guard('admin')->user()->can('reserves.payment.invoice.cheque.edit'))--}}
+                                                            <a class="btn  btn-icon" href="{{ route('admin.accounting.reception.invoices.cheque.edit', [$reception,$receptionInvoice,$cheque]) }}" title="ویرایش">
                                                                 <i class="fa fa-edit text-success font-16 cursor-pointer"></i>
                                                                 <span class="p-1">ویرایش</span>
                                                             </a>
-                                                             @endif
-                                                            @if(Auth::guard('admin')->user()->can('reserves.payment.invoice.cheque.pass'))
+{{--                                                             @endif--}}
+{{--                                                            @if(Auth::guard('admin')->user()->can('reserves.payment.invoice.cheque.pass'))--}}
                                                                 <a href="#pass{{ $cheque->id }}" data-toggle="modal" class="dropdown-item IR cursor-pointer" title="پاس کردن">
                                                                     <i class="fa fa-check text-primary font-16 cursor-pointer"></i>
                                                                     <span class="p-1">پاس کردن</span>
                                                                 </a>
-                                                            @endif
+{{--                                                            @endif--}}
 
-                                                            @if(Auth::guard('admin')->user()->can('reserves.payment.invoice.cheque.delete'))
+{{--                                                            @if(Auth::guard('admin')->user()->can('reserves.payment.invoice.cheque.delete'))--}}
                                                             <a href="#remove{{ $cheque->id }}" data-toggle="modal" class="dropdown-item IR cursor-pointer" title="حذف">
                                                                 <i class="fa fa-edit text-danger font-16 cursor-pointer"></i>
                                                                 <span class="p-1">حذف</span>
                                                             </a>
-                                                           @endif
+{{--                                                           @endif--}}
                                                         </div>
                                                     </div>
                                                 </div>

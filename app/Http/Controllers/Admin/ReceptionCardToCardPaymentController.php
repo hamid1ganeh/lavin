@@ -50,7 +50,7 @@ class ReceptionCardToCardPaymentController extends Controller
         }
 
         $accounts = Account::orderBy('bank_name')->get();
-        return  view('admin.accounting.payment.cash.create',compact('reception','receptionInvoice','accounts'));
+        return  view('admin.accounting.payment.card.create',compact('reception','receptionInvoice','accounts'));
     }
 
     public function store(Reception $reception,ReceptionInvoice $receptionInvoice,Request $request)
@@ -88,8 +88,9 @@ class ReceptionCardToCardPaymentController extends Controller
         $paidAt = Jalalian::fromFormat('Y/m/d H:i', $paidAt)->toCarbon("Y-m-d H:i");
 
         $card = new CardToCardPayment();
-        $card->payable_type = get_class($reception);
-        $card->receiver_account_id = $reception->id;
+        $card->payable_type = get_class($receptionInvoice);
+        $card->payable_id = $receptionInvoice->id;
+        $card->receiver_account_id = $request->receiver_account_id;
         $card->sender_full_name = $request->sender_full_name;
         $card->sender_cart_number = $request->sender_full_name;
         $card->price = $request->price;
@@ -115,16 +116,16 @@ class ReceptionCardToCardPaymentController extends Controller
 
     public function edit(Reception $reception,ReceptionInvoice $receptionInvoice,CardToCardPayment $card)
     {
-        //اجازه دسترسی
-        config(['auth.defaults.guard' => 'admin']);
-        $this->authorize('reserves.payment.invoice.card.edit');
+//        //اجازه دسترسی
+//        config(['auth.defaults.guard' => 'admin']);
+//        $this->authorize('reserves.payment.invoice.card.edit');
         if (!in_array($reception->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
         {
             abort(403);
         }
 
         $accounts = Account::orderBy('bank_name')->get();
-        return  view('admin.accounting.payment.cash.edit',compact('reception','receptionInvoice','card','accounts'));
+        return  view('admin.accounting.payment.card.edit',compact('reception','receptionInvoice','card','accounts'));
     }
 
     public function update(Reception $reception,ReceptionInvoice $receptionInvoice,CardToCardPayment $card,Request $request)

@@ -30,7 +30,7 @@
                     <div class="page-title-box">
                         <div class="page-title-right">
                             <ol class="breadcrumb m-0 IR">
-                                {{ Breadcrumbs::render('reserves.payment.invoice.card.edit',$reserve,$invoice,$card) }}
+{{--                                {{ Breadcrumbs::render('reserves.payment.invoice.card.edit',$reserve,$invoice,$card) }}--}}
                             </ol>
                         </div>
                         <h4 class="page-title">
@@ -58,7 +58,7 @@
                         <div class="card-body">
 
                             <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" style="margin:auto">
-                                <form class="form-horizontal" action="{{ route('admin.reserves.payment.card.update',[$reserve,$invoice,$card]) }}" method="post">
+                                <form class="form-horizontal" action="{{ route('admin.accounting.reception.invoices.card.update',[$reception,$receptionInvoice,$card]) }}" method="post">
                                     {{ csrf_field() }}
                                     @method('PUT')
 
