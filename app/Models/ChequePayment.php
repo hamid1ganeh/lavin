@@ -8,7 +8,7 @@ use Morilog\Jalali\CalendarUtils;
 class ChequePayment extends Model
 {
      protected $fillable=['payable_type','payable_id','passed_by_account_id','serial_number','sender_full_name','sender_nation_code',
-                            'sender_account_number','price','date_of_issue','due_date','cashier_id','passed','passed_date','description'];
+                            'sender_account_number','price','date_of_issue','due_date','cashier_id','status','passed_date','returned_date','description'];
 
     public function payable()
     {
@@ -40,6 +40,13 @@ class ChequePayment extends Model
         return CalendarUtils::convertNumbers(CalendarUtils::strftime('Y/m/d',strtotime($this->passed_date)));
     }
 
+    public function returnedDate()
+    {
+        if (is_null($this->returned_date)){
+            return null;
+        }
+        return CalendarUtils::convertNumbers(CalendarUtils::strftime('Y/m/d',strtotime($this->returned_date)));
+    }
 
     public function passedByAccountInfo()
     {

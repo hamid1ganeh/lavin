@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\chequeStatus;
 use Illuminate\Database\Eloquent\Model;
 use Morilog\Jalali\CalendarUtils;
 use Morilog\Jalali\Jalalian;
@@ -24,7 +25,7 @@ class ReceptionInvoice extends Model
     {
         $cardToCard = CardToCardPayment::where('payable_type',get_class($this))->where('payable_id',$this->id)->sum('price');
         $cache =  CashPayment::where('payable_type',get_class($this))->where('payable_id',$this->id)->sum('price');
-        $cheque =  ChequePayment::where('payable_type',get_class($this))->where('payable_id',$this->id)->sum('price');
+        $cheque =  ChequePayment::where('payable_type',get_class($this))->where('payable_id',$this->id)->where('status','<>',chequeStatus::returned)->sum('price');
         $pos =  PosPayment::where('payable_type',get_class($this))->where('payable_id',$this->id)->sum('price');
         $sumPayment = $cardToCard+$cache+$cheque+$pos;
 

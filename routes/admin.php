@@ -897,6 +897,7 @@ Route::group(['middleware' => 'auth.admin'], function () {
                     Route::put('/{cheque}/update',  [ReceptionChequePaymentController::class,'update'])->name('update');
                     Route::delete('/{cheque}/destroy',  [ReceptionChequePaymentController::class,'destroy'])->name('destroy');
                     Route::patch('/{cheque}/pass',  [ReceptionChequePaymentController::class,'pass'])->name('pass');
+                    Route::patch('/{cheque}/return',  [ReceptionChequePaymentController::class,'return'])->name('return');
                 });
 
             });

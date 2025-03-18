@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Enums\chequeStatus;
 use App\Enums\PaymentType;
 use App\Http\Controllers\Controller;
 use App\Models\Account;
@@ -215,18 +216,18 @@ class ReceptionChequePaymentController extends Controller
         }
 
         DB::transaction(function() use ($cheque, $receptionInvoice) {
-            $cheque->save();
+            $cheque->delete();
             $receptionInvoice->updateCalculation();
         });
         toast('چک مورد نظر حذف شد.','error')->position('bottom-end');
         return back()->withInput();
     }
 
-    public function pass(ServiceReserve $reserve,ReserveInvoice $invoice,ChequePayment $cheque,Request $request)
+    public function pass(Reception $reception,ReceptionInvoice $receptionInvoice,ChequePayment $cheque,Request $request)
     {
 //        config(['auth.defaults.guard' => 'admin']);
 //        $this->authorize('reserves.payment.invoice.cheque.pass');
-        if (!in_array($reserve->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
+        if (!in_array($reception->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
         {
             abort(403);
         }
@@ -238,12 +239,45 @@ class ReceptionChequePaymentController extends Controller
 
         $passedDate =  faToEn($request->passed_date);
         $passedDate = Jalalian::fromFormat('Y/m/d', $passedDate)->toCarbon("Y-m-d");
-        $cheque->passed = true;
+        $cheque->status = chequeStatus::passed;
         $cheque->passed_date =  $passedDate;
+        $cheque->returned_date = null;
         $cheque->passed_by_account_id = $request->passed_by_account_id;
-        $cheque->save();
+
+        DB::transaction(function() use ($cheque, $receptionInvoice) {
+            $cheque->save();
+            $receptionInvoice->updateCalculation();
+        });
 
         toast('چک مورد نظر پاس شد.','success')->position('bottom-end');
+        return back()->withInput();
+    }
+
+    public function return(Reception $reception,ReceptionInvoice $receptionInvoice,ChequePayment $cheque,Request $request)
+    {
+//        config(['auth.defaults.guard' => 'admin']);
+//        $this->authorize('reserves.payment.invoice.cheque.pass');
+        if (!in_array($reception->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
+        {
+            abort(403);
+        }
+
+        $request->validate([ 'returned_date' => ['required']],
+            ['returned_date.required' => ' تاریخ برگشت دادن چک الزامی است.']);
+
+        $returnedDate =  faToEn($request->returned_date);
+        $returnedDate = Jalalian::fromFormat('Y/m/d', $returnedDate)->toCarbon("Y-m-d");
+        $cheque->status = chequeStatus::returned;
+        $cheque->returned_date =  $returnedDate;
+        $cheque->passed_date = null;
+        $cheque->passed_by_account_id = null;
+
+        DB::transaction(function() use ($cheque, $receptionInvoice) {
+            $cheque->save();
+            $receptionInvoice->updateCalculation();
+        });
+
+        toast('چک مورد نظر برگشت داده شد.','success')->position('bottom-end');
         return back()->withInput();
     }
 }

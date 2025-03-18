@@ -92,7 +92,7 @@ class ReceptionCardToCardPaymentController extends Controller
         $card->payable_id = $receptionInvoice->id;
         $card->receiver_account_id = $request->receiver_account_id;
         $card->sender_full_name = $request->sender_full_name;
-        $card->sender_cart_number = $request->sender_full_name;
+        $card->sender_cart_number = $request->sender_cart_number;
         $card->price = $request->price;
         $card->transaction_number = $request->transaction_number;
         $card->paid_at = $paidAt;

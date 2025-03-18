@@ -65,7 +65,7 @@
                                     <div class="row">
                                         <div class="form-group col-12 col-md-6">
                                             <label for="sender_full_name" class="control-label IRANYekanRegular">نام و نام خانوادگی کارت واریز کننده</label>
-                                            <input type="text" class="form-control input" name="sender_full_name" id="sender_full_name" placeholder=" شماره تراکنش را وارد کنید" value="{{ old('transaction_number') ?? $card->transaction_number  }}" required>
+                                            <input type="text" class="form-control input" name="sender_full_name" id="sender_full_name" placeholder=" شماره تراکنش را وارد کنید" value="{{ old('sender_full_name') ?? $card->sender_full_name  }}" required>
                                             <span class="form-text text-danger erroralarm"> {{ $errors->first('transaction_number') }} </span>
                                         </div>
                                         <div class="form-group col-12 col-md-6">
