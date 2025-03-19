@@ -267,7 +267,8 @@
                                                                 <i class="fa fa-eye text-success font-16"></i>
                                                             </a>
 
-                                                            @if($reception->found_status ==   App\Enums\FoundStatus::pending)
+                                                            @if(Auth::guard('admin')->user()->can('reception.found.refer') &&
+                                                                in_array($reception->found_status,[App\Enums\FoundStatus::pending,App\Enums\FoundStatus::unpaid]))
                                                             <a class="font18 m-1" href="#found{{ $reception->id }}" data-toggle="modal" title="ارجاع به صندوق">
                                                                 <i class="fas fa-cash-register text-dark font-16"></i>
                                                             </a>

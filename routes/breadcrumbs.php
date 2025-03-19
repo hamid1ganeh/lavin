@@ -240,9 +240,15 @@ Breadcrumbs::for('receptions', function ($trail) {
     $trail->push('پذیرش', route('admin.receptions.index'));
 });
 
+// داشبورد > صندوق
+Breadcrumbs::for('found', function ($trail) {
+    $trail->parent('home', $trail);
+    $trail->push('صندوق', route('admin.accounting.found'));
+});
+
 // داشبورد > پذیرش >  صورتحساب پرداخت
 Breadcrumbs::for('accounting.reception.invoices.show', function ($trail,$reception) {
-    $trail->parent('receptions', $trail);
+    $trail->parent('found', $trail);
     $trail->push('صورتحساب پرداخت ', route('admin.accounting.reception.invoices.show',$reception));
 });
 

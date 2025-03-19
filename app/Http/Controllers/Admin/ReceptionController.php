@@ -153,6 +153,10 @@ class ReceptionController extends Controller
 
     public function found(Reception $reception)
     {
+        //اجازه دسترسی
+        config(['auth.defaults.guard' => 'admin']);
+        $this->authorize('reception.found.refer');
+
         $reception->found_status = FoundStatus::referred;
         $reception->save();
         toast('پذیرش مورد نظر به صندوق ارجاع داده شد.', 'success')->position('bottom-end');

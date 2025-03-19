@@ -18,8 +18,9 @@ class ReceptionPosPaymentController extends Controller
     public function index(Reception $reception,ReceptionInvoice $receptionInvoice)
     {
         //اجازه دسترسی
-//        config(['auth.defaults.guard' => 'admin']);
-//        $this->authorize('reserves.payment.invoice.pos.index');
+        config(['auth.defaults.guard' => 'admin']);
+        $this->authorize('invoice.pos.index');
+
         if (!in_array($reception->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
         {
             abort(403);
@@ -36,9 +37,10 @@ class ReceptionPosPaymentController extends Controller
 
     public function create(Reception $reception,ReceptionInvoice $receptionInvoice)
     {
-//        //اجازه دسترسی
-//        config(['auth.defaults.guard' => 'admin']);
-//        $this->authorize('reserves.payment.invoice.pos.create');
+        //اجازه دسترسی
+        config(['auth.defaults.guard' => 'admin']);
+        $this->authorize('invoice.pos.create');
+
         if (!in_array($reception->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
         {
             abort(403);
@@ -50,9 +52,10 @@ class ReceptionPosPaymentController extends Controller
 
     public function store(Reception $reception,ReceptionInvoice $receptionInvoice,Request $request)
     {
-//        //اجازه دسترسی
-//        config(['auth.defaults.guard' => 'admin']);
-//        $this->authorize('reserves.payment.invoice.pos.create');
+        //اجازه دسترسی
+        config(['auth.defaults.guard' => 'admin']);
+        $this->authorize('invoice.pos.create');
+
         if (!in_array($reception->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
         {
             abort(403);
@@ -103,8 +106,9 @@ class ReceptionPosPaymentController extends Controller
     public function edit(Reception $reception,ReceptionInvoice $receptionInvoice,PosPayment $pos)
     {
         //اجازه دسترسی
-//        config(['auth.defaults.guard' => 'admin']);
-//        $this->authorize('reserves.payment.invoice.pos.edit');
+        config(['auth.defaults.guard' => 'admin']);
+        $this->authorize('invoice.pos.edit');
+
         if (!in_array($reception->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
         {
             abort(403);
@@ -117,8 +121,9 @@ class ReceptionPosPaymentController extends Controller
     public function update(Reception $reception,ReceptionInvoice $receptionInvoice,PosPayment $pos,Request $request)
     {
         //اجازه دسترسی
-//        config(['auth.defaults.guard' => 'admin']);
-//        $this->authorize('reserves.payment.invoice.pos.edit');
+        config(['auth.defaults.guard' => 'admin']);
+        $this->authorize('invoice.pos.edit');
+
         if (!in_array($reception->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
         {
             abort(403);
@@ -162,8 +167,9 @@ class ReceptionPosPaymentController extends Controller
     public function destroy(Reception $reception,ReceptionInvoice $receptionInvoice,PosPayment $pos)
     {
         //اجازه دسترسی
-//        config(['auth.defaults.guard' => 'admin']);
-//        $this->authorize('reserves.payment.invoice.pos.delete');
+        config(['auth.defaults.guard' => 'admin']);
+        $this->authorize('invoice.pos.delete');
+
         if (!in_array($reception->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
         {
             abort(403);

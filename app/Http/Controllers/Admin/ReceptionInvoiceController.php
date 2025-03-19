@@ -33,7 +33,7 @@ class ReceptionInvoiceController extends Controller
     {
         //اجازه دسترسی
         config(['auth.defaults.guard' => 'admin']);
-        $this->authorize('reserves.pay.invoices');
+        $this->authorize('invoices.pay');
 
         $branches = Auth::guard('admin')->user()->branches->pluck('id')->toArray();
         $invoices = ReceptionInvoice::with('reserve')
@@ -53,8 +53,9 @@ class ReceptionInvoiceController extends Controller
     public function show(Reception $reception)
     {
         //اجازه دسترسی
-//        config(['auth.defaults.guard' => 'admin']);
-//        $this->authorize('reserves.payment.invoice.show');
+        config(['auth.defaults.guard' => 'admin']);
+        $this->authorize('invoice.show');
+
         $invoice = ReceptionInvoice::where('reception_id',$reception->id)->first();
 
         $reserves = ServiceReserve::with('upgrades','detail')
@@ -63,10 +64,8 @@ class ReceptionInvoiceController extends Controller
             ->whereDoesntHave('invoice')
             ->get();
 
-
         $reserveInvoices = ReserveInvoice::with('reserve')->where('reception_id',$reception->id)
                             ->orderBy('created_at','desc')->get();
-
 
         $invoiceSumPrice =0;
         $invoiceSumUpgradesPrice =0;
@@ -103,25 +102,14 @@ class ReceptionInvoiceController extends Controller
 
     public function store_reserve(Reception $reception,Request $request)
     {
-
         //اجازه دسترسی
-//        config(['auth.defaults.guard' => 'admin']);
-//        $this->authorize('reserves.payment.create');
+        config(['auth.defaults.guard' => 'admin']);
+        $this->authorize('invoice.create');
 
         if (!in_array($reception->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
         {
             abort(403);
         }
-
-//        $request->validate(
-//            [
-//                'number' => ['required','max:255','unique:receipt_invoices'],
-//            ],
-//            [
-//                "number.required" => " شماره فاکتور الزامی است.",
-//                "number.max" => " شماره فاکتور طولانی است.",
-//                "number.unique" => " شماره فاکتور قبلا ثبت شده است.",
-//            ]);
 
         $reserve = $request->reserve;
         $reserve = ServiceReserve::find($reserve);
@@ -196,10 +184,6 @@ class ReceptionInvoiceController extends Controller
                      $discountPrice = $discount->value;
                  }
 
-//                 $usedDiscount = new UsedDiscount();
-//                 $usedDiscount->user_id = $reserve->user_id;
-//                 $usedDiscount->discount_id = $discountId;
-
                  $finalPrice =  $reserve->total_price+$sumUpgradesPrice- $discountPrice;
 
                  if ($finalPrice<0){
@@ -216,11 +200,6 @@ class ReceptionInvoiceController extends Controller
                  $invoice->discount_description = $discountDescription;
                  $invoice->final_price = $finalPrice>0?$finalPrice:0;
                  $invoice->save();
-//                DB::transaction(function() use ($invoice, $usedDiscount) {
-//
-//                    $usedDiscount->save();
-//                });
-
            }else{
                  $discountPrice = 0;
                  $discountDescription=null;
@@ -238,12 +217,14 @@ class ReceptionInvoiceController extends Controller
             }
 
         return back()->withInput();
-//
-//        return redirect(route('admin.reserves.payment.invoice',$reserve));
     }
 
     public function store(Reception $reception,Request $request)
     {
+        //اجازه دسترسی
+        config(['auth.defaults.guard' => 'admin']);
+        $this->authorize('invoice.create');
+
         $request->validate(
             [
                 'number' => ['required','max:20','unique:reception_invoices,number'],
@@ -296,66 +277,11 @@ class ReceptionInvoiceController extends Controller
         return back();
     }
 
-    public function invoice(ServiceReserve $reserve)
-    {
-        return "ok8";
-        //اجازه دسترسی
-        config(['auth.defaults.guard' => 'admin']);
-        $this->authorize('reserves.payment.invoice.show');
-        if (!in_array($reserve->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
-        {
-            abort(403);
-        }
-
-          $invoice = ReceptionInvoice::with('reserve.user')->where('reserve_id',$reserve->id)->first();
-          if (is_null($invoice)){
-              return redirect(route('admin.reserves.payment.show',$reserve));
-          }
-
-          if (!is_null($reserve->reception) && !$reserve->reception->end){
-              $sumUpgradesPrice = ReserveUpgrade::where('reserve_id',$reserve->id)->where('status',ReserveStatus::confirm)->sum('price');
-              $finalPrice =  $invoice->price+$sumUpgradesPrice-$invoice->discount_price;
-              $invoice->sum_upgrades_price= $sumUpgradesPrice;
-              $invoice->final_price= $finalPrice;
-              $invoice->save();
-          }
-
-            $sumCash = CashPayment::where('payable_type',get_class($invoice))
-                ->where('payable_id',$invoice->id)
-                ->where('type',PaymentType::income)
-                ->sum('price');
-
-            $sumCard = CardToCardPayment::where('payable_type',get_class($invoice))
-                ->where('payable_id',$invoice->id)
-                ->where('type',PaymentType::income)
-                ->sum('price');
-
-
-        $sumPos = PosPayment::where('payable_type',get_class($invoice))
-                                ->where('payable_id',$invoice->id)
-                                ->where('type',PaymentType::income)
-                                ->sum('price');
-
-
-        $sumCheque = ChequePayment::where('payable_type',get_class($invoice))
-                                    ->where('payable_id',$invoice->id)
-                                    ->where('type',PaymentType::income)
-                                    ->where('passed',true)
-                                    ->sum('price');
-
-        $sumPaid = $sumPos+$sumCard+$sumCash+$sumCheque;
-        $remained =  $invoice->final_price - $sumPaid;
-
-
-        return view('admin.reserves.payment.invoice',compact('invoice','reserve','sumPaid','remained'));
-    }
-
     public function found()
     {
         //اجازه دسترسی
         config(['auth.defaults.guard' => 'admin']);
         $this->authorize('invoices.pay');
-
 
         $branches = Auth::guard('admin')->user()->branches->pluck('id')->toArray();
 
@@ -376,7 +302,22 @@ class ReceptionInvoiceController extends Controller
                 ->filter()
                 ->get();
         }
+        return  view('admin.accounting.found',compact('receptions'));
+    }
 
-        return  view('admin.found.found',compact('receptions'));
+    public function found_status(Reception $reception,Request $request)
+    {
+        //اجازه دسترسی
+        config(['auth.defaults.guard' => 'admin']);
+        $this->authorize('reception.found.status');
+
+        if (!in_array($request->status,[FoundStatus::unpaid,FoundStatus::unobstructed])){
+            return back()->withInput();
+        }
+
+        $reception->found_status = $request->status;
+        $reception->save();
+        alert()->error('وضعیت صندوق مشخص شد.');
+        return back();
     }
 }

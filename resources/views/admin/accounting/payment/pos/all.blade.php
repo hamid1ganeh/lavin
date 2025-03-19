@@ -32,14 +32,14 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-12 text-right">
-{{--                                    @if(Auth::guard('admin')->user()->can('reserves.payment.invoice.pos.create'))--}}
+                                    @if(Auth::guard('admin')->user()->can('invoice.pos.create'))
                                     <div class="btn-group" >
                                             <a href="{{ route('admin.accounting.reception.invoices.pos.create',[$reception,$receptionInvoice]) }}" class="btn btn-sm btn-primary">
                                             <i class="fa fa-plus plusiconfont"></i>
                                             <b class="IRANYekanRegular">ایجاد پرداخت جدید</b>
                                         </a>
                                     </div>
-{{--                                   @endif--}}
+                                   @endif
                                 </div>
                             </div>
 
@@ -68,13 +68,13 @@
                                             <td><strong class="IRANYekanRegular">{{ $pos->cashier->fullname??'' }}</strong></td>
                                             <td><strong class="IRANYekanRegular">{{ $pos->description }}</strong></td>
                                             <td>
-{{--                                                @if(Auth::guard('admin')->user()->can('reserves.payment.invoice.pos.edit'))--}}
+                                                @if(Auth::guard('admin')->user()->can('invoice.pos.edit'))
                                                     <a class="btn  btn-icon" href="{{ route('admin.accounting.reception.invoices.pos.edit', [$reception,$receptionInvoice,$pos]) }}" title="ویرایش">
                                                         <i class="fa fa-edit text-success font-20"></i>
                                                     </a>
-{{--                                                @endif--}}
+                                                @endif
 
-{{--                                                @if(Auth::guard('admin')->user()->can('reserves.payment.invoice.pos.delete'))--}}
+                                               @if(Auth::guard('admin')->user()->can('invoice.pos.delete'))
                                                 <a href="#remove{{ $pos->id }}" data-toggle="modal" class="btn btn-icon" title="حذف">
                                                     <i class="fa fa-trash text-danger font-20"></i>
                                                 </a>
@@ -102,7 +102,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-{{--                                                @endif--}}
+                                                @endif
 
                                             </td>
                                         </tr>

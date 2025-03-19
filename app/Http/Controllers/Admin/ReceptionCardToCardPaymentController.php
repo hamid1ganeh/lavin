@@ -21,8 +21,9 @@ class ReceptionCardToCardPaymentController extends Controller
     public function index(Reception $reception,ReceptionInvoice $receptionInvoice)
     {
         //اجازه دسترسی
-//        config(['auth.defaults.guard' => 'admin']);
-//        $this->authorize('reserves.payment.invoice.card.index');
+        config(['auth.defaults.guard' => 'admin']);
+        $this->authorize('invoice.card.index');
+
         if (!in_array($reception->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
         {
             abort(403);
@@ -36,14 +37,14 @@ class ReceptionCardToCardPaymentController extends Controller
                     ->get();
 
         return  view('admin.accounting.payment.card.all',compact('reception','receptionInvoice','payments'));
-
     }
 
     public function create(Reception $reception,ReceptionInvoice $receptionInvoice)
     {
-//        //اجازه دسترسی
-//        config(['auth.defaults.guard' => 'admin']);
-//        $this->authorize('reserves.payment.invoice.card.create');
+        //اجازه دسترسی
+        config(['auth.defaults.guard' => 'admin']);
+        $this->authorize('invoice.card.create');
+
         if (!in_array($reception->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
         {
             abort(403);
@@ -56,8 +57,9 @@ class ReceptionCardToCardPaymentController extends Controller
     public function store(Reception $reception,ReceptionInvoice $receptionInvoice,Request $request)
     {
         //اجازه دسترسی
-//        config(['auth.defaults.guard' => 'admin']);
-//        $this->authorize('reserves.payment.invoice.card.create');
+        config(['auth.defaults.guard' => 'admin']);
+        $this->authorize('invoice.card.create');
+
         if (!in_array($reception->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
         {
             abort(403);
@@ -116,9 +118,10 @@ class ReceptionCardToCardPaymentController extends Controller
 
     public function edit(Reception $reception,ReceptionInvoice $receptionInvoice,CardToCardPayment $card)
     {
-//        //اجازه دسترسی
-//        config(['auth.defaults.guard' => 'admin']);
-//        $this->authorize('reserves.payment.invoice.card.edit');
+        //اجازه دسترسی
+        config(['auth.defaults.guard' => 'admin']);
+        $this->authorize('invoice.card.edit');
+
         if (!in_array($reception->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
         {
             abort(403);
@@ -131,8 +134,9 @@ class ReceptionCardToCardPaymentController extends Controller
     public function update(Reception $reception,ReceptionInvoice $receptionInvoice,CardToCardPayment $card,Request $request)
     {
         //اجازه دسترسی
-//        config(['auth.defaults.guard' => 'admin']);
-//        $this->authorize('reserves.payment.invoice.card.edit');
+        config(['auth.defaults.guard' => 'admin']);
+        $this->authorize('invoice.card.edit');
+
         if (!in_array($reception->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
         {
             abort(403);
@@ -188,9 +192,10 @@ class ReceptionCardToCardPaymentController extends Controller
 
     public function destroy(Reception $reception,ReceptionInvoice $receptionInvoice,CardToCardPayment $card)
     {
-            //اجازه دسترسی
-//            config(['auth.defaults.guard' => 'admin']);
-//            $this->authorize('reserves.payment.invoice.card.delete');
+        //اجازه دسترسی
+        config(['auth.defaults.guard' => 'admin']);
+        $this->authorize('invoice.card.delete');
+
             if (!in_array($reception->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
             {
                 abort(403);

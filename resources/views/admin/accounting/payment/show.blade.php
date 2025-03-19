@@ -40,10 +40,18 @@
                             @if(in_array($reception->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()) && !is_null($invoice))
                                 <div class="row">
                                     <div class="col-12  text-right">
+                                        @if(Auth::guard('admin')->user()->can('invoice.pos.index'))
                                         <a href="{{ route('admin.accounting.reception.invoices.pos.index',[$reception,$invoice]) }}"  class="btn btn-danger cursor-pointer text-white" title="پرداختی های دستگاه پوز">پرداختی های دستگاه پوز</a>
+                                        @endif
+                                        @if(Auth::guard('admin')->user()->can('invoice.card.index'))
                                         <a href="{{ route('admin.accounting.reception.invoices.card.index',[$reception,$invoice]) }}"  class="btn btn-primary cursor-pointer text-white" title="پرداختی های کارت به کارت">پرداختی های کارت به کارت</a>
+                                        @endif
+                                        @if(Auth::guard('admin')->user()->can('invoice.cash.index'))
                                         <a href="{{ route('admin.accounting.reception.invoices.cash.index',[$reception,$invoice]) }}"  class="btn btn-success cursor-pointer text-white" title="پرداختی های نقدی">پرداختی های نقدی</a>
+                                        @endif
+                                        @if(Auth::guard('admin')->user()->can('invoice.cheque.index'))
                                         <a href="{{ route('admin.accounting.reception.invoices.cheque.index',[$reception,$invoice]) }}"  class="btn btn-warning cursor-pointer text-white" title="پرداختی های چک">پرداختی های چک</a>
+                                        @endif
                                     </div>
                                 </div>
                             @endif
@@ -66,6 +74,7 @@
                                         @foreach($reserveInvoices as $index=>$reserveInvoice)
                                             <tr>
                                                 <td>
+                                                    @if(Auth::guard('admin')->user()->can('invoice.create'))
                                                     <form method="post" action="{{ route('admin.accounting.reception.invoices.reserve.delete',[$reception,$reserveInvoice]) }}">
                                                         @if(is_null($invoice))
                                                         @csrf
@@ -75,6 +84,7 @@
                                                         @endif
                                                         <strong class="IRANYekanRegular">{{ ++$index }}</strong>
                                                     </form>
+                                                    @endif
 
                                                 </td>
                                                 <td><strong class="IRANYekanRegular">{{ $reserveInvoice->reserve->service_name}}</strong></td>
@@ -91,7 +101,7 @@
                             </div>
                         </div>
 
-                            @if(is_null($invoice))
+                            @if(is_null($invoice) && Auth::guard('admin')->user()->can('invoice.create'))
                             <form class="form-horizontal" action="{{ route('admin.accounting.reception.invoices.store',$reception) }}" method="post">
                              @csrf
                             <div class="row">
@@ -174,7 +184,6 @@
                                                     <td><strong class="IRANYekanRegular">{{ $upgrade->description ?? '' }}</strong></td>
                                                     <td></td>
                                                     </tr>
-                                                {{--                                                @php $SumUpgrades += $upgrade->price; @endphp--}}
                                             @endforeach
                                         @endforeach
 
@@ -225,46 +234,6 @@
                 </div>
             </div>
 
-
-
-            {{--            @csrf--}}
-            {{--                <div class="row">--}}
-            {{--                    <div class="card w-100" Style="height: 220px">--}}
-            {{--                        <div class="card-body">--}}
-            {{--                            <h5 class="card-title IRANYekanRegular">تخفیف</h5>--}}
-            {{--                            <div class="mt-1">--}}
-            {{--                                <input type="radio" class="form-check-input cursor-pointer" id="code-1" name="discount_code" value="-1" onclick="discount(-1);" checked>--}}
-            {{--                                <label class="form-check-label ml-3" for="code-1">هیچکدام</label>--}}
-            {{--                            </div>--}}
-            {{--                            <div class="mt-1">--}}
-            {{--                                <input type="radio" class="form-check-input cursor-pointer" id="code0" name="discount_code" value="0" onclick="discount(0);">--}}
-            {{--                                <label class="form-check-label ml-3" for="code0">تخفیف ویژه</label>--}}
-            {{--                                <input class="text-center" type="number"  id="discount_price"  name="discount_price" placeholder="مبلغ (تومان)" disabled>--}}
-            {{--                                <input class="text-left" Style="width:250px" type="text" id="discount_description" name="discount_description" placeholder="توضیحات" disabled>--}}
-            {{--                            </div>--}}
-            {{--                            @if(count($discounts))--}}
-            {{--                            @foreach($discounts as $index=>$discount)--}}
-            {{--                            <div class="mt-1">--}}
-            {{--                                <input type="radio" class="form-check-input cursor-pointer" id="code{{ $discount->id }}" name="discount_code" value="{{ $discount->id }}" onclick="discount({{ $discount->id }});">--}}
-            {{--                                <label class="form-check-label ml-3" for="code{{ $discount->id }}">--}}
-            {{--                                    {{ $discount->code }}--}}
-            {{--                                    @if($discount->unit==App\Enums\DiscountType::percet)--}}
-            {{--                                       {{ ' ('.$discount->value.'درصد)'  }}--}}
-            {{--                                    @elseif($discount->unit==App\Enums\DiscountType::toman)--}}
-            {{--                                        {{ ' ('.$discount->value.' تومان)'  }}--}}
-            {{--                                    @endif--}}
-            {{--                                </label>--}}
-            {{--                            </div>--}}
-            {{--                            @endforeach--}}
-            {{--                            @endif--}}
-            {{--                        </div>--}}
-            {{--                    </div>--}}
-            {{--                </div>--}}
-
-{{--                        @if(Auth::guard('admin')->user()->can('reserves.payment.create') &&--}}
-{{--                            in_array($reserve->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))--}}
-
-{{--                       @endif--}}
         </div>
     </div>
 

@@ -15,12 +15,12 @@
                     <div class="page-title-box">
                         <div class="page-title-right">
                             <ol class="breadcrumb m-0 IR">
-                            {{ Breadcrumbs::render('receptions') }}
+                            {{ Breadcrumbs::render('found') }}
                             </ol>
                         </div>
                         <h4 class="page-title">
-                             <i class="ti-pencil-alt page-icon"></i>
-                             پذیرش
+                             <i class="fas fa-cash-register page-icon"></i>
+                             صندوق
                         </h4>
                     </div>
                 </div>
@@ -137,50 +137,55 @@
 
                                                         <td>
 
+                                                            <!-- found Modal -->
+                                                            <div class="modal fade" id="found{{ $reception->id }}" tabindex="-1" aria-labelledby="reviewLabel" aria-hidden="true">
+                                                                <div class="modal-dialog modal-xs">
+                                                                    <div class="modal-content text-left">
+                                                                        <div class="modal-header py-3">
+                                                                            <h5 class="modal-title IR" id="newReviewLabel">تعیین وضعیت</h5>
+                                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                                <span aria-hidden="true">&times;</span>
+                                                                            </button>
+                                                                        </div>
+                                                                        <div class="modal-body">
+                                                                            <form action="{{ route('admin.accounting.reception.found.status',$reception) }}" method="POST" class="d-inline" id="status-form-{{ $reception->id }}">
+                                                                                @csrf
+                                                                                @method('patch')
+                                                                                <label for="status{{ $reception->id }}" class="col-form-label IRANYekanRegular text-right">وضعیت</label>
+                                                                                <select name="status" id="status{{ $reception->id }}" class="form-control dropdown IR" required>
+                                                                                    <option value="">وضعیت صندوق را مشخص کنید.</option>
+                                                                                    <option value="{{ App\Enums\FoundStatus::unobstructed }}" {{ App\Enums\FoundStatus::unobstructed==$reception->found_status?'selected':'' }}>بلامانع</option>
+                                                                                    <option value="{{ App\Enums\FoundStatus::unpaid }}" {{ App\Enums\FoundStatus::unpaid==$reception->found_status?'selected':'' }}>عدم پرداخت</option>
+                                                                                </select>
+                                                                                <span class="form-text text-danger erroralarm"> {{ $errors->first('status') }} </span>
+                                                                            </form>
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            <button type="submit"  title="ثبت" class="btn btn-primary px-8" form="status-form-{{ $reception->id }}">ثبت</button>
+                                                                            &nbsp;
+                                                                            <button type="button" class="btn btn-secondary" title="انصراف" data-dismiss="modal">انصراف</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
                                                             <div class="input-group">
                                                                 <div class="input-group-append">
                                                                     <i class=" ti-align-justify" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
                                                                     <div class="dropdown-menu">
-                                                                            <a href="{{ route('admin.reserves.index',['code'=>$reception->code]) }}"class="dropdown-item IR cursor-pointer"   target="_blank" title="نمایش روزرها">
-                                                                                <i class="fa fa-eye text-success  cursor-pointer"></i>
-                                                                                <span class="p-1">نمایش روزرها</span>
-                                                                            </a>
-
-                                                                            <a href="{{ route('admin.accounting.reception.invoices.show',$reception) }}" class="dropdown-item IR cursor-pointer" title="صورتحساب" target="_blank">
+                                                                        @if(Auth::guard('admin')->user()->can('reception.invoices.show'))
+                                                                            <a href="{{ route('admin.accounting.reception.invoices.show',$reception) }}" class="dropdown-item IR cursor-pointer" title="صورتحساب">
                                                                                 <i class="fas fa-dollar-sign text-primary cursor-pointer"></i>
                                                                                 <span class="p-1">صورتحساب پرداخت</span>
                                                                             </a>
+                                                                        @endif
 
-                                                                            @if($reception->found_status ==   App\Enums\FoundStatus::pending)
-                                                                            <a class="font18 m-1" href="#found{{ $reception->id }}" data-toggle="modal" title="ارجاع به صندوق">
-                                                                                <i class="fas fa-cash-register text-dark font-16"></i>
+{{--                                                                            @if($reception->found_status ==   App\Enums\FoundStatus::pending)--}}
+                                                                            <a class="dropdown-item IR cursor-pointer" href="#found{{ $reception->id }}" data-toggle="modal" title="تعیین وضعیت">
+                                                                                <i class="fas fa-cash-register text-dark cursor-pointe"></i>
+                                                                                <span class="p-1">تعیین وضعیت</span>
                                                                             </a>
-
-                                                                            <!-- found Modal -->
-                                                                            <div class="modal fade" id="found{{ $reception->id }}" tabindex="-1" aria-labelledby="reviewLabel" aria-hidden="true">
-                                                                                <div class="modal-dialog modal-xs">
-                                                                                    <div class="modal-content">
-                                                                                        <div class="modal-header py-3">
-                                                                                            <h5 class="modal-title IR" id="newReviewLabel">ارجاع به صندوق</h5>
-                                                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                                                <span aria-hidden="true">&times;</span>
-                                                                                            </button>
-                                                                                        </div>
-                                                                                        <div class="modal-body">
-                                                                                            <h5 class="IRANYekanRegular"> آیا مطمئن هستید که میخواهید این پذیرش را به صندوق ارجاع دهید؟</h5>
-                                                                                        </div>
-                                                                                        <div class="modal-footer">
-                                                                                            <form action="{{ route('admin.receptions.found',$reception) }}" method="POST" class="d-inline">
-                                                                                                @csrf
-                                                                                                @method('patch')
-                                                                                                <button type="submit"  title="بازیابی" class="btn btn-primary px-8">ارجاع</button>
-                                                                                            </form>
-                                                                                            <button type="button" class="btn btn-secondary" title="انصراف" data-dismiss="modal">انصراف</button>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                            @endif
+{{--                                                                            @endif--}}
                                                                     </div>
                                                                 </div>
                                                             </div>

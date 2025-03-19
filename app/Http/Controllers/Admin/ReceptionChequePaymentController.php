@@ -20,8 +20,10 @@ class ReceptionChequePaymentController extends Controller
 {
     public function index(Reception $reception,ReceptionInvoice $receptionInvoice)
     {
-//        config(['auth.defaults.guard' => 'admin']);
-//        $this->authorize('reserves.payment.invoice.cheque.index');
+        //اجازه دسترسی
+        config(['auth.defaults.guard' => 'admin']);
+        $this->authorize('invoice.cheque.index');
+
         if (!in_array($reception->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
         {
             abort(403);
@@ -39,8 +41,10 @@ class ReceptionChequePaymentController extends Controller
 
     public function create(Reception $reception,ReceptionInvoice $receptionInvoice)
     {
-//        config(['auth.defaults.guard' => 'admin']);
-//        $this->authorize('reserves.payment.invoice.cheque.create');
+        //اجازه دسترسی
+        config(['auth.defaults.guard' => 'admin']);
+        $this->authorize('invoice.cheque.create');
+
         if (!in_array($reception->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
         {
             abort(403);
@@ -50,8 +54,10 @@ class ReceptionChequePaymentController extends Controller
 
     public function store(Reception $reception,ReceptionInvoice $receptionInvoice,Request $request)
     {
-//        config(['auth.defaults.guard' => 'admin']);
-//        $this->authorize('reserves.payment.invoice.cheque.create');
+        //اجازه دسترسی
+        config(['auth.defaults.guard' => 'admin']);
+        $this->authorize('invoice.cheque.create');
+
         if (!in_array($reception->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
         {
             abort(403);
@@ -121,8 +127,10 @@ class ReceptionChequePaymentController extends Controller
 
     public function edit(Reception $reception,ReceptionInvoice $receptionInvoice,ChequePayment $cheque)
     {
-//        config(['auth.defaults.guard' => 'admin']);
-//        $this->authorize('reserves.payment.invoice.cheque.edit');
+        //اجازه دسترسی
+        config(['auth.defaults.guard' => 'admin']);
+        $this->authorize('invoice.cheque.edit');
+
         if (!in_array($reception->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
         {
             abort(403);
@@ -133,8 +141,10 @@ class ReceptionChequePaymentController extends Controller
 
     public function update(Reception $reception,ReceptionInvoice $receptionInvoice,ChequePayment $cheque,Request $request)
     {
-//        config(['auth.defaults.guard' => 'admin']);
-//        $this->authorize('reserves.payment.invoice.cheque.edit');
+        //اجازه دسترسی
+        config(['auth.defaults.guard' => 'admin']);
+        $this->authorize('invoice.cheque.edit');
+
         if (!in_array($reception->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
         {
             abort(403);
@@ -208,8 +218,10 @@ class ReceptionChequePaymentController extends Controller
 
     public function destroy(Reception $reception,ReceptionInvoice $receptionInvoice,ChequePayment $cheque)
     {
-//        config(['auth.defaults.guard' => 'admin']);
-//        $this->authorize('reserves.payment.invoice.cheque.delete');
+        //اجازه دسترسی
+        config(['auth.defaults.guard' => 'admin']);
+        $this->authorize('invoice.cheque.delete');
+
         if (!in_array($reception->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
         {
             abort(403);
@@ -225,8 +237,10 @@ class ReceptionChequePaymentController extends Controller
 
     public function pass(Reception $reception,ReceptionInvoice $receptionInvoice,ChequePayment $cheque,Request $request)
     {
-//        config(['auth.defaults.guard' => 'admin']);
-//        $this->authorize('reserves.payment.invoice.cheque.pass');
+        //اجازه دسترسی
+        config(['auth.defaults.guard' => 'admin']);
+        $this->authorize('invoice.cheque.pass');
+
         if (!in_array($reception->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
         {
             abort(403);
@@ -255,8 +269,10 @@ class ReceptionChequePaymentController extends Controller
 
     public function return(Reception $reception,ReceptionInvoice $receptionInvoice,ChequePayment $cheque,Request $request)
     {
-//        config(['auth.defaults.guard' => 'admin']);
-//        $this->authorize('reserves.payment.invoice.cheque.pass');
+        //اجازه دسترسی
+        config(['auth.defaults.guard' => 'admin']);
+        $this->authorize('invoice.cheque.return');
+
         if (!in_array($reception->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()))
         {
             abort(403);

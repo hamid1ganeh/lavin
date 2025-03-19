@@ -971,6 +971,18 @@ class PermissionSeeder extends Seeder
             'status'=> Status::Active
         ]);
 
+        DB::table('permissions')->insert([
+            'name' => 'reception.found.refer',
+            'description' => 'ارجاع به صندوق',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'reception.found.status',
+            'description' => 'تعیین وضعیت صندوق',
+            'status'=> Status::Active
+        ]);
+
 
         DB::table('permissions')->insert([
             'name' => 'reserves.index',
@@ -1050,126 +1062,124 @@ class PermissionSeeder extends Seeder
             'status'=> Status::Active
         ]);
 
-
-
         DB::table('permissions')->insert([
-            'name' => 'reserves.payment.show',
-            'description' => 'پیش نمایش صورتحساب رزرو',
+            'name' => 'reception.invoices.show',
+            'description' => ' نمایش صورتحساب پرداخت پذیرش',
             'status'=> Status::Active
         ]);
 
         DB::table('permissions')->insert([
-            'name' => 'reserves.payment.create',
+            'name' => 'reception.invoices.create',
             'description' => 'ایجاد صورتحساب پرداخت',
             'status'=> Status::Active
         ]);
 
         DB::table('permissions')->insert([
-            'name' => 'reserves.payment.invoice',
-            'description' => 'نمایش صورتحساب پرداخت',
-            'status'=> Status::Active
-        ]);
-
-        DB::table('permissions')->insert([
-            'name' => 'reserves.payment.invoice.pos.index',
+            'name' => 'invoice.pos.index',
             'description' => 'لیست پرداختی های دستگاه پوز',
             'status'=> Status::Active
         ]);
 
         DB::table('permissions')->insert([
-            'name' => 'reserves.payment.invoice.pos.create',
+            'name' => 'invoice.pos.create',
             'description' => 'ثبت پرداختی دستگاه پوز',
             'status'=> Status::Active
         ]);
 
         DB::table('permissions')->insert([
-            'name' => 'reserves.payment.invoice.pos.edit',
+            'name' => 'invoice.pos.edit',
             'description' => 'ویرایش پرداختی دستگاه پوز',
             'status'=> Status::Active
         ]);
 
         DB::table('permissions')->insert([
-            'name' => 'reserves.payment.invoice.pos.delete',
+            'name' => 'invoice.pos.delete',
             'description' => 'حذف پرداختی دستگاه پوژ',
             'status'=> Status::Active
         ]);
 
         DB::table('permissions')->insert([
-            'name' => 'reserves.payment.invoice.card.index',
+            'name' => 'invoice.card.index',
             'description' => 'لیست پرداختی های  کارت به کارت',
             'status'=> Status::Active
         ]);
 
         DB::table('permissions')->insert([
-            'name' => 'reserves.payment.invoice.card.create',
+            'name' => 'invoice.card.create',
             'description' => 'ثبت پرداختی های  کارت به کارت',
             'status'=> Status::Active
         ]);
 
         DB::table('permissions')->insert([
-            'name' => 'reserves.payment.invoice.card.edit',
+            'name' => 'invoice.card.edit',
             'description' => 'ویرایش پرداختی های کارت به کارت',
             'status'=> Status::Active
         ]);
 
         DB::table('permissions')->insert([
-            'name' => 'reserves.payment.invoice.card.delete',
+            'name' => 'invoice.card.delete',
             'description' => 'حذف پرداختی های کارت به کارت',
             'status'=> Status::Active
         ]);
 
 
         DB::table('permissions')->insert([
-            'name' => 'reserves.payment.invoice.cash.index',
+            'name' => 'invoice.cash.index',
             'description' => 'لیست پرداختی های نقدی',
             'status'=> Status::Active
         ]);
 
         DB::table('permissions')->insert([
-            'name' => 'reserves.payment.invoice.cash.create',
+            'name' => 'invoice.cash.create',
             'description' => 'ثبت پرداختی های  نقدی',
             'status'=> Status::Active
         ]);
 
         DB::table('permissions')->insert([
-            'name' => 'reserves.payment.invoice.cash.edit',
+            'name' => 'invoice.cash.edit',
             'description' => 'ویرایش پرداختی های نقدی',
             'status'=> Status::Active
         ]);
 
         DB::table('permissions')->insert([
-            'name' => 'reserves.payment.invoice.cash.delete',
+            'name' => 'invoice.cash.delete',
             'description' => 'حذف پرداختی های نقدی',
             'status'=> Status::Active
         ]);
 
         DB::table('permissions')->insert([
-            'name' => 'reserves.payment.invoice.cheque.index',
+            'name' => 'invoice.cheque.index',
             'description' => 'لیست چکهای پرداختی',
             'status'=> Status::Active
         ]);
 
         DB::table('permissions')->insert([
-            'name' => 'reserves.payment.invoice.cheque.create',
+            'name' => 'invoice.cheque.create',
             'description' => 'ایجاد چک پرداختی',
             'status'=> Status::Active
         ]);
 
         DB::table('permissions')->insert([
-            'name' => 'reserves.payment.invoice.cheque.edit',
+            'name' => 'invoice.cheque.edit',
             'description' => 'ویرایش چک پرداختی',
             'status'=> Status::Active
         ]);
 
         DB::table('permissions')->insert([
-            'name' => 'reserves.payment.invoice.cheque.delete',
+            'name' => 'invoice.cheque.delete',
             'description' => 'حذف چک پرداختی',
             'status'=> Status::Active
         ]);
 
         DB::table('permissions')->insert([
-            'name' => 'reserves.payment.invoice.cheque.pass',
+            'name' => 'invoice.cheque.pass',
                 'description' => 'پاس کردن چک',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'invoice.cheque.return',
+            'description' => 'برگشت دادن چک',
             'status'=> Status::Active
         ]);
 

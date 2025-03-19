@@ -856,6 +856,8 @@ Route::group(['middleware' => 'auth.admin'], function () {
 
         Route::prefix('reception/')->name('reception.')->group(function () {
 
+            Route::patch('{reception}/found_status', [ReceptionInvoiceController::class,'found_status'])->name('found.status');
+
             Route::prefix('{reception}/invoices')->name('invoices.')->group(function () {
                 Route::get('/show', [ReceptionInvoiceController::class,'show'])->name('show');
                 Route::post('/store_reserve', [ReceptionInvoiceController::class,'store_reserve'])->name('reserve.store');
@@ -902,12 +904,6 @@ Route::group(['middleware' => 'auth.admin'], function () {
 
             });
         });
-
-
-
-//        Route::prefix('invoices')->name('invoices.')->group(function () {
-//            Route::get('/', [ReceptionInvoiceController::class,'index'])->name('index');
-//        });
 
         Route::prefix('accounts')->name('accounts.')->group(function () {
             Route::get('/', [AccountController::class,'index'])->name('index');

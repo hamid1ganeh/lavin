@@ -31,14 +31,14 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-12 text-right">
-{{--                                    @if(Auth::guard('admin')->user()->can('reserves.payment.invoice.cash.create'))--}}
+                                    @if(Auth::guard('admin')->user()->can('invoice.cash.create'))
                                     <div class="btn-group" >
                                         <a href="{{ route('admin.accounting.reception.invoices.cash.create',[$reception,$receptionInvoice]) }}" class="btn btn-sm btn-primary">
                                             <i class="fa fa-plus plusiconfont"></i>
                                             <b class="IRANYekanRegular">ایجاد پرداخت جدید</b>
                                         </a>
                                     </div>
-{{--                                   @endif--}}
+                                   @endif
                                 </div>
                             </div>
 
@@ -64,15 +64,17 @@
                                             <td><strong class="IRANYekanRegular">{{ $cash->description }}</strong></td>
                                             <td>
 
-{{--                                                @if(Auth::guard('admin')->user()->can('reserves.payment.invoice.cash.edit'))--}}
+                                                @if(Auth::guard('admin')->user()->can('invoice.cash.edit'))
                                                 <a class="btn  btn-icon" href="{{ route('admin.accounting.reception.invoices.cash.edit', [$reception,$receptionInvoice,$cash]) }}" title="ویرایش">
                                                         <i class="fa fa-edit text-success font-20"></i>
                                                 </a>
-{{--                                                @endif--}}
+                                                @endif
+
+                                                @if(Auth::guard('admin')->user()->can('invoice.cash.edit'))
                                                 <a href="#remove{{ $cash->id }}" data-toggle="modal" class="btn btn-icon" title="حذف">
-{{--                                                @if(Auth::guard('admin')->user()->can('reserves.payment.invoice.cash.delete'))                                                    <a href="#remove{{ $cash->id }}" data-toggle="modal" class="btn btn-icon" title="حذف">--}}
                                                     <i class="fa fa-trash text-danger font-20"></i>
                                                 </a>
+                                                @endif
                                                 <!-- Remove Modal -->
                                                 <div class="modal fade" id="remove{{ $cash->id }}" tabindex="-1" aria-labelledby="reviewLabel" aria-hidden="true">
                                                     <div class="modal-dialog modal-xs">
@@ -97,7 +99,6 @@
                                                         </div>
                                                     </div>
                                                 </div>
-{{--                                                @endif--}}
                                             </td>
                                         </tr>
                                     @endforeach

@@ -75,14 +75,14 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-12 text-right">
-{{--                                    @if(Auth::guard('admin')->user()->can('reserves.payment.invoice.cheque.create'))--}}
+                                    @if(Auth::guard('admin')->user()->can('invoice.cash.create'))
                                     <div class="btn-group" >
                                         <a href="{{ route('admin.accounting.reception.invoices.cheque.create',[$reception,$receptionInvoice]) }}" class="btn btn-sm btn-primary">
                                             <i class="fa fa-plus plusiconfont"></i>
                                             <b class="IRANYekanRegular">ایجاد پرداخت جدید</b>
                                         </a>
                                     </div>
-{{--                                   @endif--}}
+                                   @endif
                                 </div>
                             </div>
 
@@ -241,31 +241,33 @@
                                                     <div class="input-group-append">
                                                         <i class=" ti-align-justify" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
                                                         <div class="dropdown-menu">
-{{--                                                            @if(Auth::guard('admin')->user()->can('reserves.payment.invoice.cheque.edit'))--}}
+                                                            @if(Auth::guard('admin')->user()->can('invoice.cheque.edit'))
                                                             <a class="dropdown-item IR cursor-pointe" href="{{ route('admin.accounting.reception.invoices.cheque.edit', [$reception,$receptionInvoice,$cheque]) }}" title="ویرایش">
-
                                                                 <i class="fa fa-edit text-success font-16 cursor-pointer"></i>
                                                                 <span class="p-1">ویرایش</span>
                                                             </a>
-{{--                                                             @endif--}}
-{{--                                                            @if(Auth::guard('admin')->user()->can('reserves.payment.invoice.cheque.pass'))--}}
+                                                             @endif
+
+                                                            @if(Auth::guard('admin')->user()->can('invoice.cheque.pass'))
                                                                 <a href="#pass{{ $cheque->id }}" data-toggle="modal" class="dropdown-item IR cursor-pointer" title="پاس کردن">
                                                                     <i class="fa fa-check text-primary font-16 cursor-pointer"></i>
                                                                     <span class="p-1">پاس کردن</span>
                                                                 </a>
-{{--                                                            @endif--}}
+                                                            @endif
 
-                                                            <a href="#return{{ $cheque->id }}" data-toggle="modal" class="dropdown-item IR cursor-pointer" title="برگشت دادن">
-                                                                <i class="fa fa-ban text-danger font-16 cursor-pointer"></i>
-                                                                <span class="p-1">برگشت دادن</span>
-                                                            </a>
+                                                           @if(Auth::guard('admin')->user()->can('invoice.cheque.return'))
+                                                                <a href="#return{{ $cheque->id }}" data-toggle="modal" class="dropdown-item IR cursor-pointer" title="برگشت دادن">
+                                                                    <i class="fa fa-ban text-danger font-16 cursor-pointer"></i>
+                                                                    <span class="p-1">برگشت دادن</span>
+                                                                </a>
+                                                           @endif
 
-{{--                                                            @if(Auth::guard('admin')->user()->can('reserves.payment.invoice.cheque.delete'))--}}
+                                                            @if(Auth::guard('admin')->user()->can('invoice.cheque.delete'))
                                                             <a href="#remove{{ $cheque->id }}" data-toggle="modal" class="dropdown-item IR cursor-pointer" title="حذف">
                                                                 <i class="fa fa-trash text-danger font-16 cursor-pointer"></i>
                                                                 <span class="p-1">حذف</span>
                                                             </a>
-{{--                                                           @endif--}}
+                                                           @endif
                                                         </div>
                                                     </div>
                                                 </div>
