@@ -30,7 +30,7 @@
                     <div class="page-title-box">
                         <div class="page-title-right">
                             <ol class="breadcrumb m-0 IR">
-{{--                                {{ Breadcrumbs::render('reserves.payment.invoice.cash.edit',$reserve,$invoice,$cash) }}--}}
+                                {{ Breadcrumbs::render('accounting.reception.invoices.cash.edit',$reception,$receptionInvoice,$cash) }}
                             </ol>
                         </div>
                         <h4 class="page-title">

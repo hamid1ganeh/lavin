@@ -30,12 +30,12 @@
                     <div class="page-title-box">
                         <div class="page-title-right">
                             <ol class="breadcrumb m-0 IR">
-{{--                                {{ Breadcrumbs::render('reserves.payment.invoice.card.edit',$reserve,$invoice,$card) }}--}}
+                                {{ Breadcrumbs::render('accounting.reception.invoices.card.edit',$reception,$receptionInvoice,$card) }}
                             </ol>
                         </div>
                         <h4 class="page-title">
                                 <i class="fas fa-dollar-sign page-icon"></i>
-                             ویرایش پرداختی جدید کارت به کارت
+                             ویرایش پرداختی  کارت به کارت
                         </h4>
                     </div>
                 </div>

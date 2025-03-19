@@ -12,7 +12,7 @@
                     <div class="page-title-box">
                         <div class="page-title-right">
                             <ol class="breadcrumb m-0 IR">
-                                {{--                           {{ Breadcrumbs::render('reserves.payment.show',$reserve) }}--}}
+                                {{ Breadcrumbs::render('accounting.reception.invoices.show',$reception) }}
                             </ol>
                         </div>
                         <h4 class="page-title">
@@ -37,6 +37,16 @@
                 <div class="card w-100">
                     <div class="card-body">
                         @if(count($reserveInvoices))
+                            @if(in_array($reception->branch_id,Auth::guard('admin')->user()->branches->pluck('id')->toArray()) && !is_null($invoice))
+                                <div class="row">
+                                    <div class="col-12  text-right">
+                                        <a href="{{ route('admin.accounting.reception.invoices.pos.index',[$reception,$invoice]) }}"  class="btn btn-danger cursor-pointer text-white" title="پرداختی های دستگاه پوز">پرداختی های دستگاه پوز</a>
+                                        <a href="{{ route('admin.accounting.reception.invoices.card.index',[$reception,$invoice]) }}"  class="btn btn-primary cursor-pointer text-white" title="پرداختی های کارت به کارت">پرداختی های کارت به کارت</a>
+                                        <a href="{{ route('admin.accounting.reception.invoices.cash.index',[$reception,$invoice]) }}"  class="btn btn-success cursor-pointer text-white" title="پرداختی های نقدی">پرداختی های نقدی</a>
+                                        <a href="{{ route('admin.accounting.reception.invoices.cheque.index',[$reception,$invoice]) }}"  class="btn btn-warning cursor-pointer text-white" title="پرداختی های چک">پرداختی های چک</a>
+                                    </div>
+                                </div>
+                            @endif
                         <div class="row">
                             <div class="col-12">
                                 <div class="table-responsive"  style="min-height: 100px !important;">
