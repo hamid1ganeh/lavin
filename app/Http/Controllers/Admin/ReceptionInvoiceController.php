@@ -7,6 +7,7 @@ use App\Enums\ReserveStatus;
 use App\Enums\Status;
 use App\Enums\FoundStatus;
 use App\Http\Controllers\Controller;
+use App\Models\Account;
 use App\Models\Branch;
 use App\Models\CardToCardPayment;
 use App\Models\CashPayment;
@@ -96,7 +97,9 @@ class ReceptionInvoiceController extends Controller
 
         }
 
-        return view('admin.accounting.payment.show',compact('reserves','reception','reserveInvoices','invoice'));
+        $accounts = Account::orderBy('bank_name')->get();
+
+        return view('admin.accounting.payment.show',compact('reserves','reception','reserveInvoices','invoice','accounts'));
     }
 
     public function store_reserve(Reception $reception,Request $request)

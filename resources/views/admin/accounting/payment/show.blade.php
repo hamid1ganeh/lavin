@@ -1,5 +1,75 @@
 @extends('admin.master')
+@section('script')
+    <script type="text/javascript">
+        $("#paid_pos_at").MdPersianDateTimePicker({
+            targetDateSelector: "#showDate_class",
+            targetTextSelector: "#paid_pos_at",
+            textFormat: "yyyy/MM/dd HH:mm",
+            isGregorian: false,
+            modalMode: false,
+            englishNumber: false,
+            enableTimePicker: true,
+            selectedDateToShow: new Date(),
+            calendarViewOnChange: function(param1){
+                console.log(param1);
+            }
+        });
 
+        $("#paid_card_at").MdPersianDateTimePicker({
+            targetDateSelector: "#showDate_class",
+            targetTextSelector: "#paid_card_at",
+            textFormat: "yyyy/MM/dd HH:mm",
+            isGregorian: false,
+            modalMode: false,
+            englishNumber: false,
+            enableTimePicker: true,
+            selectedDateToShow: new Date(),
+            calendarViewOnChange: function(param1){
+                console.log(param1);
+            }
+        });
+        $("#paid_cash_at").MdPersianDateTimePicker({
+            targetDateSelector: "#showDate_class",
+            targetTextSelector: "#paid_cash_at",
+            textFormat: "yyyy/MM/dd HH:mm",
+            isGregorian: false,
+            modalMode: false,
+            englishNumber: false,
+            enableTimePicker: true,
+            selectedDateToShow: new Date(),
+            calendarViewOnChange: function(param1){
+                console.log(param1);
+            }
+        });
+        $("#date_of_issue").MdPersianDateTimePicker({
+            targetDateSelector: "#showDate_class",
+            targetTextSelector: "#date_of_issue",
+            textFormat: "yyyy/MM/dd",
+            isGregorian: false,
+            modalMode: false,
+            englishNumber: false,
+            enableTimePicker: true,
+            selectedDateToShow: new Date(),
+            calendarViewOnChange: function(param1){
+                console.log(param1);
+            }
+        });
+        $("#due_date").MdPersianDateTimePicker({
+            targetDateSelector: "#showDate_class",
+            targetTextSelector: "#due_date",
+            textFormat: "yyyy/MM/dd",
+            isGregorian: false,
+            modalMode: false,
+            englishNumber: false,
+            enableTimePicker: true,
+            selectedDateToShow: new Date(),
+            calendarViewOnChange: function(param1){
+                console.log(param1);
+            }
+        });
+
+    </script>
+@endsection
 @section('content')
 
     <div class="content-page">
@@ -292,13 +362,47 @@
                                                                 <span aria-hidden="true">&times;</span>
                                                             </button>
                                                         </div>
-                                                        <div class="modal-body">
+                                                        <div class="modal-body text-left">
                                                             <form action="{{ route('admin.accounting.reception.invoices.pos.store',[$reception,$invoice]) }}" method="post" id="pos-form">
-                                                                <input name="invoice" type="hidden" value="1">
                                                                 @csrf
-                                                                <div class="row">
-                                                                    <div class="col-12">
+                                                                <input name="invoice" type="hidden" value="1">
 
+                                                                <div class="row">
+                                                                    <div class="form-group col-12 col-md-6">
+                                                                        <label for="account" class="control-label IRANYekanRegular">حساب بانکی</label>
+                                                                        <select name="receiver_account_id" id="receiver_account_id" class="form-control dropdown IR" required>
+                                                                            <option value="">حساب بانکی را انتخاب کنید.</option>
+                                                                            @foreach($accounts as $account)
+                                                                                <option value="{{ $account->id }}" @if($account->id==old('receiver_account_id')) selected @endif>{{ $account->bank_name.' ('.$account->full_name.')' }}</option>
+                                                                            @endforeach
+                                                                        </select>
+                                                                        <span class="form-text text-danger erroralarm"> {{ $errors->first('account') }} </span>
+                                                                    </div>
+                                                                    <div class="form-group col-12 col-md-6">
+                                                                        <label for="price" class="control-label IRANYekanRegular">مبلغ (تومان)</label>
+                                                                        <input type="number" class="form-control input text-center" name="price" id="price" placeholder="مبلغ (تومان) وارد کنید" value="{{ old('price') }}" min="1000"  required>
+                                                                        <span class="form-text text-danger erroralarm"> {{ $errors->first('price') }} </span>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="row">
+                                                                    <div class="form-group col-12 col-md-6">
+                                                                        <label for="transaction_number" class="control-label IRANYekanRegular">شماره تراکنش</label>
+                                                                        <input type="text" class="form-control input text-right" name="transaction_number" id="transaction_number" placeholder=" شماره تراکنش را وارد کنید" value="{{ old('transaction_number') }}" required>
+                                                                        <span class="form-text text-danger erroralarm"> {{ $errors->first('transaction_number') }} </span>
+                                                                    </div>
+                                                                    <div class="form-group col-12 col-md-6">
+                                                                        <label for="paid_pos_at" class="control-label IRANYekanRegular">تاریخ پرداخت</label>
+                                                                        <input type="text" class="form-control input text-center" name="paid_at" id="paid_pos_at" placeholder="تاریخ  پرداخت وارد کنید" value="{{ old('paid_at') }}" readonly required>
+                                                                        <span class="form-text text-danger erroralarm"> {{ $errors->first('paid_at') }} </span>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="row">
+                                                                    <div class="form-group col-12">
+                                                                        <label for="description" class="control-label IRANYekanRegular">توضیحات</label>
+                                                                        <input type="text" class="form-control input" name="description" id="description" placeholder=" توضیحات را وارد کنید" value="{{ old('description') }}">
+                                                                        <span class="form-text text-danger erroralarm"> {{ $errors->first('description') }} </span>
                                                                     </div>
                                                                 </div>
                                                             </form>
@@ -326,15 +430,62 @@
                                                                 <span aria-hidden="true">&times;</span>
                                                             </button>
                                                         </div>
-                                                        <div class="modal-body">
+                                                        <div class="modal-body text-left">
                                                             <form action="{{ route('admin.accounting.reception.invoices.card.store',[$reception,$invoice]) }}" method="post" id="card-form">
-                                                                <input name="invoice" type="hidden" value="1">
                                                                 @csrf
+                                                                <input name="invoice" type="hidden" value="1">
                                                                 <div class="row">
-                                                                    <div class="col-12">
-
+                                                                    <div class="form-group col-12 col-md-6">
+                                                                        <label for="sender_full_name" class="control-label IRANYekanRegular">نام و نام خانوادگی کارت واریز کننده</label>
+                                                                        <input type="text" class="form-control input" name="sender_full_name" id="sender_full_name" placeholder=" شماره تراکنش را وارد کنید" value="{{ old('transaction_number') }}" required>
+                                                                        <span class="form-text text-danger erroralarm"> {{ $errors->first('transaction_number') }} </span>
+                                                                    </div>
+                                                                    <div class="form-group col-12 col-md-6">
+                                                                        <label for="sender_cart_number" class="control-label IRANYekanRegular">شماره کارت واریز کننده</label>
+                                                                        <input type="text" class="form-control input text-right" name="sender_cart_number" id="sender_cart_number" placeholder=" شماره کارت واریز کننده" value="{{ old('sender_cart_number') }}" required maxlength="16" minlength="16">
+                                                                        <span class="form-text text-danger erroralarm"> {{ $errors->first('sender_cart_number') }} </span>
                                                                     </div>
                                                                 </div>
+
+                                                                <div class="row">
+                                                                    <div class="form-group col-12 col-md-6">
+                                                                        <label for="receiver_account_id" class="control-label IRANYekanRegular">حساب بانکی دریافت کننده</label>
+                                                                        <select name="receiver_account_id" id="receiver_account_id" class="form-control dropdown IR" required>
+                                                                            <option value="">حساب بانکی دریافت کننده را انتخاب کنید.</option>
+                                                                            @foreach($accounts as $account)
+                                                                                <option value="{{ $account->id }}" @if($account->id==old('receiver_account_id')) selected @endif>{{ $account->bank_name.' ('.$account->full_name.')'.' ('.$account->cart_number.')' }}</option>
+                                                                            @endforeach
+                                                                        </select>
+                                                                        <span class="form-text text-danger erroralarm"> {{ $errors->first('receiver_account_id') }} </span>
+                                                                    </div>
+                                                                    <div class="form-group col-12 col-md-6">
+                                                                        <label for="price" class="control-label IRANYekanRegular">مبلغ (تومان)</label>
+                                                                        <input type="number" class="form-control input text-center" name="price" id="price" placeholder="مبلغ (تومان) وارد کنید" value="{{ old('price') }}" min="1000"  required>
+                                                                        <span class="form-text text-danger erroralarm"> {{ $errors->first('price') }} </span>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="row">
+                                                                    <div class="form-group col-12 col-md-6">
+                                                                        <label for="transaction_number" class="control-label IRANYekanRegular">شماره تراکنش</label>
+                                                                        <input type="text" class="form-control input text-right" name="transaction_number" id="transaction_number" placeholder=" شماره تراکنش را وارد کنید" value="{{ old('transaction_number') }}" required>
+                                                                        <span class="form-text text-danger erroralarm"> {{ $errors->first('transaction_number') }} </span>
+                                                                    </div>
+                                                                    <div class="form-group col-12 col-md-6">
+                                                                        <label for="paid_card_at" class="control-label IRANYekanRegular">تاریخ پرداخت</label>
+                                                                        <input type="text" class="form-control input text-center" name="paid_at" id="paid_card_at" placeholder="تاریخ  پرداخت وارد کنید" value="{{ old('paid_at') }}" readonly required>
+                                                                        <span class="form-text text-danger erroralarm"> {{ $errors->first('paid_at') }} </span>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="row">
+                                                                    <div class="form-group col-12">
+                                                                        <label for="description" class="control-label IRANYekanRegular">توضیحات</label>
+                                                                        <input type="text" class="form-control input" name="description" id="description" placeholder=" توضیحات را وارد کنید" value="{{ old('description') }}">
+                                                                        <span class="form-text text-danger erroralarm"> {{ $errors->first('description') }} </span>
+                                                                    </div>
+                                                                </div>
+
                                                             </form>
                                                         </div>
                                                         <div class="modal-footer">
@@ -360,13 +511,28 @@
                                                                 <span aria-hidden="true">&times;</span>
                                                             </button>
                                                         </div>
-                                                        <div class="modal-body">
+                                                        <div class="modal-body text-left">
                                                             <form action="{{ route('admin.accounting.reception.invoices.cash.store',[$reception,$invoice]) }}" method="post" id="cash-form">
                                                                 <input name="invoice" type="hidden" value="1">
                                                                 @csrf
                                                                 <div class="row">
-                                                                    <div class="col-12">
+                                                                    <div class="form-group col-12 col-md-6">
+                                                                        <label for="price" class="control-label IRANYekanRegular">مبلغ (تومان)</label>
+                                                                        <input type="number" class="form-control input text-center" name="price" id="price" placeholder="مبلغ (تومان) وارد کنید" value="{{ old('price') }}" min="1000"  required>
+                                                                        <span class="form-text text-danger erroralarm"> {{ $errors->first('price') }} </span>
+                                                                    </div>
+                                                                    <div class="form-group col-12 col-md-6">
+                                                                        <label for="paid_cash_at" class="control-label IRANYekanRegular">تاریخ پرداخت</label>
+                                                                        <input type="text" class="form-control input text-center" name="paid_at" id="paid_cash_at" placeholder="تاریخ  پرداخت وارد کنید" value="{{ old('paid_at') }}" readonly required>
+                                                                        <span class="form-text text-danger erroralarm"> {{ $errors->first('paid_at') }} </span>
+                                                                    </div>
+                                                                </div>
 
+                                                                <div class="row">
+                                                                    <div class="form-group col-12">
+                                                                        <label for="description" class="control-label IRANYekanRegular">توضیحات</label>
+                                                                        <input type="text" class="form-control input" name="description" id="description" placeholder=" توضیحات را وارد کنید" value="{{ old('description') }}">
+                                                                        <span class="form-text text-danger erroralarm"> {{ $errors->first('description') }} </span>
                                                                     </div>
                                                                 </div>
                                                             </form>
@@ -381,13 +547,13 @@
                                         @endif
 
                                         @if(Auth::guard('admin')->user()->can('invoice.pos.create'))
-                                            <a href="#pos" class="btn btn-warning cursor-pointer text-white" data-toggle="modal" title="چک">
+                                            <a href="#cheque" class="btn btn-warning cursor-pointer text-white" data-toggle="modal" title="چک">
                                                 چک
                                             </a>
 
                                             <div class="modal fade" id="cheque" tabindex="-1" aria-labelledby="reviewLabel" aria-hidden="true">
                                                 <div class="modal-dialog modal-lg">
-                                                    <div class="modal-content">
+                                                    <div class="modal-content text-left">
                                                         <div class="modal-header py-3">
                                                             <h5 class="modal-title IR" id="newReviewLabel">چک</h5>
                                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -395,12 +561,60 @@
                                                             </button>
                                                         </div>
                                                         <div class="modal-body">
-                                                            <form action="{{ route('admin.accounting.reception.invoices.pos.store',[$reception,$invoice]) }}" method="post" id="cheque-form">
+                                                            <form action="{{ route('admin.accounting.reception.invoices.cheque.store',[$reception,$invoice]) }}" method="post" id="cheque-form">
                                                                 <input name="invoice" type="hidden" value="1">
                                                                 @csrf
+                                                                {{ csrf_field() }}
                                                                 <div class="row">
-                                                                    <div class="col-12">
+                                                                    <div class="form-group col-12 col-md-4">
+                                                                        <label for="sender_full_name" class="control-label IRANYekanRegular">نام و نام خانوادگی صادر کننده چک</label>
+                                                                        <input type="text" class="form-control input" name="sender_full_name" id="sender_full_name" placeholder=" نام و نام خانوادگی صادر کننده چک را وارد کنید" value="{{ old('sender_full_name') }}" required>
+                                                                        <span class="form-text text-danger erroralarm"> {{ $errors->first('sender_full_name') }} </span>
+                                                                    </div>
+                                                                    <div class="form-group col-12 col-md-4">
+                                                                        <label for="sender_nation_code" class="control-label IRANYekanRegular">کدملی صادر کننده چک</label>
+                                                                        <input type="text" class="form-control input text-right" name="sender_nation_code" id="sender_nation_code" placeholder="کدملی صادر کننده چک را وارد کنید" value="{{ old('sender_nation_code') }}" minlength="10" maxlength="10" required>
+                                                                        <span class="form-text text-danger erroralarm"> {{ $errors->first('sender_nation_code') }} </span>
+                                                                    </div>
+                                                                    <div class="form-group col-12 col-md-4">
+                                                                        <label for="sender_account_number" class="control-label IRANYekanRegular">شماره حساب صادر کننده چک</label>
+                                                                        <input type="text" class="form-control input text-right" name="sender_account_number" id="sender_account_number" placeholder="شماره حساب صادر کننده چک را وارد کنید" value="{{ old('sender_account_number') }}"   required>
+                                                                        <span class="form-text text-danger erroralarm"> {{ $errors->first('sender_account_number') }} </span>
+                                                                    </div>
+                                                                </div>
 
+                                                                <div class="row">
+                                                                    <div class="form-group col-12 col-md-6">
+                                                                        <label for="serial_number" class="control-label IRANYekanRegular">شماره سریال چک</label>
+                                                                        <input type="text" class="form-control input text-right" name="serial_number" id="serial_number" placeholder="شماره سریال چک وارد کنید" value="{{ old('serial_number') }}" required>
+                                                                        <span class="form-text text-danger erroralarm"> {{ $errors->first('serial_number') }} </span>
+                                                                    </div>
+
+                                                                    <div class="form-group col-12 col-md-6">
+                                                                        <label for="price" class="control-label IRANYekanRegular">مبلغ (تومان)</label>
+                                                                        <input type="number" class="form-control input text-center" name="price" id="price" placeholder="مبلغ (تومان) وارد کنید" value="{{ old('price') }}" min="1000"  required>
+                                                                        <span class="form-text text-danger erroralarm"> {{ $errors->first('price') }} </span>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="row">
+                                                                    <div class="form-group col-12 col-md-6">
+                                                                        <label for="date_of_issue" class="control-label IRANYekanRegular">تاریخ صدور چک</label>
+                                                                        <input type="text" class="form-control input text-center" name="date_of_issue" id="date_of_issue" placeholder="تاریخ  صدور وارد کنید" value="{{ old('date_of_issue') }}" readonly required>
+                                                                        <span class="form-text text-danger erroralarm"> {{ $errors->first('date_of_issue') }} </span>
+                                                                    </div>
+                                                                    <div class="form-group col-12 col-md-6">
+                                                                        <label for="due_date" class="control-label IRANYekanRegular">تاریخ سررسید چک</label>
+                                                                        <input type="text" class="form-control input text-center" name="due_date" id="due_date" placeholder="تاریخ  سررسید وارد کنید" value="{{ old('due_date') }}" readonly required>
+                                                                        <span class="form-text text-danger erroralarm"> {{ $errors->first('due_date') }} </span>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="row">
+                                                                    <div class="form-group col-12">
+                                                                        <label for="description" class="control-label IRANYekanRegular">توضیحات</label>
+                                                                        <input type="text" class="form-control input" name="description" id="description" placeholder=" توضیحات را وارد کنید" value="{{ old('description') }}">
+                                                                        <span class="form-text text-danger erroralarm"> {{ $errors->first('description') }} </span>
                                                                     </div>
                                                                 </div>
                                                             </form>
@@ -413,9 +627,6 @@
                                                 </div>
                                             </div>
                                         @endif
-
-
-
                                     </div>
                                 </div>
                             @endif
