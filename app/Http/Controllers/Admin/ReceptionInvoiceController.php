@@ -64,7 +64,7 @@ class ReceptionInvoiceController extends Controller
             ->whereDoesntHave('invoice')
             ->get();
 
-        $reserveInvoices = ReserveInvoice::with('reserve')->where('reception_id',$reception->id)
+        $reserveInvoices = ReserveInvoice::with('reserve.upgrades')->where('reception_id',$reception->id)
                             ->orderBy('created_at','desc')->get();
 
         $invoiceSumPrice =0;
@@ -95,7 +95,6 @@ class ReceptionInvoiceController extends Controller
             }
 
         }
-
 
         return view('admin.accounting.payment.show',compact('reserves','reception','reserveInvoices','invoice'));
     }

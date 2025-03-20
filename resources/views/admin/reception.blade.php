@@ -297,6 +297,10 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
+                                                            @elseIf(Auth::guard('admin')->user()->can('reception.invoices.show'))
+                                                                <a class="font18 m-1" href="{{ route('admin.accounting.reception.invoices.show',$reception) }}"  title="صورتحساب پرداخت">
+                                                                    <i class="fas fa-cash-register text-primary font-16"></i>
+                                                                </a>
                                                             @endif
 
                                                         </td>

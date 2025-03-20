@@ -63,10 +63,9 @@
                                             <td><strong class="IRANYekanRegular">{{ $cash->cashier->fullname??'' }}</strong></td>
                                             <td><strong class="IRANYekanRegular">{{ $cash->description }}</strong></td>
                                             <td>
-
                                                 @if(Auth::guard('admin')->user()->can('invoice.cash.edit'))
                                                 <a class="btn  btn-icon" href="{{ route('admin.accounting.reception.invoices.cash.edit', [$reception,$receptionInvoice,$cash]) }}" title="ویرایش">
-                                                        <i class="fa fa-edit text-success font-20"></i>
+                                                    <i class="fa fa-edit text-success font-20"></i>
                                                 </a>
                                                 @endif
 

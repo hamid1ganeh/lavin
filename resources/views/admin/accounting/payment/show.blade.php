@@ -91,7 +91,55 @@
                                                 <td><strong class="IRANYekanRegular">{{ number_format( $reserveInvoice->price??0) }}</strong></td>
                                                 <td><strong class="IRANYekanRegular">{{ number_format( $reserveInvoice->discount_price??0) }}</strong></td>
                                                 <td><strong class="IRANYekanRegular">{{ $reserveInvoice->discount_description ?? '' }}</strong></td>
-                                                <td><strong class="IRANYekanRegular">{{ number_format( $reserveInvoice->sum_upgrades_price??0) }}</strong></td>
+                                                <td>
+                                                    @if(count($reserveInvoice->reserve->upgrades))
+                                                        <a href="#upgrade{{ $reserveInvoice->id }}" class="dropdown-item IR cursor" data-toggle="modal" title="لیست ارتقاءها">
+                                                            <strong class="IRANYekanRegular">{{ number_format( $reserveInvoice->sum_upgrades_price??0) }}</strong>
+                                                        </a>
+
+                                                        <div class="modal fade" id="upgrade{{ $reserveInvoice->id }}" tabindex="-1" aria-labelledby="reviewLabel" aria-hidden="true">
+                                                            <div class="modal-dialog modal-lg">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header py-3">
+                                                                        <h5 class="modal-title IR" id="newReviewLabel">لیست ارتقاءها</h5>
+                                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                            <span aria-hidden="true">&times;</span>
+                                                                        </button>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <div class="row mt-2">
+                                                                            <div class="col-12">
+                                                                                <table class="w-100 IR">
+                                                                                    <thead>
+                                                                                    <tr>
+                                                                                        <th>ردیف</th>
+                                                                                        <th>سرویس</th>
+                                                                                        <th>مبلغ</th>
+                                                                                    </tr>
+                                                                                    </thead>
+                                                                                    <tbody>
+                                                                                    @foreach($reserveInvoice->reserve->upgrades as $row=>$upgrade)
+                                                                                        <tr>
+                                                                                            <td>{{ ++$row }}</td>
+                                                                                            <td>{{ $upgrade->service_name }}</td>
+                                                                                            <td>{{ number_format( $upgrade->price??0) }}</td>
+                                                                                        </tr>
+                                                                                    @endforeach
+                                                                                    </tbody>
+                                                                                </table>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    @else
+                                                        <strong class="IRANYekanRegular">0</strong>
+
+                                                    @endif
+
+                                                </td>
                                                 <td><strong class="IRANYekanRegular">{{ number_format( $reserveInvoice->final_price??0) }}</strong></td>
                                             </tr>
                                         @endforeach

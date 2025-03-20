@@ -136,7 +136,6 @@
                                                         </td>
 
                                                         <td>
-
                                                             <!-- found Modal -->
                                                             <div class="modal fade" id="found{{ $reception->id }}" tabindex="-1" aria-labelledby="reviewLabel" aria-hidden="true">
                                                                 <div class="modal-dialog modal-xs">
@@ -180,12 +179,12 @@
                                                                             </a>
                                                                         @endif
 
-{{--                                                                            @if($reception->found_status ==   App\Enums\FoundStatus::pending)--}}
-                                                                            <a class="dropdown-item IR cursor-pointer" href="#found{{ $reception->id }}" data-toggle="modal" title="تعیین وضعیت">
-                                                                                <i class="fas fa-cash-register text-dark cursor-pointe"></i>
-                                                                                <span class="p-1">تعیین وضعیت</span>
-                                                                            </a>
-{{--                                                                            @endif--}}
+                                                                       @if(Auth::guard('admin')->user()->can('reception.found.status'))
+                                                                        <a class="dropdown-item IR cursor-pointer" href="#found{{ $reception->id }}" data-toggle="modal" title="تعیین وضعیت">
+                                                                            <i class="fas fa-cash-register text-dark cursor-pointe"></i>
+                                                                            <span class="p-1">تعیین وضعیت</span>
+                                                                        </a>
+                                                                        @endif
                                                                     </div>
                                                                 </div>
                                                             </div>
