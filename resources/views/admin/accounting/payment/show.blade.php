@@ -138,7 +138,6 @@
                                                         <strong class="IRANYekanRegular">0</strong>
 
                                                     @endif
-
                                                 </td>
                                                 <td><strong class="IRANYekanRegular">{{ number_format( $reserveInvoice->final_price??0) }}</strong></td>
                                             </tr>
@@ -244,37 +243,183 @@
 
                         @if(!is_null($invoice))
                             <div class="row">
-                                <div class="col-12">
-                                    <p class="card-text IRANYekanRegular">شماره فاکتور:&nbsp; {{ $invoice->number}}</p>
-                                </div>
-                                <div class="col-12">
-                                    <p class="card-text IRANYekanRegular"> تاریخ ایجاد فاکتور:&nbsp; {{ $invoice->createdAt()}}</p>
-                                </div>
-                                <div class="col-12 mt-1">
-                                    <h3 class="card-text IRANYekanRegular">مبلغ کل سرویس ها:&nbsp; {{ number_format($invoice->sum_price ?? 0) }}&nbsp;تومان</h3>
-                                </div>
-                                <div class="col-12 mt-1">
-                                    <h3 class="card-text IRANYekanRegular"> مبلغ کل ارتقاء:&nbsp; {{ number_format($invoice->sum_upgrades_price ?? 0) }}&nbsp;تومان</h3>
-                                </div>
-                                <div class="col-12 mt-1">
-                                    <h3 class="card-text IRANYekanRegular"> مبلغ کل تخفیف ها:&nbsp; {{ number_format($invoice->sum_discount_price ?? 0) }}&nbsp;تومان</h3>
-                                </div>
-                                <div class="col-12 mt-1">
-                                    <h3 class="card-text IRANYekanRegular  text-success">مبلغ کل قابل پرداخت&nbsp; {{ number_format($invoice->final_price ?? 0) }}&nbsp;تومان</h3>
-                                </div>
-                                <div class="col-12 mt-1">
-                                    <h3 class="card-text IRANYekanRegular  text-primary">مبلغ کل پرداخت شده:&nbsp; {{ number_format($invoice->amount_paid ?? 0) }}&nbsp;تومان</h3>
-                                </div>
-                                @if($invoice->amount_debt>0)
-                                <div class="col-12 mt-1">
-                                    <h3 class="card-text IRANYekanRegular text-danger">مبلغ کل بدهکاری:&nbsp; {{ number_format($invoice->amount_debt ?? 0) }}&nbsp;تومان</h3>
-                                </div>
-                                @else
-                                    <div class="col-12 mt-1">
-                                        <h3 class="card-text IRANYekanRegular text-warning">مبلغ کل بستانکاری:&nbsp; {{ number_format((($invoice->amount_debt)*(-1)) ?? 0) }}&nbsp;تومان</h3>
+                                    <div class="col-12">
+                                        <p class="card-text IRANYekanRegular">شماره فاکتور:&nbsp; {{ $invoice->number}}</p>
                                     </div>
-                                @endif
+                                    <div class="col-12">
+                                        <p class="card-text IRANYekanRegular"> تاریخ ایجاد فاکتور:&nbsp; {{ $invoice->createdAt()}}</p>
+                                    </div>
+                                    <div class="col-12 mt-1">
+                                        <h3 class="card-text IRANYekanRegular">مبلغ کل سرویس ها:&nbsp; {{ number_format($invoice->sum_price ?? 0) }}&nbsp;تومان</h3>
+                                    </div>
+                                    <div class="col-12 mt-1">
+                                        <h3 class="card-text IRANYekanRegular"> مبلغ کل ارتقاء:&nbsp; {{ number_format($invoice->sum_upgrades_price ?? 0) }}&nbsp;تومان</h3>
+                                    </div>
+                                    <div class="col-12 mt-1">
+                                        <h3 class="card-text IRANYekanRegular"> مبلغ کل تخفیف ها:&nbsp; {{ number_format($invoice->sum_discount_price ?? 0) }}&nbsp;تومان</h3>
+                                    </div>
+                                    <div class="col-12 mt-1">
+                                        <h3 class="card-text IRANYekanRegular  text-success">مبلغ کل قابل پرداخت&nbsp; {{ number_format($invoice->final_price ?? 0) }}&nbsp;تومان</h3>
+                                    </div>
+                                    <div class="col-12 mt-1">
+                                        <h3 class="card-text IRANYekanRegular  text-primary">مبلغ کل پرداخت شده:&nbsp; {{ number_format($invoice->amount_paid ?? 0) }}&nbsp;تومان</h3>
+                                    </div>
+                                    @if($invoice->amount_debt>0)
+                                        <div class="col-12 mt-1">
+                                            <h3 class="card-text IRANYekanRegular text-danger">مبلغ کل بدهکاری:&nbsp; {{ number_format($invoice->amount_debt ?? 0) }}&nbsp;تومان</h3>
+                                        </div>
+                                    @else
+                                        <div class="col-12 mt-1">
+                                            <h3 class="card-text IRANYekanRegular text-warning">مبلغ کل بستانکاری:&nbsp; {{ number_format((($invoice->amount_debt)*(-1)) ?? 0) }}&nbsp;تومان</h3>
+                                        </div>
+                                    @endif
                             </div>
+
+                            @if(!is_null($invoice))
+                                <div class="row">
+                                    <div class="col-12  text-center">
+                                        @if(Auth::guard('admin')->user()->can('invoice.pos.create'))
+                                            <a href="#pos" class="btn btn-danger cursor-pointer text-white" data-toggle="modal" title="دستگاه پوز">
+                                                دستگاه پوز
+                                            </a>
+
+                                            <div class="modal fade" id="pos" tabindex="-1" aria-labelledby="reviewLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-lg">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header py-3">
+                                                            <h5 class="modal-title IR" id="newReviewLabel">دستگاه پوز</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <form action="{{ route('admin.accounting.reception.invoices.pos.store',[$reception,$invoice]) }}" method="post" id="pos-form">
+                                                                <input name="invoice" type="hidden" value="1">
+                                                                @csrf
+                                                                <div class="row">
+                                                                    <div class="col-12">
+
+                                                                    </div>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="submit" class="btn btn-primary mr-1" title="ثبت"  form="pos-form">ثبت</button>
+                                                            <button type="button" class="btn btn-secondary" title="انصراف" data-dismiss="modal">انصراف</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endif
+
+                                        @if(Auth::guard('admin')->user()->can('invoice.pos.create'))
+                                            <a href="#card" class="btn btn-primary cursor-pointer text-white" data-toggle="modal" title="کارت به کارت">
+                                                 کارت به کارت
+                                            </a>
+
+                                            <div class="modal fade" id="card" tabindex="-1" aria-labelledby="reviewLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-lg">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header py-3">
+                                                            <h5 class="modal-title IR" id="newReviewLabel">کارت به کارت</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <form action="{{ route('admin.accounting.reception.invoices.card.store',[$reception,$invoice]) }}" method="post" id="card-form">
+                                                                <input name="invoice" type="hidden" value="1">
+                                                                @csrf
+                                                                <div class="row">
+                                                                    <div class="col-12">
+
+                                                                    </div>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="submit" class="btn btn-primary mr-1" title="ثبت"  form="card-form">ثبت</button>
+                                                            <button type="button" class="btn btn-secondary" title="انصراف" data-dismiss="modal">انصراف</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endif
+
+                                        @if(Auth::guard('admin')->user()->can('invoice.pos.create'))
+                                            <a href="#cash" class="btn btn-success cursor-pointer text-white" data-toggle="modal" title="نقدی">
+                                                نقدی
+                                            </a>
+
+                                            <div class="modal fade" id="cash" tabindex="-1" aria-labelledby="reviewLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-lg">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header py-3">
+                                                            <h5 class="modal-title IR" id="newReviewLabel">نقدی</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <form action="{{ route('admin.accounting.reception.invoices.cash.store',[$reception,$invoice]) }}" method="post" id="cash-form">
+                                                                <input name="invoice" type="hidden" value="1">
+                                                                @csrf
+                                                                <div class="row">
+                                                                    <div class="col-12">
+
+                                                                    </div>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="submit" class="btn btn-primary mr-1" title="ثبت"  form="cash-form">ثبت</button>
+                                                            <button type="button" class="btn btn-secondary" title="انصراف" data-dismiss="modal">انصراف</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endif
+
+                                        @if(Auth::guard('admin')->user()->can('invoice.pos.create'))
+                                            <a href="#pos" class="btn btn-warning cursor-pointer text-white" data-toggle="modal" title="چک">
+                                                چک
+                                            </a>
+
+                                            <div class="modal fade" id="cheque" tabindex="-1" aria-labelledby="reviewLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-lg">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header py-3">
+                                                            <h5 class="modal-title IR" id="newReviewLabel">چک</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <form action="{{ route('admin.accounting.reception.invoices.pos.store',[$reception,$invoice]) }}" method="post" id="cheque-form">
+                                                                <input name="invoice" type="hidden" value="1">
+                                                                @csrf
+                                                                <div class="row">
+                                                                    <div class="col-12">
+
+                                                                    </div>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="submit" class="btn btn-primary mr-1" title="ثبت"  form="cheque-form">ثبت</button>
+                                                            <button type="button" class="btn btn-secondary" title="انصراف" data-dismiss="modal">انصراف</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endif
+
+
+
+                                    </div>
+                                </div>
+                            @endif
+
                         @endif
 
                     </div>
