@@ -4,6 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use App\Enums\PaymentType;
+use App\Enums\chequeStatus;
 class CreateChequePaymentsTable extends Migration
 {
     /**
@@ -26,8 +27,9 @@ class CreateChequePaymentsTable extends Migration
             $table->dateTime('date_of_issue');
             $table->dateTime('due_date');
             $table->unsignedBigInteger('cashier_id');
-            $table->boolean('passed')->default(false);
+            $table->string('status',1)->default(chequeStatus::notPassed);
             $table->dateTime('passed_date')->nullable();
+            $table->dateTime('returned_date')->nullable();
             $table->string('description')->nullable();
             $table->string('type',1)->default(PaymentType::income);
             $table->timestamps();

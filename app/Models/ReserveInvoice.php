@@ -2,28 +2,29 @@
 
 namespace App\Models;
 
+use App\Services\ReserveService;
 use Illuminate\Database\Eloquent\Model;
 use Morilog\Jalali\CalendarUtils;
 use Morilog\Jalali\Jalalian;
 
 class ReserveInvoice extends Model
 {
-    protected $fillable=['reserve_id','number','price','discount_id','discount_price','discount_description','sum_upgrades_price','final_price','settlement'];
+    protected $fillable=['reception_id','reserve_id','price','sum_upgrades_price','discount_price','final_price','settlement'];
 
     public function reserve()
     {
         return $this->belongsTo(ServiceReserve::class,'reserve_id','id');
     }
-    public function discount()
+
+    public function reception()
     {
-        return $this->belongsTo(Discount::class,'discount_id','id');
+        return $this->belongsTo(Reception::class,'reception_id','id');
     }
 
     public function createdAt()
     {
         return CalendarUtils::convertNumbers(CalendarUtils::strftime('Y/m/d',strtotime($this->created_at)));
     }
-
 
     public function scopeFilter($query)
     {

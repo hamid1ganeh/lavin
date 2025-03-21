@@ -604,13 +604,11 @@
                                                                 </div>
 
                                                                 <div class="modal-body">
-
                                                                     <div class="row">
                                                                         <div class="col-12">
                                                                             <form method="post" action="{{ route('admin.numbers.operator',$number) }}" id="operator-form-select{{ $number->id }}">
                                                                                 @csrf
                                                                                 @method('PATCH')
-
                                                                                 <div class="row">
                                                                                     <select name="operator" class="form-control select2   IRANYekanRegular"   data-placeholder="... اپراتور مورد نظر را انتخاب نمایید">
                                                                                         <option value="" >...ارجاع به</option>
@@ -678,14 +676,12 @@
                                                                             </table>
                                                                         </div>
                                                                     </div>
-
                                                                 </div>
 
                                                                 <div class="modal-footer">
                                                                     <button type="submit" class="btn btn-primary mr-1" title="ثبت" form="operator-form-select{{ $number->id }}">ثبت</button>
                                                                     <button type="button" class="btn btn-secondary" title="انصراف" data-dismiss="modal">انصراف</button>
                                                                 </div>
-
                                                             </div>
                                                         </div>
                                                     </div>

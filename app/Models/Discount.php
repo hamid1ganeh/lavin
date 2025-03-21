@@ -35,6 +35,12 @@ class Discount extends Model
         return $this->hasMany(UsedDiscount::class);
     }
 
+
+    public function serviceInvoice()
+    {
+        return $this->hasOne(ReserveInvoice::class,'discount_id','id');
+    }
+
     public function used()
     {
         return   UsedDiscount::where('discount_id',$this->id)->where('user_id',Auth::id())->exists();

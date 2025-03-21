@@ -971,6 +971,18 @@ class PermissionSeeder extends Seeder
             'status'=> Status::Active
         ]);
 
+        DB::table('permissions')->insert([
+            'name' => 'reception.found.refer',
+            'description' => 'ارجاع به صندوق',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'reception.found.status',
+            'description' => 'تعیین وضعیت صندوق',
+            'status'=> Status::Active
+        ]);
+
 
         DB::table('permissions')->insert([
             'name' => 'reserves.index',
@@ -1051,26 +1063,14 @@ class PermissionSeeder extends Seeder
         ]);
 
         DB::table('permissions')->insert([
-            'name' => 'reserves.pay.invoices',
-            'description' => 'صندوق',
+            'name' => 'reception.invoices.show',
+            'description' => ' نمایش صورتحساب پرداخت پذیرش',
             'status'=> Status::Active
         ]);
 
         DB::table('permissions')->insert([
-            'name' => 'reserves.payment.show',
-            'description' => 'پیش نمایش صورتحساب رزرو',
-            'status'=> Status::Active
-        ]);
-
-        DB::table('permissions')->insert([
-            'name' => 'invoice.create',
+            'name' => 'reception.invoices.create',
             'description' => 'ایجاد صورتحساب پرداخت',
-            'status'=> Status::Active
-        ]);
-
-        DB::table('permissions')->insert([
-            'name' => 'invoice.show',
-            'description' => 'نمایش صورتحساب پرداخت',
             'status'=> Status::Active
         ]);
 
@@ -1174,6 +1174,12 @@ class PermissionSeeder extends Seeder
         DB::table('permissions')->insert([
             'name' => 'invoice.cheque.pass',
                 'description' => 'پاس کردن چک',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'invoice.cheque.return',
+            'description' => 'برگشت دادن چک',
             'status'=> Status::Active
         ]);
 
@@ -2151,6 +2157,12 @@ class PermissionSeeder extends Seeder
         DB::table('permissions')->insert([
             'name' => 'warehousing.lasers.tube.history',
             'description' => 'تاریخچه تعویض تیوب',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'accounting.found',
+            'description' => 'صندوق',
             'status'=> Status::Active
         ]);
 
