@@ -16,6 +16,7 @@ use App\Enums\ReserveStatus;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use App\Services\CodeService;
+use Auth;
 
 class ReceptionController extends Controller
 {
@@ -28,11 +29,11 @@ class ReceptionController extends Controller
          $mobile = request('mobile');
          $code = request('code');
          $nationCode = request('nation_code');
-
+         $branches = Auth::guard('admin')->user()->branches->pluck('id')->toArray();
          if((isset($mobile) && $mobile!='') || (isset($nationCode) && $nationCode!='') || (isset($code) && $code!='')){
-             $receptions = Reception::orderBy('created_at','asc')->filter()->get();
+             $receptions = Reception::whereIn('branch_id', $branches)->orderBy('created_at','asc')->filter()->get();
          } else{
-             $receptions = Reception::where('end',false)->orderBy('created_at','asc')->filter()->get();
+             $receptions = Reception::whereIn('branch_id', $branches)->where('end',false)->orderBy('created_at','asc')->filter()->get();
          }
 
          return  view('admin.reception',compact('receptions'));
