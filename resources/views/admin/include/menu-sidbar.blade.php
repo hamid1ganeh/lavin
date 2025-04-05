@@ -31,7 +31,8 @@
                     Auth::guard('admin')->user()->can('roles.index') ||
                     Auth::guard('admin')->user()->can('numbers.index') ||
                     Auth::guard('admin')->user()->can('reserves.pay.invoices') ||
-                    Auth::guard('admin')->user()->can('numbers.advisers'))
+                    Auth::guard('admin')->user()->can('numbers.advisers') ||
+                    Auth::guard('admin')->user()->can('invoices.pay'))
                     <li>
                         <a href="javascript: void(0);" class="waves-effect">
                             <i class="ti-align-left"></i>
