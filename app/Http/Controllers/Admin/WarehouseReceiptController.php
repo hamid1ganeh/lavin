@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Enums\Status;
 use App\Http\Controllers\Controller;
 use App\Models\Number;
 use App\Models\User;
@@ -36,7 +37,7 @@ class WarehouseReceiptController extends Controller
         config(['auth.defaults.guard' => 'admin']);
         $this->authorize('warehousing.goods.receipts.create');
 
-        $goods = Goods::orderBy('title','asc')->get();
+        $goods = Goods::where('status',Status::Active)->orderBy('title','asc')->get();
         $sellers = User::where('seller',true)->orderBy('firstname','desc')->orderBy('lastname','desc')->get();
          return view('admin.warehousing.receipt.create',compact('goods','sellers'));
     }

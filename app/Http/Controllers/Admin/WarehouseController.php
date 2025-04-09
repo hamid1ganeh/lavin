@@ -8,6 +8,7 @@ use App\Models\Admin;
 use App\Models\WarehouseStock;
 use Illuminate\Http\Request;
 use App\Models\Warehouse;
+use Auth;
 
 class WarehouseController extends Controller
 {
@@ -17,6 +18,7 @@ class WarehouseController extends Controller
         //اجازه دسترسی
         config(['auth.defaults.guard' => 'admin']);
         $this->authorize('warehousing.warehouses.index');
+
 
         $warehouses = Warehouse::with('admins')->orderBy('name')->withTrashed()->get();
         return view('admin.warehousing.warehouses.all',compact('warehouses'));
@@ -133,6 +135,7 @@ class WarehouseController extends Controller
         //اجازه دسترسی
         config(['auth.defaults.guard' => 'admin']);
         $this->authorize('warehousing.warehouses.recycle');
+
         $warehouse = Warehouse::withTrashed()->find($id);
         $warehouse->restore();
         toast('انبار مورد نظر بازیابی شد.','error')->position('bottom-end');
@@ -144,6 +147,10 @@ class WarehouseController extends Controller
         //اجازه دسترسی
         config(['auth.defaults.guard' => 'admin']);
         $this->authorize('warehousing.warehouses.stocks');
+
+        if (!in_array(Auth::guard('admin')->id(),$warehouse->adminsArrayId())){
+            abort(403);
+        }
 
         $stocks = WarehouseStock::where('warehouse_id',$warehouse->id)
                                     ->orderBy('created_at')

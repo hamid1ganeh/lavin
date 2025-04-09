@@ -21,6 +21,10 @@ class WareHouseOrderController extends Controller
         config(['auth.defaults.guard' => 'admin']);
         $this->authorize('warehousing.warehouses.orders.index');
 
+        if (!in_array(Auth::guard('admin')->id(),$warehouse->adminsArrayId())){
+            abort(403);
+        }
+
         $orders = WarehouseStockHistory::with('good.main_category','good.sub_category')
             ->where('warehouse_id',$warehouse->id)
             ->orderBy('created_at','desc')
@@ -44,6 +48,10 @@ class WareHouseOrderController extends Controller
         //اجازه دسترسی
         config(['auth.defaults.guard' => 'admin']);
         $this->authorize('warehousing.warehouses.orders.create');
+
+        if (!in_array(Auth::guard('admin')->id(),$warehouse->adminsArrayId())){
+            abort(403);
+        }
 
         $request->validate(
             [
@@ -96,7 +104,8 @@ class WareHouseOrderController extends Controller
             return back()->withInput();
         }
 
-        if ($request->event == '-'){
+
+        if (in_array($request->event,['-','0'])){
             $stock = WarehouseStock::where('warehouse_id',$warehouse->id)->where('goods_id',$request->good)->first();
             if(is_null($stock) || $ask>$stock->stock){
                 alert()->error('خطا','مقدار درخواستی شما در انبار شما موجود نمی باشد.');
@@ -125,6 +134,10 @@ class WareHouseOrderController extends Controller
         //اجازه دسترسی
         config(['auth.defaults.guard' => 'admin']);
         $this->authorize('warehousing.warehouses.orders.edit');
+
+        if (!in_array(Auth::guard('admin')->id(),$warehouse->adminsArrayId())){
+            abort(403);
+        }
 
 
         if (is_null($order->delivered_by )) {
@@ -203,6 +216,10 @@ class WareHouseOrderController extends Controller
         //اجازه دسترسی
         config(['auth.defaults.guard' => 'admin']);
         $this->authorize('warehousing.warehouses.orders.delivery');
+
+        if (!in_array(Auth::guard('admin')->id(),$warehouse->adminsArrayId())){
+            abort(403);
+        }
 
         if (is_null($order->delivered_by)){
             $good = $order->good;
@@ -303,6 +320,10 @@ class WareHouseOrderController extends Controller
         //اجازه دسترسی
         config(['auth.defaults.guard' => 'admin']);
         $this->authorize('warehousing.warehouses.orders.destroy');
+
+        if (!in_array(Auth::guard('admin')->id(),$warehouse->adminsArrayId())){
+            abort(403);
+        }
 
         if (is_null($order->delivered_by )) {
             $order->delete();
