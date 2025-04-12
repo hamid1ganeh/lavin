@@ -93,7 +93,6 @@ class GoodsController extends Controller
             Goods::create([
                 'title' => $request->title,
                 'brand' => $request->brand,
-                'factor_number' => $request->factor_number,
                 'code' => $request->code,
                 'main_cat_id' => $request->main_cat_id,
                 'sub_cat_id' => $request->sub_cat_id,
@@ -171,7 +170,6 @@ class GoodsController extends Controller
             $good->update([
                 'title' => $request->title,
                 'brand' => $request->brand,
-                'factor_number' => $request->factor_number,
                 'code' => $request->code,
                 'main_cat_id' => $request->main_cat_id,
                 'sub_cat_id' => $request->sub_cat_id,
