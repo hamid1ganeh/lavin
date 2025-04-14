@@ -27,7 +27,7 @@ class WareHouseOrderController extends Controller
 
         $orders = WarehouseStockHistory::with('good.main_category','good.sub_category')
             ->where('warehouse_id',$warehouse->id)
-            ->orderBy('created_at','desc')
+            ->orderBy('number','desc')
             ->paginate(10)
             ->withQueryString();
 
@@ -55,13 +55,11 @@ class WareHouseOrderController extends Controller
 
         $request->validate(
             [
-                'number' => ['required','max:255'],
                 'good' => ['required','exists:goods,id'],
                 'count' => ['nullable','integer'],
                 'value' => ['nullable','integer'],
             ],
             [
-                'number.required' => 'شماره حواله الزامی است.',
                 'number.max' => 'حداکثر طول شماره حواله 255 کارکتر.',
                 'good.required' => ' انتخاب کالا الزامی است.',
             ]);
@@ -97,13 +95,11 @@ class WareHouseOrderController extends Controller
             return back();
         }
 
-
         $ask = ($count*$good->value_per_count)+$value;
         if ($request->event == '+' && $ask>$good->stockAsUnit()){
             alert()->error('خطا','مقدار درخواستی شما در انبار مرکزی موجود نمی باشد.');
             return back()->withInput();
         }
-
 
         if (in_array($request->event,['-','0'])){
             $stock = WarehouseStock::where('warehouse_id',$warehouse->id)->where('goods_id',$request->good)->first();
@@ -113,11 +109,19 @@ class WareHouseOrderController extends Controller
             }
         }
 
+        $lsatStock = WarehouseStockHistory::orderBy('number','asc')->first();
+
+        if (is_null($lsatStock)) {
+            $number = '1000';
+        }else{
+            $number = $lsatStock->number + 1;
+        }
+
         if (in_array($request->event,['+','-','0'])){
             $order= new WarehouseStockHistory();
             $order->warehouse_id = $warehouse->id;
             $order->moved_warehouse_id = $request->warehouse;
-            $order->number = $request->number;
+            $order->number =$number;
             $order->goods_id = $request->good;
             $order->event = $request->event;
             $order->stock = ($order->good->value_per_count*$count)+$value;
@@ -143,13 +147,11 @@ class WareHouseOrderController extends Controller
         if (is_null($order->delivered_by )) {
             $request->validate(
                 [
-                    'number' => ['required','max:255'],
                     'good' => ['required', 'exists:goods,id'],
                     'count' => ['nullable', 'integer'],
                     'value' => ['nullable', 'integer'],
                 ],
                 [
-                    'number.required' => 'شماره حواله الزامی است.',
                     'number.max' => 'حداکثر طول شماره حواله 255 کارکتر.',
                     'good.required' => ' انتخاب کالا الزامی است.',
                 ]);
@@ -201,7 +203,6 @@ class WareHouseOrderController extends Controller
 
             if (in_array($request->event, ['+', '-','0'])) {
                 $order->moved_warehouse_id = $request->warehouse;
-                $order->number = $request->number;
                 $order->goods_id = $request->good;
                 $order->event = $request->event;
                 $order->stock =($order->good->value_per_count*$count)+$value;
@@ -249,11 +250,8 @@ class WareHouseOrderController extends Controller
                 }
 
 
-
-
                 $stock->warehouse_id = $order->warehouse_id;
                 $stock->goods_id = $order->goods_id;
-
 
                 DB::transaction(function() use ($stock, $order,$good) {
                     $stock->save();

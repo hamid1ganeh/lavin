@@ -18,7 +18,7 @@ class CreateGoodsTable extends Migration
         Schema::create('goods', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->string('brand');
+            $table->unsignedBigInteger('brand_id');
             $table->string('code')->nullable();
             $table->unsignedBigInteger('main_cat_id');
             $table->unsignedBigInteger('sub_cat_id')->nullable();
@@ -43,6 +43,12 @@ class CreateGoodsTable extends Migration
             $table->foreign('sub_cat_id')
                 ->references('id')
                 ->on('goods_sub_categories')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
+
+            $table->foreign('brand_id')
+                ->references('id')
+                ->on('brands')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
         });

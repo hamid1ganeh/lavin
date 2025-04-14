@@ -54,14 +54,19 @@
                                             <span class="form-text text-danger erroralarm"> {{ $errors->first('title') }} </span>
                                         </div>
                                         <div class="col-12 col-md-4">
-                                            <label for="brand" class="control-label IRANYekanRegular">برند</label>
-                                            <input type="text" class="form-control input" name="brand" id="brand" placeholder="برند کالا را وارد کنید" value="{{ old('brand') ?? $good->brand  }}">
-                                            <span class="form-text text-danger erroralarm"> {{ $errors->first('brand') }} </span>
-                                        </div>
-                                        <div class="col-12 col-md-4">
                                             <label for="code" class="control-label IRANYekanRegular">کد کالا</label>
                                             <input type="text" class="form-control input text-right" name="code" id="code" placeholder="کد کالا را وارد کنید" value="{{ old('code') ?? $good->code  }}">
                                             <span class="form-text text-danger erroralarm"> {{ $errors->first('code') }} </span>
+                                        </div>
+                                        <div class="col-12 col-md-4">
+                                            <label for="brand_id" class="col-form-label IRANYekanRegular">برند</label>
+                                            <select name="brand_id" id="brand_id"  class="form-control IRANYekanRegular">
+                                                <option value="">برند مورد نظر را انتخاب کنید</option>
+                                                @foreach($brands as $brand)
+                                                    <option value="{{ $brand->id }}" {{$brand->id == old('brand_id') || $brand->id == $good->brand_id?'selected':'' }}>{{ $brand->name }}</option>
+                                                @endforeach
+                                            </select>
+                                            <span class="form-text text-danger erroralarm"> {{ $errors->first('brand_id') }} </span>
                                         </div>
                                     </div>
 

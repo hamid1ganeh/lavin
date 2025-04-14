@@ -385,7 +385,7 @@ Breadcrumbs::for('branchs.index', function ($trail) {
 
 // داشبورد > شعبه ها > ایجاد شعبه جدید
 Breadcrumbs::for('branchs.create', function ($trail) {
-    $trail->parent('home', $trail);
+    $trail->parent('branchs.index', $trail);
     $trail->push('ایجاد شعبه جدید', route('admin.branchs.create'));
 });
 
@@ -394,6 +394,25 @@ Breadcrumbs::for('branchs.edit', function ($trail,$branch) {
     $trail->parent('branchs.index');
     $trail->push('ویرایش شعبه', route('admin.branchs.edit',$branch));
 });
+
+// داشبورد > برندها
+Breadcrumbs::for('brands.index', function ($trail) {
+    $trail->parent('home', $trail);
+    $trail->push('برندها', route('admin.brands.index'));
+});
+
+// داشبورد > برندها > ایجاد برند جدید
+Breadcrumbs::for('brands.create', function ($trail) {
+    $trail->parent('brands.index', $trail);
+    $trail->push('ایجاد برند جدید', route('admin.brands.create'));
+});
+
+// داشبورد > برندها > ویرایش  برند
+Breadcrumbs::for('brands.edit', function ($trail,$branch) {
+    $trail->parent('brands.index');
+    $trail->push('ویرایش برند', route('admin.brands.edit',$branch));
+});
+
 
  // داشبورد > دکتر
 Breadcrumbs::for('doctors', function ($trail) {

@@ -423,6 +423,15 @@
                         </li>
                     @endif
 
+                    @if(Auth::guard('admin')->user()->can('brands.index'))
+                        <li>
+                            <a href="{{ route('admin.brands.index') }}" class="waves-effect">
+                                <i class="fa fa-btc"></i>
+                                <span class="IRANYekanRegular">برندها</span>
+                            </a>
+                        </li>
+                    @endif
+
                     @if(Auth::guard('admin')->user()->can('festivals.index'))
                         <li>
                             <a href="{{ route('admin.festivals.index') }}" class="waves-effect">

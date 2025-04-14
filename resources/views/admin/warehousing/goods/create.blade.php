@@ -57,12 +57,20 @@
                                             <input type="text" class="form-control input text-right" name="code" id="code" placeholder="کد کالا را وارد کنید" value="{{ old('code')  }}">
                                             <span class="form-text text-danger erroralarm"> {{ $errors->first('code') }} </span>
                                         </div>
+
                                         <div class="col-12 col-md-4">
-                                            <label for="brand" class="control-label IRANYekanRegular">برند</label>
-                                            <input type="text" class="form-control input" name="brand" id="brand" placeholder="برند کالا را وارد کنید" value="{{ old('brand')  }}">
-                                            <span class="form-text text-danger erroralarm"> {{ $errors->first('brand') }} </span>
+                                            <label for="brand_id" class="col-form-label IRANYekanRegular">برند</label>
+                                            <select name="brand_id" id="brand_id"  class="form-control IRANYekanRegular">
+                                                <option value="">برند مورد نظر را انتخاب کنید</option>
+                                                @foreach($brands as $brand)
+                                                    <option value="{{ $brand->id }}" {{$brand->id == old('brand_id')?'selected':'' }}>{{ $brand->name }}</option>
+                                                @endforeach
+                                            </select>
+                                            <span class="form-text text-danger erroralarm"> {{ $errors->first('brand_id') }} </span>
                                         </div>
                                     </div>
+
+
 
                                     <div class="form-group row">
                                         <div class="col-12 col-md-6">

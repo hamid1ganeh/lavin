@@ -18,7 +18,7 @@ class Goods extends Model
                         'code',
                         'unit',
                         'consumption_unit',
-                        'brand',
+                        'brand_id',
                         'count',
                         'value_per_count',
                         'count_stock',
@@ -36,6 +36,11 @@ class Goods extends Model
     public function sub_category()
     {
         return $this->belongsTo(GoodsSubCategory::class,'sub_cat_id','id');
+    }
+
+    public function brand()
+    {
+        return $this->belongsTo(Brand::class);
     }
 
     public function expireDate()
@@ -64,11 +69,12 @@ class Goods extends Model
             $query->where('title',$name);
         }
         //فیلتر برند کالا
-        $brand = request('brand');
-        if(isset($brand) &&  $brand!='')
+        $brands = request('brands');
+        if(isset($brands) &&  $brands!='')
         {
-            $query->where('brand',$brand);
+            $query->whereIn('brand_id',$brands);
         }
+
         //فیلتر نام کالا
         $code = request('code');
         if(isset($code) &&  $code!='')

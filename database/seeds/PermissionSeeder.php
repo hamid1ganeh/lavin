@@ -1623,6 +1623,30 @@ class PermissionSeeder extends Seeder
 
 
         DB::table('permissions')->insert([
+            'name' => 'brands.index',
+            'description' => 'لیست برندها',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'brands.create',
+            'description' => 'ایجاد برند جدید',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'brands.edit',
+            'description' => 'ویرایش برند',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'brands.delete',
+            'description' => 'حذف برند',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
             'name' => 'analysis.index',
             'description' => 'لیست آنالیزها',
             'status'=> Status::Active

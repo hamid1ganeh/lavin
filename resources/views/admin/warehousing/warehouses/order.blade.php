@@ -64,14 +64,6 @@
                                                             @csrf
 
                                                             <div class="form-group row">
-                                                                <div class="col-6">
-                                                                    <label for="number" class="control-label IRANYekanRegular">شماره حواله</label>
-                                                                    <input type="text" class="form-control input text-center" name="number" id="number" placeholder=" شماره حواله را وارد کنید" value="{{ old('number')  }}" required>
-                                                                    <span class="form-text text-danger erroralarm"> {{ $errors->first('number') }} </span>
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="form-group row">
                                                                 <div class="col-12">
                                                                     <label for="event" class="col-form-label IRANYekanRegular">حواله</label>
                                                                     <select name="event" id="event"  class="width-100 form-control IRANYekanRegular" onchange="order(this.value,'warehouse')" required>
@@ -241,15 +233,7 @@
                                                                 <form action="{{ route('admin.warehousing.warehouses.orders.update',[$warehouse,$order]) }}"  method="POST" class="d-inline" id="update{{ $order->id }}">
                                                                     @csrf
                                                                     @method('PATCH')
-
-                                                                    <div class="form-group row">
-                                                                        <div class="col-6">
-                                                                            <label for="number{{$order->id}}" class="control-label IRANYekanRegular">شماره حواله</label>
-                                                                            <input type="text" class="form-control input text-center" name="number" id="number{{$order->id}}" placeholder=" شماره حواله را وارد کنید" value="{{ old('number') ?? $order->number }}" required>
-                                                                            <span class="form-text text-danger erroralarm"> {{ $errors->first('number') }} </span>
-                                                                        </div>
-                                                                    </div>
-
+                                                                    
                                                                     <div class="form-group row">
                                                                         <div class="col-12">
                                                                             <label for="event{{$order->id}}" class="col-form-label IRANYekanRegular">حواله</label>

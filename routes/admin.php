@@ -21,6 +21,7 @@ use App\Http\Controllers\Admin\ReceptionPosPaymentController;
 use App\Http\Controllers\Admin\ReceptionCashPaymentController;
 use App\Http\Controllers\Admin\ReceptionCardToCardPaymentController;
 use App\Http\Controllers\Admin\ReceptionChequePaymentController;
+use App\Http\Controllers\Admin\BrandController;
 
 Route::get('/login', 'AuthController@loginPage')->name('loginPage');
 Route::post('/login', 'AuthController@login')->name('login');
@@ -982,6 +983,16 @@ Route::group(['middleware' => 'auth.admin'], function () {
             });
 
         });
+    });
+
+    Route::prefix('brands')->name('brands.')->group(function () {
+        Route::get('/', [BrandController::class,'index'])->name('index');
+        Route::get('/create', [BrandController::class,'create'])->name('create');
+        Route::post('/store', [BrandController::class,'store'])->name('store');
+        Route::get('{brand}/edit', [BrandController::class,'edit'])->name('edit');
+        Route::patch('{brand}/update', [BrandController::class,'update'])->name('update');
+        Route::delete('{brand}/destroy', [BrandController::class,'destroy'])->name('destroy');
+        Route::patch('{brand}/recycle', [BrandController::class,'recycle'])->name('recycle');
     });
 
     Route::prefix('complications')->name('complications.')->group(function () {
