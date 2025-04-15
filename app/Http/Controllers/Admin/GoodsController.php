@@ -89,7 +89,7 @@ class GoodsController extends Controller
             $expireDate = Jalalian::fromFormat('Y/m/d', $expireDate)->toCarbon("Y-m-d");
         }
 
-        $lastGood = Goods::orderBy('code','desc')->first();
+        $lastGood = Goods::withTrashed()->orderBy('code','desc')->first();
         if (is_null($lastGood)){
             $code = '1000';
         }else{

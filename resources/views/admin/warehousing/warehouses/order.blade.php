@@ -94,7 +94,7 @@
                                                                     <select name="good" id="good"  class="width-100 form-control IRANYekanRegular" required>
                                                                         <option value="">کالا مورد نظر را انتخاب کنید</option>
                                                                         @foreach($goods as $good)
-                                                                            <option value="{{ $good->id }}" {{$good->id == old('good')?'selected':'' }}>{{ $good->title.' ('.$good->brand.')' }}</option>
+                                                                            <option value="{{ $good->id }}" {{$good->id == old('good')?'selected':'' }}>{{ $good->title.' ('.$good->brand->name.')' }}</option>
                                                                         @endforeach
                                                                     </select>
                                                                     <span class="form-text text-danger erroralarm"> {{ $errors->first('good') }} </span>
@@ -156,7 +156,7 @@
                                             <td><strong class="IRANYekanRegular">{{ ++$index }}</strong></td>
                                             <td><strong class="IRANYekanRegular">{{ $order->number }}</strong></td>
                                             <td><strong class="IRANYekanRegular">{{ $order->good->title ?? '' }}</strong></td>
-                                            <td><strong class="IRANYekanRegular">{{ $order->good->brand ?? '' }}</strong></td>
+                                            <td><strong class="IRANYekanRegular">{{ $order->good->brand->name ?? '' }}</strong></td>
                                             <td><strong class="IRANYekanRegular">{{ $order->good->main_category->title ?? '' }}</strong></td>
                                             <td><strong class="IRANYekanRegular">{{ $order->good->sub_category->title ?? '' }}</strong></td>
                                             <td><strong class="IRANYekanRegular">{{ $order->good->value_per_count.' '.$order->good->unit.' در هر عدد ' }}</strong></td>
@@ -233,7 +233,7 @@
                                                                 <form action="{{ route('admin.warehousing.warehouses.orders.update',[$warehouse,$order]) }}"  method="POST" class="d-inline" id="update{{ $order->id }}">
                                                                     @csrf
                                                                     @method('PATCH')
-                                                                    
+
                                                                     <div class="form-group row">
                                                                         <div class="col-12">
                                                                             <label for="event{{$order->id}}" class="col-form-label IRANYekanRegular">حواله</label>

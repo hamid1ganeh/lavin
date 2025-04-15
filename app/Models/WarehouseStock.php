@@ -20,11 +20,19 @@ class WarehouseStock extends Model
 
     public function countStock()
     {
+        if (is_null($this->good))
+        {
+            return 0;
+        }
         return (int)($this->stock/$this->good->value_per_count);
     }
 
     public function remainderStock()
     {
+        if (is_null($this->good))
+        {
+            return 0;
+        }
         return fmod($this->stock,$this->good->value_per_count);
     }
     public function stock()

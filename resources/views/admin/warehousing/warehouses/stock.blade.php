@@ -73,10 +73,10 @@
                                             <tr>
                                                 <td><strong class="IRANYekanRegular">{{ ++$index }}</strong></td>
                                                 <td><strong class="IRANYekanRegular">{{ $stock->good->title ?? '' }}</strong></td>
-                                                <td><strong class="IRANYekanRegular">{{ $stock->good->brand ?? '' }}</strong></td>
+                                                <td><strong class="IRANYekanRegular">{{ $stock->good->brand->name ?? '' }}</strong></td>
                                                 <td><strong class="IRANYekanRegular">{{ $stock->good->main_category->title ?? '' }}</strong></td>
                                                 <td><strong class="IRANYekanRegular">{{ $stock->good->sub_category->title ?? '' }}</strong></td>
-                                                <td><strong class="IRANYekanRegular">{{ $stock->good->value_per_count.' '.$stock->good->unit.' در هر عدد ' }}</strong></td>
+                                                <td><strong class="IRANYekanRegular">@if(!is_null($stock->good)){{ $stock->good->value_per_count.' '.$stock->good->unit.' در هر عدد ' }}@endif</strong></td>
                                                 <td><strong class="IRANYekanRegular">{{ $stock->stock() ?? '' }}</strong></td>
                                             </tr>
                                         @endforeach
