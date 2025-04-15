@@ -21,7 +21,7 @@ class GoodsController extends Controller
         config(['auth.defaults.guard' => 'admin']);
         $this->authorize('warehousing.goods.index');
 
-         $goods = Goods::orderBy('title','asc')
+         $goods = Goods::orderBy('code','desc')
              ->withTrashed()
              ->filter()
              ->paginate(10)
@@ -59,7 +59,6 @@ class GoodsController extends Controller
             [
                 'title' => ['required','max:255'],
                 'brand_id' => ['required','exists:brands,id'],
-                'factor_number' => ['nullable','max:255'],
                 'code' => ['nullable','max:255','unique:goods'],
                 'unit' => ['required'],
                 'value_per_count' => ['required','integer'],
@@ -72,9 +71,6 @@ class GoodsController extends Controller
                 'title.required' => 'عنوان  کالا الزامی است.',
                 'title.max' => 'حداکثر  طول مجاز عنوان کالا 255 کارکتر می باشد.',
                 'brand_id.required' => 'برند  کالا الزامی است.',
-                'factor_number.max' => 'حداکثر  طول مجاز کد کالا 255 کارکتر می باشد.',
-                'code.max' => 'حداکثر  طول مجاز کد کالا 255 کارکتر می باشد.',
-                'code.unique' => 'این کد قبلا ثبت شده است.',
                 'unit.required' => 'واحد کالا الزامی است.',
                 'value_per_count.required' => 'حجم واحد در هر عدد  الزامی است.',
                 'value_per_count.numeric' => 'حجم واحد در هر عدد میبایست یک عدد مثبت باشد.',
@@ -93,11 +89,18 @@ class GoodsController extends Controller
             $expireDate = Jalalian::fromFormat('Y/m/d', $expireDate)->toCarbon("Y-m-d");
         }
 
+        $lastGood = Goods::orderBy('code','desc')->first();
+        if (is_null($lastGood)){
+            $code = '1000';
+        }else{
+            $code = $lastGood->code+1;
+        }
+
         if(in_array($request->status,[Status::Active,Status::Deactive])){
             Goods::create([
                 'title' => $request->title,
                 'brand_id' => $request->brand_id,
-                'code' => $request->code,
+                'code' => $code,
                 'main_cat_id' => $request->main_cat_id,
                 'sub_cat_id' => $request->sub_cat_id,
                 'unit' => $request->unit,
@@ -139,8 +142,6 @@ class GoodsController extends Controller
             [
                 'title' => ['required','max:255'],
                 'brand_id' => ['required','exists:brands,id'],
-                'factor_number' => ['nullable','max:255'],
-                'code' => ['nullable','max:255','unique:goods,code,'.$good->id],
                 'unit' => ['required'],
                 'value_per_count' => ['required','integer'],
                 'price' => ['required','integer'],
@@ -151,9 +152,6 @@ class GoodsController extends Controller
                 'title.required' => 'عنوان  کالا الزامی است.',
                 'title.max' => 'حداکثر  طول مجاز عنوان کالا 255 کارکتر می باشد.',
                 'brand_id.required' => 'برند  کالا الزامی است.',
-                'factor_number.max' => 'حداکثر  طول مجاز کد کالا 255 کارکتر می باشد.',
-                'code.max' => 'حداکثر  طول مجاز کد کالا 255 کارکتر می باشد.',
-                'code.unique' => 'این کد قبلا ثبت شده است.',
                 'unit.required' => 'واحد کالا الزامی است.',
                 'value_per_count.required' => 'حجم واحد در هر عدد  الزامی است.',
                 'value_per_count.numeric' => 'حجم واحد در هر عدد میبایست یک عدد مثبت باشد.',
@@ -174,7 +172,6 @@ class GoodsController extends Controller
             $good->update([
                 'title' => $request->title,
                 'brand_id' => $request->brand_id,
-                'code' => $request->code,
                 'main_cat_id' => $request->main_cat_id,
                 'sub_cat_id' => $request->sub_cat_id,
                 'unit' => $request->unit,

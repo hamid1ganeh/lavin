@@ -47,18 +47,13 @@
                                 <form class="form-horizontal" action="{{ route('admin.warehousing.goods.store') }}" method="post">
                                      @csrf
                                     <div class="form-group row">
-                                        <div class="col-12 col-md-4">
+                                        <div class="col-12 col-md-6">
                                             <label for="title" class="control-label IRANYekanRegular">عنوان</label>
                                             <input type="text" class="form-control input" name="title" id="title" placeholder="عنوان کالا را وارد کنید" value="{{ old('title')  }}">
                                             <span class="form-text text-danger erroralarm"> {{ $errors->first('title') }} </span>
                                         </div>
-                                        <div class="col-12 col-md-4">
-                                            <label for="code" class="control-label IRANYekanRegular">کد کالا</label>
-                                            <input type="text" class="form-control input text-right" name="code" id="code" placeholder="کد کالا را وارد کنید" value="{{ old('code')  }}">
-                                            <span class="form-text text-danger erroralarm"> {{ $errors->first('code') }} </span>
-                                        </div>
 
-                                        <div class="col-12 col-md-4">
+                                        <div class="col-12 col-md-6">
                                             <label for="brand_id" class="col-form-label IRANYekanRegular">برند</label>
                                             <select name="brand_id" id="brand_id"  class="form-control IRANYekanRegular">
                                                 <option value="">برند مورد نظر را انتخاب کنید</option>
@@ -121,7 +116,7 @@
                                         </div>
                                         <div class="col-12 col-md-4">
                                             <label for="value_per_count" class="control-label IRANYekanRegular">حجم واحد در هر عدد</label>
-                                            <input type="text" class="form-control input text-right" name="value_per_count" id=value_per_count" placeholder="حجم واحد هر حدد را وارد کنید" value="{{ old('value_per_count')  }}">
+                                            <input type="text" class="form-control input text-right" name="value_per_count" id=value_per_count" placeholder="حجم واحد هر عدد را وارد کنید" value="{{ old('value_per_count')  }}">
                                             <span class="form-text text-danger erroralarm"> {{ $errors->first('value_per_count') }} </span>
                                         </div>
 
