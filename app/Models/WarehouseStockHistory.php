@@ -7,7 +7,7 @@ use Morilog\Jalali\CalendarUtils;
 
 class WarehouseStockHistory extends Model
 {
-    protected $fillable=['warehouse_id','goods_id','event','unit','stock','delivered_by','moved_warehouse_id','number','created_by'];
+    protected $fillable=['number','warehouse_id','moved_warehouse_id','goods_id','event','stock','less','less_result','created_by','delivered_by','confirmed_by','delivered_at'];
 
     public function warehouse()
     {
@@ -34,7 +34,6 @@ class WarehouseStockHistory extends Model
         return $this->belongsTo(Admin::class,'created_by','id');
     }
 
-
     public function delivered_at()
     {
         if (is_null($this->delivered_at)){
@@ -42,7 +41,6 @@ class WarehouseStockHistory extends Model
         }
         return CalendarUtils::convertNumbers(CalendarUtils::strftime('H:i:s - Y/m/d',strtotime($this->delivered_at)));
     }
-
 
     public function created_at()
     {
@@ -92,5 +90,4 @@ class WarehouseStockHistory extends Model
 
          return   $result;
     }
-
 }

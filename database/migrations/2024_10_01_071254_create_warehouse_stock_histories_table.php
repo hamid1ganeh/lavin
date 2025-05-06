@@ -17,8 +17,11 @@ class CreateWarehouseStockHistoriesTable extends Migration
             $table->unsignedBigInteger('goods_id');
             $table->char('event',1);
             $table->unsignedDouble('stock')->default(0);
-            $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedDouble('less')->default(0);
+            $table->char('less_result',1)->nullable();
+            $table->unsignedBigInteger('created_by');
             $table->unsignedBigInteger('delivered_by')->nullable();
+            $table->unsignedBigInteger('confirmed_by')->nullable();
             $table->dateTime('delivered_at')->nullable();
             $table->timestamps();
 
@@ -41,6 +44,12 @@ class CreateWarehouseStockHistoriesTable extends Migration
                 ->onUpdate('cascade');
 
             $table->foreign('delivered_by')
+                ->references('id')
+                ->on('admins')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
+
+            $table->foreign('confirmed_by')
                 ->references('id')
                 ->on('admins')
                 ->onDelete('cascade')

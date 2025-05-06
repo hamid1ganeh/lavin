@@ -478,8 +478,8 @@
                             <ul class="nav-second-level" aria-expanded="false">
                                 <li class="IRANYekanRegular">
                                     <a href="{{ route('admin.warehousing.goods.index') }}">
-                                        <i class="fas fa-shopping-cart"></i>
-                                        <span>کالا ها</span>
+                                        <i class="mdi mdi-city"></i>
+                                        <span>انبار مرکزی</span>
                                     </a>
                                 </li>
                             </ul>

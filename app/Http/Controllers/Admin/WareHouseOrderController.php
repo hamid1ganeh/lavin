@@ -29,43 +29,44 @@ class WareHouseOrderController extends Controller
 
         $goods = Goods::where('status',Status::Active)->orderBy('title','asc')->get();
 
+        $warehousesGoods = Goods::whereHas('warehouseStock',function ($query) use ($warehouse){
+            $query->where('warehouse_id',$warehouse->id);
+        })->orderBy('title','asc')->get();
+
+
         $warehouses = Warehouse::where('status',Status::Active)
                                 ->where('id','<>',$warehouse->id)
                                 ->orderBy('name','asc')
                                 ->get();
 
 
-        return view('admin.warehousing.warehouses.order',compact('goods','warehouse','orders','warehouses'));
+        return view('admin.warehousing.warehouses.order',compact('goods','warehouse','orders','warehouses','warehousesGoods'));
     }
 
 
     public function store(Warehouse $warehouse,Request $request)
     {
+
         //اجازه دسترسی
         config(['auth.defaults.guard' => 'admin']);
         $this->authorize('warehousing.warehouses.orders.create');
 
         $request->validate(
             [
-                'number' => ['required','max:255'],
                 'good' => ['required','exists:goods,id'],
                 'count' => ['nullable','integer'],
                 'value' => ['nullable','integer'],
             ],
             [
-                'number.required' => 'شماره حواله الزامی است.',
-                'number.max' => 'حداکثر طول شماره حواله 255 کارکتر.',
                 'good.required' => ' انتخاب کالا الزامی است.',
             ]);
+
 
         if($request->event == '0' && is_null($request->warehouse)){
             alert()->error('خطا','لطفا انبار مورد نظر را انتخاب کنید.');
             return back()->withInput();
         }
 
-        if($request->event != '0' && !is_null($request->warehouse)){
-            return back()->withInput();
-        }
 
         if (is_null($request->count) && is_null($request->value)){
             alert()->error('خطا','انتخاب مقدار واحد یا تعداد الزامی است.');
@@ -85,6 +86,7 @@ class WareHouseOrderController extends Controller
         }
 
         $good = Goods::where('id',$request->good)->where('status',Status::Active)->first();
+
         if(is_null($good)){
             return back();
         }
@@ -104,11 +106,20 @@ class WareHouseOrderController extends Controller
             }
         }
 
+        $lastWarehouseStockHistory = WarehouseStockHistory::orderBy('number','desc')->first();
+        if (is_null($lastWarehouseStockHistory)){
+            $number = '1000';
+        }else{
+            $number = $lastWarehouseStockHistory->number + 1;
+        }
+
         if (in_array($request->event,['+','-','0'])){
             $order= new WarehouseStockHistory();
             $order->warehouse_id = $warehouse->id;
-            $order->moved_warehouse_id = $request->warehouse;
-            $order->number = $request->number;
+            if($request->event == '0'){
+                $order->moved_warehouse_id = $request->warehouse;
+            }
+            $order->number = $number;
             $order->goods_id = $request->good;
             $order->event = $request->event;
             $order->stock = ($order->good->value_per_count*$count)+$value;
@@ -230,8 +241,6 @@ class WareHouseOrderController extends Controller
                     alert()->error('خطا','مقدار درخواستی شما در انبار مرکزی موجود نمی باشد.');
                     return back();
                 }
-
-
 
 
                 $stock->warehouse_id = $order->warehouse_id;
