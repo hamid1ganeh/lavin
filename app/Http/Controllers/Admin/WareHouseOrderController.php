@@ -23,6 +23,7 @@ class WareHouseOrderController extends Controller
 
         $orders = WarehouseStockHistory::with('good.main_category','good.sub_category')
             ->where('warehouse_id',$warehouse->id)
+            ->orWhere('moved_warehouse_id',$warehouse->id)
             ->orderBy('created_at','desc')
             ->paginate(10)
             ->withQueryString();
@@ -46,7 +47,6 @@ class WareHouseOrderController extends Controller
 
     public function store(Warehouse $warehouse,Request $request)
     {
-
         //اجازه دسترسی
         config(['auth.defaults.guard' => 'admin']);
         $this->authorize('warehousing.warehouses.orders.create');
@@ -209,8 +209,9 @@ class WareHouseOrderController extends Controller
         }
         return back();
     }
-    public function deliver(Warehouse $warehouse,WarehouseStockHistory $order)
+    public function deliver(Warehouse $warehouse,WarehouseStockHistory $order,Request $request)
     {
+
         //اجازه دسترسی
         config(['auth.defaults.guard' => 'admin']);
         $this->authorize('warehousing.warehouses.orders.delivery');
@@ -222,18 +223,31 @@ class WareHouseOrderController extends Controller
             $stock = WarehouseStock::where('warehouse_id',$order->warehouse_id )->where('goods_id',$order->goods_id)->first();
 
             if ($order->event == '+'){
-                if($order->stock > $order->good->stockAsUnit()){
+
+                if (is_null($order->confirmed_by)){
+                    alert()->error('خطا','انبار مرکزی تایید نکرده است.');
+                    return back();
+                }
+
+                if ( $request->less>$order->stock){
+                    alert()->error('خطا','مقدار کاستی از مقدار موجود بیشتر است');
+                    return back();
+                }
+
+                $stockCount = $order->stock-$request->less;
+
+                if($stockCount > $order->good->stockAsUnit()){
                     alert()->error('خطا','مقدار درخواستی شما در انبار مرکزی موجود نمی باشد.');
                     return back();
                 }
                 if (is_null($stock)){
                     $stock = new WarehouseStock();
-                    $stock->stock = $order->stock;
+                    $stock->stock = $stockCount;
                 }else{
-                    $stock->stock += $order->stock;
+                    $stock->stock += $stockCount;
                 }
 
-                $good->count_stock -= $order->countStock();
+                $good->count_stock -= $order->countStockWit();
                 $good->unit_stock -= $order->remainderStock();
 
 

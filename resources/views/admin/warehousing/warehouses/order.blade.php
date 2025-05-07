@@ -253,6 +253,7 @@
                                         <th><b class="IRANYekanRegular">زمان ایجاد</b></th>
                                         <th><b class="IRANYekanRegular">تحویل گیرنده</b></th>
                                         <th><b class="IRANYekanRegular">زمان تحویل</b></th>
+                                        <th><b class="IRANYekanRegular">تایید انبار مرکزی</b></th>
                                         <th><b class="IRANYekanRegular">اقدامات</b></th>
                                     </tr>
                                     </thead>
@@ -283,25 +284,42 @@
                                             <td><strong class="IRANYekanRegular">{{ $order->deliveredBy->fullname ?? '' }}</strong></td>
                                             <td><strong class="IRANYekanRegular">{{ $order->delivered_at() }}</strong></td>
                                             <td>
+                                                @if($order->event != '0')
+                                                @if(is_null($order->confirmed_by))
+                                                    <span class="badge badge-danger IR p-1">تایید نشده</span>
+                                                @else
+                                                    <span class="badge badge-primary IR p-1">تایید شد</span>
+                                                @endif
+                                                @endif
+                                            </td>
+                                            <td>
                                                 <!-- Delivery Modal -->
                                                 <div class="modal fade" id="delivery{{ $order->id }}" tabindex="-1" aria-labelledby="reviewLabel" aria-hidden="true">
                                                     <div class="modal-dialog modal-xs">
                                                         <div class="modal-content">
                                                             <div class="modal-header py-3">
-                                                                <h5 class="modal-title IRANYekanRegular" id="newReviewLabel">تحویل حواله</h5>
+                                                                <h5 class="modal-title IRANYekanRegular" id="newReviewLabel">رسید حواله</h5>
                                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                                     <span aria-hidden="true">&times;</span>
                                                                 </button>
                                                             </div>
-                                                            <div class="modal-body">
-                                                                <h5 class="IRANYekanRegular">آیا مطمئن هستید که میخواهید این حواله را تحویل بگیرید؟</h5>
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <form action="{{ route('admin.warehousing.warehouses.orders.deliver', [$warehouse,$order]) }}"  method="POST" class="d-inline">
+                                                            <div class="modal-body text-center">
+                                                                <form action="{{ route('admin.warehousing.warehouses.orders.deliver', [$warehouse,$order]) }}"  method="POST" class="d-inline" id="deliver{{ $order->id }}">
                                                                     @csrf
                                                                     @method('patch')
-                                                                    <button type="submit" class="btn btn-info px-8" title="تحویل" >تحویل</button>
+                                                                    <h5 class="IRANYekanRegular text-danger"> مقدار کاستی را بر اساس {{$order->good->unit}} وارد کنید</h5>
+                                                                    <div class="form-group row">
+                                                                        <div class="col-2"></div>
+                                                                        <div class="col-8">
+                                                                            <input type="number" class="form-control input text-center" name="less" id="less{{$order->id}}" placeholder="مقدار کاستی  را وارد کنید" value="{{ old('value')  }}">
+                                                                            <span class="form-text text-danger erroralarm"> {{ $errors->first('less') }} </span>
+                                                                        </div>
+                                                                        <div class="col-2"></div>
+                                                                    </div>
                                                                 </form>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="submit" class="btn btn-info px-8" title="تحویل" form="deliver{{ $order->id }}">تحویل</button>
                                                                 <button type="button" class="btn btn-secondary" title="انصراف" data-dismiss="modal">انصراف</button>
                                                             </div>
                                                         </div>
@@ -425,11 +443,13 @@
                                                     <div class="input-group-append">
                                                         <i class=" ti-align-justify" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
                                                         <div class="dropdown-menu">
-                                                            @if(is_null($order->delivered_by) && (in_array(Auth::guard('admin')->id(),$warehouse->admins->pluck('id')->toArray())))
+                                                            @if(is_null($order->delivered_by) &&
+                                                                (in_array(Auth::guard('admin')->id(),$warehouse->admins->pluck('id')->toArray())) &&
+                                                                (($order->event == '+' && !is_null($order->confirmed_by)) || ($order->event == '0' && $order->moved_warehouse_id==$warehouse->id)))
                                                                 @if(Auth::guard('admin')->user()->can('warehousing.warehouses.orders.delivery'))
                                                                     <a href="#delivery{{ $order->id }}" data-toggle="modal" class="dropdown-item IR cusrsor" title="تحویل">
                                                                         <i class="ti-thumb-up  text-info"></i>
-                                                                        تحویل
+                                                                        رسید
                                                                     </a>
                                                                 @endif
                                                             @endif

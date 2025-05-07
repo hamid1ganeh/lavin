@@ -1993,7 +1993,7 @@ class PermissionSeeder extends Seeder
 
         DB::table('permissions')->insert([
             'name' => 'warehousing.warehouses.orders.delivery',
-            'description' => 'تحویل حواله انبار',
+            'description' => 'رسید حواله انبار',
             'status'=> Status::Active
         ]);
 
