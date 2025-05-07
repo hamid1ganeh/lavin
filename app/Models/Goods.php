@@ -43,6 +43,10 @@ class Goods extends Model
         return $this->belongsTo(Brand::class);
     }
 
+    public function warehouseStock()
+    {
+        return $this->hasMany(WarehouseStock::class, 'goods_id', 'id');
+    }
     public function expireDate()
     {
         if(is_null($this->expire_date)){

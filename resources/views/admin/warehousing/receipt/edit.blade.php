@@ -85,7 +85,7 @@
                                                             @endif
                                                             <select class="widht-100 form-control" name="goods[]" required>
                                                                 @foreach($goods as $good)
-                                                                    <option value="{{ $good->id }}" @if($good->id== old('goods')[$index]) selected @endif>{{ $good->title.' - برند  ('.$good->brand.") -  کد  (".$good->code.")" }}</option>
+                                                                    <option value="{{ $good->id }}" @if($good->id== old('goods')[$index]) selected @endif>{{ $good->title.' - برند  ('.$good->brand->name.") -  کد  (".$good->code.")" }}</option>
                                                                 @endforeach
                                                             </select>
                                                         </div>
@@ -126,7 +126,7 @@
                                                             @endif
                                                             <select class="widht-100 form-control" name="goods[]" required>
                                                                 @foreach($goods as $good)
-                                                                    <option value="{{ $good->id }}" @if($good->id== $stock->good_id) selected @endif>{{ $good->title.' - برند  ('.$good->brand.") -  کد  (".$good->code.")" }}</option>
+                                                                    <option value="{{ $good->id }}" @if($good->id== $stock->good_id) selected @endif>{{ $good->title.' - برند  ('.$good->brand->name.") -  کد  (".$good->code.")" }}</option>
                                                                 @endforeach
                                                             </select>
                                                         </div>
@@ -213,7 +213,7 @@
                            <div class="col-12 col-md-5">
                                  <select class="widht-100 form-control select2" name="goods[]" required>
                                         @foreach($goods as $good)
-                                        <option value="{{ $good->id }}" selected>{{ $good->title.' - برند  ('.$good->brand.") -  کد  (".$good->code.")" }}</option>
+                                        <option value="{{ $good->id }}" selected>{{ $good->title.' - برند  ('.$good->brand->name.") -  کد  (".$good->code.")" }}</option>
                                         @endforeach
                                 </select>
                           </div>

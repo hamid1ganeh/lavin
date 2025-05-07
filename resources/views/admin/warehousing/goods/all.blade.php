@@ -18,8 +18,8 @@
                             </ol>
                         </div>
                         <h4 class="page-title">
-                             <i class="fas fa-shopping-cart page-icon"></i>
-                            لیست کالاهای انبار اصلی
+                            <i class="mdi mdi-city page-icon"></i>
+                            لیست کالاهای انبار مرکزی
                         </h4>
                     </div>
                 </div>
