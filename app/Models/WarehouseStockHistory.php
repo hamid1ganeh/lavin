@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Morilog\Jalali\CalendarUtils;
+use Morilog\Jalali\Jalalian;
 
 class WarehouseStockHistory extends Model
 {
@@ -34,7 +35,7 @@ class WarehouseStockHistory extends Model
         return $this->belongsTo(Admin::class,'created_by','id');
     }
 
-    public function delivered_at()
+    public function deliveredAt()
     {
         if (is_null($this->delivered_at)){
             return null;
@@ -42,9 +43,9 @@ class WarehouseStockHistory extends Model
         return CalendarUtils::convertNumbers(CalendarUtils::strftime('H:i:s - Y/m/d',strtotime($this->delivered_at)));
     }
 
-    public function created_at()
+    public function createdAt()
     {
-        return CalendarUtils::convertNumbers(CalendarUtils::strftime('H:i:s - Y/m/d',strtotime($this->crated_at)));
+        return CalendarUtils::convertNumbers(CalendarUtils::strftime('Y/m/d',strtotime($this->created_at)));
     }
 
     public function event()
@@ -91,8 +92,6 @@ class WarehouseStockHistory extends Model
         return   $result;
     }
 
-
-
     public function countLess()
     {
         return (int)($this->less/$this->good->value_per_count);
@@ -121,5 +120,50 @@ class WarehouseStockHistory extends Model
         }
 
         return   $result;
+    }
+
+
+    public function scopeFilter($query)
+    {
+
+        $event = request('event');
+        if(isset($event) && $event != '')
+        {
+            $query->whereIn('event',$event);
+        }
+
+        $goods = request('goods');
+        if(isset($goods) && $goods != '')
+        {
+            $query->whereIn('goods_id',$goods);
+        }
+
+
+        //فیلتر تاریخ  از
+        $since = request('since');
+        if(isset($since) &&  $since!='')
+        {
+            $since =  faToEn($since);
+            $since = Jalalian::fromFormat('Y/m/d', $since)->toCarbon("Y-m-d");
+            $query->where('created_at','>=', $since);
+        }
+
+        //فیلتر  تاریخ تا
+        $until = request('until');
+        if(isset($until) &&  $until!='')
+        {
+            $until =  faToEn($until);
+            $until = Jalalian::fromFormat('Y/m/d', $until)->toCarbon("Y-m-d");
+            $query->where('created_at','<=', $until);
+        }
+
+        //فیلتر شماره حواله
+        $number = request('number');
+        if(isset($number) &&  $number!='')
+        {
+            $query->where('number','like', '%'.$number.'%');
+        }
+
+        return $query;
     }
 }

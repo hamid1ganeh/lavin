@@ -105,12 +105,12 @@
 
                                             <div class="form-group justify-content-center col-6">
                                                 <label for="since" class="control-label IRANYekanRegular">از تاریخ</label>
-                                                <input type="text"   class="form-control" id="since-filter" name="since" value="{{ request('since') }}" readonly>
+                                                <input type="text"   class="form-control text-center" id="since-filter" name="since" value="{{ request('since') }}" readonly>
                                             </div>
 
                                             <div class="form-group justify-content-center col-6">
                                                 <label for="since" class="control-label IRANYekanRegular">تا تاریخ</label>
-                                                <input type="text"   class="form-control" id="until-filter" name="until" value="{{ request('until') }}" readonly>
+                                                <input type="text"   class="form-control text-center" id="until-filter" name="until" value="{{ request('until') }}" readonly>
                                             </div>
 
 

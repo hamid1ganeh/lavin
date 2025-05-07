@@ -25,6 +25,7 @@ class WareHouseOrderController extends Controller
             ->where('warehouse_id',$warehouse->id)
             ->orWhere('moved_warehouse_id',$warehouse->id)
             ->orderBy('created_at','desc')
+            ->filter()
             ->paginate(10)
             ->withQueryString();
 

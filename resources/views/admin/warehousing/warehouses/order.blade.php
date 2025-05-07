@@ -1,5 +1,37 @@
 @extends('admin.master')
 
+@section('script')
+    <script type="text/javascript">
+        $("#since-filter").MdPersianDateTimePicker({
+            targetDateSelector: "#showDate_class",
+            targetTextSelector: "#since-filter",
+            textFormat: "yyyy/MM/dd",
+            isGregorian: false,
+            modalMode: false,
+            englishNumber: false,
+            enableTimePicker: true,
+            selectedDateToShow: new Date(),
+            calendarViewOnChange: function(param1){
+                console.log(param1);
+            }
+        });
+
+        $("#until-filter").MdPersianDateTimePicker({
+            targetDateSelector: "#showDate_class",
+            targetTextSelector: "#until-filter",
+            textFormat: "yyyy/MM/d",
+            isGregorian: false,
+            modalMode: false,
+            englishNumber: false,
+            enableTimePicker: true,
+            selectedDateToShow: new Date(),
+            calendarViewOnChange: function(param1){
+                console.log(param1);
+            }
+        });
+    </script>
+@endsection
+
 @section('content')
 
     <div class="content-page">
@@ -41,7 +73,12 @@
                         <div class="card">
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col-12 text-right">
+                                    <div class="col-12 col-md-6">
+                                        <button class="btn btn-info" type="button" data-toggle="collapse" data-target="#filter" aria-expanded="false" aria-controls="collapseExample" title="فیلتر">
+                                            <i class="fas fa-filter"></i>
+                                        </button>
+                                    </div>
+                                    <div class="col-12 col-md-6 text-right">
                                         @if(Auth::guard('admin')->user()->can('warehousing.warehouses.orders.create'))
                                             <div class="btn-group" >
                                                 <a href="#recive{{ $warehouse->id }}" data-toggle="modal" class="btn btn-primary" title="ایجاد حواله دریافتی">
@@ -234,6 +271,79 @@
                                         @endif
                                     </div>
                                 </div>
+                                <div class="collapse" id="filter">
+                                    <div class="card card-body filter">
+                                        <form id="filter-form">
+                                            <div class="row">
+                                                <div class="form-group justify-content-center col-12 col-md-6">
+                                                    <label for="status-filter" class="control-label IRANYekanRegular">کالا</label>
+                                                    <select name="goods[]" id="goods-filter" class="form-control select2 select2-multiple text-right IRANYekanRegular" multiple="multiple" multiple data-placeholder="...   برندها  را انتخاب نمایید">
+                                                        @foreach($warehousesGoods as  $good)
+                                                            <option value="{{ $good->id }}" @if(request('goods')!=null) {{ in_array($good->id,request('goods'))?'selected':'' }} @endif>{{ $good->title }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+
+                                                <div class="form-group justify-content-center col-12 col-md-6">
+                                                    <label for="event-filter" class="control-label IRANYekanRegular">نوع حواله</label>
+                                                    <select name="event[]" id="event-filter" class="form-control select2 select2-multiple text-right IRANYekanRegular" multiple="multiple" multiple data-placeholder="...   برندها  را انتخاب نمایید">
+                                                        <option value="+" @if(request('event')!=null) {{ in_array('+',request('event'))?'selected':'' }} @endif>دریافتی</option>
+                                                        <option value="-" @if(request('event')!=null) {{ in_array('-',request('event'))?'selected':'' }} @endif>مرجوعی</option>
+                                                        <option value="0" @if(request('event')!=null) {{ in_array('0',request('event'))?'selected':'' }} @endif>ارسالی</option>
+
+                                                    </select>
+                                                </div>
+                                            </diV>
+
+                                            <div class="row">
+                                                <div class="form-group justify-content-center col-12 col-md-6">
+                                                    <label for="since" class="control-label IRANYekanRegular">از تاریخ</label>
+                                                    <input type="text"   class="form-control text-center" id="since-filter" name="since" value="{{ request('since') }}" readonly>
+                                                </div>
+
+                                                <div class="form-group justify-content-center col-12 col-md-6">
+                                                    <label for="since" class="control-label IRANYekanRegular">تا تاریخ</label>
+                                                    <input type="text"   class="form-control text-center" id="until-filter" name="until" value="{{ request('until') }}" readonly>
+                                                </div>
+                                            </diV>
+
+                                            <div class="row">
+                                                <div class="form-group justify-content-center col-12 col-md-6">
+                                                    <label for="number-filter" class="control-label IRANYekanRegular">شماره حواله</label>
+                                                    <input type="text"  class="form-control input" id="number-filter" name="number" placeholder="شماره حواله را وارد کنید" value="{{ request('number') }}">
+                                                </div>
+                                            </diV>
+
+
+                                            <div class="form-group col-12 d-flex justify-content-center mt-3">
+                                                <button type="submit" class="btn btn-info col-lg-2 offset-lg-4 cursor-pointer">
+                                                    <i class="fa fa-filter fa-sm"></i>
+                                                    <span class="pr-2">فیلتر</span>
+                                                </button>
+
+                                                <div class="col-lg-2">
+                                                    <a onclick="reset()" class="btn btn-light border border-secondary cursor-pointer">
+                                                        <i class="fas fa-undo fa-sm"></i>
+                                                        <span class="pr-2">پاک کردن</span>
+                                                    </a>
+                                                </div>
+
+                                                <script>
+                                                    function reset()
+                                                    {
+                                                        document.getElementById("name-filter").value = "";
+                                                        document.getElementById("brand-filter").value = "";
+                                                        document.getElementById("factor-number-filter").value = "";
+                                                        document.getElementById("code-filter").value = "";
+                                                    }
+                                                </script>
+
+
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+
 
                                 <div class="table-responsive">
                                     <table id="tech-companies-1" class="table table-striped">
@@ -251,7 +361,7 @@
                                             <th><b class="IRANYekanRegular">نوع حواله</b></th>
                                             <th><b class="IRANYekanRegular">انبار تحویل گیرنده</b></th>
                                             <th><b class="IRANYekanRegular">ایجاد کننده</b></th>
-                                            <th><b class="IRANYekanRegular">زمان ایجاد</b></th>
+                                            <th><b class="IRANYekanRegular">تاریخ ایجاد</b></th>
                                             <th><b class="IRANYekanRegular">تحویل گیرنده</b></th>
                                             <th><b class="IRANYekanRegular">زمان تحویل</b></th>
                                             <th><b class="IRANYekanRegular">تایید انبار مرکزی</b></th>
@@ -282,9 +392,9 @@
                                                     @endif
                                                 </td>
                                                 <td><strong class="IRANYekanRegular">{{ $order->createdBy->fullname ?? '' }}</strong></td>
-                                                <td><strong class="IRANYekanRegular">{{ $order->created_at() }}</strong></td>
+                                                <td><strong class="IRANYekanRegular">{{ $order->createdAt() }}</strong></td>
                                                 <td><strong class="IRANYekanRegular">{{ $order->deliveredBy->fullname ?? '' }}</strong></td>
-                                                <td><strong class="IRANYekanRegular">{{ $order->delivered_at() }}</strong></td>
+                                                <td><strong class="IRANYekanRegular">{{ $order->deliveredAt() }}</strong></td>
                                                 <td>
                                                     @if($order->event != '0')
                                                         @if(is_null($order->confirmed_by))
