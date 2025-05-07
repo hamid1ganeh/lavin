@@ -246,7 +246,8 @@
                                             <th><b class="IRANYekanRegular">دسته اصلی</b></th>
                                             <th><b class="IRANYekanRegular">دسته فرعی</b></th>
                                             <th><b class="IRANYekanRegular">موجودی واحد در هر عدد</b></th>
-                                            <th><b class="IRANYekanRegular">موجودی کل</b></th>
+                                            <th><b class="IRANYekanRegular">موجودی</b></th>
+                                            <th><b class="IRANYekanRegular">مغایرت</b></th>
                                             <th><b class="IRANYekanRegular">نوع حواله</b></th>
                                             <th><b class="IRANYekanRegular">انبار تحویل گیرنده</b></th>
                                             <th><b class="IRANYekanRegular">ایجاد کننده</b></th>
@@ -268,6 +269,7 @@
                                                 <td><strong class="IRANYekanRegular">{{ $order->good->sub_category->title ?? '' }}</strong></td>
                                                 <td><strong class="IRANYekanRegular">{{ $order->good->value_per_count.' '.$order->good->unit.' در هر عدد ' }}</strong></td>
                                                 <td><strong class="IRANYekanRegular">{{ $order->stock() ?? '' }}</strong></td>
+                                                <td><strong class="IRANYekanRegular">{{ $order->less() ?? '' }}</strong></td>
                                                 <td><strong class="IRANYekanRegular">{{ $order->event() }}</strong></td>
                                                 <td>
 
@@ -372,47 +374,28 @@
                                                                         @csrf
                                                                         @method('PATCH')
 
-                                                                        <div class="form-group row">
-                                                                            <div class="col-6">
-                                                                                <label for="number{{$order->id}}" class="control-label IRANYekanRegular">شماره حواله</label>
-                                                                                <input type="text" class="form-control input text-center" name="number" id="number{{$order->id}}" placeholder=" شماره حواله را وارد کنید" value="{{ old('number') ?? $order->number }}" required>
-                                                                                <span class="form-text text-danger erroralarm"> {{ $errors->first('number') }} </span>
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <div class="form-group row">
-                                                                            <div class="col-12">
-                                                                                <label for="event{{$order->id}}" class="col-form-label IRANYekanRegular">حواله</label>
-                                                                                <select name="event" id="event{{$order->id}}"  class="width-100 form-control IRANYekanRegular" onchange="order(this.value,'warehouse{{$order->id}}')">
-                                                                                    <option value="+" @if(old('event')== '+' || $warehouse->event == '+') 'selected' @endif>دریافتی</option>
-                                                                                    <option value="-" @if(old('event')== '-' || $warehouse->event == '+') 'selected' @endif>مرجوعی</option>
-                                                                                    <option value="0" @if(old('event')== '0' ||  $warehouse->event == '0')) 'selected' @endif>ارسالی</option>
-                                                                                </select>
-                                                                                <span class="form-text text-danger erroralarm"> {{ $errors->first('event') }} </span>
-                                                                            </div>
-                                                                        </div>
-
+                                                                        @if($order->event=='0')
                                                                         <div class="form-group row">
                                                                             <div class="col-12">
                                                                                 <label for="warehouse{{$order->id}}" class="col-form-label IRANYekanRegular">ارسال به انبار دیگر</label>
-                                                                                <select name="warehouse" id="warehouse{{$order->id}}"  class="width-100 form-control IRANYekanRegular" onchange="send(this.value,'event{{$order->id}}')">
+                                                                                <select name="warehouse" id="warehouse{{$order->id}}"  class="width-100 form-control IRANYekanRegular">
                                                                                     <option value="">انبار مورد نظر را انتخاب کنید</option>
                                                                                     @foreach($warehouses as $ws)
-                                                                                        <option value="{{ $ws->id }}" {{$ws->id == old('warehouse') || $ws->id ==  $warehouse->moved_warehouse_id?'selected':'' }}>{{ $ws->name }}</option>
+                                                                                        <option value="{{ $ws->id }}" {{ $ws->id == old('warehouse') || $ws->id ==  $order->moved_warehouse_id ?'selected':'' }}>{{ $ws->name }}</option>
                                                                                     @endforeach
                                                                                 </select>
                                                                                 <span class="form-text text-danger erroralarm"> {{ $errors->first('warehouse') }} </span>
                                                                             </div>
                                                                         </div>
-
+                                                                        @endif
 
                                                                         <div class="form-group row">
                                                                             <div class="col-12">
                                                                                 <label for="good" class="col-form-label IRANYekanRegular">کالا</label>
                                                                                 <select name="good" id="good{{$order->id}}"  class="width-100 form-control IRANYekanRegular">
                                                                                     <option value="">کالا مورد نظر را انتخاب کنید</option>
-                                                                                    @foreach($goods as $good)
-                                                                                        <option value="{{ $good->id }}" {{$good->id == old('good') || $good->id == $order->goods_id?'selected':'' }}>{{ $good->title }}</option>
+                                                                                    @foreach($warehousesGoods as $good)
+                                                                                        <option value="{{ $good->id }}" {{$good->id == old('good') || $good->id == $order->goods_id ?'selected':'' }}>{{ $good->title }}</option>
                                                                                     @endforeach
                                                                                 </select>
                                                                                 <span class="form-text text-danger erroralarm"> {{ $errors->first('good') }} </span>

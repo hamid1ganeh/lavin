@@ -90,4 +90,36 @@ class WarehouseStockHistory extends Model
 
         return   $result;
     }
+
+
+
+    public function countLess()
+    {
+        return (int)($this->less/$this->good->value_per_count);
+    }
+
+    public function remainderLess()
+    {
+        return fmod($this->less,$this->good->value_per_count);
+    }
+    public function less()
+    {
+        $count = $this->countLess();
+        $remainder = $this->remainderLess();
+        $result='';
+
+        if($count>0){
+            $result .=$count.' عدد ';
+
+            if($remainder>0){
+                $result .= ' و ';
+            }
+        }
+
+        if($remainder>0){
+            $result .= $remainder.' '.$this->good->unit;
+        }
+
+        return   $result;
+    }
 }
