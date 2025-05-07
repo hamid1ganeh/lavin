@@ -18,8 +18,8 @@
                             </ol>
                         </div>
                         <h4 class="page-title">
-                             <i class="mdi mdi-city page-icon"></i>
-                            لیست کالاهای انبار مرکزی
+                             <i class="fas fa-shopping-cart page-icon"></i>
+                            لیست کالاهای انبار اصلی
                         </h4>
                     </div>
                 </div>
@@ -65,9 +65,14 @@
                                                 <input type="text" class="form-control input" id="name-filter" name="name" placeholder="نام کالا را وارد کنید" value="{{ request('name') }}">
                                             </div>
 
+
                                             <div class="form-group justify-content-center col-12 col-md-6">
-                                                <label for="brand-filter" class="control-label IRANYekanRegular">برند</label>
-                                                <input type="text"  class="form-control input" id="brand-filter" name="brand" placeholder="برند کالا را وارد کنید" value="{{ request('brand') }}">
+                                                <label for="status-filter" class="control-label IRANYekanRegular">برندها</label>
+                                                <select name="brands[]" id="brand-filter" class="form-control select2 select2-multiple text-right IRANYekanRegular" multiple="multiple" multiple data-placeholder="...   برندها  را انتخاب نمایید">
+                                                    @foreach($brands as  $brand)
+                                                        <option value="{{ $brand->id }}" @if(request('brands')!=null) {{ in_array($brand->id,request('brands'))?'selected':'' }} @endif>{{ $brand->name }}</option>
+                                                    @endforeach
+                                                </select>
                                             </div>
                                         </diV>
 
@@ -120,7 +125,6 @@
                                         <th><b class="IRANYekanRegular">ردیف</b></th>
                                         <th><b class="IRANYekanRegular">عنوان</b></th>
                                         <th><b class="IRANYekanRegular">برند</b></th>
-                                        <th><b class="IRANYekanRegular">شماره فاکتور</b></th>
                                         <th><b class="IRANYekanRegular">کد</b></th>
                                         <th><b class="IRANYekanRegular">دسته اصلی</b></th>
                                         <th><b class="IRANYekanRegular">دسته فرعی</b></th>
@@ -140,8 +144,7 @@
                                         <tr>
                                             <td><strong class="IRANYekanRegular">{{ ++$index }}</strong></td>
                                             <td><strong class="IRANYekanRegular">{{ $good->title }}</strong></td>
-                                            <td><strong class="IRANYekanRegular">{{ $good->brand }}</strong></td>
-                                            <td><strong class="IRANYekanRegular">{{ $good->factor_number }}</strong></td>
+                                            <td><strong class="IRANYekanRegular">{{ $good->brand->name ?? ''  }}</strong></td>
                                             <td><strong class="IRANYekanRegular">{{ $good->code }}</strong></td>
                                             <td><strong class="IRANYekanRegular">{{ $good->main_category->title ?? '' }}</strong></td>
                                             <td><strong class="IRANYekanRegular">{{ $good->sub_category->title ?? '' }}</strong></td>

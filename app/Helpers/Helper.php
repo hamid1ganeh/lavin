@@ -1,6 +1,9 @@
 <?php
- 
-    if(!function_exists('display_sort_arrow')) 
+
+use Morilog\Jalali\CalendarUtils;
+use Carbon\Carbon;
+
+if(!function_exists('display_sort_arrow'))
     {
         function display_sort_arrow($column)
         {
@@ -93,11 +96,11 @@
             }
         }
     }
- 
+
 
     if (!function_exists('faToEn'))
     {
-        function faToEn($string) 
+        function faToEn($string)
         {
             return strtr($string, array('۰'=>'0', '۱'=>'1', '۲'=>'2', '۳'=>'3', '۴'=>'4', '۵'=>'5', '۶'=>'6', '۷'=>'7', '۸'=>'8', '۹'=>'9', '٠'=>'0', '١'=>'1', '٢'=>'2', '٣'=>'3', '٤'=>'4', '٥'=>'5', '٦'=>'6', '٧'=>'7', '٨'=>'8', '٩'=>'9'));
         }
@@ -105,9 +108,16 @@
 
     if (!function_exists('En2Fa'))
     {
-        function En2Fa($string) 
+        function En2Fa($string)
         {
             return strtr($string, array('0'=>'۰', '1'=>'۱', '2'=>'۲', '3'=>'۳', '4'=>'۴', '5'=>'۵', '۶'=>'6', '7'=>'۷', '8'=>'۸', '۹'=>'9'));
         }
     }
- 
+
+if (!function_exists('jalaliNow'))
+{
+    function jalaliNow($format)
+    {
+        return CalendarUtils::convertNumbers(CalendarUtils::strftime($format,strtotime(Carbon::now('+3:30')->format('Y-m-d h:i:s'))));
+    }
+}

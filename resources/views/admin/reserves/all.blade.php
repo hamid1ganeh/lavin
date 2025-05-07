@@ -959,31 +959,21 @@
                                                                 </a>
                                                               @endif
 
-                                                               @if(Auth::guard('admin')->user()->can('reserves.payment'))
-                                                                <a href="{{ route('admin.reserves.payment.show',$reserve) }}" class="dropdown-item IR cursor-pointer" title="پرداخت" target="_blank">
-                                                                    <i class="fas fa-dollar-sign text-primary cursor-pointer"></i>
-                                                                    <span class="p-1">صورتحساب</span>
-                                                                </a>
-                                                               @endif
-
-                                                                @if(Auth::guard('admin')->user()->can('reserves.price')  &&
-                                                                    App\Enums\reserveStatus::done != $reserve->status)
+                                                               @if(Auth::guard('admin')->user()->can('reserves.price')  && is_null($reserve->invoice))
                                                                 <a href="#price{{ $reserve->id }}" data-toggle="modal" class="dropdown-item IR cursor-pointer" title="تغییر قیمت">
                                                                     <i class="fas fa-dollar-sign text-success cursor-pointer"></i>
                                                                     <span class="p-1">تغییر قیمت</span>
                                                                 </a>
                                                                @endif
 
-                                                                @if(in_array($reserve->status,[App\Enums\reserveStatus::accept,App\Enums\reserveStatus::secratry]) && Auth::guard('admin')->user()->can('reserves.secratry'))
+                                                                @if(in_array($reserve->status,[App\Enums\ReserveStatus::accept,App\Enums\ReserveStatus::secratry]) && Auth::guard('admin')->user()->can('reserves.secratry'))
                                                                 <a class="dropdown-item IR cusrsor" href="#secratry{{ $reserve->id }}" data-toggle="modal" title="تعیین منشی">
                                                                     <i class="fa fa-user text-dark cusrsor"></i>
                                                                     <span class="p-1">تعیین منشی</span>
                                                                 </a>
                                                                 @endif
 
-                                                                @if(Auth::guard('admin')->user()->can('reserves.done') &&
-                                                                (App\Enums\reserveStatus::done == $reserve->status ||
-                                                                 App\Enums\reserveStatus::secratry == $reserve->status ))
+                                                                @if(Auth::guard('admin')->user()->can('reserves.done') && in_array($reserve->status,[App\Enums\ReserveStatus::done,App\Enums\ReserveStatus::secratry]))
                                                                 <a class="dropdown-item IR cusrsor" href="#asistant{{ $reserve->id }}" data-toggle="modal" title="تعیین وضعیت">
                                                                     <i class="fas fa-thumbs-up  text-primary cursor-pointer"></i>
                                                                     <span class="p-1">تعیین وضعیت</span>
@@ -991,7 +981,7 @@
                                                                 @endif
 
                                                                 @if(Auth::guard('admin')->user()->can('reserves.upgrade.index') &&
-                                                                    App\Enums\reserveStatus::done == $reserve->status &&
+                                                                    App\Enums\ReserveStatus::done == $reserve->status &&
                                                                      !is_null($reserve->secratry_id))
                                                                     <a class="dropdown-item IR cusrsor" href="{{ route('admin.reserves.upgrade.index', $reserve) }}" title="ارتقاء" target="_blank">
                                                                         <i class="fas fa-level-up-alt text-success cursor-pointer"></i>
@@ -1000,7 +990,7 @@
                                                                 @endif
 
                                                                 @if(Auth::guard('admin')->user()->can('complications.show') &&
-                                                                    App\Enums\reserveStatus::done == $reserve->status)
+                                                                    App\Enums\ReserveStatus::done == $reserve->status)
                                                                     <a class="dropdown-item IR cusrsor" href="{{ route('admin.reserves.complications.show', $reserve) }}" title="عوارض" target="_blank">
                                                                         <i class="fa fa-exclamation text-warning cursor-pointer"></i>
                                                                         <span class="p-1">عوارض</span>

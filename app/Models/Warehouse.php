@@ -20,4 +20,9 @@ class Warehouse extends Model
          return $this->hasMany(WarehouseStock::class,'warehouse_id','id');
      }
 
+    public function adminsArrayId()
+    {
+        return $this->admins->pluck('id')->toArray();
+    }
+
 }

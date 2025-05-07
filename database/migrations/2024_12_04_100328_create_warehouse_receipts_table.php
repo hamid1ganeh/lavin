@@ -24,6 +24,7 @@ class CreateWarehouseReceiptsTable extends Migration
             $table->unsignedDouble('price')->default(0);
             $table->unsignedDouble('discount')->default(0);
             $table->unsignedDouble('total_cost')->default(0);
+            $table->string('description')->nullable();
             $table->timestamps();
 
             $table->foreign('seller_id')

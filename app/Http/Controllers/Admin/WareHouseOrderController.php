@@ -21,19 +21,17 @@ class WareHouseOrderController extends Controller
         config(['auth.defaults.guard' => 'admin']);
         $this->authorize('warehousing.warehouses.orders.index');
 
+        if (!in_array(Auth::guard('admin')->id(),$warehouse->adminsArrayId())){
+            abort(403);
+        }
+
         $orders = WarehouseStockHistory::with('good.main_category','good.sub_category')
             ->where('warehouse_id',$warehouse->id)
-            ->orWhere('moved_warehouse_id',$warehouse->id)
-            ->orderBy('created_at','desc')
+            ->orderBy('number','desc')
             ->paginate(10)
             ->withQueryString();
 
         $goods = Goods::where('status',Status::Active)->orderBy('title','asc')->get();
-
-        $warehousesGoods = Goods::whereHas('warehouseStock',function ($query) use ($warehouse){
-            $query->where('warehouse_id',$warehouse->id);
-        })->orderBy('title','asc')->get();
-
 
         $warehouses = Warehouse::where('status',Status::Active)
                                 ->where('id','<>',$warehouse->id)
@@ -41,7 +39,7 @@ class WareHouseOrderController extends Controller
                                 ->get();
 
 
-        return view('admin.warehousing.warehouses.order',compact('goods','warehouse','orders','warehouses','warehousesGoods'));
+        return view('admin.warehousing.warehouses.order',compact('goods','warehouse','orders','warehouses'));
     }
 
 
@@ -51,6 +49,10 @@ class WareHouseOrderController extends Controller
         config(['auth.defaults.guard' => 'admin']);
         $this->authorize('warehousing.warehouses.orders.create');
 
+        if (!in_array(Auth::guard('admin')->id(),$warehouse->adminsArrayId())){
+            abort(403);
+        }
+
         $request->validate(
             [
                 'good' => ['required','exists:goods,id'],
@@ -58,15 +60,18 @@ class WareHouseOrderController extends Controller
                 'value' => ['nullable','integer'],
             ],
             [
+                'number.max' => 'حداکثر طول شماره حواله 255 کارکتر.',
                 'good.required' => ' انتخاب کالا الزامی است.',
             ]);
-
 
         if($request->event == '0' && is_null($request->warehouse)){
             alert()->error('خطا','لطفا انبار مورد نظر را انتخاب کنید.');
             return back()->withInput();
         }
 
+        if($request->event != '0' && !is_null($request->warehouse)){
+            return back()->withInput();
+        }
 
         if (is_null($request->count) && is_null($request->value)){
             alert()->error('خطا','انتخاب مقدار واحد یا تعداد الزامی است.');
@@ -86,11 +91,9 @@ class WareHouseOrderController extends Controller
         }
 
         $good = Goods::where('id',$request->good)->where('status',Status::Active)->first();
-
         if(is_null($good)){
             return back();
         }
-
 
         $ask = ($count*$good->value_per_count)+$value;
         if ($request->event == '+' && $ask>$good->stockAsUnit()){
@@ -98,7 +101,7 @@ class WareHouseOrderController extends Controller
             return back()->withInput();
         }
 
-        if ($request->event == '-'){
+        if (in_array($request->event,['-','0'])){
             $stock = WarehouseStock::where('warehouse_id',$warehouse->id)->where('goods_id',$request->good)->first();
             if(is_null($stock) || $ask>$stock->stock){
                 alert()->error('خطا','مقدار درخواستی شما در انبار شما موجود نمی باشد.');
@@ -106,20 +109,19 @@ class WareHouseOrderController extends Controller
             }
         }
 
-        $lastWarehouseStockHistory = WarehouseStockHistory::orderBy('number','desc')->first();
-        if (is_null($lastWarehouseStockHistory)){
+        $lsatStock = WarehouseStockHistory::orderBy('number','asc')->first();
+
+        if (is_null($lsatStock)) {
             $number = '1000';
         }else{
-            $number = $lastWarehouseStockHistory->number + 1;
+            $number = $lsatStock->number + 1;
         }
 
         if (in_array($request->event,['+','-','0'])){
             $order= new WarehouseStockHistory();
             $order->warehouse_id = $warehouse->id;
-            if($request->event == '0'){
-                $order->moved_warehouse_id = $request->warehouse;
-            }
-            $order->number = $number;
+            $order->moved_warehouse_id = $request->warehouse;
+            $order->number =$number;
             $order->goods_id = $request->good;
             $order->event = $request->event;
             $order->stock = ($order->good->value_per_count*$count)+$value;
@@ -137,17 +139,19 @@ class WareHouseOrderController extends Controller
         config(['auth.defaults.guard' => 'admin']);
         $this->authorize('warehousing.warehouses.orders.edit');
 
+        if (!in_array(Auth::guard('admin')->id(),$warehouse->adminsArrayId())){
+            abort(403);
+        }
+
 
         if (is_null($order->delivered_by )) {
             $request->validate(
                 [
-                    'number' => ['required','max:255'],
                     'good' => ['required', 'exists:goods,id'],
                     'count' => ['nullable', 'integer'],
                     'value' => ['nullable', 'integer'],
                 ],
                 [
-                    'number.required' => 'شماره حواله الزامی است.',
                     'number.max' => 'حداکثر طول شماره حواله 255 کارکتر.',
                     'good.required' => ' انتخاب کالا الزامی است.',
                 ]);
@@ -199,7 +203,6 @@ class WareHouseOrderController extends Controller
 
             if (in_array($request->event, ['+', '-','0'])) {
                 $order->moved_warehouse_id = $request->warehouse;
-                $order->number = $request->number;
                 $order->goods_id = $request->good;
                 $order->event = $request->event;
                 $order->stock =($order->good->value_per_count*$count)+$value;
@@ -209,12 +212,15 @@ class WareHouseOrderController extends Controller
         }
         return back();
     }
-    public function deliver(Warehouse $warehouse,WarehouseStockHistory $order,Request $request)
+    public function deliver(Warehouse $warehouse,WarehouseStockHistory $order)
     {
-
         //اجازه دسترسی
         config(['auth.defaults.guard' => 'admin']);
         $this->authorize('warehousing.warehouses.orders.delivery');
+
+        if (!in_array(Auth::guard('admin')->id(),$warehouse->adminsArrayId())){
+            abort(403);
+        }
 
         if (is_null($order->delivered_by)){
             $good = $order->good;
@@ -223,31 +229,18 @@ class WareHouseOrderController extends Controller
             $stock = WarehouseStock::where('warehouse_id',$order->warehouse_id )->where('goods_id',$order->goods_id)->first();
 
             if ($order->event == '+'){
-
-                if (is_null($order->confirmed_by)){
-                    alert()->error('خطا','انبار مرکزی تایید نکرده است.');
-                    return back();
-                }
-
-                if ( $request->less>$order->stock){
-                    alert()->error('خطا','مقدار کاستی از مقدار موجود بیشتر است');
-                    return back();
-                }
-
-                $stockCount = $order->stock-$request->less;
-
-                if($stockCount > $order->good->stockAsUnit()){
+                if($order->stock > $order->good->stockAsUnit()){
                     alert()->error('خطا','مقدار درخواستی شما در انبار مرکزی موجود نمی باشد.');
                     return back();
                 }
                 if (is_null($stock)){
                     $stock = new WarehouseStock();
-                    $stock->stock = $stockCount;
+                    $stock->stock = $order->stock;
                 }else{
-                    $stock->stock += $stockCount;
+                    $stock->stock += $order->stock;
                 }
 
-                $good->count_stock -= $order->countStockWit();
+                $good->count_stock -= $order->countStock();
                 $good->unit_stock -= $order->remainderStock();
 
 
@@ -259,7 +252,6 @@ class WareHouseOrderController extends Controller
 
                 $stock->warehouse_id = $order->warehouse_id;
                 $stock->goods_id = $order->goods_id;
-
 
                 DB::transaction(function() use ($stock, $order,$good) {
                     $stock->save();
@@ -326,6 +318,10 @@ class WareHouseOrderController extends Controller
         //اجازه دسترسی
         config(['auth.defaults.guard' => 'admin']);
         $this->authorize('warehousing.warehouses.orders.destroy');
+
+        if (!in_array(Auth::guard('admin')->id(),$warehouse->adminsArrayId())){
+            abort(403);
+        }
 
         if (is_null($order->delivered_by )) {
             $order->delete();

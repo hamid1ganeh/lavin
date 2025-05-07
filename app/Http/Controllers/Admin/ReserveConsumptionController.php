@@ -11,6 +11,7 @@ use App\Models\Warehouse;
 use App\Models\WarehouseStock;
 use Illuminate\Http\Request;
 use App\Enums\ReserveStatus;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class ReserveConsumptionController extends Controller
@@ -24,8 +25,12 @@ class ReserveConsumptionController extends Controller
        $consumptions = ReserveConsumption::with('warehouse.stocks.good')->where('reserve_id',$reserve->id)->orderBy('created_at','desc')->get();
 
        $warehouses = Warehouse::where('status',Status::Active)
-                               ->orderBy('name','asc')
-                               ->get();
+           ->whereHas('admins', function ($query) {
+               $query->where('id', Auth::guard('admin')->id());
+           })
+           ->orderBy('name','asc')
+           ->get();
+
        $goods = [];
        if (!is_null(old('warehouse'))){
            $goods = WarehouseStock::with('good')

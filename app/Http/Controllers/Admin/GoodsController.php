@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Enums\Status;
 use App\Http\Controllers\Controller;
+use App\Models\Brand;
 use App\Models\GoodsSubCategory;
 use App\Models\GoodsMainCategory;
 use Illuminate\Http\Request;
@@ -20,13 +21,15 @@ class GoodsController extends Controller
         config(['auth.defaults.guard' => 'admin']);
         $this->authorize('warehousing.goods.index');
 
-         $goods = Goods::orderBy('title','asc')
+         $goods = Goods::orderBy('code','desc')
              ->withTrashed()
              ->filter()
              ->paginate(10)
              ->withQueryString();
 
-         return view('admin.warehousing.goods.all',compact('goods'));
+        $brands = Brand::orderby('name','ASC')->withTrashed()->get();
+
+         return view('admin.warehousing.goods.all',compact('goods','brands'));
     }
 
     public function create()
@@ -41,7 +44,9 @@ class GoodsController extends Controller
         {
             $subs = GoodsSubCategory::where('main_id',old('main_cat_id'))->where('status',Status::Active)->orderBy('title')->get();
         }
-        return view('admin.warehousing.goods.create',compact('mains','subs'));
+
+        $brands = Brand::where('status',Status::Active)->orderBy('name','asc')->get();
+        return view('admin.warehousing.goods.create',compact('mains','subs','brands'));
     }
 
     public function store(Request $request)
@@ -53,8 +58,7 @@ class GoodsController extends Controller
         $request->validate(
             [
                 'title' => ['required','max:255'],
-                'brand' => ['required','max:255'],
-                'factor_number' => ['nullable','max:255'],
+                'brand_id' => ['required','exists:brands,id'],
                 'code' => ['nullable','max:255','unique:goods'],
                 'unit' => ['required'],
                 'value_per_count' => ['required','integer'],
@@ -66,11 +70,7 @@ class GoodsController extends Controller
             [
                 'title.required' => 'عنوان  کالا الزامی است.',
                 'title.max' => 'حداکثر  طول مجاز عنوان کالا 255 کارکتر می باشد.',
-                'brand.required' => 'برند  کالا الزامی است.',
-                'brand.max' => 'حداکثر  طول مجاز برند کالا 255 کارکتر می باشد.',
-                'factor_number.max' => 'حداکثر  طول مجاز کد کالا 255 کارکتر می باشد.',
-                'code.max' => 'حداکثر  طول مجاز کد کالا 255 کارکتر می باشد.',
-                'code.unique' => 'این کد قبلا ثبت شده است.',
+                'brand_id.required' => 'برند  کالا الزامی است.',
                 'unit.required' => 'واحد کالا الزامی است.',
                 'value_per_count.required' => 'حجم واحد در هر عدد  الزامی است.',
                 'value_per_count.numeric' => 'حجم واحد در هر عدد میبایست یک عدد مثبت باشد.',
@@ -89,12 +89,18 @@ class GoodsController extends Controller
             $expireDate = Jalalian::fromFormat('Y/m/d', $expireDate)->toCarbon("Y-m-d");
         }
 
+        $lastGood = Goods::orderBy('code','desc')->first();
+        if (is_null($lastGood)){
+            $code = '1000';
+        }else{
+            $code = $lastGood->code+1;
+        }
+
         if(in_array($request->status,[Status::Active,Status::Deactive])){
             Goods::create([
                 'title' => $request->title,
-                'brand' => $request->brand,
-                'factor_number' => $request->factor_number,
-                'code' => $request->code,
+                'brand_id' => $request->brand_id,
+                'code' => $code,
                 'main_cat_id' => $request->main_cat_id,
                 'sub_cat_id' => $request->sub_cat_id,
                 'unit' => $request->unit,
@@ -126,7 +132,8 @@ class GoodsController extends Controller
         }else{
             $subs = GoodsSubCategory::where('main_id',$good->main_cat_id)->orderBy('title')->get();
         }
-        return view('admin.warehousing.goods.edit',compact('good','mains','subs'));
+        $brands = Brand::where('status',Status::Active)->orderBy('name','asc')->get();
+        return view('admin.warehousing.goods.edit',compact('good','mains','subs','brands'));
     }
 
     public function update(Goods $good,Request $request)
@@ -134,9 +141,7 @@ class GoodsController extends Controller
         $request->validate(
             [
                 'title' => ['required','max:255'],
-                'brand' => ['required','max:255'],
-                'factor_number' => ['nullable','max:255'],
-                'code' => ['nullable','max:255','unique:goods,code,'.$good->id],
+                'brand_id' => ['required','exists:brands,id'],
                 'unit' => ['required'],
                 'value_per_count' => ['required','integer'],
                 'price' => ['required','integer'],
@@ -146,11 +151,7 @@ class GoodsController extends Controller
             ], [
                 'title.required' => 'عنوان  کالا الزامی است.',
                 'title.max' => 'حداکثر  طول مجاز عنوان کالا 255 کارکتر می باشد.',
-                'brand.required' => 'برند  کالا الزامی است.',
-                'brand.max' => 'حداکثر  طول مجاز برند کالا 255 کارکتر می باشد.',
-                'factor_number.max' => 'حداکثر  طول مجاز کد کالا 255 کارکتر می باشد.',
-                'code.max' => 'حداکثر  طول مجاز کد کالا 255 کارکتر می باشد.',
-                'code.unique' => 'این کد قبلا ثبت شده است.',
+                'brand_id.required' => 'برند  کالا الزامی است.',
                 'unit.required' => 'واحد کالا الزامی است.',
                 'value_per_count.required' => 'حجم واحد در هر عدد  الزامی است.',
                 'value_per_count.numeric' => 'حجم واحد در هر عدد میبایست یک عدد مثبت باشد.',
@@ -170,9 +171,7 @@ class GoodsController extends Controller
         if(in_array($request->status,[Status::Active,Status::Deactive])){
             $good->update([
                 'title' => $request->title,
-                'brand' => $request->brand,
-                'factor_number' => $request->factor_number,
-                'code' => $request->code,
+                'brand_id' => $request->brand_id,
                 'main_cat_id' => $request->main_cat_id,
                 'sub_cat_id' => $request->sub_cat_id,
                 'unit' => $request->unit,

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Enums\Status;
 use App\Http\Controllers\Controller;
 use App\Models\Number;
 use App\Models\User;
@@ -24,7 +25,10 @@ class WarehouseReceiptController extends Controller
 
         $goods = Goods::orderBy('title','asc')->get();
         $sellers = User::where('seller',true)->orderBy('firstname','desc')->orderBy('lastname','desc')->get();
-        $receipts = WarehouseReceipt::orderby('created_at','desc')->paginate(10);
+        $receipts = WarehouseReceipt::orderby('created_at','desc')
+                                    ->filter()
+                                    ->paginate(50)
+                                    ->withQueryString();
         return view('admin.warehousing.receipt.all',compact('goods','sellers','receipts'));
     }
     public function create()
@@ -33,7 +37,7 @@ class WarehouseReceiptController extends Controller
         config(['auth.defaults.guard' => 'admin']);
         $this->authorize('warehousing.goods.receipts.create');
 
-        $goods = Goods::orderBy('title','asc')->get();
+        $goods = Goods::where('status',Status::Active)->orderBy('title','asc')->get();
         $sellers = User::where('seller',true)->orderBy('firstname','desc')->orderBy('lastname','desc')->get();
          return view('admin.warehousing.receipt.create',compact('goods','sellers'));
     }
@@ -48,12 +52,14 @@ class WarehouseReceiptController extends Controller
             'seller' => "nullable|max:255",
             'price' => "required|integer",
             'discount' => "required|integer",
+            'description' => "nullable|max:255",
         ],
         [
             "number.max"=>"شماره فاکتور طولانی است.",
             "number.required"=>"شماره فاکتور الزامی است.",
             "number.unique"=>"شماره فاکتور قبلا ثبت شده است.",
             "seller.required"=>"متن طرف حساب طولانی است",
+            "description.required"=>"متن توضیحات طولانی است",
         ]);
 
         if (in_array($request->type,[ReceiptType::received,ReceiptType::returned])){
@@ -71,11 +77,12 @@ class WarehouseReceiptController extends Controller
             $receipt->type = $request->type;
             $receipt->number = $request->number;
             $receipt->seller = $request->seller;
-            $receipt->seller_id  = $request->seller_id ;
+            $receipt->seller_id  = $request->seller_id;
             $receipt->exporter_id  =  Auth::guard('admin')->id();
-            $receipt->price  = $request->price ;
-            $receipt->discount  = $request->discount ;
-            $receipt->total_cost  = $request->price-$request->discount ;
+            $receipt->price  = $request->price;
+            $receipt->discount  = $request->discount;
+            $receipt->total_cost  = $request->price-$request->discount;
+            $receipt->description  = $request->description;
             $receipt->save();
 
             $count = $request->count;
@@ -126,13 +133,15 @@ class WarehouseReceiptController extends Controller
             'number' => "required|max:255|unique:warehouse_receipts,number,".$receipt->id,
             'seller' => "nullable|max:255",
             'price' => "required|integer",
-            'discount' => "required|integer"
+            'discount' => "required|integer",
+            'description' => "nullable|max:255",
         ],
             [
                 "number.max"=>"شماره فاکتور طولانی است.",
                 "number.required"=>"شماره فاکتور الزامی است.",
                 "number.unique"=>"شماره فاکتور قبلا ثبت شده است.",
                 "seller.required"=>"متن طرف حساب طولانی است",
+                "description.required"=>"متن توضیحات طولانی است",
             ]);
 
             if(!isset($request->seller) && !isset($request->seller_id)){
@@ -151,6 +160,7 @@ class WarehouseReceiptController extends Controller
             $receipt->price  = $request->price ;
             $receipt->discount  = $request->discount ;
             $receipt->total_cost  = $request->price-$request->discount ;
+            $receipt->description  = $request->description ;
             $receipt->save();
 
             foreach ($receipt->goods as $good){

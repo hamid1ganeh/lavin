@@ -14,12 +14,14 @@ use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\LaserDeviceController;
 use App\Http\Controllers\Admin\ServiceLaserController;
 use App\Http\Controllers\Admin\WarehouseReceiptController;
+use App\Http\Controllers\Admin\ReceiptInvoiceController;
 use App\Http\Controllers\Admin\AccountController;
-use App\Http\Controllers\Admin\ReserveInvoiceController;
-use App\Http\Controllers\Admin\ReservePosPaymentContoller;
-use App\Http\Controllers\Admin\ReserveCashPaymentContoller;
-use App\Http\Controllers\Admin\ReserveCardToCardPaymentContoller;
-use App\Http\Controllers\Admin\ReserveChequePaymentContoller;
+use App\Http\Controllers\Admin\ReceptionInvoiceController;
+use App\Http\Controllers\Admin\ReceptionPosPaymentController;
+use App\Http\Controllers\Admin\ReceptionCashPaymentController;
+use App\Http\Controllers\Admin\ReceptionCardToCardPaymentController;
+use App\Http\Controllers\Admin\ReceptionChequePaymentController;
+use App\Http\Controllers\Admin\BrandController;
 
 Route::get('/login', 'AuthController@loginPage')->name('loginPage');
 Route::post('/login', 'AuthController@login')->name('login');
@@ -52,7 +54,7 @@ Route::group(['middleware' => 'auth.admin'], function () {
   Route::prefix('admins')->name('admins.')->group(function () {
     Route::get('/', 'AdminController@index')->name('index');
     Route::get('/create', 'AdminController@create')->name('create');
-    Route::post('/sotre', 'AdminController@store')->name('store');
+    Route::post('/store', 'AdminController@store')->name('store');
     Route::get('{admin}/edit', 'AdminController@edit')->name('edit');
     Route::patch('{admin}/update', 'AdminController@update')->name('update');
     Route::delete('/destroy/{admin}', 'AdminController@destroy')->name('destroy');
@@ -102,7 +104,7 @@ Route::group(['middleware' => 'auth.admin'], function () {
     Route::prefix('{admin}/feilds')->name('feilds.')->group(function () {
       Route::get('/', 'AdminFeildController@index')->name('index');
       Route::get('/create', 'AdminFeildController@create')->name('create');
-      Route::post('/sotre', 'AdminFeildController@store')->name('store');
+      Route::post('/store', 'AdminFeildController@store')->name('store');
       Route::get('{feild}/edit', 'AdminFeildController@edit')->name('edit');
       Route::patch('{feild}/update', 'AdminFeildController@update')->name('update');
       Route::delete('/destroy/{feild}', 'AdminFeildController@destroy')->name('destroy');
@@ -111,12 +113,11 @@ Route::group(['middleware' => 'auth.admin'], function () {
     Route::prefix('{admin}/medias')->name('medias.')->group(function () {
       Route::get('/', 'AdminMediaController@index')->name('index');
       Route::get('/create', 'AdminMediaController@create')->name('create');
-      Route::post('/sotre', 'AdminMediaController@store')->name('store');
+      Route::post('/store', 'AdminMediaController@store')->name('store');
       Route::get('{media}/edit', 'AdminMediaController@edit')->name('edit');
       Route::patch('{media}/update', 'AdminMediaController@update')->name('update');
       Route::delete('/destroy/{media}', 'AdminMediaController@destroy')->name('destroy');
     });
-
   });
 
   Route::prefix('users')->name('users.')->group(function () {
@@ -189,7 +190,7 @@ Route::group(['middleware' => 'auth.admin'], function () {
   Route::prefix('roles')->name('roles')->group(function () {
     Route::get('/', 'RoleController@index')->name('.index');
     Route::get('/create', 'RoleController@create')->name('.create');
-    Route::post('/sotre', 'RoleController@store')->name('.store');
+    Route::post('/store', 'RoleController@store')->name('.store');
     Route::get('{role}/edit', 'RoleController@edit')->name('.edit');
     Route::patch('{role}/update', 'RoleController@update')->name('.update');
     Route::delete('/destroy/{role}', 'RoleController@destroy')->name('.destroy');
@@ -198,7 +199,7 @@ Route::group(['middleware' => 'auth.admin'], function () {
   Route::prefix('levels')->name('levels.')->group(function () {
     Route::get('/', 'LevelController@index')->name('index');
     Route::get('/create', 'LevelController@create')->name('create');
-    Route::post('/sotre', 'LevelController@store')->name('store');
+    Route::post('/store', 'LevelController@store')->name('store');
     Route::get('{level}/edit', 'LevelController@edit')->name('edit');
     Route::patch('{level}/update', 'LevelController@update')->name('update');
     Route::delete('/destroy/{level}', 'LevelController@destroy')->name('destroy');
@@ -209,13 +210,13 @@ Route::group(['middleware' => 'auth.admin'], function () {
 
   Route::prefix('galleries')->name('gallery.')->group(function () {
     Route::get('/', 'GalleryController@index')->name('index');
-    Route::post('/sotre', 'GalleryController@store')->name('store');
+    Route::post('/store', 'GalleryController@store')->name('store');
     Route::patch('{gallery}/update', 'GalleryController@update')->name('update');
     Route::delete('/destroy/{gallery}', 'GalleryController@destroy')->name('destroy');
 
     Route::prefix('{gallery}/images')->name('images.')->group(function () {
       Route::get('/', 'ImageGalleryController@index')->name('index');
-      Route::post('/sotre', 'ImageGalleryController@store')->name('store');
+      Route::post('/store', 'ImageGalleryController@store')->name('store');
       Route::patch('{image}/ImageGalleryController', 'GalleryController@update')->name('update');
       Route::delete('/destroy/{image}', 'ImageGalleryController@destroy')->name('destroy');
     });
@@ -224,7 +225,7 @@ Route::group(['middleware' => 'auth.admin'], function () {
   Route::prefix('portfolios')->name('portfolios.')->group(function () {
     Route::get('/', 'PortfolioController@index')->name('index');
     Route::get('/create', 'PortfolioController@create')->name('create');
-    Route::post('/sotre', 'PortfolioController@store')->name('store');
+    Route::post('/store', 'PortfolioController@store')->name('store');
     Route::get('{portfolio}/edit', 'PortfolioController@edit')->name('edit');
     Route::patch('{portfolio}/update', 'PortfolioController@update')->name('update');
     Route::delete('/destroy/{portfolio}', 'PortfolioController@destroy')->name('delete');
@@ -237,7 +238,7 @@ Route::group(['middleware' => 'auth.admin'], function () {
 
     Route::get('/', 'ArticleController@index')->name('.index');
     Route::get('/create', 'ArticleController@create')->name('.create');
-    Route::post('/sotre', 'ArticleController@store')->name('.store');
+    Route::post('/store', 'ArticleController@store')->name('.store');
     Route::get('{article}/edit', 'ArticleController@edit')->name('.edit');
     Route::patch('{article}/update', 'ArticleController@update')->name('.update');
     Route::delete('/destroy/{article}', 'ArticleController@destroy')->name('.destroy');
@@ -264,7 +265,7 @@ Route::group(['middleware' => 'auth.admin'], function () {
 
       Route::get('/', 'ServiceController@index')->name('index');
       Route::get('/create', 'ServiceController@create')->name('create');
-      Route::post('/sotre', 'ServiceController@store')->name('store');
+      Route::post('/store', 'ServiceController@store')->name('store');
       Route::get('{service}/edit', 'ServiceController@edit')->name('edit');
       Route::patch('{service}/update', 'ServiceController@update')->name('update');
       Route::delete('/destroy/{service}', 'ServiceController@destroy')->name('delete');
@@ -347,9 +348,6 @@ Route::group(['middleware' => 'auth.admin'], function () {
 
 });
 
-
-
-
     Route::prefix('comments')->name('comments.')->group(function () {
       Route::get('/', 'CommentsController@index')->name('index');
       Route::PATCH('update/{comment}', 'CommentsController@update')->name('update');
@@ -366,36 +364,10 @@ Route::group(['middleware' => 'auth.admin'], function () {
 
   Route::prefix('luck')->name('luck.')->group(function () {
       Route::get('/', 'LuckController@index')->name('index');
-      Route::post('/sotre', 'LuckController@store')->name('store');
+      Route::post('/store', 'LuckController@store')->name('store');
       Route::PATCH('/{luck}', 'LuckController@update')->name('update');
       Route::delete('{luck}/delete', 'LuckController@destroy')->name('destroy');
   });
-
-
-  Route::prefix('discounts')->name('discounts.')->group(function () {
-    Route::get('/', 'DiscountController@index')->name('index');
-    Route::get('/create', 'DiscountController@create')->name('create');
-    Route::get('/code', 'DiscountController@code')->name('code');
-    Route::post('/sotre', 'DiscountController@store')->name('store');
-    Route::get('{discount}/edit', 'DiscountController@edit')->name('edit');
-    Route::patch('{discount}/update', 'DiscountController@update')->name('update');
-    Route::delete('/destroy/{discount}', 'DiscountController@destroy')->name('destroy');
-    Route::patch('/recycle/{discount}', 'DiscountController@recycle')->name('recycle');
-    Route::patch('{discount}/festival_update', 'DiscountController@festival_update')->name('festival.update');
-
-    Route::prefix('{discount}/users')->name('users.')->group(function () {
-      Route::get('/', 'DiscountController@users_show')->name('show');
-      Route::patch('/update', 'DiscountController@users_update')->name('update');
-      Route::get('/update', 'LevelController@users')->name('fetch');
-    });
-
-    Route::prefix('{discount}/services')->name('services')->group(function () {
-      Route::get('/', 'DiscountController@services_show')->name('.show');
-      Route::patch('/update', 'DiscountController@services_update')->name('.update');
-    });
-
-  });
-
 
   Route::prefix('shop')->name('shop.')->group(function () {
 
@@ -460,7 +432,7 @@ Route::group(['middleware' => 'auth.admin'], function () {
       Route::prefix('users')->name('users.')->group(function () {
             Route::get('/', 'NotificationController@user_index')->name('index');
             Route::get('/create', 'NotificationController@user_create')->name('create');
-            Route::post('/sotre', 'NotificationController@store')->name('store');
+            Route::post('/store', 'NotificationController@store')->name('store');
             Route::patch('{notification}/update', 'NotificationController@update')->name('update');
             Route::delete('/destroy/{notification}', 'NotificationController@destroy')->name('destroy');
             Route::post('/recycle/{id}', 'NotificationController@recycle')->name('recycle');
@@ -469,7 +441,7 @@ Route::group(['middleware' => 'auth.admin'], function () {
       Route::prefix('admins')->name('admins.')->group(function () {
           Route::get('/', 'NotificationController@admin_index')->name('index');
           Route::get('/create', 'NotificationController@admin_create')->name('create');
-          Route::post('/sotre', 'NotificationController@store')->name('store');
+          Route::post('/store', 'NotificationController@store')->name('store');
           Route::patch('{notification}/update', 'NotificationController@update')->name('update');
           Route::delete('/destroy/{notification}', 'NotificationController@destroy')->name('destroy');
           Route::post('/recycle/{id}', 'NotificationController@recycle')->name('recycle');
@@ -496,6 +468,7 @@ Route::group(['middleware' => 'auth.admin'], function () {
         Route::post('/store', 'ReceptionController@store')->name('store');
         Route::patch('{reception}/end', 'ReceptionController@end')->name('end');
         Route::patch('{reception}/start', 'ReceptionController@start')->name('start');
+        Route::patch('{reception}/found', 'ReceptionController@found')->name('found');
     });
 
 
@@ -541,49 +514,6 @@ Route::group(['middleware' => 'auth.admin'], function () {
 //      Route::get('{reserve}/payment', 'ReserveServiceController@payment')->name('payment');
 //      Route::post('{payment}/pay', 'ReserveServiceController@pay')->name('pay');
 
-      Route::prefix('{reserve}/payment')->name('payment.')->group(function () {
-          Route::get('/show', 'ReserveInvoiceController@show')->name('show');
-          Route::post('/create', 'ReserveInvoiceController@create')->name('create');
-          Route::get('/invoice', 'ReserveInvoiceController@invoice')->name('invoice');
-
-          Route::prefix('{invoice}/pos')->name('pos.')->group(function () {
-              Route::get('/', 'ReservePosPaymentContoller@index')->name('index');
-              Route::get('/create', 'ReservePosPaymentContoller@create')->name('create');
-              Route::post('/store', 'ReservePosPaymentContoller@store')->name('store');
-              Route::get('/{pos}/edit', 'ReservePosPaymentContoller@edit')->name('edit');
-              Route::put('/{pos}/update', 'ReservePosPaymentContoller@update')->name('update');
-              Route::delete('/{pos}/destroy', 'ReservePosPaymentContoller@destroy')->name('destroy');
-          });
-
-          Route::prefix('{invoice}/cash')->name('cash.')->group(function () {
-              Route::get('/', 'ReserveCashPaymentContoller@index')->name('index');
-              Route::get('/create', 'ReserveCashPaymentContoller@create')->name('create');
-              Route::post('/store', 'ReserveCashPaymentContoller@store')->name('store');
-              Route::get('/{cash}/edit', 'ReserveCashPaymentContoller@edit')->name('edit');
-              Route::put('/{cash}/update', 'ReserveCashPaymentContoller@update')->name('update');
-              Route::delete('/{cash}/destroy', 'ReserveCashPaymentContoller@destroy')->name('destroy');
-          });
-
-          Route::prefix('{invoice}/card_to_card')->name('card.')->group(function () {
-              Route::get('/', 'ReserveCardToCardPaymentContoller@index')->name('index');
-              Route::get('/create', 'ReserveCardToCardPaymentContoller@create')->name('create');
-              Route::post('/store', 'ReserveCardToCardPaymentContoller@store')->name('store');
-              Route::get('/{card}/edit', 'ReserveCardToCardPaymentContoller@edit')->name('edit');
-              Route::put('/{card}/update', 'ReserveCardToCardPaymentContoller@update')->name('update');
-              Route::delete('/{card}/destroy', 'ReserveCardToCardPaymentContoller@destroy')->name('destroy');
-          });
-
-          Route::prefix('{invoice}/cheque')->name('cheque.')->group(function () {
-              Route::get('/', 'ReserveChequePaymentContoller@index')->name('index');
-              Route::get('/create', 'ReserveChequePaymentContoller@create')->name('create');
-              Route::post('/store', 'ReserveChequePaymentContoller@store')->name('store');
-              Route::get('/{cheque}/edit', 'ReserveChequePaymentContoller@edit')->name('edit');
-              Route::put('/{cheque}/update', 'ReserveChequePaymentContoller@update')->name('update');
-              Route::delete('/{cheque}/destroy', 'ReserveChequePaymentContoller@destroy')->name('destroy');
-          });
-
-
-      });
 
     Route::prefix('{reserve}/complications')->name('complications.')->group(function () {
       Route::get('/show', 'RegisterComplicationController@show')->name('show');
@@ -672,7 +602,6 @@ Route::group(['middleware' => 'auth.admin'], function () {
               Route::patch('{area}/recycle', 'AreaController@recycle')->name('recycle');
 
           });
-
     });
 
   });
@@ -872,13 +801,56 @@ Route::group(['middleware' => 'auth.admin'], function () {
             });
         });
 
-        Route::prefix('receipts')->name('receipts.')->group(function () {
+         Route::prefix('receipts')->name('receipts.')->group(function () {
             Route::get('/', [WarehouseReceiptController::class,'index'])->name('index');
             Route::get('/create', [WarehouseReceiptController::class,'create'])->name('create');
             Route::post('/store', [WarehouseReceiptController::class,'store'])->name('store');
             Route::get('{receipt}/edit', [WarehouseReceiptController::class,'edit'])->name('edit');
             Route::patch('{receipt}/update', [WarehouseReceiptController::class,'update'])->name('update');
-        });
+
+            Route::prefix('{receipt}/invoice')->name('invoice.')->group(function () {
+                Route::get('/', [ReceiptInvoiceController::class,'show'])->name('show');
+                Route::post('/create', [ReceiptInvoiceController::class,'create'])->name('create');
+
+                Route::prefix('{invoice}/pos')->name('pos.')->group(function () {
+                    Route::get('/', 'ReciptPosPaymentContoller@index')->name('index');
+                    Route::get('/create', 'ReciptPosPaymentContoller@create')->name('create');
+                    Route::post('/store', 'ReciptPosPaymentContoller@store')->name('store');
+                    Route::get('/{pos}/edit', 'ReciptPosPaymentContoller@edit')->name('edit');
+                    Route::put('/{pos}/update', 'ReciptPosPaymentContoller@update')->name('update');
+                    Route::delete('/{pos}/destroy', 'ReciptPosPaymentContoller@destroy')->name('destroy');
+                });
+
+                Route::prefix('{invoice}/cash')->name('cash.')->group(function () {
+                    Route::get('/', 'ReciptCashPaymentContoller@index')->name('index');
+                    Route::get('/create', 'ReciptCashPaymentContoller@create')->name('create');
+                    Route::post('/store', 'ReciptCashPaymentContoller@store')->name('store');
+                    Route::get('/{cash}/edit', 'ReciptCashPaymentContoller@edit')->name('edit');
+                    Route::put('/{cash}/update', 'ReciptCashPaymentContoller@update')->name('update');
+                    Route::delete('/{cash}/destroy', 'ReciptCashPaymentContoller@destroy')->name('destroy');
+                });
+
+                Route::prefix('{invoice}/card_to_card')->name('card.')->group(function () {
+                    Route::get('/', 'ReciptCardToCardPaymentContoller@index')->name('index');
+                    Route::get('/create', 'ReciptCardToCardPaymentContoller@create')->name('create');
+                    Route::post('/store', 'ReciptCardToCardPaymentContoller@store')->name('store');
+                    Route::get('/{card}/edit', 'ReciptCardToCardPaymentContoller@edit')->name('edit');
+                    Route::put('/{card}/update', 'ReciptCardToCardPaymentContoller@update')->name('update');
+                    Route::delete('/{card}/destroy', 'ReciptCardToCardPaymentContoller@destroy')->name('destroy');
+                });
+
+                Route::prefix('{invoice}/cheque')->name('cheque.')->group(function () {
+                    Route::get('/', 'ReciptChequePaymentContoller@index')->name('index');
+                    Route::get('/create', 'ReciptChequePaymentContoller@create')->name('create');
+                    Route::post('/store', 'ReciptChequePaymentContoller@store')->name('store');
+                    Route::get('/{cheque}/edit', 'ReciptChequePaymentContoller@edit')->name('edit');
+                    Route::put('/{cheque}/update', 'ReciptChequePaymentContoller@update')->name('update');
+                    Route::delete('/{cheque}/destroy', 'ReciptChequePaymentContoller@destroy')->name('destroy');
+                    Route::patch('/{cheque}/pass', 'ReciptChequePaymentContoller@pass')->name('pass');
+                });
+
+           });
+      });
 
         Route::prefix('goods')->name('goods.')->group(function () {
             Route::get('/', [GoodsController::class,'index'])->name('index');
@@ -889,7 +861,6 @@ Route::group(['middleware' => 'auth.admin'], function () {
             Route::delete('/destroy/{good}', [GoodsController::class,'destroy'])->name('destroy');
             Route::patch('/recycle/{good}', [GoodsController::class,'recycle'])->name('recycle');
         });
-
 
             Route::prefix('warehouses')->name('warehouses.')->group(function () {
             Route::get('/', [WarehouseController::class,'index'])->name('index');
@@ -925,6 +896,60 @@ Route::group(['middleware' => 'auth.admin'], function () {
 
     });
     Route::prefix('accounting')->name('accounting.')->group(function () {
+
+        Route::get('/found', [ReceptionInvoiceController::class,'found'])->name('found');
+
+        Route::prefix('reception/')->name('reception.')->group(function () {
+
+            Route::patch('{reception}/found_status', [ReceptionInvoiceController::class,'found_status'])->name('found.status');
+
+            Route::prefix('{reception}/invoices')->name('invoices.')->group(function () {
+                Route::get('/show', [ReceptionInvoiceController::class,'show'])->name('show');
+                Route::post('/store_reserve', [ReceptionInvoiceController::class,'store_reserve'])->name('reserve.store');
+                Route::delete('{reserveInvoice}/delete_reserve', [ReceptionInvoiceController::class,'delete_reserve'])->name('reserve.delete');
+                Route::post('/store', [ReceptionInvoiceController::class,'store'])->name('store');
+
+                Route::prefix('{receptionInvoice}/pos')->name('pos.')->group(function () {
+                    Route::get('/', [ReceptionPosPaymentController::class,'index'])->name('index');
+                    Route::get('/create', [ReceptionPosPaymentController::class,'create'])->name('create');
+                    Route::post('/store', [ReceptionPosPaymentController::class,'store'])->name('store');
+                    Route::get('/{pos}/edit', [ReceptionPosPaymentController::class,'edit'])->name('edit');
+                    Route::put('/{pos}/update', [ReceptionPosPaymentController::class,'update'])->name('update');
+                    Route::delete('/{pos}/destroy',  [ReceptionPosPaymentController::class,'destroy'])->name('destroy');
+                });
+
+                Route::prefix('{receptionInvoice}/cash')->name('cash.')->group(function () {
+                    Route::get('/', [ReceptionCashPaymentController::class,'index'])->name('index');
+                    Route::get('/create', [ReceptionCashPaymentController::class,'create'])->name('create');
+                    Route::post('/store', [ReceptionCashPaymentController::class,'store'])->name('store');
+                    Route::get('/{cash}/edit', [ReceptionCashPaymentController::class,'edit'])->name('edit');
+                    Route::put('/{cash}/update', [ReceptionCashPaymentController::class,'update'])->name('update');
+                    Route::delete('/{cash}/destroy', [ReceptionCashPaymentController::class,'destroy'])->name('destroy');
+                });
+
+                Route::prefix('{receptionInvoice}/card_to_card')->name('card.')->group(function () {
+                    Route::get('/', [ReceptionCardToCardPaymentController::class,'index'])->name('index');
+                    Route::get('/create', [ReceptionCardToCardPaymentController::class,'create'])->name('create');
+                    Route::post('/store', [ReceptionCardToCardPaymentController::class,'store'])->name('store');
+                    Route::get('/{card}/edit', [ReceptionCardToCardPaymentController::class,'edit'])->name('edit');
+                    Route::put('/{card}/update', [ReceptionCardToCardPaymentController::class,'update'])->name('update');
+                    Route::delete('/{card}/destroy', [ReceptionCardToCardPaymentController::class,'destroy'])->name('destroy');
+                });
+
+                Route::prefix('{receptionInvoice}/cheque')->name('cheque.')->group(function () {
+                    Route::get('/', [ReceptionChequePaymentController::class,'index'])->name('index');
+                    Route::get('/create',  [ReceptionChequePaymentController::class,'create'])->name('create');
+                    Route::post('/store',  [ReceptionChequePaymentController::class,'store'])->name('store');
+                    Route::get('/{cheque}/edit',  [ReceptionChequePaymentController::class,'edit'])->name('edit');
+                    Route::put('/{cheque}/update',  [ReceptionChequePaymentController::class,'update'])->name('update');
+                    Route::delete('/{cheque}/destroy',  [ReceptionChequePaymentController::class,'destroy'])->name('destroy');
+                    Route::patch('/{cheque}/pass',  [ReceptionChequePaymentController::class,'pass'])->name('pass');
+                    Route::patch('/{cheque}/return',  [ReceptionChequePaymentController::class,'return'])->name('return');
+                });
+
+            });
+        });
+
         Route::prefix('accounts')->name('accounts.')->group(function () {
             Route::get('/', [AccountController::class,'index'])->name('index');
             Route::get('/create', [AccountController::class,'create'])->name('create');
@@ -934,6 +959,40 @@ Route::group(['middleware' => 'auth.admin'], function () {
             Route::delete('{account}/destroy', [AccountController::class,'destroy'])->name('destroy');
             Route::patch('{account}/recycle', [AccountController::class,'recycle'])->name('recycle');
         });
+
+        Route::prefix('discounts')->name('discounts.')->group(function () {
+            Route::get('/', 'DiscountController@index')->name('index');
+            Route::get('/create', 'DiscountController@create')->name('create');
+            Route::get('/code', 'DiscountController@code')->name('code');
+            Route::post('/store', 'DiscountController@store')->name('store');
+            Route::get('{discount}/edit', 'DiscountController@edit')->name('edit');
+            Route::patch('{discount}/update', 'DiscountController@update')->name('update');
+            Route::delete('/destroy/{discount}', 'DiscountController@destroy')->name('destroy');
+            Route::patch('/recycle/{discount}', 'DiscountController@recycle')->name('recycle');
+            Route::patch('{discount}/festival_update', 'DiscountController@festival_update')->name('festival.update');
+
+            Route::prefix('{discount}/users')->name('users.')->group(function () {
+                Route::get('/', 'DiscountController@users_show')->name('show');
+                Route::patch('/update', 'DiscountController@users_update')->name('update');
+                Route::get('/update', 'LevelController@users')->name('fetch');
+            });
+
+            Route::prefix('{discount}/services')->name('services')->group(function () {
+                Route::get('/', 'DiscountController@services_show')->name('.show');
+                Route::patch('/update', 'DiscountController@services_update')->name('.update');
+            });
+
+        });
+    });
+
+    Route::prefix('brands')->name('brands.')->group(function () {
+        Route::get('/', [BrandController::class,'index'])->name('index');
+        Route::get('/create', [BrandController::class,'create'])->name('create');
+        Route::post('/store', [BrandController::class,'store'])->name('store');
+        Route::get('{brand}/edit', [BrandController::class,'edit'])->name('edit');
+        Route::patch('{brand}/update', [BrandController::class,'update'])->name('update');
+        Route::delete('{brand}/destroy', [BrandController::class,'destroy'])->name('destroy');
+        Route::patch('{brand}/recycle', [BrandController::class,'recycle'])->name('recycle');
     });
 
     Route::prefix('complications')->name('complications.')->group(function () {

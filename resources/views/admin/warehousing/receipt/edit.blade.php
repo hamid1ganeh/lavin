@@ -178,6 +178,11 @@
                                             <input type="number" class="form-control input text-center" name="discount" id="discount" placeholder="تخفیف را وارد کنید" value="{{ old('discount') ?? $receipt->discount }}" required min="0">
                                             <span class="form-text text-danger erroralarm"> {{ $errors->first('discount') }} </span>
                                         </div>
+                                        <div class="col-12 col-md-6">
+                                            <label for="description" class="control-label IRANYekanRegular">توضیحات</label>
+                                            <input type="text" class="form-control input text-left" name="description" id=description" placeholder="توضیحات را وارد کنید" value="{{ old('description')  ?? $receipt->description   }}">
+                                            <span class="form-text text-danger erroralarm"> {{ $errors->first('description') ?? $good->description  }} </span>
+                                        </div>
                                     </div>
 
                                     <div class="form-group mt-2">

@@ -242,7 +242,7 @@ class User extends Authenticatable
         if(isset($untilBirthday) &&  $untilBirthday!='')
         {
             $untilBirthday =  faToEn($untilBirthday);
-            $untilBirthday = Jalalian::fromFormat('Y/m/d', $sinceBirthday)->toCarbon("Y-m-d");
+            $untilBirthday = Jalalian::fromFormat('Y/m/d', $untilBirthday)->toCarbon("Y-m-d");
             $quary->whereHas('info',function($q) use($untilBirthday){
                 $q->whereNotNull('birthDate')->where('birthDate','<=', $untilBirthday);
             });

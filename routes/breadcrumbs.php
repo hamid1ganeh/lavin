@@ -233,11 +233,96 @@ Breadcrumbs::for('reserves', function ($trail) {
     $trail->push('رزرو', route('admin.reserves.index'));
 });
 
+
+// داشبورد > پذیرش
 Breadcrumbs::for('receptions', function ($trail) {
     $trail->parent('home', $trail);
     $trail->push('پذیرش', route('admin.receptions.index'));
 });
 
+// داشبورد > صندوق
+Breadcrumbs::for('found', function ($trail) {
+    $trail->parent('home', $trail);
+    $trail->push('صندوق', route('admin.accounting.found'));
+});
+
+// داشبورد > پذیرش >  صورتحساب پرداخت
+Breadcrumbs::for('accounting.reception.invoices.show', function ($trail,$reception) {
+    $trail->parent('found', $trail);
+    $trail->push('صورتحساب پرداخت ', route('admin.accounting.reception.invoices.show',$reception));
+});
+
+// داشبورد > رزرو > صورتحساب پرداخت > پرداختی های دستگاه پوز
+Breadcrumbs::for('accounting.reception.invoices.pos', function ($trail,$reception,$invoice) {
+    $trail->parent('accounting.reception.invoices.show',$reception);
+    $trail->push('پرداختی های دستگاه پوز', route('admin.accounting.reception.invoices.pos.index',[$reception,$invoice]));
+});
+
+// داشبورد > رزرو > صورتحساب پرداخت > پرداختی های دستگاه پوز >ایجاد پرداختی جدید
+Breadcrumbs::for('accounting.reception.invoices.pos.create', function ($trail,$reception,$invoice) {
+    $trail->parent('accounting.reception.invoices.pos',$reception,$invoice);
+    $trail->push('ایجاد پرداختی جدید', route('admin.accounting.reception.invoices.pos.create',[$reception,$invoice]));
+});
+
+// داشبورد > رزرو > صورتحساب پرداخت > پرداختی های دستگاه پوز >ویرایش پرداختی
+Breadcrumbs::for('accounting.reception.invoices.pos.edit', function ($trail,$reception,$invoice,$pos) {
+    $trail->parent('accounting.reception.invoices.pos',$reception,$invoice);
+    $trail->push('ویرایش پرداختی', route('admin.accounting.reception.invoices.pos.edit',[$reception,$invoice,$pos]));
+});
+
+// داشبورد > رزرو > صورتحساب پرداخت > پرداختی های کارت به کارت
+Breadcrumbs::for('accounting.reception.invoices.card', function ($trail,$reception,$invoice) {
+    $trail->parent('accounting.reception.invoices.show',$reception);
+    $trail->push('پرداختی های کارت به کارت', route('admin.accounting.reception.invoices.card.index',[$reception,$invoice]));
+});
+
+// داشبورد > رزرو > صورتحساب پرداخت > پرداختی های کارت به کارت >ایجاد پرداختی جدید
+Breadcrumbs::for('accounting.reception.invoices.card.create', function ($trail,$reception,$invoice) {
+    $trail->parent('accounting.reception.invoices.card',$reception,$invoice);
+    $trail->push('ایجاد پرداختی جدید', route('admin.accounting.reception.invoices.card.create',[$reception,$invoice]));
+});
+
+// داشبورد > رزرو > صورتحساب پرداخت > پرداختی های دستگاه پوز >ویرایش پرداختی
+Breadcrumbs::for('accounting.reception.invoices.card.edit', function ($trail,$reception,$invoice,$card) {
+    $trail->parent('accounting.reception.invoices.pos',$reception,$invoice);
+    $trail->push('ویرایش پرداختی', route('admin.accounting.reception.invoices.card.edit',[$reception,$invoice,$card]));
+});
+
+// داشبورد > رزرو > صورتحساب پرداخت > پرداختی های نقدی
+Breadcrumbs::for('accounting.reception.invoices.cash', function ($trail,$reception,$invoice) {
+    $trail->parent('accounting.reception.invoices.show',$reception);
+    $trail->push('پرداختی های نقدی', route('admin.accounting.reception.invoices.cash.index',[$reception,$invoice]));
+});
+
+// داشبورد > رزرو > صورتحساب پرداخت > پرداختی های نقدی >ایجاد پرداختی جدید
+Breadcrumbs::for('accounting.reception.invoices.cash.create', function ($trail,$reception,$invoice) {
+    $trail->parent('accounting.reception.invoices.cash',$reception,$invoice);
+    $trail->push('ایجاد پرداختی جدید', route('admin.accounting.reception.invoices.cash.create',[$reception,$invoice]));
+});
+
+// داشبورد > رزرو > صورتحساب پرداخت > پرداختی های نقدی >ویرایش پرداختی
+Breadcrumbs::for('accounting.reception.invoices.cash.edit', function ($trail,$reception,$invoice,$cash) {
+    $trail->parent('accounting.reception.invoices.cash',$reception,$invoice);
+    $trail->push('ویرایش پرداختی', route('admin.accounting.reception.invoices.cash.edit',[$reception,$invoice,$cash]));
+});
+
+// داشبورد > رزرو > صورتحساب پرداخت > پرداختی های چک
+Breadcrumbs::for('accounting.reception.invoices.cheque', function ($trail,$reception,$invoice) {
+    $trail->parent('accounting.reception.invoices.show',$reception);
+    $trail->push('پرداختی های چک', route('admin.accounting.reception.invoices.cheque.index',[$reception,$invoice]));
+});
+
+// داشبورد > رزرو > صورتحساب پرداخت > پرداختی های چک >ایجاد پرداختی جدید
+Breadcrumbs::for('accounting.reception.invoices.cheque.create', function ($trail,$reception,$invoice) {
+    $trail->parent('accounting.reception.invoices.cheque',$reception,$invoice);
+    $trail->push('ایجاد پرداختی جدید', route('admin.accounting.reception.invoices.cheque.create',[$reception,$invoice]));
+});
+
+// داشبورد > رزرو > صورتحساب پرداخت > پرداختی های چک > ویرایش پرداختی
+Breadcrumbs::for('accounting.reception.invoices.cheque.edit', function ($trail,$reception,$invoice,$cheque) {
+    $trail->parent('accounting.reception.invoices.cheque',$reception,$invoice);
+    $trail->push('ویرایش پرداختی', route('admin.accounting.reception.invoices.cheque.edit',[$reception,$invoice,$cheque]));
+});
 
 // داشبورد > رزرو > گزارش ارتقاء
 Breadcrumbs::for('reserves.upgrades', function ($trail) {
@@ -292,91 +377,6 @@ Breadcrumbs::for('reserves.upgrade.edit', function ($trail,$reserve,$upgrade) {
     $trail->push('ویرایش ارتقاء', route('admin.reserves.upgrade.edit',[$reserve,$upgrade]));
 });
 
-// داشبورد > رزرو > پیش نمایش صورتحساب
-Breadcrumbs::for('reserves.payment.show', function ($trail,$reserve) {
-    $trail->parent('reserves', $trail);
-    $trail->push('پیش نمایش صورتحساب', route('admin.reserves.payment.show',$reserve));
-});
-
-// داشبورد > رزرو >  صورتحساب
-Breadcrumbs::for('reserves.payment.invoice', function ($trail,$reserve) {
-    $trail->parent('reserves', $trail);
-    $trail->push('صورتحساب', route('admin.reserves.payment.invoice',$reserve));
-});
-
-// داشبورد > رزرو > صورتحساب > پرداختی های دستگاه پوز
-Breadcrumbs::for('reserves.payment.invoice.pos', function ($trail,$reserve,$invoice) {
-    $trail->parent('reserves.payment.invoice',$reserve);
-    $trail->push('پرداختی های دستگاه پوز', route('admin.reserves.payment.pos.index',[$reserve,$invoice]));
-});
-
-// داشبورد > رزرو > صورتحساب > پرداختی های دستگاه پوز > ایجاد پرداختی جدید
-Breadcrumbs::for('reserves.payment.invoice.pos.create', function ($trail,$reserve,$invoice) {
-    $trail->parent('reserves.payment.invoice.pos',$reserve,$invoice);
-    $trail->push('ایجاد پرداختی جدید', route('admin.reserves.payment.pos.create',[$reserve,$invoice]));
-});
-
-// داشبورد > رزرو > صورتحساب > پرداختی های دستگاه پوز > ویرایش پرداختی
-Breadcrumbs::for('reserves.payment.invoice.pos.edit', function ($trail,$reserve,$invoice,$pos) {
-    $trail->parent('reserves.payment.invoice.pos',$reserve,$invoice);
-    $trail->push('ویرایش پرداختی', route('admin.reserves.payment.pos.edit',[$reserve,$invoice,$pos]));
-});
-
-// داشبورد > رزرو > صورتحساب > پرداختی های کارت به کارت
-Breadcrumbs::for('reserves.payment.invoice.card', function ($trail,$reserve,$invoice) {
-    $trail->parent('reserves.payment.invoice',$reserve);
-    $trail->push('پرداختی های کارت به کارت', route('admin.reserves.payment.card.index',[$reserve,$invoice]));
-});
-
-// داشبورد > رزرو > صورتحساب > پرداختی های کارت به کارت > ایجاد پرداختی جدید
-Breadcrumbs::for('reserves.payment.invoice.card.create', function ($trail,$reserve,$invoice) {
-    $trail->parent('reserves.payment.invoice.card',$reserve,$invoice);
-    $trail->push('ایجاد پرداختی جدید', route('admin.reserves.payment.card.create',[$reserve,$invoice]));
-});
-
-// داشبورد > رزرو > صورتحساب > پرداختی های کارت به کارت > ویرایش پرداختی
-Breadcrumbs::for('reserves.payment.invoice.card.edit', function ($trail,$reserve,$invoice,$card) {
-    $trail->parent('reserves.payment.invoice.card',$reserve,$invoice);
-    $trail->push('ویرایش پرداختی', route('admin.reserves.payment.card.edit',[$reserve,$invoice,$card]));
-});
-
-// داشبورد > رزرو > صورتحساب > پرداختی های نقدی
-Breadcrumbs::for('reserves.payment.invoice.cash', function ($trail,$reserve,$invoice) {
-    $trail->parent('reserves.payment.invoice',$reserve);
-    $trail->push('پرداختی های نقدی', route('admin.reserves.payment.cash.index',[$reserve,$invoice]));
-});
-
-// داشبورد > رزرو > صورتحساب > پرداختی های نقدی > ایجاد پرداختی جدید
-Breadcrumbs::for('reserves.payment.invoice.cash.create', function ($trail,$reserve,$invoice) {
-    $trail->parent('reserves.payment.invoice.cash',$reserve,$invoice);
-    $trail->push('ایجاد پرداختی جدید', route('admin.reserves.payment.cash.create',[$reserve,$invoice]));
-});
-
-// داشبورد > رزرو > صورتحساب > پرداختی های نقدی > ویرایش پرداختی
-Breadcrumbs::for('reserves.payment.invoice.cash.edit', function ($trail,$reserve,$invoice,$cash) {
-    $trail->parent('reserves.payment.invoice.cash',$reserve,$invoice);
-    $trail->push('ویرایش پرداختی', route('admin.reserves.payment.cash.edit',[$reserve,$invoice,$cash]));
-});
-
-// داشبورد > رزرو > صورتحساب > چکهای پرداختی
-Breadcrumbs::for('reserves.payment.invoice.cheque', function ($trail,$reserve,$invoice) {
-    $trail->parent('reserves.payment.invoice',$reserve);
-    $trail->push('چکهای پرداختی', route('admin.reserves.payment.cheque.index',[$reserve,$invoice]));
-});
-
-// داشبورد > رزرو > صورتحساب > چکهای پرداختی > ایجاد پرداختی جدید
-Breadcrumbs::for('reserves.payment.invoice.cheque.create', function ($trail,$reserve,$invoice) {
-    $trail->parent('reserves.payment.invoice.cheque',$reserve,$invoice);
-    $trail->push('ایجاد پرداختی جدید', route('admin.reserves.payment.cheque.create',[$reserve,$invoice]));
-});
-
-// داشبورد > رزرو > صورتحساب > چکهای پرداختی > ویرایش پرداختی
-Breadcrumbs::for('reserves.payment.invoice.cheque.edit', function ($trail,$reserve,$invoice,$cheque) {
-    $trail->parent('reserves.payment.invoice.cheque',$reserve,$invoice);
-    $trail->push('ویرایش پرداختی', route('admin.reserves.payment.cheque.edit',[$reserve,$invoice,$cheque]));
-});
-
-
 // داشبورد > شعبه ها
 Breadcrumbs::for('branchs.index', function ($trail) {
     $trail->parent('home', $trail);
@@ -385,7 +385,7 @@ Breadcrumbs::for('branchs.index', function ($trail) {
 
 // داشبورد > شعبه ها > ایجاد شعبه جدید
 Breadcrumbs::for('branchs.create', function ($trail) {
-    $trail->parent('home', $trail);
+    $trail->parent('branchs.index', $trail);
     $trail->push('ایجاد شعبه جدید', route('admin.branchs.create'));
 });
 
@@ -394,6 +394,25 @@ Breadcrumbs::for('branchs.edit', function ($trail,$branch) {
     $trail->parent('branchs.index');
     $trail->push('ویرایش شعبه', route('admin.branchs.edit',$branch));
 });
+
+// داشبورد > برندها
+Breadcrumbs::for('brands.index', function ($trail) {
+    $trail->parent('home', $trail);
+    $trail->push('برندها', route('admin.brands.index'));
+});
+
+// داشبورد > برندها > ایجاد برند جدید
+Breadcrumbs::for('brands.create', function ($trail) {
+    $trail->parent('brands.index', $trail);
+    $trail->push('ایجاد برند جدید', route('admin.brands.create'));
+});
+
+// داشبورد > برندها > ویرایش  برند
+Breadcrumbs::for('brands.edit', function ($trail,$branch) {
+    $trail->parent('brands.index');
+    $trail->push('ویرایش برند', route('admin.brands.edit',$branch));
+});
+
 
  // داشبورد > دکتر
 Breadcrumbs::for('doctors', function ($trail) {
@@ -613,40 +632,6 @@ Breadcrumbs::for('orders', function ($trail) {
     $trail->parent('home', $trail);
     $trail->push('لیست فروش', route('admin.shop.sells.index'));
 });
-
-
-//  داشبورد  >  تخفیف ها
-Breadcrumbs::for('discounts', function ($trail) {
-    $trail->parent('home', $trail);
-    $trail->push('تخفیف ها', route('admin.discounts.index'));
-});
-
-
-// داشبورد >  تخفیف ها> ایجاد تخفیف جدید
-Breadcrumbs::for('discounts.create', function ($trail) {
-    $trail->parent('discounts', $trail);
-    $trail->push('تخفیف ها', route('admin.discounts.create'));
-});
-
-// داشبورد >  تخفیف ها> ویرایش تخفیف
-Breadcrumbs::for('discounts.edit', function ($trail,$discount) {
-    $trail->parent('discounts', $trail);
-    $trail->push('ویرایش تخفیف', route('admin.discounts.edit',$discount));
-});
-
-// داشبورد >  تخفیف ها>  کاربر
-Breadcrumbs::for('discounts.users', function ($trail,$discount) {
-    $trail->parent('discounts', $trail);
-    $trail->push('کاربران', route('admin.discounts.users.show',$discount));
-});
-
-
-// داشبورد >  تخفیف ها>  سرویس ها
-Breadcrumbs::for('discounts.services', function ($trail,$services) {
-    $trail->parent('discounts', $trail);
-    $trail->push('سرویس ها', route('admin.discounts.services.show',$services));
-});
-
 
 // داشبورد >   گردونه شانس
 Breadcrumbs::for('luck', function ($trail) {
@@ -1265,11 +1250,94 @@ Breadcrumbs::for('warehousing.receipts.create', function ($trail) {
     $trail->push('ایجاد رسید کالاها', route('admin.warehousing.receipts.create'));
 });
 
-// داشبورد>  لیست کالاهای انبار اصلی > لیست رسید کالاها > ویرایش رسید کالا
+// داشبورد >  لیست کالاهای انبار اصلی > لیست رسید کالاها > ویرایش رسید کالا
 Breadcrumbs::for('warehousing.receipts.edit', function ($trail,$receipt) {
     $trail->parent('warehousing.receipts.index', $trail);
     $trail->push('ویرایش رسید کالاها', route('admin.warehousing.receipts.edit',$receipt));
 });
+
+// داشبورد >  لیست کالاهای انبار اصلی > لیست رسید کالاها > صورتحساب پرداخت
+Breadcrumbs::for('warehousing.receipts.invoice', function ($trail,$receipt,$invoice) {
+    $trail->parent('warehousing.receipts.index',$receipt);
+    $trail->push('صورتحساب پرداخت', route('admin.warehousing.receipts.invoice.show',[$receipt,$invoice]));
+});
+
+
+// داشبورد >  لیست کالاهای انبار اصلی > لیست رسید کالاها > صورتحساب پرداخت > پرداختی های دستگاه پوز
+Breadcrumbs::for('warehousing.receipts.invoice.pos', function ($trail,$receipt,$invoice) {
+    $trail->parent('warehousing.receipts.invoice',$receipt,$invoice);
+    $trail->push('پرداختی های دستگاه پوز', route('admin.warehousing.receipts.invoice.pos.index',[$receipt,$invoice]));
+});
+
+// داشبورد >  لیست کالاهای انبار اصلی > لیست رسید کالاها > صورتحساب پرداخت > پرداختی های دستگاه پوز > ایجاد پرداخت جدید
+Breadcrumbs::for('warehousing.receipts.invoice.pos.create', function ($trail,$receipt,$invoice) {
+    $trail->parent('warehousing.receipts.invoice.pos',$receipt,$invoice);
+    $trail->push('ایجاد پرداخت جدید', route('admin.warehousing.receipts.invoice.pos.create',[$receipt,$invoice]));
+});
+
+// داشبورد >  لیست کالاهای انبار اصلی > لیست رسید کالاها > صورتحساب پرداخت > پرداختی های دستگاه پوز > ویرایش پرداخت
+Breadcrumbs::for('warehousing.receipts.invoice.pos.edit', function ($trail,$receipt,$invoice,$pos) {
+    $trail->parent('warehousing.receipts.invoice.pos',$receipt,$invoice);
+    $trail->push('ویرایش پرداخت', route('admin.warehousing.receipts.invoice.pos.edit',[$receipt,$invoice,$pos]));
+});
+
+// داشبورد >  لیست کالاهای انبار اصلی > لیست رسید کالاها > صورتحساب پرداخت > پرداختی های کارت به کارت
+Breadcrumbs::for('warehousing.receipts.invoice.card', function ($trail,$receipt,$invoice) {
+    $trail->parent('warehousing.receipts.invoice',$receipt,$invoice);
+    $trail->push('پرداختی های کارت به کارت', route('admin.warehousing.receipts.invoice.card.index',[$receipt,$invoice]));
+});
+
+// داشبورد >  لیست کالاهای انبار اصلی > لیست رسید کالاها > صورتحساب پرداخت > پرداختی های کارت به کارت > ایجاد پرداخت جدید
+Breadcrumbs::for('warehousing.receipts.invoice.card.create', function ($trail,$receipt,$invoice) {
+    $trail->parent('warehousing.receipts.invoice.card',$receipt,$invoice);
+    $trail->push('ایجاد پرداخت جدید', route('admin.warehousing.receipts.invoice.card.create',[$receipt,$invoice]));
+});
+//
+// داشبورد >  لیست کالاهای انبار اصلی > لیست رسید کالاها > صورتحساب پرداخت > پرداختی های کارت به کارت > ویرایش پرداخت
+Breadcrumbs::for('warehousing.receipts.invoice.card.edit', function ($trail,$receipt,$invoice,$card) {
+    $trail->parent('warehousing.receipts.invoice.card',$receipt,$invoice);
+    $trail->push('ویرایش پرداخت', route('admin.warehousing.receipts.invoice.card.edit',[$receipt,$invoice,$card]));
+});
+
+
+// داشبورد >  لیست کالاهای انبار اصلی > لیست رسید کالاها > صورتحساب پرداخت > پرداختی های نقدی
+Breadcrumbs::for('warehousing.receipts.invoice.cash', function ($trail,$receipt,$invoice) {
+    $trail->parent('warehousing.receipts.invoice',$receipt,$invoice);
+    $trail->push('پرداختی های نقدی', route('admin.warehousing.receipts.invoice.cash.index',[$receipt,$invoice]));
+});
+
+// داشبورد >  لیست کالاهای انبار اصلی > لیست رسید کالاها > صورتحساب پرداخت > پرداختی های نقدی > ایجاد پرداخت جدید
+Breadcrumbs::for('warehousing.receipts.invoice.cash.create', function ($trail,$receipt,$invoice) {
+    $trail->parent('warehousing.receipts.invoice.cash',$receipt,$invoice);
+    $trail->push('ایجاد پرداخت جدید', route('admin.warehousing.receipts.invoice.cash.create',[$receipt,$invoice]));
+});
+
+// داشبورد >  لیست کالاهای انبار اصلی > لیست رسید کالاها > صورتحساب پرداخت > پرداختی های نقدی > ویرایش پرداخت
+Breadcrumbs::for('warehousing.receipts.invoice.cash.edit', function ($trail,$receipt,$invoice,$cash) {
+    $trail->parent('warehousing.receipts.invoice.cash',$receipt,$invoice);
+    $trail->push('ویرایش پرداخت', route('admin.warehousing.receipts.invoice.cash.edit',[$receipt,$invoice,$cash]));
+});
+
+
+// داشبورد >  لیست کالاهای انبار اصلی > لیست رسید کالاها > صورتحساب پرداخت > چکهای پرداختی
+Breadcrumbs::for('warehousing.receipts.invoice.cheque', function ($trail,$receipt,$invoice) {
+    $trail->parent('warehousing.receipts.invoice',$receipt,$invoice);
+    $trail->push('چکهای پرداختی', route('admin.warehousing.receipts.invoice.cheque.index',[$receipt,$invoice]));
+});
+
+// داشبورد >  لیست کالاهای انبار اصلی > لیست رسید کالاها > صورتحساب پرداخت > چکهای پرداختی > ایجاد پرداخت جدید
+Breadcrumbs::for('warehousing.receipts.invoice.cheque.create', function ($trail,$receipt,$invoice) {
+    $trail->parent('warehousing.receipts.invoice.cheque',$receipt,$invoice);
+    $trail->push('ایجاد پرداخت جدید', route('admin.warehousing.receipts.invoice.cheque.create',[$receipt,$invoice]));
+});
+
+// داشبورد >  لیست کالاهای انبار اصلی > لیست رسید کالاها > صورتحساب پرداخت >  چکهای پرداختی > ویرایش پرداخت
+Breadcrumbs::for('warehousing.receipts.invoice.cheque.edit', function ($trail,$receipt,$invoice,$cash) {
+    $trail->parent('warehousing.receipts.invoice.cash',$receipt,$invoice);
+    $trail->push('ویرایش پرداخت', route('admin.warehousing.receipts.invoice.cheque.edit',[$receipt,$invoice,$cash]));
+});
+
+
 
 // داشبورد > لیست انبارها
 Breadcrumbs::for('warehousing.warehouses.index', function ($trail) {
@@ -1333,6 +1401,12 @@ Breadcrumbs::for('accounting.accounts.index', function ($trail) {
     $trail->push('لیست حسابهای مالی', route('admin.accounting.accounts.index'));
 });
 
+// داشبورد >  صندوق
+Breadcrumbs::for('accounting.accounts.invoices', function ($trail) {
+    $trail->parent('home', $trail);
+    $trail->push('صندوق', route('admin.accounting.invoices.index'));
+});
+
 // داشبورد >  حسابداری > لیست حسابهای مالی >ایجاد حساب مالی
 Breadcrumbs::for('accounting.accounts.create', function ($trail) {
     $trail->parent('accounting.accounts.index', $trail);
@@ -1344,6 +1418,39 @@ Breadcrumbs::for('accounting.accounts.edit', function ($trail,$account) {
     $trail->parent('accounting.accounts.index', $trail);
     $trail->push('ایجاد حساب مالی', route('admin.accounting.accounts.edit',compact('account')));
 });
+
+//  داشبورد  >  تخفیف ها
+Breadcrumbs::for('accounting.discounts', function ($trail) {
+    $trail->parent('home', $trail);
+    $trail->push('تخفیف ها', route('admin.accounting.discounts.index'));
+});
+
+
+// داشبورد >  تخفیف ها> ایجاد تخفیف جدید
+Breadcrumbs::for('accounting.discounts.create', function ($trail) {
+    $trail->parent('accounting.discounts', $trail);
+    $trail->push('ایجاد تخفیف جدید', route('admin.accounting.discounts.create'));
+});
+
+// داشبورد >  تخفیف ها> ویرایش تخفیف
+Breadcrumbs::for('accounting.discounts.edit', function ($trail,$discount) {
+    $trail->parent('accounting.discounts', $trail);
+    $trail->push('ویرایش تخفیف', route('admin.accounting.discounts.edit',$discount));
+});
+
+// داشبورد >  تخفیف ها>  کاربر
+Breadcrumbs::for('accounting.discounts.users', function ($trail,$discount) {
+    $trail->parent('accounting.discounts', $trail);
+    $trail->push('کاربران', route('admin.accounting.discounts.users.show',$discount));
+});
+
+
+// داشبورد >  تخفیف ها>  سرویس ها
+Breadcrumbs::for('accounting.discounts.services', function ($trail,$services) {
+    $trail->parent('accounting.discounts', $trail);
+    $trail->push('سرویس ها', route('admin.accounting.discounts.services.show',$services));
+});
+
 
 
 

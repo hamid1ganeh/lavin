@@ -32,12 +32,14 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-12 text-right">
+                                    @if(Auth::guard('admin')->user()->can('branchs.create'))
                                         <div class="btn-group" >
                                             <a href="{{ route('admin.branchs.create') }}" class="btn btn-sm btn-primary">
                                                 <i class="fa fa-plus plusiconfont"></i>
                                                 <b class="IRANYekanRegular">ایجاد شعبه جدید</b>
                                             </a>
                                         </div>
+                                    @endif
                                 </div>
                             </div>
 

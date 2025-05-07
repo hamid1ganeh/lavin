@@ -133,6 +133,7 @@ class ReserveServiceController extends Controller
                 ->orderBy('created_at', 'desc')
                 ->paginate(30)
                 ->withQueryString();
+
         }
 
         return view('admin.reserves.all',compact('reserves','serviceDetails','doctors','secretaries','asistants','branches','receptions'));
@@ -196,12 +197,11 @@ class ReserveServiceController extends Controller
 
             if ($number==null){
                 $number =  Number::where('mobile',$user->mobile)->firstOrCreate([
-                    'firstname'=>$user->firstname,
-                    'lastname'=>$user->lastname,
-                    'mobile'=> $user->mobile,
-                    'status'=> NumberStatus::Adviser,
-                    'type'=> NumberType::hozoori,
-                ]);
+                                        'firstname'=>$user->firstname,
+                                        'lastname'=>$user->lastname,
+                                        'mobile'=> $user->mobile,
+                                        'status'=> NumberStatus::Adviser,
+                                        'type'=> NumberType::hozoori]);
             }else{
                 $number->status =NumberStatus::Adviser;
             }
@@ -306,8 +306,9 @@ class ReserveServiceController extends Controller
             $reserve->reception_desc = $request->reception_desc;
             if($request->status == ReserveStatus::accept){
                 $last = Reception::where('user_id',$reserve->user_id)
-                    ->where('end',false)
-                    ->first();
+                                    ->where('end',false)
+                                    ->where('branch_id',$reserve->branch_id)
+                                    ->first();
 
                 $reserve->time = Carbon::now("+3:30")->format('Y-m-d H:i:s');
 
@@ -319,6 +320,7 @@ class ReserveServiceController extends Controller
                     $reception->code = $code;
                     $reception->reception_id = Auth::guard('admin')->id();
                     $reception->user_id = $reserve->user_id;
+                    $reception->branch_id = $reserve->branch_id;
                     $reception->save();
                     $reserve->reception_id = $reception->id;
                 }else{
@@ -622,7 +624,7 @@ class ReserveServiceController extends Controller
         config(['auth.defaults.guard' => 'admin']);
         $this->authorize('reserves.price');
 
-        if($reserve->status == ReserveStatus::done){
+       if(!is_null($reserve->invoice)){
             return abort(403);
         }
 

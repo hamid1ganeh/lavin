@@ -30,7 +30,9 @@
                     Auth::guard('admin')->user()->can('levels.index') ||
                     Auth::guard('admin')->user()->can('roles.index') ||
                     Auth::guard('admin')->user()->can('numbers.index') ||
-                    Auth::guard('admin')->user()->can('numbers.advisers'))
+                    Auth::guard('admin')->user()->can('reserves.pay.invoices') ||
+                    Auth::guard('admin')->user()->can('numbers.advisers') ||
+                    Auth::guard('admin')->user()->can('invoices.pay'))
                     <li>
                         <a href="javascript: void(0);" class="waves-effect">
                             <i class="ti-align-left"></i>
@@ -60,6 +62,15 @@
                                     </a>
                                 </li>
                             @endif
+
+                           @if(Auth::guard('admin')->user()->can('invoices.pay'))
+                            <li>
+                                <a href="{{ route('admin.accounting.found') }}" class="waves-effect">
+                                    <i class="fas fa-cash-register"></i>
+                                    <span class="IRANYekanRegular">صندوق</span>
+                                </a>
+                            </li>
+                             @endif
 
                             @if(Auth::guard('admin')->user()->can('employments.index'))
                                 <li class="IRANYekanRegular">
@@ -412,6 +423,15 @@
                         </li>
                     @endif
 
+                    @if(Auth::guard('admin')->user()->can('brands.index'))
+                        <li>
+                            <a href="{{ route('admin.brands.index') }}" class="waves-effect">
+                                <i class="fa fa-btc"></i>
+                                <span class="IRANYekanRegular">برندها</span>
+                            </a>
+                        </li>
+                    @endif
+
                     @if(Auth::guard('admin')->user()->can('festivals.index'))
                         <li>
                             <a href="{{ route('admin.festivals.index') }}" class="waves-effect">
@@ -478,8 +498,8 @@
                             <ul class="nav-second-level" aria-expanded="false">
                                 <li class="IRANYekanRegular">
                                     <a href="{{ route('admin.warehousing.goods.index') }}">
-                                        <i class="mdi mdi-city"></i>
-                                        <span>انبار مرکزی</span>
+                                        <i class="fas fa-shopping-cart"></i>
+                                        <span>کالا ها</span>
                                     </a>
                                 </li>
                             </ul>
@@ -509,6 +529,9 @@
 
                         </li>
                    @endif
+
+                    @if(Auth::guard('admin')->user()->can('accounting.accounts.list')||
+                        Auth::guard('admin')->user()->can('accounting.discounts.index'))
                     <li>
                         <a href="javascript: void(0);" class="waves-effect">
                             <i class="mdi mdi-calculator"></i>
@@ -516,6 +539,7 @@
                             <span class="menu-arrow"></span>
                         </a>
 
+                        @if(Auth::guard('admin')->user()->can('accounting.accounts.list'))
                         <ul class="nav-second-level" aria-expanded="false">
                             <li class="IRANYekanRegular">
                                 <a href="{{ route('admin.accounting.accounts.index') }}">
@@ -524,7 +548,19 @@
                                 </a>
                             </li>
                         </ul>
+                        @endif
+                        @if(Auth::guard('admin')->user()->can('accounting.discounts.index'))
+                        <ul class="nav-second-level" aria-expanded="false">
+                            <li>
+                                <a href="{{ route('admin.accounting.discounts.index') }}" class="waves-effect">
+                                    <i class="fas fa-percent"></i>
+                                    <span class="IRANYekanRegular">کد‌ تخفیف</span>
+                                </a>
+                            </li>
+                        </ul>
+                        @endif
                     </li>
+                   @endif
 
                     @if(Auth::guard('admin')->user()->can('complications.index'))
                     <li>
@@ -629,16 +665,6 @@
                           </a>
                       </li>
                     @endif
-
-                    @if(Auth::guard('admin')->user()->can('discounts.index'))
-                      <li>
-                          <a href="{{ route('admin.discounts.index') }}" class="waves-effect">
-                              <i class="fas fa-percent"></i>
-                              <span class="IRANYekanRegular">کد‌ تخفیف</span>
-                          </a>
-                      </li>
-                    @endif
-
             </ul>
         </li>
         @endif

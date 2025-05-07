@@ -142,7 +142,8 @@
                                                                     </a>
                                                                 @endif
                                                             @else
-                                                                @if(Auth::guard('admin')->user()->can('warehousing.warehouses.stocks'))
+                                                                @if(Auth::guard('admin')->user()->can('warehousing.warehouses.stocks') &&
+                                                                     in_array(Auth::guard('admin')->id(),$warehouse->adminsArrayId()))
                                                                     <a class="dropdown-item IR cursor-pointer" href="{{ route('admin.warehousing.warehouses.stocks', $warehouse) }}" title="موجودی">
                                                                         <i class="fa fa-cube text-warning font-20"></i>
                                                                         موجودی

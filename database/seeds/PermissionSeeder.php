@@ -667,63 +667,63 @@ class PermissionSeeder extends Seeder
         ]);
 
         DB::table('permissions')->insert([
-            'name' => 'discounts.index',
+            'name' => 'accounting.discounts.index',
             'description' => 'لیست کد تخفیف',
             'status'=> Status::Active
         ]);
 
         DB::table('permissions')->insert([
-            'name' => 'discounts.create',
+            'name' => 'accounting.discounts.create',
             'description' => 'ایجاد کد تخفیف',
             'status'=> Status::Active
         ]);
 
         DB::table('permissions')->insert([
-            'name' => 'discounts.edit',
+            'name' => 'accounting.discounts.edit',
             'description' => 'ویرایش کد تخفیف',
             'status'=> Status::Active
         ]);
 
         DB::table('permissions')->insert([
-            'name' => 'discounts.destroy',
+            'name' => 'accounting.discounts.destroy',
             'description' => 'حذف کد تخفیف',
             'status'=> Status::Active
         ]);
 
 
         DB::table('permissions')->insert([
-            'name' => 'discounts.show',
+            'name' => 'accounting.discounts.show',
             'description' => 'نمایش کد تخفیف',
             'status'=> Status::Active
         ]);
 
 
         DB::table('permissions')->insert([
-            'name' => 'discounts.services.show',
+            'name' => 'accounting.discounts.services.show',
             'description' => 'نمایش سرویس های کد تخفیف',
             'status'=> Status::Deactive
         ]);
 
         DB::table('permissions')->insert([
-            'name' => 'discounts.services.update',
+            'name' => 'accounting.discounts.services.update',
             'description' => 'بروزرسانی سرویس های کد تخفیف',
             'status'=> Status::Deactive
         ]);
 
         DB::table('permissions')->insert([
-            'name' => 'discounts.user.show',
+            'name' => 'accounting.discounts.user.show',
             'description' => 'نمایش کاربران های کد تخفیف',
             'status'=> Status::Deactive
         ]);
 
         DB::table('permissions')->insert([
-            'name' => 'discounts.user.update',
+            'name' => 'accounting.discounts.user.update',
             'description' => 'بروزرسانی کاربران کد تخفیف',
             'status'=> Status::Deactive
         ]);
 
         DB::table('permissions')->insert([
-            'name' => 'discounts.festival.update',
+            'name' => 'accounting.discounts.festival.update',
             'description' => 'بروزرسانی جشنواره های کد تخفیف',
             'status'=> Status::Active
         ]);
@@ -971,6 +971,18 @@ class PermissionSeeder extends Seeder
             'status'=> Status::Active
         ]);
 
+        DB::table('permissions')->insert([
+            'name' => 'reception.found.refer',
+            'description' => 'ارجاع به صندوق',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'reception.found.status',
+            'description' => 'تعیین وضعیت صندوق',
+            'status'=> Status::Active
+        ]);
+
 
         DB::table('permissions')->insert([
             'name' => 'reserves.index',
@@ -1051,14 +1063,123 @@ class PermissionSeeder extends Seeder
         ]);
 
         DB::table('permissions')->insert([
-            'name' => 'reserves.payment',
-            'description' => 'فاکتور پرداخت رزرو',
+            'name' => 'reception.invoices.show',
+            'description' => ' نمایش صورتحساب پرداخت پذیرش',
             'status'=> Status::Active
         ]);
 
         DB::table('permissions')->insert([
-            'name' => 'reserves.pay',
-            'description' => 'پرداخت رزرو',
+            'name' => 'reception.invoices.create',
+            'description' => 'ایجاد صورتحساب پرداخت',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'invoice.pos.index',
+            'description' => 'لیست پرداختی های دستگاه پوز',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'invoice.pos.create',
+            'description' => 'ثبت پرداختی دستگاه پوز',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'invoice.pos.edit',
+            'description' => 'ویرایش پرداختی دستگاه پوز',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'invoice.pos.delete',
+            'description' => 'حذف پرداختی دستگاه پوژ',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'invoice.card.index',
+            'description' => 'لیست پرداختی های  کارت به کارت',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'invoice.card.create',
+            'description' => 'ثبت پرداختی های  کارت به کارت',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'invoice.card.edit',
+            'description' => 'ویرایش پرداختی های کارت به کارت',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'invoice.card.delete',
+            'description' => 'حذف پرداختی های کارت به کارت',
+            'status'=> Status::Active
+        ]);
+
+
+        DB::table('permissions')->insert([
+            'name' => 'invoice.cash.index',
+            'description' => 'لیست پرداختی های نقدی',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'invoice.cash.create',
+            'description' => 'ثبت پرداختی های  نقدی',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'invoice.cash.edit',
+            'description' => 'ویرایش پرداختی های نقدی',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'invoice.cash.delete',
+            'description' => 'حذف پرداختی های نقدی',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'invoice.cheque.index',
+            'description' => 'لیست چکهای پرداختی',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'invoice.cheque.create',
+            'description' => 'ایجاد چک پرداختی',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'invoice.cheque.edit',
+            'description' => 'ویرایش چک پرداختی',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'invoice.cheque.delete',
+            'description' => 'حذف چک پرداختی',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'invoice.cheque.pass',
+                'description' => 'پاس کردن چک',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'invoice.cheque.return',
+            'description' => 'برگشت دادن چک',
             'status'=> Status::Active
         ]);
 
@@ -1500,6 +1621,30 @@ class PermissionSeeder extends Seeder
             'status'=> Status::Active
         ]);
 
+
+        DB::table('permissions')->insert([
+            'name' => 'brands.index',
+            'description' => 'لیست برندها',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'brands.create',
+            'description' => 'ایجاد برند جدید',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'brands.edit',
+            'description' => 'ویرایش برند',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'brands.delete',
+            'description' => 'حذف برند',
+            'status'=> Status::Active
+        ]);
 
         DB::table('permissions')->insert([
             'name' => 'analysis.index',
@@ -1993,7 +2138,7 @@ class PermissionSeeder extends Seeder
 
         DB::table('permissions')->insert([
             'name' => 'warehousing.warehouses.orders.delivery',
-            'description' => 'رسید حواله انبار',
+            'description' => 'تحویل حواله انبار',
             'status'=> Status::Active
         ]);
 
@@ -2036,6 +2181,12 @@ class PermissionSeeder extends Seeder
         DB::table('permissions')->insert([
             'name' => 'warehousing.lasers.tube.history',
             'description' => 'تاریخچه تعویض تیوب',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'accounting.found',
+            'description' => 'صندوق',
             'status'=> Status::Active
         ]);
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Enums\FoundStatus;
 use App\Enums\genderType;
 use App\Http\Controllers\Controller;
 
@@ -15,6 +16,7 @@ use App\Enums\ReserveStatus;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use App\Services\CodeService;
+use Auth;
 
 class ReceptionController extends Controller
 {
@@ -27,11 +29,11 @@ class ReceptionController extends Controller
          $mobile = request('mobile');
          $code = request('code');
          $nationCode = request('nation_code');
-
+         $branches = Auth::guard('admin')->user()->branches->pluck('id')->toArray();
          if((isset($mobile) && $mobile!='') || (isset($nationCode) && $nationCode!='') || (isset($code) && $code!='')){
-             $receptions = Reception::orderBy('created_at','asc')->filter()->get();
+             $receptions = Reception::whereIn('branch_id', $branches)->orderBy('created_at','asc')->filter()->get();
          } else{
-             $receptions = Reception::where('end',false)->orderBy('created_at','asc')->filter()->get();
+             $receptions = Reception::whereIn('branch_id', $branches)->where('end',false)->orderBy('created_at','asc')->filter()->get();
          }
 
          return  view('admin.reception',compact('receptions'));
@@ -149,4 +151,18 @@ class ReceptionController extends Controller
         $reception->save();
         return back();
     }
+
+    public function found(Reception $reception)
+    {
+        //اجازه دسترسی
+        config(['auth.defaults.guard' => 'admin']);
+        $this->authorize('reception.found.refer');
+
+        $reception->found_status = FoundStatus::referred;
+        $reception->save();
+        toast('پذیرش مورد نظر به صندوق ارجاع داده شد.', 'success')->position('bottom-end');
+        return back();
+    }
 }
+
+

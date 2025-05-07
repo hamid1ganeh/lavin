@@ -10,37 +10,37 @@ use Morilog\Jalali\Jalalian;
 class Goods extends Model
 {
     use SoftDeletes;
-    protected $table = 'goods';
-    protected $fillable = ['title',
-        'main_cat_id',
-        'sub_cat_id',
-        'factor_number',
-        'code',
-        'unit',
-        'consumption_unit',
-        'brand',
-        'count',
-        'value_per_count',
-        'count_stock',
-        'unit_stock',
-        'price',
-        'description',
-        'expire_date',
-        'status'];
+    protected $table= 'goods';
+    protected $fillable=['title',
+                        'main_cat_id',
+                        'sub_cat_id',
+                        'factor_number',
+                        'code',
+                        'unit',
+                        'consumption_unit',
+                        'brand_id',
+                        'count',
+                        'value_per_count',
+                        'count_stock',
+                        'unit_stock',
+                        'price',
+                        'description',
+                        'expire_date',
+                        'status'];
 
     public function main_category()
     {
-        return $this->belongsTo(GoodsMainCategory::class, 'main_cat_id', 'id');
+        return $this->belongsTo(GoodsMainCategory::class,'main_cat_id','id');
     }
 
     public function sub_category()
     {
-        return $this->belongsTo(GoodsSubCategory::class, 'sub_cat_id', 'id');
+        return $this->belongsTo(GoodsSubCategory::class,'sub_cat_id','id');
     }
 
-    public function warehouseStock()
+    public function brand()
     {
-        return $this->hasMany(WarehouseStock::class, 'goods_id', 'id');
+        return $this->belongsTo(Brand::class);
     }
 
     public function expireDate()
@@ -69,11 +69,12 @@ class Goods extends Model
             $query->where('title',$name);
         }
         //فیلتر برند کالا
-        $brand = request('brand');
-        if(isset($brand) &&  $brand!='')
+        $brands = request('brands');
+        if(isset($brands) &&  $brands!='')
         {
-            $query->where('brand',$brand);
+            $query->whereIn('brand_id',$brands);
         }
+
         //فیلتر نام کالا
         $code = request('code');
         if(isset($code) &&  $code!='')

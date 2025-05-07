@@ -68,7 +68,6 @@ class ServiceReserve extends Model
         return $this->hasOne(ReservePayment::class,'reserve_id');
     }
 
-
     public function reception()
     {
         return $this->belongsTo(Reception::class,'reception_id');
@@ -100,6 +99,12 @@ class ServiceReserve extends Model
     {
         return $this->hasMany(ReserveUpgrade::class,'reserve_id','id')->where('status',ReserveStatus::confirm);
     }
+
+    public function invoice()
+    {
+        return $this->hasOne(ReserveInvoice::class,'reserve_id','id');
+    }
+
 
     public function reserve_time()
     {

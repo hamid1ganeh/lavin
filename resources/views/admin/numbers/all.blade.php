@@ -84,7 +84,7 @@
 
                                         @if(Auth::guard('admin')->user()->can('numbers.history.operators'))
                                             <div class="btn-group" >
-                                                <a href="{{ route('admin.numbers.history.operators') }}" class="btn btn-sm btn-warning">
+                                                <a href="{{ route('admin.numbers.history.operators') }}" class="btn btn-sm btn-warning" title="تاریخچه اپراتورها">
                                                     <i class="fas fa-history plusiconfont"></i>
                                                     <b class="IRANYekanRegular">تاریخچه اپراتورها</b>
                                                 </a>
@@ -93,7 +93,7 @@
 
                                         @if(Auth::guard('admin')->user()->can('numbers.history.advisers'))
                                             <div class="btn-group" >
-                                                <a href="{{ route('admin.numbers.history.advisers') }}" class="btn btn-sm btn-info">
+                                                <a href="{{ route('admin.numbers.history.advisers') }}" class="btn btn-sm btn-info" title="تاریخچه مشاورها">
                                                     <i class="fas fa-history plusiconfont"></i>
                                                     <b class="IRANYekanRegular">تاریخچه مشاورها</b>
                                                 </a>
@@ -102,7 +102,7 @@
 
                                         @if(Auth::guard('admin')->user()->can('numbers.create'))
                                             <div class="btn-group" >
-                                                <a href="{{ route('admin.numbers.create') }}" class="btn btn-sm btn-primary">
+                                                <a href="{{ route('admin.numbers.create') }}" class="btn btn-sm btn-primary" title="افزودن شماره جدید">
                                                     <i class="fa fa-plus plusiconfont"></i>
                                                     <b class="IRANYekanRegular">افزودن شماره جدید</b>
                                                 </a>
@@ -111,8 +111,8 @@
 
                                         @if(Auth::guard('admin')->user()->can('numbers.import'))
                                             <div class="btn-group" >
-                                                <a href="{{ route('admin.numbers.csv') }}" class="btn btn-sm btn-danger">
-                                                    <i class="fa fa-file-import plusiconfont"></i>
+                                                <a href="{{ route('admin.numbers.csv') }}" class="btn btn-sm btn-danger" title="CSV درون ریزی فایل">
+                                                    <i class="fas fa-file-import plusiconfont"></i>
                                                     <b class="IRANYekanRegular">CSV درون ریزی فایل</b>
                                                 </a>
                                             </div>
@@ -604,13 +604,11 @@
                                                                 </div>
 
                                                                 <div class="modal-body">
-
                                                                     <div class="row">
                                                                         <div class="col-12">
                                                                             <form method="post" action="{{ route('admin.numbers.operator',$number) }}" id="operator-form-select{{ $number->id }}">
                                                                                 @csrf
                                                                                 @method('PATCH')
-
                                                                                 <div class="row">
                                                                                     <select name="operator" class="form-control select2   IRANYekanRegular"   data-placeholder="... اپراتور مورد نظر را انتخاب نمایید">
                                                                                         <option value="" >...ارجاع به</option>
@@ -678,14 +676,12 @@
                                                                             </table>
                                                                         </div>
                                                                     </div>
-
                                                                 </div>
 
                                                                 <div class="modal-footer">
                                                                     <button type="submit" class="btn btn-primary mr-1" title="ثبت" form="operator-form-select{{ $number->id }}">ثبت</button>
                                                                     <button type="button" class="btn btn-secondary" title="انصراف" data-dismiss="modal">انصراف</button>
                                                                 </div>
-
                                                             </div>
                                                         </div>
                                                     </div>
