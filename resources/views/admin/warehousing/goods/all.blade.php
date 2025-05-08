@@ -47,12 +47,19 @@
                                     @endif
                                     @if(Auth::guard('admin')->user()->can('warehousing.goods.receipts.index'))
                                         <div class="btn-group" >
-                                            <a href="{{ route('admin.warehousing.receipts.index') }}" class="btn btn-sm btn-warning">
+                                            <a href="{{ route('admin.warehousing.receipts.index') }}" class="btn btn-sm btn-success">
                                                 <i class="fa fa-file plusiconfont"></i>
                                                 <b class="IRANYekanRegular">رسید انبار</b>
                                             </a>
                                         </div>
                                     @endif
+
+                                    <div class="btn-group" >
+                                        <a href="{{ route('admin.warehousing.orders.index') }}" class="btn btn-sm btn-warning">
+                                            <i class="fa fa-file plusiconfont"></i>
+                                            <b class="IRANYekanRegular">حوالات</b>
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
 

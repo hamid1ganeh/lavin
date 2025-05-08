@@ -224,14 +224,12 @@ class WareHouseOrderController extends Controller
                     return back();
                 }
 
-
                 $less = $request->less_count*$good->value_per_count+$request->less_unit;
 
                 if ($less>=$order->stock){
                     alert()->error('خطا','تعداد کاستی باید از تعداد موجودی کمتر باشد');
                     return back();
                 }
-
 
                 $stockCount = $order->stock-$less;
 
@@ -269,7 +267,7 @@ class WareHouseOrderController extends Controller
 
             }
 
-            if ($order->event == '-' || $order->event == '0'){
+            if ($order->event == '0'){
 
                 if(is_null($stock) || $order->stock > $stock->stock){
                     alert()->error('خطا','مقدار درخواستی شما در انبار شما موجود نمی باشد.');
@@ -278,43 +276,27 @@ class WareHouseOrderController extends Controller
 
                 $stock->stock -= $order->stock;
 
-                if ($order->event == '-'){
-                    $good->count_stock += $order->countStock();
-                    $good->unit_stock += $order->remainderStock();
+                $stockMoved = WarehouseStock::where('warehouse_id',$order->moved_warehouse_id)->where('goods_id',$order->goods_id)->first();
 
-                    $stock->warehouse_id = $order->warehouse_id;
-                    $stock->goods_id = $order->goods_id;
-
-                    DB::transaction(function() use ($stock, $order,$good) {
-                        $stock->save();
-                        $order->save();
-                        $good->save();
-                    });
+                if(is_null($stockMoved)){
+                    $stockMoved = new WarehouseStock();
+                    $stockMoved->stock = $order->stock;
+                }else{
+                    $stockMoved->stock += $order->stock;
                 }
 
-                if ($order->event == '0'){
+                $stockMoved->warehouse_id = $order->moved_warehouse_id;
+                $stockMoved->goods_id = $order->goods_id;
 
-                    $stockMoved = WarehouseStock::where('warehouse_id',$order->moved_warehouse_id)->where('goods_id',$order->goods_id)->first();
+                $stock->warehouse_id = $order->warehouse_id;
+                $stock->goods_id = $order->goods_id;
 
-                    if(is_null($stockMoved)){
-                        $stockMoved = new WarehouseStock();
-                        $stockMoved->stock = $order->stock;
-                    }else{
-                        $stockMoved->stock += $order->stock;
-                    }
+                DB::transaction(function() use ($stock, $order,$stockMoved) {
+                    $stock->save();
+                    $order->save();
+                    $stockMoved->save();
+                });
 
-                    $stockMoved->warehouse_id = $order->moved_warehouse_id;
-                    $stockMoved->goods_id = $order->goods_id;
-
-                    $stock->warehouse_id = $order->warehouse_id;
-                    $stock->goods_id = $order->goods_id;
-
-                    DB::transaction(function() use ($stock, $order,$stockMoved) {
-                        $stock->save();
-                        $order->save();
-                        $stockMoved->save();
-                    });
-                }
             }
             toast('حواله مورد نظر تحویل گرفته شد.','success')->position('bottom-end');
         }

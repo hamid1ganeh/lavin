@@ -312,6 +312,15 @@
                                                     <label for="number-filter" class="control-label IRANYekanRegular">شماره حواله</label>
                                                     <input type="text"  class="form-control input" id="number-filter" name="number" placeholder="شماره حواله را وارد کنید" value="{{ request('number') }}">
                                                 </div>
+                                                <div class="form-group justify-content-center col-12 col-md-6">
+                                                    <label for="less-result-filter" class="control-label IRANYekanRegular">نتیجه مغایرت</label>
+                                                    <select name="less_result[]" id="less-result-filter" class="form-control select2 select2-multiple text-right IRANYekanRegular" multiple="multiple" multiple data-placeholder="... نتیجه مغایرت ها انتخاب نمایید">
+                                                        <option value="0">تایید شده</option>
+                                                        <option value="1">هزینه</option>
+                                                        <option value="2">صدور سند مالی</option>
+                                                    </select>
+                                                    <span class="form-text text-danger erroralarm"> {{ $errors->first('less') }} </span>
+                                                </div>
                                             </diV>
 
 
@@ -331,10 +340,12 @@
                                                 <script>
                                                     function reset()
                                                     {
-                                                        document.getElementById("name-filter").value = "";
-                                                        document.getElementById("brand-filter").value = "";
-                                                        document.getElementById("factor-number-filter").value = "";
-                                                        document.getElementById("code-filter").value = "";
+                                                        document.getElementById("since-filter").value = "";
+                                                        document.getElementById("until-filter").value = "";
+                                                        document.getElementById("number-filter").value = "";
+                                                        $("#goods-filter").val(null).trigger("change");
+                                                        $("#event-filter").val(null).trigger("change");
+                                                        $("#less-result-filter").val(null).trigger("change");
                                                     }
                                                 </script>
 
@@ -358,6 +369,7 @@
                                             <th><b class="IRANYekanRegular">موجودی واحد در هر عدد</b></th>
                                             <th><b class="IRANYekanRegular">موجودی</b></th>
                                             <th><b class="IRANYekanRegular">مغایرت</b></th>
+                                            <th><b class="IRANYekanRegular">نتیجه مغایرت</b></th>
                                             <th><b class="IRANYekanRegular">نوع حواله</b></th>
                                             <th><b class="IRANYekanRegular">انبار تحویل گیرنده</b></th>
                                             <th><b class="IRANYekanRegular">ایجاد کننده</b></th>
@@ -380,6 +392,7 @@
                                                 <td><strong class="IRANYekanRegular">{{ $order->good->value_per_count.' '.$order->good->unit.' در هر عدد ' }}</strong></td>
                                                 <td><strong class="IRANYekanRegular">{{ $order->stock() ?? '' }}</strong></td>
                                                 <td><strong class="IRANYekanRegular">{{ $order->less() ?? '' }}</strong></td>
+                                                <td><strong class="IRANYekanRegular">{{ $order->getLessResult() ?? '' }}</strong></td>
                                                 <td><strong class="IRANYekanRegular">{{ $order->event() }}</strong></td>
                                                 <td>
 

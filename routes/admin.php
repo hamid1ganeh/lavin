@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\EmploymentController;
 use App\Http\Controllers\Admin\GoodsMainController;
 use App\Http\Controllers\Admin\GoodsSubController;
 use App\Http\Controllers\Admin\GoodsController;
+use App\Http\Controllers\Admin\GoodsOrderController;
 use App\Http\Controllers\Admin\WarehouseController;
 use App\Http\Controllers\Admin\WareHouseOrderController;
 use App\Http\Controllers\Admin\ReportController;
@@ -799,6 +800,14 @@ Route::group(['middleware' => 'auth.admin'], function () {
                 Route::delete('/destroy/{sub}', [GoodsSubController::class,'destroy'])->name('destroy');
                 Route::patch('/recycle/{sub}', [GoodsSubController::class,'recycle'])->name('recycle');
             });
+
+            Route::prefix('/orders')->name('orders.')->group(function () {
+                Route::get('/', [WareHouseOrderController::class,'index'])->name('index');
+                Route::post('/change', [WareHouseOrderController::class,'store'])->name('store');
+                Route::patch('{order}/update', [WareHouseOrderController::class,'update'])->name('update');
+                Route::patch('{order}/deliver', [WareHouseOrderController::class,'deliver'])->name('deliver');
+                Route::delete('{order}/destroy', [WareHouseOrderController::class,'destroy'])->name('destroy');
+            });
         });
 
          Route::prefix('receipts')->name('receipts.')->group(function () {
@@ -860,6 +869,13 @@ Route::group(['middleware' => 'auth.admin'], function () {
             Route::patch('{good}/update', [GoodsController::class,'update'])->name('update');
             Route::delete('/destroy/{good}', [GoodsController::class,'destroy'])->name('destroy');
             Route::patch('/recycle/{good}', [GoodsController::class,'recycle'])->name('recycle');
+        });
+
+        Route::prefix('/orders')->name('orders.')->group(function () {
+            Route::get('/', [GoodsOrderController::class,'index'])->name('index');
+            Route::post('/change', [GoodsOrderController::class,'store'])->name('store');
+            Route::patch('{order}/deliver', [GoodsOrderController::class,'deliver'])->name('deliver');
+            Route::patch('{order}/less', [GoodsOrderController::class,'less'])->name('less');
         });
 
             Route::prefix('warehouses')->name('warehouses.')->group(function () {
