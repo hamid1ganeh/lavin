@@ -180,7 +180,7 @@
                                                                             @foreach($receipt->goods ?? [] as $index=>$good)
                                                                                 <tr>
                                                                                     <td> {{ ++$index }}</td>
-                                                                                    <td>{{  $good->good->getGoodInfo()??'' }}</td>
+                                                                                    <td>@if(!is_null($good->good)) {{  $good->good->getGoodInfo()??'' }} @endif</td>
                                                                                     <td>{{ number_format($good->count ?? 0) }}</td>
                                                                                     <td>{{ number_format($good->unit_cost ?? 0) }}</td>
                                                                                     <td>{{ number_format($good->total_cost ?? 0) }}</td>

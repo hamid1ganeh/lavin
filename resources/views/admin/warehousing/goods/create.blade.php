@@ -94,7 +94,7 @@
                                     </div>
 
                                     <div class="form-group row">
-                                        <div class="col-12 col-md-4">
+                                        <div class="col-12 col-md-3">
                                             <label for="unit" class="control-label IRANYekanRegular">واحد مصرفی</label>
                                             <select name="unit" id="unit"  class="form-control  IRANYekanRegular" >
                                                 <option value="{{ App\Enums\Unit::cc }}" {{ App\Enums\Unit::cc== old('unit')?'selected':'' }}>{{ App\Enums\Unit::cc }}</option>
@@ -114,15 +114,21 @@
                                             </select>
                                             <span class="form-text text-danger erroralarm"> {{ $errors->first('consumption_unit') }} </span>
                                         </div>
-                                        <div class="col-12 col-md-4">
+                                        <div class="col-12 col-md-3">
                                             <label for="value_per_count" class="control-label IRANYekanRegular">حجم واحد در هر عدد</label>
-                                            <input type="text" class="form-control input text-right" name="value_per_count" id=value_per_count" placeholder="حجم واحد هر عدد را وارد کنید" value="{{ old('value_per_count')  }}">
+                                            <input type="number" class="form-control input text-right" name="value_per_count" id=value_per_count" placeholder="حجم واحد هر عدد را وارد کنید" value="{{ old('value_per_count')  }}">
                                             <span class="form-text text-danger erroralarm"> {{ $errors->first('value_per_count') }} </span>
                                         </div>
 
-                                        <div class="col-12 col-md-4">
+                                        <div class="col-12 col-md-3">
+                                            <label for="count_stock" class="control-label IRANYekanRegular">تعداد موجودی اولیه</label>
+                                            <input type="number" class="form-control input text-center" name="count_stock" id=count_stock" placeholder="تعداد موجودی اولیه را وارد کنید" value="{{ old('count_stock') ?? 0  }}">
+                                            <span class="form-text text-danger erroralarm"> {{ $errors->first('count_stock') }} </span>
+                                        </div>
+
+                                        <div class="col-12 col-md-3">
                                             <label for="price" class="control-label IRANYekanRegular">قیمت واحد مصرفی</label>
-                                            <input type="text" class="form-control input text-left" name="price" id=price" placeholder="قیمت واحد مصرفی کالا را وارد کنید" value="{{ old('price')  }}">
+                                            <input type="number" class="form-control input text-left" name="price" id=price" placeholder="قیمت واحد مصرفی کالا را وارد کنید" value="{{ old('price')  }}">
                                             <span class="form-text text-danger erroralarm"> {{ $errors->first('price') }} </span>
                                         </div>
 
