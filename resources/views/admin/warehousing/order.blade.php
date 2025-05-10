@@ -46,7 +46,7 @@
                         <div class="page-title-box">
                             <div class="page-title-right">
                                 <ol class="breadcrumb m-0 IR">
-{{--                                    {{ Breadcrumbs::render('warehousing.warehouses.orders.index',$warehouse) }}--}}
+                                    {{ Breadcrumbs::render('warehousing.orders.index') }}
                                 </ol>
                             </div>
                             <h4 class="page-title">
@@ -391,10 +391,11 @@
                                                                 @endif
                                                             @endif
 
-                                                            @if($order->less>0)
+                                                                @if($order->less>0 && !is_null($order->delivered_by) &&
+                                                                Auth::guard('admin')->user()->can('warehousing.warehouses.orders.less'))
                                                             <a href="#less{{ $order->id }}" data-toggle="modal" class="dropdown-item IR cursor" title="وضعیت مقایرت">
                                                                 <i class="fa fa-window-minimize  text-danger"></i>
-                                                                وضعیت مقایرت
+                                                                وضعیت مغایرت
                                                             </a>
                                                             @endif
                                                         </div>

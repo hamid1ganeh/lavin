@@ -172,6 +172,9 @@ class Number extends Model
             case NumberType::football:
                 $res = "آکادمی فوتبال صبوری";
                 break;
+            case NumberType::etc:
+                $res = "غیره...";
+                break;
         }
         return  $res;
     }

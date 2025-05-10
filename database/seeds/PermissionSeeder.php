@@ -2041,7 +2041,7 @@ class PermissionSeeder extends Seeder
 
         DB::table('permissions')->insert([
             'name' => 'warehousing.goods.index',
-            'description' => 'لیست کالاها',
+            'description' => 'لیست کالاهای انبار مرکزی',
             'status'=> Status::Active
         ]);
 
@@ -2139,6 +2139,12 @@ class PermissionSeeder extends Seeder
         DB::table('permissions')->insert([
             'name' => 'warehousing.warehouses.orders.delivery',
             'description' => 'رسید حواله انبار',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => 'warehousing.warehouses.orders.less',
+            'description' => 'تعیین وضعیت مغایرت',
             'status'=> Status::Active
         ]);
 

@@ -894,6 +894,7 @@ Route::group(['middleware' => 'auth.admin'], function () {
                 Route::patch('{order}/update', [WareHouseOrderController::class,'update'])->name('update');
                 Route::patch('{order}/deliver', [WareHouseOrderController::class,'deliver'])->name('deliver');
                 Route::delete('{order}/destroy', [WareHouseOrderController::class,'destroy'])->name('destroy');
+                Route::patch('{order}/less', [WareHouseOrderController::class,'less'])->name('less');
             });
         });
 

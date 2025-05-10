@@ -117,18 +117,21 @@ class ReserveServiceController extends Controller
         $serviceDetails= ServiceDetail::orderBy('name','asc')->get();
         $branches= Branch::orderBy('name','asc')->get();
         $receptions = Admin::whereHas('roles', function($q){$q->where('name', 'reception');})->orderBy('fullname','asc')->get();
+        $adminBranches = Auth::guard('admin')->user()->branches->pluck('id')->toArray();
 
         $roles = Auth::guard('admin')->user()->getRoles();
         if(count($roles)==1 && in_array('secretary',$roles)) {
             $reserves = ServiceReserve::with('user','branch', 'doctor', 'review','adviser.number.operators.admin','adviser.advisers.admin','reception')
                 ->where('secratry_id',Auth::guard('admin')->id())
                 ->whereIn('status',[ReserveStatus::secratry,ReserveStatus::done])
+                ->whereIn('branch_id', $adminBranches)
                 ->filter()
                 ->orderBy('created_at', 'desc')
                 ->paginate(30)
                 ->withQueryString();
         }else {
             $reserves = ServiceReserve::with('user','branch', 'doctor', 'review','adviser.number.operators.admin','adviser.advisers.admin','reception')
+                ->whereIn('branch_id', $adminBranches)
                 ->filter()
                 ->orderBy('created_at', 'desc')
                 ->paginate(30)

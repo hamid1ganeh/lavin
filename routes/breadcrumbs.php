@@ -1226,6 +1226,13 @@ Breadcrumbs::for('warehousing.goods.index', function ($trail) {
     $trail->push('لیست کالاهای انبار اصلی', route('admin.warehousing.goods.index'));
 });
 
+// داشبورد > لیست کالاهای انبار اصلی > حوالات انبار مرکزی
+Breadcrumbs::for('warehousing.orders.index', function ($trail) {
+    $trail->parent('warehousing.goods.index', $trail);
+    $trail->push(' حوالات انبار مرکزی ', route('admin.warehousing.orders.index'));
+});
+
+
 // داشبورد >  لیست کالاهای انبار اصلی >ایجاد کالا جدید
 Breadcrumbs::for('warehousing.goods.create', function ($trail) {
     $trail->parent('warehousing.goods.index', $trail);

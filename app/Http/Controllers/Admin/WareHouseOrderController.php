@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Enums\Status;
+use App\Enums\WareHoseOrderResult;
 use App\Http\Controllers\Controller;
 use App\Models\Goods;
 use App\Models\Warehouse;
@@ -267,6 +268,7 @@ class WareHouseOrderController extends Controller
 
             }
 
+
             if ($order->event == '0'){
 
                 if(is_null($stock) || $order->stock > $stock->stock){
@@ -303,6 +305,24 @@ class WareHouseOrderController extends Controller
         return back();
     }
 
+    public function less(Warehouse $warehouse,WarehouseStockHistory $order,Request $request)
+    {
+        if ($order->less ==0 || is_null($order->moved_warehouse_id) || !in_array($request->result,WareHoseOrderResult::validKeys())){
+            return back();
+        }
+
+        if (!in_array(Auth::guard('admin')->id(),$order->movedWarehose->adminsArrayId())){
+            abort(403);
+        }
+
+        $order->less_result = $request->result;
+        $order->save();
+
+        toast('وضعیت مغایرت مشخص شد.','success')->position('bottom-end');
+        return  back();
+
+    }
+
     public function destroy(Warehouse $warehouse,WarehouseStockHistory $order)
     {
         //اجازه دسترسی
@@ -319,5 +339,7 @@ class WareHouseOrderController extends Controller
         }
         return back();
     }
+
+
 
 }

@@ -15,6 +15,9 @@ class NumberType
     const   hozoori  = '6';
     const   call  = '7';
     const   football  = '8';
+    const   etc  = '9';
+
+
 
 
 }

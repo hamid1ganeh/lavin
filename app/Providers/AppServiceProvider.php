@@ -71,6 +71,7 @@ class AppServiceProvider extends ServiceProvider
             $analiseCount = 0;
             $operatorCount = 0;
             $openReceptionCount = 0;
+
             if(Auth::guard('admin')->check())
             {
                 $roles = Auth::guard('admin')->user()->getRoles();
@@ -114,7 +115,7 @@ class AppServiceProvider extends ServiceProvider
                 }
 
                 if(in_array('reception',$roles)){
-                    $openReceptionCount = Reception::where('end',false)->count();
+                    $openReceptionCount = Reception::where('branch_id',Auth::guard('admin')->user()->branches->pluck('id')->toArray())->where('end',false)->count();
                 }
 
             }

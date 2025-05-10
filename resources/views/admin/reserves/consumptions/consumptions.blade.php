@@ -83,7 +83,7 @@
                                                                         <select name="good" id="good"  class="width-100 form-control IRANYekanRegular" required>
                                                                             <option value="">کالا مورد نظر را انتخاب کنید</option>
                                                                             @foreach($goods as $good)
-                                                                                <option value="{{ $good->id }}" {{$good->id == old('good')?'selected':'' }}>{{ $good->title.' ('.$good->brand.' )' }}</option>
+                                                                                <option value="{{ $good->id }}" {{$good->id == old('good')?'selected':'' }}>{{ $good->title.' ('.$good->brand->name.' )' }}</option>
                                                                             @endforeach
                                                                         </select>
                                                                     </div>
@@ -135,7 +135,7 @@
                                             <td><strong class="IRANYekanRegular">{{ ++$index }}</strong></td>
                                             <td><strong class="IRANYekanRegular">{{ $consumption->warehouse->name ?? '' }}</strong></td>
                                             <td><strong class="IRANYekanRegular">{{ $consumption->good->title ?? '' }}</strong></td>
-                                            <td><strong class="IRANYekanRegular">{{ $consumption->good->brand ?? '' }}</strong></td>
+                                            <td><strong class="IRANYekanRegular">{{ $consumption->good->brand->name ?? '' }}</strong></td>
                                             <td><strong class="IRANYekanRegular">{{ $consumption->good->main_category->title ?? '' }}</strong></td>
                                             <td><strong class="IRANYekanRegular">{{ $consumption->good->sub_category->title ?? '' }}</strong></td>
                                             <td><strong class="IRANYekanRegular">{{ $consumption->value.' '.$consumption->unit }}</strong></td>
@@ -203,7 +203,7 @@
                                                                                 <select name="good" id="good"  class="width-100 form-control IRANYekanRegular" required>
                                                                                     <option value="">کالا مورد نظر را انتخاب کنید</option>
                                                                                     @foreach($consumption->warehouse->stocks->pluck('good') as $good)
-                                                                                        <option value="{{ $good->id }}" {{$good->id == old('good') || $good->id == $consumption->goods_id  ?'selected':'' }}>{{ $good->title.' ('.$good->brand.' )' }}</option>
+                                                                                        <option value="{{ $good->id }}" {{$good->id == old('good') || $good->id == $consumption->goods_id  ?'selected':'' }}>{{ $good->title.' ('.$good->brand->name.' )' }}</option>
                                                                                     @endforeach
                                                                                 </select>
                                                                             </div>
@@ -287,7 +287,7 @@
                         "<option value=''>  کالا مصرفی را انتخاب کنید...</option>";
                     for(var i=0; i<len; i++)
                     {
-                        tr_str += "<option value='"+response['goods'][i].id+"' class='dropdopwn'>"+response['goods'][i].title+' ('+response['goods'][i].brand+') '+"</option>";
+                        tr_str += "<option value='"+response['goods'][i].id+"' class='dropdopwn'>"+response['goods'][i].title+' ('+response['goods'][i].brand.name+') '+"</option>";
                     }
                     tr_str +="</select>";
 

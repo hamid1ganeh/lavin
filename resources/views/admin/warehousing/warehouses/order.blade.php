@@ -550,6 +550,44 @@
                                                         </div>
                                                     </div>
 
+                                                    <!-- Less Modal -->
+                                                    <div class="modal fade" id="less{{ $order->id }}" tabindex="-1" aria-labelledby="reviewLabel" aria-hidden="true">
+                                                        <div class="modal-dialog modal-xs">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header py-3">
+                                                                    <h5 class="modal-title IRANYekanRegular" id="newReviewLabel">تعیین وضعیت مغایرت</h5>
+                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                        <span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <form action="{{ route('admin.warehousing.warehouses.orders.less',[$warehouse,$order]) }}"  method="POST" class="d-inline" id="less-form{{ $order->id }}">
+                                                                        @csrf
+                                                                        @method('patch')
+                                                                        <div class="form-group row">
+                                                                            <div class="col-12">
+                                                                                <label for="less-result{{ $order->id }}" class="col-form-label IRANYekanRegular">نتیجه</label>
+                                                                                <select name="result" id="less-result{{ $order->id }}"  class="width-100 form-control IRANYekanRegular" required>
+                                                                                    <option value="">نتیجه مغایرت  را انتخاب کنید</option>
+                                                                                    <option value="0">تایید شده</option>
+                                                                                    <option value="1">هزینه</option>
+                                                                                    <option value="2">صدور سند مالی</option>
+                                                                                </select>
+                                                                                <span class="form-text text-danger erroralarm"> {{ $errors->first('result') }} </span>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </form>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="submit" class="btn btn-primary px-8" title="ثبت" form="less-form{{ $order->id }}">ثبت</button>
+                                                                    &nbsp;
+                                                                    <button type="button" class="btn btn-secondary" title="انصراف" data-dismiss="modal">انصراف</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
                                                     <div class="input-group">
                                                         <div class="input-group-append">
                                                             <i class=" ti-align-justify" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
@@ -577,6 +615,15 @@
                                                                             حذف
                                                                         </a>
                                                                     @endif
+                                                                @endif
+
+                                                                @if($order->less>0 && !is_null($order->moved_warehouse_id) && !is_null($order->delivered_by) &&
+                                                                    in_array(Auth::guard('admin')->id(),$order->movedWarehose->adminsArrayId()) &&
+                                                                    Auth::guard('admin')->user()->can('warehousing.warehouses.orders.less'))
+                                                                    <a href="#less{{ $order->id }}" data-toggle="modal" class="dropdown-item IR cursor" title="وضعیت مقایرت">
+                                                                        <i class="fa fa-window-minimize  text-danger"></i>
+                                                                        وضعیت مغایرت
+                                                                    </a>
                                                                 @endif
                                                             </div>
                                                         </div>
