@@ -2149,6 +2149,12 @@ class PermissionSeeder extends Seeder
         ]);
 
         DB::table('permissions')->insert([
+            'name' => 'warehousing.warehouses.orders.confirm',
+            'description' => 'تایید انبار مرکزی',
+            'status'=> Status::Active
+        ]);
+
+        DB::table('permissions')->insert([
             'name' => 'warehousing.lasers.index',
             'description' => 'لیست دستگاه های لیزر',
             'status'=> Status::Active

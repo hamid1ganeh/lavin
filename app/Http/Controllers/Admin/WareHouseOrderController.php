@@ -307,6 +307,10 @@ class WareHouseOrderController extends Controller
 
     public function less(Warehouse $warehouse,WarehouseStockHistory $order,Request $request)
     {
+        //اجازه دسترسی
+        config(['auth.defaults.guard' => 'admin']);
+        $this->authorize('warehousing.warehouses.orders.less');
+
         if ($order->less ==0 || is_null($order->moved_warehouse_id) || !in_array($request->result,WareHoseOrderResult::validKeys())){
             return back();
         }

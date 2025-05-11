@@ -20,11 +20,16 @@ class GoodsOrderController extends Controller
 
     public function index()
     {
+        //اجازه دسترسی
+        config(['auth.defaults.guard' => 'admin']);
+        $this->authorize('warehousing.warehouses.orders.index');
+
         $orders = WarehouseStockHistory::with('good')
             ->whereIn('event', ['+', '-'])
             ->filter()
             ->orderBy('created_at', 'desc')
             ->paginate(10);
+
 
         $goods = Goods::where('status', Status::Active)->orderBy('title', 'asc')->get();
 
@@ -40,6 +45,10 @@ class GoodsOrderController extends Controller
 
     public function store(Request $request)
     {
+        //اجازه دسترسی
+        config(['auth.defaults.guard' => 'admin']);
+        $this->authorize('warehousing.warehouses.orders.create');
+
         $request->validate(
             [
                 'good' => ['required', 'exists:goods,id'],
@@ -103,9 +112,9 @@ class GoodsOrderController extends Controller
 
     public function deliver(WarehouseStockHistory $order,Request $request)
     {
-//        //اجازه دسترسی
-//        config(['auth.defaults.guard' => 'admin']);
-//        $this->authorize('warehousing.warehouses.orders.delivery');
+        //اجازه دسترسی
+        config(['auth.defaults.guard' => 'admin']);
+        $this->authorize('warehousing.warehouses.orders.delivery');
 
         if (is_null($order->delivered_by)){
             $good = $order->good;
@@ -152,6 +161,10 @@ class GoodsOrderController extends Controller
 
     public function less(WarehouseStockHistory $order,Request $request)
     {
+        //اجازه دسترسی
+        config(['auth.defaults.guard' => 'admin']);
+        $this->authorize('warehousing.warehouses.orders.less');
+
         if ($order->less ==0 || !in_array($request->result,WareHoseOrderResult::validKeys())){
             return back();
         }
@@ -163,4 +176,24 @@ class GoodsOrderController extends Controller
         return  back();
 
     }
+    public function confirm(WarehouseStockHistory $order)
+    {
+        //اجازه دسترسی
+        config(['auth.defaults.guard' => 'admin']);
+        $this->authorize('warehousing.warehouses.orders.less');
+
+        if ($order->event =='0' ){
+            return back();
+        }
+
+        $order->confirmed_by = Auth::guard('admin')->id();
+        $order->save();
+
+        toast('انبار مرکزی تایید کرد.','success')->position('bottom-end');
+        return  back();
+
+    }
+
+
+
 }

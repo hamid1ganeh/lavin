@@ -23,7 +23,7 @@ class WarehouseStockHistory extends Model
 
     public function good()
     {
-        return $this->belongsTo(Goods::class, 'goods_id', 'id');
+        return $this->belongsTo(Goods::class, 'goods_id', 'id')->withTrashed();
     }
 
     public function deliveredBy()

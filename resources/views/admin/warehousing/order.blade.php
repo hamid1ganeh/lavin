@@ -376,13 +376,39 @@
                                                     </div>
                                                 </div>
 
+                                                <!-- Confirm Modal -->
+                                                <div class="modal fade" id="confirm{{ $order->id }}" tabindex="-1" aria-labelledby="reviewLabel" aria-hidden="true">
+                                                    <div class="modal-dialog modal-xs">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header py-3">
+                                                                <h5 class="modal-title IRANYekanRegular" id="newReviewLabel">تعیین وضعیت مغایرت</h5>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body text-center">
+                                                                <h5 class="IRANYekanRegular">آیا انبار مرکزی این حواله را تایید می کند؟</h5>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <form action="{{ route('admin.warehousing.orders.confirm',$order) }}"  method="POST" class="d-inline">
+                                                                    @csrf
+                                                                    @method('patch')
+                                                                     <button type="submit" class="btn btn-primary px-8" title="ثبت">ثبت</button>
+                                                                </form>
+                                                                &nbsp;
+                                                                <button type="button" class="btn btn-secondary" title="انصراف" data-dismiss="modal">انصراف</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
 
 
                                                 <div class="input-group">
                                                     <div class="input-group-append">
                                                         <i class=" ti-align-justify" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
                                                         <div class="dropdown-menu">
-                                                            @if(is_null($order->delivered_by) && $order->event == '-')
+                                                            @if(is_null($order->delivered_by) && $order->event == '-' && !is_null($order->confirmed_by))
                                                                 @if(Auth::guard('admin')->user()->can('warehousing.warehouses.orders.delivery'))
                                                                     <a href="#delivery{{ $order->id }}" data-toggle="modal" class="dropdown-item IR cursor" title="تحویل">
                                                                         <i class="ti-thumb-up  text-info"></i>
@@ -391,12 +417,20 @@
                                                                 @endif
                                                             @endif
 
-                                                                @if($order->less>0 && !is_null($order->delivered_by) &&
+                                                            @if($order->less>0 && !is_null($order->delivered_by) &&
                                                                 Auth::guard('admin')->user()->can('warehousing.warehouses.orders.less'))
                                                             <a href="#less{{ $order->id }}" data-toggle="modal" class="dropdown-item IR cursor" title="وضعیت مقایرت">
                                                                 <i class="fa fa-window-minimize  text-danger"></i>
                                                                 وضعیت مغایرت
                                                             </a>
+                                                            @endif
+
+                                                            @if($order->event != '0' && is_null($order->confirmed_by) &&
+                                                            Auth::guard('admin')->user()->can('warehousing.warehouses.orders.confirm'))
+                                                                <a href="#confirm{{ $order->id }}" data-toggle="modal" class="dropdown-item IR cursor" title="تایید انبار مرکزی">
+                                                                    <i class="ti-thumb-up  text-primary"></i>
+                                                                    تایید انبار مرکزی
+                                                                </a>
                                                             @endif
                                                         </div>
                                                     </div>

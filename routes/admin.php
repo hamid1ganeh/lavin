@@ -876,6 +876,7 @@ Route::group(['middleware' => 'auth.admin'], function () {
             Route::post('/change', [GoodsOrderController::class,'store'])->name('store');
             Route::patch('{order}/deliver', [GoodsOrderController::class,'deliver'])->name('deliver');
             Route::patch('{order}/less', [GoodsOrderController::class,'less'])->name('less');
+            Route::patch('{order}/confirm', [GoodsOrderController::class,'confirm'])->name('confirm');
         });
 
             Route::prefix('warehouses')->name('warehouses.')->group(function () {
