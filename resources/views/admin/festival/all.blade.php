@@ -14,7 +14,7 @@
                     <div class="page-title-box">
                         <div class="page-title-right">
                             <ol class="breadcrumb m-0 IR">
-{{--                             {{ Breadcrumbs::render('branchs.index') }}--}}
+                             {{ Breadcrumbs::render('festivals.index') }}
                             </ol>
                         </div>
                         <h4 class="page-title">
@@ -154,6 +154,7 @@
                                     @endforeach
                                     </tbody>
                                 </table>
+                                {{ $festivals->render() }}
                             </div>
                         </div>
                     </div>

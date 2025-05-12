@@ -406,7 +406,7 @@ class HomeController extends Controller
     public function goodsfetch()
     {
         $warehouse = request('warehouse');
-        $goods = WarehouseStock::with('good')->where('warehouse_id',$warehouse)->get();
+        $goods = WarehouseStock::with('good.brand')->where('warehouse_id',$warehouse)->get();
         return response()->json(['goods'=>$goods->pluck('good')],200);
     }
 

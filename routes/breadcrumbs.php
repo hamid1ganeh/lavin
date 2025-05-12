@@ -401,6 +401,12 @@ Breadcrumbs::for('brands.index', function ($trail) {
     $trail->push('برندها', route('admin.brands.index'));
 });
 
+// داشبورد > جشنواره ها
+Breadcrumbs::for('festivals.index', function ($trail) {
+    $trail->parent('home', $trail);
+    $trail->push('جشنواره ها', route('admin.festivals.index'));
+});
+
 // داشبورد > برندها > ایجاد برند جدید
 Breadcrumbs::for('brands.create', function ($trail) {
     $trail->parent('brands.index', $trail);

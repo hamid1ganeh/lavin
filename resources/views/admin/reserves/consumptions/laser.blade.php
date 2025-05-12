@@ -369,7 +369,7 @@
                         "<option value=''>  کالا مصرفی را انتخاب کنید...</option>";
                     for(var i=0; i<len; i++)
                     {
-                        tr_str += "<option value='"+response['goods'][i].id+"' class='dropdopwn'>"+response['goods'][i].title+' ('+response['goods'][i].brand+') '+"</option>";
+                        tr_str += "<option value='"+response['goods'][i].id+"' class='dropdopwn'>"+response['goods'][i].title+' ('+response['goods'][i].brand.name+') '+"</option>";
                     }
                     tr_str +="</select>";
 
