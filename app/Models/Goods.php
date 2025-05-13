@@ -62,7 +62,13 @@ class Goods extends Model
 
     public function getGoodInfo()
     {
-        return $this->title.' - برند ('.$this->brand.') - کد ('.$this->code.')';
+        return $this->title.' - برند ('.$this->brand->name.') - کد ('.$this->code.')';
+    }
+
+    public function showGoodInfo()
+    {
+        return  $this->title.' - برند ('.$this->brand->name.')موجودی ('. $this->unit_stock.' '.$this->unit.')';
+
     }
     public function scopeFilter($query)
     {

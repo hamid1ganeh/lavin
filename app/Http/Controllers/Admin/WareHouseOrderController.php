@@ -30,6 +30,7 @@ class WareHouseOrderController extends Controller
             ->paginate(10)
             ->withQueryString();
 
+
         $goods = Goods::where('status',Status::Active)->orderBy('title','asc')->get();
 
         $warehousesGoods = Goods::whereHas('warehouseStock',function ($query) use ($warehouse){
@@ -126,7 +127,7 @@ class WareHouseOrderController extends Controller
             toast('حواله شما ثبت شد.','success')->position('bottom-end');
         }
 
-        return back();
+        return redirect(route('admin.warehousing.warehouses.orders.index', $warehouse));
     }
 
     public function update(Warehouse $warehouse,WarehouseStockHistory $order,Request $request)

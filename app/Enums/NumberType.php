@@ -16,8 +16,6 @@ class NumberType
     const   call  = '7';
     const   football  = '8';
     const   etc  = '9';
-
-
-
+    const   system  = '10';
 
 }
