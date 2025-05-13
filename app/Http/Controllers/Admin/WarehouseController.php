@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Enums\Status;
 use App\Http\Controllers\Controller;
 use App\Models\Admin;
+use App\Models\Goods;
 use App\Models\WarehouseStock;
 use Illuminate\Http\Request;
 use App\Models\Warehouse;
@@ -21,7 +22,7 @@ class WarehouseController extends Controller
 
 
         $warehouses = Warehouse::with('admins')->orderBy('name')->withTrashed()->get();
-        return view('admin.warehousing.warehouses.all',compact('warehouses'));
+        return view('admin.warehousing.warehouses.all', compact('warehouses'));
 
     }
 
@@ -32,9 +33,9 @@ class WarehouseController extends Controller
         config(['auth.defaults.guard' => 'admin']);
         $this->authorize('warehousing.warehouses.create');
 
-        $admins = Admin::where('status',Status::Active)->orderBy('fullname','desc')->get();
+        $admins = Admin::where('status', Status::Active)->orderBy('fullname', 'desc')->get();
 
-        return view('admin.warehousing.warehouses.create',compact('admins'));
+        return view('admin.warehousing.warehouses.create', compact('admins'));
     }
 
 
@@ -46,9 +47,9 @@ class WarehouseController extends Controller
 
         $request->validate(
             [
-                'name' => ['required','max:255','unique:warehouses'],
-                'description' => ['nullable','max:255'],
-                "admins"=>['required'],
+                'name' => ['required', 'max:255', 'unique:warehouses'],
+                'description' => ['nullable', 'max:255'],
+                "admins" => ['required'],
             ],
             [
                 'name.required' => 'نام انبار الزامی است.',
@@ -58,15 +59,15 @@ class WarehouseController extends Controller
                 'admins.required' => 'انتخاب مسئولین انبار الزامی است.',
             ]);
 
-        if(in_array($request->status,[Status::Active,Status::Deactive])){
-           $warehouse = Warehouse::create([
-                            'name'=>$request->name,
-                            'description'=>$request->description,
-                            'status'=>$request->status]);
+        if (in_array($request->status, [Status::Active, Status::Deactive])) {
+            $warehouse = Warehouse::create([
+                'name' => $request->name,
+                'description' => $request->description,
+                'status' => $request->status]);
 
-           $warehouse->admins()->sync($request->admins);
+            $warehouse->admins()->sync($request->admins);
 
-            toast('انبار جدید افزوده شد.','success')->position('bottom-end');
+            toast('انبار جدید افزوده شد.', 'success')->position('bottom-end');
         }
         return redirect(route('admin.warehousing.warehouses.index'));
     }
@@ -78,9 +79,9 @@ class WarehouseController extends Controller
         config(['auth.defaults.guard' => 'admin']);
         $this->authorize('warehousing.warehouses.edit');
 
-        $admins = Admin::where('status',Status::Active)->orderBy('fullname','desc')->get();
+        $admins = Admin::where('status', Status::Active)->orderBy('fullname', 'desc')->get();
 
-        return view('admin.warehousing.warehouses.edit',compact('warehouse','admins'));
+        return view('admin.warehousing.warehouses.edit', compact('warehouse', 'admins'));
     }
 
 
@@ -92,8 +93,8 @@ class WarehouseController extends Controller
 
         $request->validate(
             [
-                'name' => ['required','max:255','unique:warehouses,name,'.$warehouse->id],
-                'description' => ['nullable','max:255']
+                'name' => ['required', 'max:255', 'unique:warehouses,name,' . $warehouse->id],
+                'description' => ['nullable', 'max:255']
             ],
             [
                 'name.required' => 'نام انبار الزامی است.',
@@ -102,9 +103,9 @@ class WarehouseController extends Controller
                 'description.max' => 'حداکثر  طول مجاز توضیحات انبار 255 کارکتر می باشد.',
             ]);
 
-        if(in_array($request->status,[Status::Active,Status::Deactive])){
+        if (in_array($request->status, [Status::Active, Status::Deactive])) {
 
-            if($warehouse->id != 1){
+            if ($warehouse->id != 1) {
                 $warehouse->name = $request->name;
                 $warehouse->status = $request->status;
             }
@@ -114,19 +115,19 @@ class WarehouseController extends Controller
 
             $warehouse->admins()->sync($request->admins);
 
-            toast('بروزرسانی انجام شد.','success')->position('bottom-end');
+            toast('بروزرسانی انجام شد.', 'success')->position('bottom-end');
         }
         return redirect(route('admin.warehousing.warehouses.index'));
 
     }
 
-    public function destroy( Warehouse $warehouse)
+    public function destroy(Warehouse $warehouse)
     {
         //اجازه دسترسی
         config(['auth.defaults.guard' => 'admin']);
         $this->authorize('warehousing.warehouses.destroy');
         $warehouse->delete();
-        toast('انبار مورد نظر حذف شد.','error')->position('bottom-end');
+        toast('انبار مورد نظر حذف شد.', 'error')->position('bottom-end');
         return back();
     }
 
@@ -138,7 +139,7 @@ class WarehouseController extends Controller
 
         $warehouse = Warehouse::withTrashed()->find($id);
         $warehouse->restore();
-        toast('انبار مورد نظر بازیابی شد.','error')->position('bottom-end');
+        toast('انبار مورد نظر بازیابی شد.', 'error')->position('bottom-end');
         return back();
     }
 
@@ -148,16 +149,29 @@ class WarehouseController extends Controller
         config(['auth.defaults.guard' => 'admin']);
         $this->authorize('warehousing.warehouses.stocks');
 
-        if (!in_array(Auth::guard('admin')->id(),$warehouse->adminsArrayId())){
+        if (!in_array(Auth::guard('admin')->id(), $warehouse->adminsArrayId())) {
             abort(403);
         }
 
-        $stocks = WarehouseStock::where('warehouse_id',$warehouse->id)
-                                    ->orderBy('created_at')
-                                    ->paginate(10)
-                                    ->withQueryString();
+        $stocks = WarehouseStock::with('good')
+            ->where('warehouse_id', $warehouse->id)
+            ->orderBy('created_at')
+            ->paginate(10)
+            ->withQueryString();
 
-        return view('admin.warehousing.warehouses.stock',compact('stocks','warehouse'));
+        $goods = Goods::where('status',Status::Active)->orderBy('title','asc')->get();
+
+        $warehousesGoods = Goods::whereHas('warehouseStock',function ($query) use ($warehouse){
+            $query->where('warehouse_id',$warehouse->id);
+        })->orderBy('title','asc')->get();
+
+        $warehouses = Warehouse::where('status',Status::Active)
+            ->where('id','<>',$warehouse->id)
+            ->orderBy('name','asc')
+            ->get();
+
+
+        return view('admin.warehousing.warehouses.stock', compact('stocks', 'warehouse','goods','warehousesGoods','warehouses'));
     }
 
 }

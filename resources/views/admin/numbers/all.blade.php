@@ -235,6 +235,7 @@
                                                         <option value="{{ App\Enums\NumberType::hozoori }}" @if(request('type')!=null) {{ in_array(App\Enums\NumberType::hozoori,request('type'))?'selected':'' }} @endif>حضوری</option>
                                                         <option value="{{ App\Enums\NumberType::call }}" @if(request('type')!=null) {{ in_array(App\Enums\NumberType::call,request('type'))?'selected':'' }} @endif>تماس  های وررودی</option>
                                                         <option value="{{ App\Enums\NumberType::football }}" @if(request('type')!=null) {{ in_array(App\Enums\NumberType::football,request('type'))?'selected':'' }} @endif>آکادمی فوتبال صبوری</option>
+                                                        <option value="{{ App\Enums\NumberType::system }}" @if(request('type')!=null) {{ in_array(App\Enums\NumberType::system,request('type'))?'selected':'' }} @endif>معرفی سیستم</option>
                                                         <option value="{{ App\Enums\NumberType::etc }}" @if(request('type')!=null) {{ in_array(App\Enums\NumberType::etc,request('type'))?'selected':'' }} @endif>...غیره</option>
                                                     </select>
                                                 </div>

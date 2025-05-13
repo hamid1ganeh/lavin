@@ -48,7 +48,7 @@ class WarehouseReceiptController extends Controller
         $this->authorize('warehousing.goods.receipts.create');
 
         $request->validate([
-            'number' => "required|max:255|unique:warehouse_receipts",
+            'number' => "required|max:255",
             'seller' => "nullable|max:255",
             'price' => "required|integer",
             'discount' => "required|integer",
@@ -57,7 +57,6 @@ class WarehouseReceiptController extends Controller
         [
             "number.max"=>"شماره فاکتور طولانی است.",
             "number.required"=>"شماره فاکتور الزامی است.",
-            "number.unique"=>"شماره فاکتور قبلا ثبت شده است.",
             "seller.required"=>"متن طرف حساب طولانی است",
             "description.required"=>"متن توضیحات طولانی است",
         ]);
@@ -130,7 +129,7 @@ class WarehouseReceiptController extends Controller
         $this->authorize('warehousing.goods.receipts.edit');
 
         $request->validate([
-            'number' => "required|max:255|unique:warehouse_receipts,number,".$receipt->id,
+            'number' => "required|max:255",
             'seller' => "nullable|max:255",
             'price' => "required|integer",
             'discount' => "required|integer",
@@ -139,7 +138,6 @@ class WarehouseReceiptController extends Controller
             [
                 "number.max"=>"شماره فاکتور طولانی است.",
                 "number.required"=>"شماره فاکتور الزامی است.",
-                "number.unique"=>"شماره فاکتور قبلا ثبت شده است.",
                 "seller.required"=>"متن طرف حساب طولانی است",
                 "description.required"=>"متن توضیحات طولانی است",
             ]);

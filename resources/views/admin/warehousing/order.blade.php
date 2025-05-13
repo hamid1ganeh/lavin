@@ -79,7 +79,7 @@
                                         </button>
                                     </div>
                                     <div class="col-12 col-md-6 text-right">
-{{--                                        @if(Auth::guard('admin')->user()->can('warehousing.warehouses.orders.create'))--}}
+                                        @if(Auth::guard('admin')->user()->can('warehousing.warehouses.orders.create'))
                                             <div class="btn-group" >
                                                 <a href="#receive" data-toggle="modal" class="btn btn-primary" title="ایجاد حواله">
                                                     <i class="fa fa-plus plusiconfont"></i>
@@ -105,7 +105,7 @@
                                                                         <div class="col-12">
                                                                             <label for="warehouse" class="col-form-label IRANYekanRegular">انبار مقصد</label>
                                                                             <select name="warehouse" id="warehouse"  class="width-100 form-control IRANYekanRegular" required>
-                                                                                <option value="">کالا مورد نظر را انتخاب کنید</option>
+                                                                                <option value="">انبار مورد نظر را انتخاب کنید</option>
                                                                                 @foreach($warehouses as $warehouse)
                                                                                     <option value="{{ $warehouse->id }}" {{$warehouse->id == old('good')?'selected':'' }}>{{ $warehouse->name }}</option>
                                                                                 @endforeach
@@ -120,7 +120,7 @@
                                                                             <select name="good" id="good"  class="width-100 form-control IRANYekanRegular" required>
                                                                                 <option value="">کالا مورد نظر را انتخاب کنید</option>
                                                                                 @foreach($goods as $good)
-                                                                                    <option value="{{ $good->id }}" {{$good->id == old('good')?'selected':'' }}>{{ $good->title.' ('.$good->brand->name.')' }}</option>
+                                                                                    <option value="{{ $good->id }}" {{$good->id == old('good')?'selected':'' }}>{{ $good->showGoodInfo() }}</option>
                                                                                 @endforeach
                                                                             </select>
                                                                             <span class="form-text text-danger erroralarm"> {{ $errors->first('good') }} </span>
@@ -151,6 +151,7 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                        @endif
                                     </div>
                                 </div>
                                 <div class="collapse" id="filter">

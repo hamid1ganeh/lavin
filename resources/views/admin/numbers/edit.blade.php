@@ -67,6 +67,8 @@
                                             <option value="{{ App\Enums\NumberType::hozoori }}" {{ App\Enums\NumberType::call==old('type')||App\Enums\NumberType::hozoori==$number->type?'selected':'' }}>حضوری</option>
                                             <option value="{{ App\Enums\NumberType::call }}" {{ App\Enums\NumberType::call==old('type')||App\Enums\NumberType::call==$number->type?'selected':'' }}>تماس های ورودی</option>
                                             <option value="{{ App\Enums\NumberType::football }}" {{ App\Enums\NumberType::football==old('type')||App\Enums\NumberType::football==$number->type?'selected':'' }}>آکادمی فوتبال صبوری</option>
+                                            <option value="{{ App\Enums\NumberType::system }}" {{ App\Enums\NumberType::system==old('type')||App\Enums\NumberType::system==$number->type?'selected':'' }}>معرفی سیستم</option>
+                                            <option value="{{ App\Enums\NumberType::etc }}" {{ App\Enums\NumberType::system==old('type')||App\Enums\NumberType::etc==$number->type?'selected':'' }}>غیره...</option>
                                         </select>
                                         <span class="form-text text-danger erroralarm"> {{ $errors->first('status') }} </span>
                                     </div>

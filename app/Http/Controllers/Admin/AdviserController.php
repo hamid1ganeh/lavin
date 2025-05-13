@@ -98,6 +98,7 @@ class AdviserController extends Controller
             $adviser->status = $request->status;
             $number = $adviser->number;
             $number->information = $request->information;
+            $number->status = $request->status;
             if($request->status == NumberStatus::Accept || $request->status == NumberStatus::Reservicd)
             {
                 $number->accept_date_time = Carbon::now();
