@@ -135,7 +135,7 @@
                                                  <select name="gender[]" id="gender-filter" class="form-control select2 select2-multiple text-right IRANYekanRegular" multiple="multiple" multiple data-placeholder="... جنسیت‌های مورد نظر را انتخاب نمایید">
                                                      <option value="{{ App\Enums\genderType::female }}" @if(request('female')!=null) {{ in_array(App\Enums\genderType::female,request('gender'))?'selected':'' }} @endif>زن</option>
                                                     <option value="{{ App\Enums\genderType::male }}" @if(request('gender')!=null) {{ in_array(App\Enums\genderType::male,request('gender'))?'selected':'' }} @endif>مرد</option>
-                                                    <option value="{{ App\Enums\genderType::LGBTQ }}" @if(request('gender')!=null) {{ in_array(App\Enums\genderType::LGBTQ,request('gender'))?'selected':'' }} @endif>غیره...</option>
+                                                    <option value="{{ App\Enums\genderType::LGBTQ }}" @if(request('gender')!=null) {{ in_array(App\Enums\genderType::LGBTQ,request('gender'))?'selected':'' }} @endif>LGBTQ</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -219,6 +219,15 @@
                                                         <option value="{{ $city->id }}" @if(request('cities')!=null) {{ in_array($city->id,request('cities'))?'selected':'' }} @endif>{{ $city->name }}</option>
                                                     @endforeach
                                                 </select>
+                                            </div>
+
+                                            <div class="form-group justify-content-center col-6">
+                                                <div class="form-check mt-4 pr-5 mr-2">
+                                                    <input class="form-check-input cursor-pointer" type="checkbox" value="on" name="exel" id="exel" {{ request('exel')=='on'?'checked':'' }}>
+                                                    <label class="form-check-label IRANYekanRegular" style="margin-right: 19px !important;" for="exel">
+                                                        خروجی اکسل
+                                                    </label>
+                                                </div>
                                             </div>
                                         </div>
 

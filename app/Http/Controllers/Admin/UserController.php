@@ -20,6 +20,7 @@ use App\Services\CodeService;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Auth;
+use App\Services\ExportService;
 
 class UserController extends Controller
 {
@@ -31,8 +32,67 @@ class UserController extends Controller
 
   public function index()
   {
+
       //اجازه دسترسی
       if (Auth::guard('admin')->user()->can('users.index')) {
+
+          $exel = request('exel');
+          if(isset($exel) && $exel='on') {
+
+
+              $users = User::with('level','address.province','address.city','address.part','bank','info.job')
+                  ->withTrashed()
+                  ->filter()
+                  ->orderBy('created_at','desc')
+                  ->get();
+
+              $titles = "نام" . "\t" ."نام خانوادگی" . "\t" . "موبایل" . "\t"."شماره ملی". "\t"."شغل"."\t"."سطح". "\t"."امتیاز". "\t"."استان". "\t"."شهر". "\t"."بخش";
+
+              $setData = '';
+              $rowData = '';
+              foreach ($users as $user) {
+                  $firstname = $user->firstname ?? '';
+                  $lastname = $user->lastname ?? '';
+                  $mobile = $user->mobile ?? '';
+                  $nationcode = $user->nationcode ?? '';
+                  if (!is_null($user->info)){
+                      $job = $user->info->job->title ?? '';
+                  }else{
+                      $job = '';
+                  }
+
+                  $level = $user->level->title ?? '';
+                  $point = $user->point ?? '';
+                  if (!is_null($user->address)) {
+                      $province = $user->address->province->name ?? '';
+                      $city = $user->address->city->name ?? '';
+                      $part = $user->address->part->name ?? '';
+                  } else{
+                      $province = '';
+                      $city = '';
+                      $part = '';
+
+                  }
+
+                  $rowData .=  $firstname."\t";
+                  $rowData .=  $lastname."\t";
+                  $rowData .=  $mobile."\t";
+                  $rowData .=  $nationcode."\t";
+                  $rowData .=  $job."\t";
+                  $rowData .=  $level."\t";
+                  $rowData .=  $point."\t";
+                  $rowData .=  $province."\t";
+                  $rowData .=  $city."\t";
+                  $rowData .=  $part."\t"."\n";
+              }
+              $setData .= $rowData. "\n";
+
+              $filename = 'export_users_'.date('YmdHis') . ".xls";
+
+              $export = new ExportService();
+              $export->exel($titles,$setData,$filename);
+          }
+
 
           $levels = Level::orderBy('point','asc')->get();
 
